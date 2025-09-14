@@ -1,0 +1,69 @@
+import { Switch } from "@/components/ui/switch";
+import { MapPin, Truck } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+const StatusControl = () => {
+  return (
+    <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
+      <div className="space-y-6">
+        {/* Account Status */}
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-medium text-muted-foreground">Account status</span>
+          <div className="flex items-center gap-3">
+            <Switch 
+              defaultChecked 
+              className="data-[state=checked]:bg-success data-[state=unchecked]:bg-input"
+            />
+            <span className="text-sm font-medium text-foreground">On</span>
+          </div>
+        </div>
+
+        {/* Location */}
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-muted-foreground">Location</label>
+          <Select defaultValue="hilton-barbados">
+            <SelectTrigger className="w-full">
+              <div className="flex items-center gap-2">
+                <MapPin className="h-4 w-4 text-accent" />
+                <SelectValue />
+              </div>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="hilton-barbados">Hilton Barbados</SelectItem>
+              <SelectItem value="sandals-royal">Sandals Royal Caribbean</SelectItem>
+              <SelectItem value="beaches-negril">Beaches Negril</SelectItem>
+              <SelectItem value="hyatt-zilara">Hyatt Zilara Rose Hall</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Delivery Type */}
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-muted-foreground">Delivery type</label>
+          <Select defaultValue="room-delivery">
+            <SelectTrigger className="w-full">
+              <div className="flex items-center gap-2">
+                <Truck className="h-4 w-4 text-accent" />
+                <SelectValue />
+              </div>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="room-delivery">Room Delivery</SelectItem>
+              <SelectItem value="poolside">Poolside Service</SelectItem>
+              <SelectItem value="beach-service">Beach Service</SelectItem>
+              <SelectItem value="restaurant">Restaurant Pickup</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default StatusControl;

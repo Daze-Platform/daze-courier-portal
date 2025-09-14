@@ -2,41 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Courier Portal Design System - Resort & Food Delivery Theme */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Core backgrounds */
+    --background: 240 10% 98%;
+    --foreground: 215 25% 20%;
 
+    /* Card system */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 215 25% 20%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    /* Portal brand colors */
+    --primary: 215 85% 25%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 215 85% 20%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Accent colors for actions */
+    --accent: 25 90% 65%;
+    --accent-foreground: 0 0% 100%;
+    --accent-hover: 25 90% 55%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Status colors */
+    --success: 145 70% 45%;
+    --success-foreground: 0 0% 100%;
+    --warning: 40 95% 60%;
+    --warning-foreground: 215 25% 20%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Neutral tones */
+    --secondary: 215 15% 92%;
+    --secondary-foreground: 215 25% 25%;
+    --muted: 215 15% 95%;
+    --muted-foreground: 215 10% 50%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Interactive elements */
+    --border: 215 20% 88%;
+    --input: 215 20% 92%;
+    --ring: 215 85% 25%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(215 85% 25%), hsl(215 85% 35%));
+    --gradient-accent: linear-gradient(135deg, hsl(25 90% 65%), hsl(25 90% 75%));
+    
+    /* Shadows */
+    --shadow-soft: 0 2px 8px -2px hsl(215 25% 20% / 0.1);
+    --shadow-medium: 0 4px 12px -4px hsl(215 25% 20% / 0.15);
+    --shadow-strong: 0 8px 20px -8px hsl(215 25% 20% / 0.2);
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
