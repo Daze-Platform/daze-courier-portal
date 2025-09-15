@@ -5,8 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useState } from "react";
-import Sidebar from "@/components/Sidebar";
-import CourierHeader from "@/components/CourierHeader";
+import UnifiedHeader from "@/components/UnifiedHeader";
+import DesktopSidebar from "@/components/DesktopSidebar";
 
 const OrderDetail = () => {
   const { orderId } = useParams();
@@ -65,15 +65,11 @@ const OrderDetail = () => {
 
   return (
     <>
-      <Sidebar />
-      
-      {/* Mobile Header */}
-      <div className="lg:hidden">
-        <CourierHeader />
-      </div>
+      <UnifiedHeader />
+      <DesktopSidebar />
 
       {/* Main Content */}
-      <div className="min-h-screen bg-background lg:ml-64">
+      <div className="min-h-screen bg-background lg:ml-64 pt-4">
         <div className="container mx-auto px-4 py-6 space-y-6 lg:px-8 lg:py-8">
           {/* Header */}
           <div className="flex items-center gap-4">
