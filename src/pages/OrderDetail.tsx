@@ -1,9 +1,12 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, MessageCircle, MapPin, Clock, CheckCircle } from "lucide-react";
+import { ArrowLeft, MessageCircle, MapPin, Clock, CheckCircle, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useState } from "react";
+import Sidebar from "@/components/Sidebar";
+import CourierHeader from "@/components/CourierHeader";
 
 const OrderDetail = () => {
   const { orderId } = useParams();
@@ -61,138 +64,179 @@ const OrderDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="bg-gradient-primary shadow-medium sticky top-0 z-50">
-        <div className="flex items-center gap-4 px-4 py-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => navigate("/")}
-            className="text-primary-foreground hover:bg-white/10"
-          >
-            <ArrowLeft className="h-6 w-6" />
-          </Button>
-          <h1 className="text-xl font-bold text-primary-foreground">Order {order.orderId}</h1>
-        </div>
-      </header>
+    <>
+      <Sidebar />
+      
+      {/* Mobile Header */}
+      <div className="lg:hidden">
+        <CourierHeader />
+      </div>
 
-      <main className="px-4 py-6 space-y-6 max-w-md mx-auto">
-        {/* Restaurant Info */}
-        <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-12 w-12 bg-accent/10 rounded-full flex items-center justify-center">
-              <span className="text-lg font-bold text-accent">🍳</span>
-            </div>
-            <div className="flex-1">
-              <h2 className="text-lg font-semibold text-foreground">Order from {order.restaurant}</h2>
-              <Badge variant="secondary" className="bg-accent/10 text-accent-foreground mt-1">
-                {order.deliveryType}
-              </Badge>
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-accent" />
-              <span className="font-medium text-foreground">{order.deliveryAddress}</span>
-              <span className="text-muted-foreground">•</span>
-              <Clock className="h-4 w-4 text-accent" />
-              <span className="text-foreground">{order.deliveryTime}</span>
-            </div>
-
-            <Button 
-              className="w-full bg-gradient-accent hover:bg-accent-hover text-accent-foreground font-medium"
-              onClick={handleStartDelivery}
+      {/* Main Content */}
+      <div className="min-h-screen bg-background lg:ml-64">
+        <div className="container mx-auto px-4 py-6 space-y-6 lg:px-8 lg:py-8">
+          {/* Header */}
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate("/")}
+              className="flex-shrink-0"
             >
-              Start Delivery
+              <ArrowLeft className="h-6 w-6" />
+            </Button>
+            <div>
+              <h1 className="text-2xl font-bold text-foreground lg:text-3xl">Order {order.orderId}</h1>
+              <p className="text-muted-foreground lg:text-lg">Delivery details and customer information</p>
+            </div>
+          </div>
+
+          {/* Order Content - Responsive Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+            {/* Main Order Info */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Restaurant Info */}
+              <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="h-12 w-12 bg-accent/10 rounded-full flex items-center justify-center">
+                    <Package className="h-6 w-6 text-accent" />
+                  </div>
+                  <div className="flex-1">
+                    <h2 className="text-lg font-semibold text-foreground lg:text-xl">Order from {order.restaurant}</h2>
+                    <Badge variant="secondary" className="bg-accent/10 text-accent-foreground mt-1">
+                      {order.deliveryType}
+                    </Badge>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4 text-accent" />
+                    <span className="font-medium text-foreground">{order.deliveryAddress}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-accent" />
+                    <span className="text-foreground">{order.deliveryTime}</span>
+                  </div>
+                </div>
+
+                <Button 
+                  className="w-full bg-gradient-accent hover:bg-accent-hover text-accent-foreground font-medium"
+                  onClick={handleStartDelivery}
+                >
+                  Start Delivery
+                </Button>
+              </div>
+
+              {/* Customer Location Map Placeholder */}
+              <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
+                <h3 className="text-lg font-semibold text-foreground mb-4">Customer Location</h3>
+                <div className="aspect-video bg-accent/5 rounded-lg border border-border flex items-center justify-center">
+                  <div className="text-center text-muted-foreground">
+                    <MapPin className="h-12 w-12 mx-auto mb-2 opacity-50" />
+                    <p className="text-sm">Interactive map would be displayed here</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Complete Delivery Button - Desktop */}
+              <div className="hidden lg:block">
+                <Button 
+                  className="w-full bg-success hover:bg-success/90 text-white font-medium"
+                  onClick={handleCompleteDelivery}
+                >
+                  Complete Delivery
+                </Button>
+              </div>
+            </div>
+
+            {/* Customer & Order Details Sidebar */}
+            <div className="space-y-6">
+              {/* Customer Info */}
+              <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-foreground">Delivery For</h3>
+                  <Button variant="secondary" className="bg-accent/10 text-accent-foreground">
+                    <MessageCircle className="h-4 w-4 mr-2" />
+                    Chat
+                  </Button>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Avatar className="h-12 w-12">
+                    <AvatarImage src={order.customer.avatar} />
+                    <AvatarFallback>GB</AvatarFallback>
+                  </Avatar>
+                  <span className="font-semibold text-foreground">{order.customer.name}</span>
+                </div>
+              </div>
+
+              {/* Order Details */}
+              <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
+                <h3 className="text-lg font-semibold text-foreground mb-4">Order Details</h3>
+                
+                <div className="space-y-4">
+                  {order.items.map((item, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-success mt-0.5" />
+                      <div className="flex-1">
+                        <div className="flex justify-between items-center">
+                          <p className="font-medium text-foreground">{item.name}</p>
+                          <p className="font-semibold text-foreground">${item.price}</p>
+                        </div>
+                        <p className="text-sm text-muted-foreground">{item.modifications}</p>
+                      </div>
+                    </div>
+                  ))}
+
+                  {order.specialNotes && (
+                    <div className="bg-warning/10 rounded-lg p-4 mt-4">
+                      <div className="flex items-start gap-3">
+                        <div className="h-8 w-8 bg-warning/20 rounded-full flex items-center justify-center">
+                          <span className="text-warning">📝</span>
+                        </div>
+                        <div>
+                          <p className="font-medium text-foreground">Special Notes</p>
+                          <p className="text-sm text-muted-foreground">{order.specialNotes}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Order Total */}
+                  <div className="border-t border-border pt-4 space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Subtotal</span>
+                      <span className="text-foreground">${order.subtotal}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Processing Fee</span>
+                      <span className="text-foreground">+${order.processingFee}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-accent">Delivery Tips</span>
+                      <span className="text-accent">+${order.deliveryTips}</span>
+                    </div>
+                    <div className="flex justify-between font-semibold text-lg border-t border-border pt-2">
+                      <span className="text-foreground">Total</span>
+                      <span className="text-foreground">+${order.total}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Complete Delivery Button - Mobile */}
+          <div className="lg:hidden">
+            <Button 
+              className="w-full bg-success hover:bg-success/90 text-white font-medium"
+              onClick={handleCompleteDelivery}
+            >
+              Complete Delivery
             </Button>
           </div>
         </div>
-
-        {/* Customer Info */}
-        <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <img 
-                src={order.customer.avatar} 
-                alt={order.customer.name}
-                className="h-12 w-12 rounded-full object-cover"
-              />
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Delivery For</p>
-                <p className="font-semibold text-foreground">{order.customer.name}</p>
-              </div>
-            </div>
-            <Button variant="secondary" className="bg-accent/10 text-accent-foreground">
-              <MessageCircle className="h-4 w-4 mr-2" />
-              Chat
-            </Button>
-          </div>
-        </div>
-
-        {/* Order Details */}
-        <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
-          <h3 className="text-lg font-semibold text-foreground mb-4">Order Details</h3>
-          
-          <div className="space-y-4">
-            {order.items.map((item, index) => (
-              <div key={index} className="flex items-start gap-3">
-                <CheckCircle className="h-5 w-5 text-success mt-0.5" />
-                <div className="flex-1">
-                  <div className="flex justify-between items-center">
-                    <p className="font-medium text-foreground">{item.name}</p>
-                    <p className="font-semibold text-foreground">${item.price}</p>
-                  </div>
-                  <p className="text-sm text-muted-foreground">{item.modifications}</p>
-                </div>
-              </div>
-            ))}
-
-            {order.specialNotes && (
-              <div className="bg-warning/10 rounded-lg p-4 mt-4">
-                <div className="flex items-start gap-3">
-                  <div className="h-8 w-8 bg-warning/20 rounded-full flex items-center justify-center">
-                    <span className="text-warning">📝</span>
-                  </div>
-                  <div>
-                    <p className="font-medium text-foreground">Special Notes</p>
-                    <p className="text-sm text-muted-foreground">{order.specialNotes}</p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Order Total */}
-            <div className="border-t border-border pt-4 space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Subtotal</span>
-                <span className="text-foreground">${order.subtotal}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Processing Fee</span>
-                <span className="text-foreground">+${order.processingFee}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-accent">Delivery Tips</span>
-                <span className="text-accent">+${order.deliveryTips}</span>
-              </div>
-              <div className="flex justify-between font-semibold text-lg border-t border-border pt-2">
-                <span className="text-foreground">Total</span>
-                <span className="text-foreground">+${order.total}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Complete Delivery Button */}
-        <Button 
-          className="w-full bg-success hover:bg-success/90 text-white font-medium"
-          onClick={handleCompleteDelivery}
-        >
-          Complete Delivery
-        </Button>
-      </main>
+      </div>
 
       {/* Completion Modal */}
       <Dialog open={showCompletionModal} onOpenChange={setShowCompletionModal}>
@@ -238,7 +282,7 @@ const OrderDetail = () => {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 };
 

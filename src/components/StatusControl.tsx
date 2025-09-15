@@ -10,11 +10,11 @@ import {
 
 const StatusControl = () => {
   return (
-    <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
-      <div className="space-y-6">
+    <div className="bg-card rounded-lg p-4 shadow-soft border border-border lg:p-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
         {/* Account Status */}
-        <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-muted-foreground">Account status</span>
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-muted-foreground">Account status</label>
           <div className="flex items-center gap-3">
             <Switch 
               defaultChecked 
@@ -44,7 +44,7 @@ const StatusControl = () => {
         </div>
 
         {/* Delivery Type */}
-        <div className="space-y-2">
+        <div className="space-y-2 sm:col-span-2 lg:col-span-1">
           <label className="text-sm font-medium text-muted-foreground">Delivery type</label>
           <Select defaultValue="room-delivery">
             <SelectTrigger className="w-full">

@@ -1,6 +1,7 @@
 import CourierHeader from "@/components/CourierHeader";
 import StatusControl from "@/components/StatusControl";
 import OrderCard from "@/components/OrderCard";
+import Sidebar from "@/components/Sidebar";
 import { Package } from "lucide-react";
 
 const Index = () => {
@@ -39,45 +40,54 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <CourierHeader />
+      <Sidebar />
       
-      <main className="px-4 py-6 space-y-6 max-w-md mx-auto">
-        {/* Page Title */}
-        <div>
-          <h1 className="text-2xl font-bold text-foreground mb-2">Active Orders</h1>
-        </div>
-
-        {/* Status Controls */}
-        <StatusControl />
-
-        {/* Orders List */}
-        <div className="space-y-4">
-          {mockOrders.map((order) => (
-            <OrderCard
-              key={order.orderId}
-              orderId={order.orderId}
-              restaurant={order.restaurant}
-              items={order.items}
-              deliveryAddress={order.deliveryAddress}
-              deliveryTime={order.deliveryTime}
-              itemCount={order.itemCount}
-              deliveryType={order.deliveryType}
-              timeRemaining={order.timeRemaining}
-            />
-          ))}
-        </div>
-
-        {/* Empty State for when no orders */}
-        {mockOrders.length === 0 && (
-          <div className="text-center py-12">
-            <div className="mx-auto h-24 w-24 bg-muted rounded-full flex items-center justify-center mb-4">
-              <Package className="h-8 w-8 text-muted-foreground" />
-            </div>
-            <h3 className="text-lg font-medium text-foreground mb-2">No active orders</h3>
-            <p className="text-muted-foreground">New orders will appear here when available</p>
+      {/* Mobile Header - only show on mobile */}
+      <div className="lg:hidden">
+        <CourierHeader />
+      </div>
+      
+      {/* Main Content - responsive layout */}
+      <div className="lg:ml-64">
+        <main className="px-4 py-6 space-y-6 max-w-none lg:px-8 lg:py-8">
+          {/* Page Title */}
+          <div>
+            <h1 className="text-2xl font-bold text-foreground mb-2 lg:text-3xl">Active Orders</h1>
+            <p className="text-muted-foreground lg:text-lg">Manage your current delivery assignments</p>
           </div>
-        )}
-      </main>
+
+          {/* Status Controls */}
+          <StatusControl />
+
+          {/* Orders List */}
+          <div className="space-y-4 lg:space-y-6">
+            {mockOrders.map((order) => (
+              <OrderCard
+                key={order.orderId}
+                orderId={order.orderId}
+                restaurant={order.restaurant}
+                items={order.items}
+                deliveryAddress={order.deliveryAddress}
+                deliveryTime={order.deliveryTime}
+                itemCount={order.itemCount}
+                deliveryType={order.deliveryType}
+                timeRemaining={order.timeRemaining}
+              />
+            ))}
+          </div>
+
+          {/* Empty State for when no orders */}
+          {mockOrders.length === 0 && (
+            <div className="text-center py-12 lg:py-20">
+              <div className="mx-auto h-24 w-24 bg-muted rounded-full flex items-center justify-center mb-4">
+                <Package className="h-8 w-8 text-muted-foreground" />
+              </div>
+              <h3 className="text-lg font-medium text-foreground mb-2 lg:text-xl">No active orders</h3>
+              <p className="text-muted-foreground lg:text-base">New orders will appear here when available</p>
+            </div>
+          )}
+        </main>
+      </div>
     </div>
   );
 };
