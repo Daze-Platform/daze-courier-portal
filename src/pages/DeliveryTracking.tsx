@@ -305,7 +305,13 @@ const DeliveryTracking = () => {
                       <Button variant="outline" size="sm">
                         <Phone className="h-4 w-4" />
                       </Button>
-                      <Button variant="outline" size="sm">
+                      <Button 
+                        className="font-medium text-white"
+                        style={{ backgroundColor: '#29b6f6' }}
+                        onMouseEnter={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#1e88e5'}
+                        onMouseLeave={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#29b6f6'}
+                        size="sm"
+                      >
                         <MessageCircle className="h-4 w-4" />
                       </Button>
                     </div>

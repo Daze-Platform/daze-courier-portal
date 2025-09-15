@@ -177,7 +177,12 @@ const OrderDetail = () => {
               <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-foreground">Delivery For</h3>
-                  <Button variant="secondary" className="bg-accent/10 text-accent-foreground">
+                  <Button 
+                    className="font-medium text-white"
+                    style={{ backgroundColor: '#29b6f6' }}
+                    onMouseEnter={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#1e88e5'}
+                    onMouseLeave={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#29b6f6'}
+                  >
                     <MessageCircle className="h-4 w-4 mr-2" />
                     Chat
                   </Button>
