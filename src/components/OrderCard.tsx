@@ -2,6 +2,7 @@ import { Clock, MapPin, Package, Timer, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 interface OrderCardProps {
   orderId: string;
@@ -27,6 +28,23 @@ const OrderCard = ({
   timeRemaining = 32
 }: OrderCardProps) => {
   const navigate = useNavigate();
+  const [countdown, setCountdown] = useState(timeRemaining);
+
+  useEffect(() => {
+    if (countdown <= 0) return;
+    
+    const timer = setInterval(() => {
+      setCountdown(prev => {
+        if (prev <= 1) {
+          // Order expired
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [countdown]);
 
   const handleAcceptOrder = () => {
     // Navigate to order detail page
@@ -70,17 +88,22 @@ const OrderCard = ({
 
         {/* Actions */}
         <div className="flex items-center gap-3 flex-shrink-0">
-          <div className="flex items-center justify-center h-12 w-12 border-2 border-warning rounded-full">
+          <div className={`flex items-center justify-center h-12 w-12 border-2 rounded-full ${
+            countdown <= 10 ? 'border-destructive' : 'border-warning'
+          }`}>
             <div className="flex items-center gap-1">
-              <Timer className="h-4 w-4 text-warning" />
-              <span className="text-sm font-bold text-warning">{timeRemaining}</span>
+              <Timer className={`h-4 w-4 ${countdown <= 10 ? 'text-destructive' : 'text-warning'}`} />
+              <span className={`text-sm font-bold ${countdown <= 10 ? 'text-destructive' : 'text-warning'}`}>
+                {countdown}
+              </span>
             </div>
           </div>
           <Button 
-            className="bg-gradient-accent hover:bg-accent-hover text-accent-foreground font-medium px-6"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-6"
             onClick={handleAcceptOrder}
+            disabled={countdown <= 0}
           >
-            Accept
+            {countdown <= 0 ? 'Expired' : 'Accept'}
           </Button>
         </div>
       </div>
@@ -139,15 +162,20 @@ const OrderCard = ({
         {/* Action Button */}
         <div className="flex items-center justify-between pt-2">
           <Button 
-            className="flex-1 bg-gradient-accent hover:bg-accent-hover text-accent-foreground font-medium"
+            className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
             onClick={handleAcceptOrder}
+            disabled={countdown <= 0}
           >
-            Accept Order
+            {countdown <= 0 ? 'Order Expired' : 'Accept Order'}
           </Button>
-          <div className="ml-4 flex items-center justify-center h-12 w-12 border-2 border-warning rounded-full">
+          <div className={`ml-4 flex items-center justify-center h-12 w-12 border-2 rounded-full ${
+            countdown <= 10 ? 'border-destructive' : 'border-warning'
+          }`}>
             <div className="flex items-center gap-1">
-              <Timer className="h-4 w-4 text-warning" />
-              <span className="text-sm font-bold text-warning">{timeRemaining}</span>
+              <Timer className={`h-4 w-4 ${countdown <= 10 ? 'text-destructive' : 'text-warning'}`} />
+              <span className={`text-sm font-bold ${countdown <= 10 ? 'text-destructive' : 'text-warning'}`}>
+                {countdown}
+              </span>
             </div>
           </div>
         </div>
