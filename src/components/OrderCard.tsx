@@ -120,7 +120,7 @@ const OrderCard = ({
         {/* Action Row */}
         <div className="flex items-center justify-between">
           <Button 
-            className="font-medium px-8 text-white"
+            className="font-medium px-12 py-3 text-white flex-1 mr-4"
             style={{ backgroundColor: '#29b6f6' }}
             onMouseEnter={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#1e88e5'}
             onMouseLeave={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#29b6f6'}
@@ -129,7 +129,7 @@ const OrderCard = ({
             Accept
           </Button>
           
-          <div className={`flex items-center justify-center h-12 w-12 border-2 rounded-full ${
+          <div className={`flex items-center justify-center h-12 w-12 border-2 rounded-full flex-shrink-0 ${
             countdown === 0 ? 'border-red-500' : 'border-orange-500'
           }`}>
             <span className={`text-lg font-bold ${countdown === 0 ? 'text-red-500' : 'text-orange-500'}`}>
