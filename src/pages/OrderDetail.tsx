@@ -10,6 +10,7 @@ import DesktopSidebar from "@/components/DesktopSidebar";
 import margaritaMamasLogo from "@/assets/margarita-mamas-logo.png";
 import sunsetGrillLogo from "@/assets/sunset-grill-logo.png";
 import oceanBreezeLogo from "@/assets/ocean-breeze-logo.png";
+import poolDeckMap from "@/assets/pool-deck-map.jpg";
 
 const OrderDetail = () => {
   const { orderId } = useParams();
@@ -152,11 +153,12 @@ const OrderDetail = () => {
               {/* Customer Location Map Placeholder */}
               <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
                 <h3 className="text-lg font-semibold text-foreground mb-4">Customer Location</h3>
-                <div className="aspect-video bg-accent/5 rounded-lg border border-border flex items-center justify-center">
-                  <div className="text-center text-muted-foreground">
-                    <MapPin className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                    <p className="text-sm">Interactive map would be displayed here</p>
-                  </div>
+                <div className="aspect-video bg-accent/5 rounded-lg border border-border overflow-hidden">
+                  <img 
+                    src={poolDeckMap} 
+                    alt="Pool deck area - Customer location preview" 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
 
