@@ -100,10 +100,10 @@ const OrderCard = ({
           <div>
             <p className="font-medium text-muted-foreground mb-1">Delivery Address</p>
             <div className="flex items-center gap-1">
-              <Badge variant="secondary" className="bg-accent/10 text-accent-foreground text-xs">
-                <Truck className="h-3 w-3 mr-1" />
-                {deliveryType}
-              </Badge>
+          <Badge variant="secondary" className="bg-accent text-white font-medium text-xs border-0">
+            <Truck className="h-3 w-3 mr-1" />
+            {deliveryType}
+          </Badge>
             </div>
           </div>
         </div>
@@ -153,7 +153,7 @@ const OrderCard = ({
         <div className="flex items-center gap-4 py-2 border-b border-border">
           <span className="text-sm text-foreground">{itemCount} item{itemCount > 1 ? 's' : ''}</span>
           <div className="h-1 w-1 bg-muted-foreground rounded-full" />
-          <Badge variant="secondary" className="bg-accent/10 text-accent-foreground">
+          <Badge variant="secondary" className="bg-accent text-white font-medium border-0">
             <Truck className="h-3 w-3 mr-1" />
             {deliveryType}
           </Badge>

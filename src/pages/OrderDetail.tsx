@@ -7,6 +7,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { useState } from "react";
 import UnifiedHeader from "@/components/UnifiedHeader";
 import DesktopSidebar from "@/components/DesktopSidebar";
+import margaritaMamasLogo from "@/assets/margarita-mamas-logo.png";
+import sunsetGrillLogo from "@/assets/sunset-grill-logo.png";
+import oceanBreezeLogo from "@/assets/ocean-breeze-logo.png";
 
 const OrderDetail = () => {
   const { orderId } = useParams();
@@ -63,6 +66,21 @@ const OrderDetail = () => {
     navigate("/");
   };
 
+  const getRestaurantLogo = (restaurantName: string) => {
+    switch (restaurantName.toLowerCase()) {
+      case "margarita mama's":
+        return margaritaMamasLogo;
+      case "sunset grill":
+        return sunsetGrillLogo;
+      case "ocean breeze café":
+        return oceanBreezeLogo;
+      default:
+        return null;
+    }
+  };
+
+  const restaurantLogo = getRestaurantLogo(order.restaurant);
+
   return (
     <>
       <UnifiedHeader />
@@ -94,12 +112,16 @@ const OrderDetail = () => {
               {/* Restaurant Info */}
               <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="h-12 w-12 bg-accent/10 rounded-full flex items-center justify-center">
-                    <Package className="h-6 w-6 text-accent" />
+                  <div className="h-12 w-12 rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm">
+                    {restaurantLogo ? (
+                      <img src={restaurantLogo} alt={`${order.restaurant} logo`} className="h-10 w-10 object-contain" />
+                    ) : (
+                      <Package className="h-6 w-6 text-accent" />
+                    )}
                   </div>
                   <div className="flex-1">
                     <h2 className="text-lg font-semibold text-foreground lg:text-xl">Order from {order.restaurant}</h2>
-                    <Badge variant="secondary" className="bg-accent/10 text-accent-foreground mt-1">
+                    <Badge className="bg-accent text-white font-medium mt-1 border-0">
                       {order.deliveryType}
                     </Badge>
                   </div>
