@@ -1,6 +1,7 @@
 import { Clock, MapPin, Package, Timer, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
 
 interface OrderCardProps {
   orderId: string;
@@ -25,6 +26,12 @@ const OrderCard = ({
   deliveryType,
   timeRemaining = 32
 }: OrderCardProps) => {
+  const navigate = useNavigate();
+
+  const handleAcceptOrder = () => {
+    // Navigate to order detail page
+    navigate(`/order/${orderId.replace('#', '')}`);
+  };
   return (
     <div className="bg-card rounded-lg p-6 shadow-soft border border-border space-y-4">
       {/* Restaurant Header */}
@@ -78,7 +85,10 @@ const OrderCard = ({
 
       {/* Action Button */}
       <div className="flex items-center justify-between pt-2">
-        <Button className="flex-1 bg-gradient-accent hover:bg-accent-hover text-accent-foreground font-medium">
+        <Button 
+          className="flex-1 bg-gradient-accent hover:bg-accent-hover text-accent-foreground font-medium"
+          onClick={handleAcceptOrder}
+        >
           Accept Order
         </Button>
         <div className="ml-4 flex items-center justify-center h-12 w-12 border-2 border-warning rounded-full">
