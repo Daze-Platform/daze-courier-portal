@@ -121,7 +121,10 @@ const OrderDetail = () => {
                 </div>
 
                 <Button 
-                  className="w-full bg-gradient-accent hover:bg-accent-hover text-accent-foreground font-medium"
+                  className="w-full font-medium text-white"
+                  style={{ backgroundColor: '#29b6f6' }}
+                  onMouseEnter={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#1e88e5'}
+                  onMouseLeave={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#29b6f6'}
                   onClick={handleStartDelivery}
                 >
                   Start Delivery
@@ -274,7 +277,10 @@ const OrderDetail = () => {
             </div>
 
             <Button 
-              className="w-full bg-gradient-accent hover:bg-accent-hover text-accent-foreground font-medium"
+              className="w-full font-medium text-white"
+              style={{ backgroundColor: '#29b6f6' }}
+              onMouseEnter={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#1e88e5'}
+              onMouseLeave={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#29b6f6'}
               onClick={handleCompletionConfirm}
             >
               Done
