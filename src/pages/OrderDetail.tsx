@@ -53,8 +53,8 @@ const OrderDetail = () => {
   };
 
   const handleStartDelivery = () => {
-    // In real app, would update order status to "in progress"
-    console.log("Starting delivery for", orderId);
+    // Navigate to delivery tracking page
+    navigate(`/delivery/${orderId}`);
   };
 
   const handleCompleteDelivery = () => {
