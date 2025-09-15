@@ -89,17 +89,17 @@ const OrderCard = ({
         {/* Actions */}
         <div className="flex items-center gap-3 flex-shrink-0">
           <div className={`flex items-center justify-center h-12 w-12 border-2 rounded-full ${
-            countdown <= 10 ? 'border-destructive' : 'border-warning'
+            countdown === 0 ? 'border-red-500' : 'border-orange-500'
           }`}>
             <div className="flex items-center gap-1">
-              <Timer className={`h-4 w-4 ${countdown <= 10 ? 'text-destructive' : 'text-warning'}`} />
-              <span className={`text-sm font-bold ${countdown <= 10 ? 'text-destructive' : 'text-warning'}`}>
+              <Timer className={`h-4 w-4 ${countdown === 0 ? 'text-red-500' : 'text-orange-500'}`} />
+              <span className={`text-sm font-bold ${countdown === 0 ? 'text-red-500' : 'text-orange-500'}`}>
                 {countdown}
               </span>
             </div>
           </div>
           <Button 
-            className="bg-primary/80 hover:bg-primary/70 text-primary-foreground font-medium px-6"
+            className="bg-blue-400 hover:bg-blue-300 text-white font-medium px-6"
             onClick={handleAcceptOrder}
           >
             Accept
@@ -161,17 +161,17 @@ const OrderCard = ({
         {/* Action Button */}
         <div className="flex items-center justify-between pt-2">
           <Button 
-            className="flex-1 bg-primary/80 hover:bg-primary/70 text-primary-foreground font-medium"
+            className="flex-1 bg-blue-400 hover:bg-blue-300 text-white font-medium"
             onClick={handleAcceptOrder}
           >
             Accept Order
           </Button>
           <div className={`ml-4 flex items-center justify-center h-12 w-12 border-2 rounded-full ${
-            countdown <= 10 ? 'border-destructive' : 'border-warning'
+            countdown === 0 ? 'border-red-500' : 'border-orange-500'
           }`}>
             <div className="flex items-center gap-1">
-              <Timer className={`h-4 w-4 ${countdown <= 10 ? 'text-destructive' : 'text-warning'}`} />
-              <span className={`text-sm font-bold ${countdown <= 10 ? 'text-destructive' : 'text-warning'}`}>
+              <Timer className={`h-4 w-4 ${countdown === 0 ? 'text-red-500' : 'text-orange-500'}`} />
+              <span className={`text-sm font-bold ${countdown === 0 ? 'text-red-500' : 'text-orange-500'}`}>
                 {countdown}
               </span>
             </div>
