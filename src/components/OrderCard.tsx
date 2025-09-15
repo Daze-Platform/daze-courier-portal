@@ -99,7 +99,7 @@ const OrderCard = ({
             </div>
           </div>
           <Button 
-            className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-6"
+            className="bg-primary/80 hover:bg-primary/70 text-primary-foreground font-medium px-6"
             onClick={handleAcceptOrder}
             disabled={countdown <= 0}
           >
@@ -162,7 +162,7 @@ const OrderCard = ({
         {/* Action Button */}
         <div className="flex items-center justify-between pt-2">
           <Button 
-            className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
+            className="flex-1 bg-primary/80 hover:bg-primary/70 text-primary-foreground font-medium"
             onClick={handleAcceptOrder}
             disabled={countdown <= 0}
           >
