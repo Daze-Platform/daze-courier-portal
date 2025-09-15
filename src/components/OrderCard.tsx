@@ -101,9 +101,8 @@ const OrderCard = ({
           <Button 
             className="bg-primary/80 hover:bg-primary/70 text-primary-foreground font-medium px-6"
             onClick={handleAcceptOrder}
-            disabled={countdown <= 0}
           >
-            {countdown <= 0 ? 'Expired' : 'Accept'}
+            Accept
           </Button>
         </div>
       </div>
@@ -164,9 +163,8 @@ const OrderCard = ({
           <Button 
             className="flex-1 bg-primary/80 hover:bg-primary/70 text-primary-foreground font-medium"
             onClick={handleAcceptOrder}
-            disabled={countdown <= 0}
           >
-            {countdown <= 0 ? 'Order Expired' : 'Accept Order'}
+            Accept Order
           </Button>
           <div className={`ml-4 flex items-center justify-center h-12 w-12 border-2 rounded-full ${
             countdown <= 10 ? 'border-destructive' : 'border-warning'
