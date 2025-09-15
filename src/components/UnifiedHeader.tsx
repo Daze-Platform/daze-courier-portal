@@ -21,7 +21,7 @@ const UnifiedHeader = () => {
           </div>
           <div className="h-6 w-px bg-primary-foreground/30" />
           <span className="text-sm font-medium text-primary-foreground/90 tracking-wider">
-            DRIVER PORTAL
+            COURIER PORTAL
           </span>
         </div>
         
