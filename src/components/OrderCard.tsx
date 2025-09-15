@@ -99,7 +99,10 @@ const OrderCard = ({
             </div>
           </div>
           <Button 
-            className="bg-blue-400 hover:bg-blue-300 text-white font-medium px-6"
+            className="font-medium px-6 text-white"
+            style={{ backgroundColor: '#29b6f6' }}
+            onMouseEnter={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#1e88e5'}
+            onMouseLeave={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#29b6f6'}
             onClick={handleAcceptOrder}
           >
             Accept
@@ -161,7 +164,10 @@ const OrderCard = ({
         {/* Action Button */}
         <div className="flex items-center justify-between pt-2">
           <Button 
-            className="flex-1 bg-blue-400 hover:bg-blue-300 text-white font-medium"
+            className="flex-1 font-medium text-white"
+            style={{ backgroundColor: '#29b6f6' }}
+            onMouseEnter={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#1e88e5'}
+            onMouseLeave={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#29b6f6'}
             onClick={handleAcceptOrder}
           >
             Accept Order
