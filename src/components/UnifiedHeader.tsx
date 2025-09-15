@@ -7,6 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import ferdinandProfile from "@/assets/ferdinand-profile.jpg";
 
 const UnifiedHeader = () => {
   return (
@@ -34,7 +35,7 @@ const UnifiedHeader = () => {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="text-primary-foreground hover:bg-primary-foreground/10 gap-2 px-3">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src="/placeholder.svg" />
+                  <AvatarImage src={ferdinandProfile} />
                   <AvatarFallback className="bg-primary-foreground/20 text-primary-foreground text-xs">
                     FS
                   </AvatarFallback>
@@ -43,10 +44,16 @@ const UnifiedHeader = () => {
                 <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuItem>Profile Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuItem>Sign Out</DropdownMenuItem>
+            <DropdownMenuContent align="end" className="w-56 bg-card border border-border shadow-lg">
+              <DropdownMenuItem className="cursor-pointer hover:bg-accent/10 focus:bg-accent/20">
+                Profile Settings
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer hover:bg-accent/10 focus:bg-accent/20">
+                Support
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer hover:bg-accent/10 focus:bg-accent/20 text-destructive">
+                Sign Out
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
