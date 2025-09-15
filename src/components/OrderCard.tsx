@@ -3,6 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import margaritaMamasLogo from "@/assets/margarita-mamas-logo.png";
+import sunsetGrillLogo from "@/assets/sunset-grill-logo.png";
+import oceanBreezeLogo from "@/assets/ocean-breeze-logo.png";
 
 interface OrderCardProps {
   orderId: string;
@@ -50,14 +53,33 @@ const OrderCard = ({
     // Navigate to order detail page
     navigate(`/order/${orderId.replace('#', '')}`);
   };
+
+  const getRestaurantLogo = (restaurantName: string) => {
+    switch (restaurantName.toLowerCase()) {
+      case "margarita mama's":
+        return margaritaMamasLogo;
+      case "sunset grill":
+        return sunsetGrillLogo;
+      case "ocean breeze café":
+        return oceanBreezeLogo;
+      default:
+        return null;
+    }
+  };
+
+  const currentRestaurantLogo = getRestaurantLogo(restaurant);
   return (
     <div className="bg-card rounded-lg p-4 shadow-soft border border-border space-y-4 lg:p-6">
       {/* Desktop Layout */}
       <div className="hidden lg:flex lg:items-center lg:gap-6">
         {/* Restaurant Info */}
         <div className="flex items-center gap-3 min-w-0 flex-1">
-          <div className="h-12 w-12 bg-accent/10 rounded-full flex items-center justify-center flex-shrink-0">
-            <Package className="h-6 w-6 text-accent" />
+          <div className="h-12 w-12 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden bg-white shadow-sm">
+            {currentRestaurantLogo ? (
+              <img src={currentRestaurantLogo} alt={`${restaurant} logo`} className="h-10 w-10 object-contain" />
+            ) : (
+              <Package className="h-6 w-6 text-accent" />
+            )}
           </div>
           <div className="min-w-0">
             <h3 className="font-semibold text-foreground">Order from {restaurant}</h3>
@@ -114,8 +136,12 @@ const OrderCard = ({
       <div className="lg:hidden">
         {/* Restaurant Header */}
         <div className="flex items-center gap-3">
-          <div className="h-12 w-12 bg-accent/10 rounded-full flex items-center justify-center">
-            <Package className="h-6 w-6 text-accent" />
+          <div className="h-12 w-12 rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm">
+            {currentRestaurantLogo ? (
+              <img src={currentRestaurantLogo} alt={`${restaurant} logo`} className="h-10 w-10 object-contain" />
+            ) : (
+              <Package className="h-6 w-6 text-accent" />
+            )}
           </div>
           <div className="flex-1">
             <h3 className="font-semibold text-foreground">Order from {restaurant}</h3>
