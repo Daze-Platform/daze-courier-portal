@@ -34,7 +34,7 @@ const StatusControl = () => {
                 <SelectValue />
               </div>
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-card border border-border shadow-lg z-50">
               <SelectItem value="hilton-barbados">Hilton Barbados</SelectItem>
               <SelectItem value="sandals-royal">Sandals Royal Caribbean</SelectItem>
               <SelectItem value="beaches-negril">Beaches Negril</SelectItem>
@@ -53,7 +53,7 @@ const StatusControl = () => {
                 <SelectValue />
               </div>
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-card border border-border shadow-lg z-50">
               <SelectItem value="room-delivery">Room Delivery</SelectItem>
               <SelectItem value="poolside">Poolside Service</SelectItem>
               <SelectItem value="beach-service">Beach Service</SelectItem>
