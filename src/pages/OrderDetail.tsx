@@ -253,8 +253,8 @@ const OrderDetail = () => {
                       <span className="text-foreground">+${order.processingFee}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-accent">Delivery Tips</span>
-                      <span className="text-accent">+${order.deliveryTips}</span>
+                      <span className="text-success">Delivery Tips</span>
+                      <span className="text-success">+${order.deliveryTips}</span>
                     </div>
                     <div className="flex justify-between font-semibold text-lg border-t border-border pt-2">
                       <span className="text-foreground">Total</span>
