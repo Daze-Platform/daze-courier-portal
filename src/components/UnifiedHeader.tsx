@@ -7,6 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import NotificationDropdown from "@/components/NotificationDropdown";
 import ferdinandProfile from "@/assets/ferdinand-profile.jpg";
 import dazeLogo from "@/assets/daze-logo.png";
 
@@ -27,9 +28,7 @@ const UnifiedHeader = () => {
         
         {/* Right: Notifications and User Profile */}
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" className="text-primary-foreground hover:bg-primary-foreground/10">
-            <Bell className="h-5 w-5" />
-          </Button>
+          <NotificationDropdown className="text-primary-foreground hover:bg-primary-foreground/10" />
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

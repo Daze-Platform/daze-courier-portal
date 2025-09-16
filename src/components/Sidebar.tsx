@@ -7,7 +7,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import NotificationDropdown from "@/components/NotificationDropdown";
 import { useLocation, Link } from "react-router-dom";
+import dazeLogo from "@/assets/daze-logo.png";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -110,9 +112,7 @@ const Sidebar = () => {
       <div className="hidden lg:block lg:ml-64 lg:sticky lg:top-0 lg:z-40 lg:bg-gradient-primary lg:shadow-medium">
         <div className="flex items-center justify-end px-6 py-4">
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" className="text-primary-foreground">
-              <Bell className="h-5 w-5" />
-            </Button>
+            <NotificationDropdown className="text-primary-foreground" />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="text-primary-foreground gap-2">
