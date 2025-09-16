@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 import luxuryPoolDeckMap from "@/assets/luxury-pool-deck-map.jpg";
 
 interface DeliveryNavigationProps {
@@ -23,6 +24,8 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
   const [eta, setEta] = useState(8);
   const [totalDistance] = useState("0.7 mi");
   const [hasReachedDestination, setHasReachedDestination] = useState(false);
+  const [hasShownCloseNotification, setHasShownCloseNotification] = useState(false);
+  const { toast } = useToast();
 
   // Get destination position based on delivery location
   const getDestinationPosition = (dest: string): Position => {
@@ -78,6 +81,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
     setEta(8);
     setProgress(0);
     setHasReachedDestination(false);
+    setHasShownCloseNotification(false);
   };
 
   // Auto-move courier when navigating
@@ -94,6 +98,16 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
         const dx = destLeft - currentLeft;
         const dy = destTop - currentTop;
         const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        // Show notification when within ~10ft of customer (distance < 8)
+        if (distance < 8 && !hasShownCloseNotification && !hasReachedDestination) {
+          setHasShownCloseNotification(true);
+          toast({
+            title: "Almost there! 📍",
+            description: "You're within 10ft of the customer",
+            duration: 3000,
+          });
+        }
         
         if (distance < 3) {
           // Reached destination
