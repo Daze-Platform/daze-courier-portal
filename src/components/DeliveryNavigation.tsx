@@ -335,6 +335,10 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
             height: '200%',
             top: '-50%',
             left: '-50%',
+            backgroundImage: `url(${luxuryPoolDeckMap})`,
+            backgroundSize: '50% 50%',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center center',
             transform: isMobile 
               ? `translate(${mapTransform.translateX}px, ${mapTransform.translateY}px) scale(${mapTransform.scale})`
               : 'none',
