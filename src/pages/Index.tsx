@@ -13,32 +13,38 @@ const Index = () => {
     {
       orderId: "#23456789",
       restaurant: "Margarita Mama's",
-      items: ["1x Fried Rice"],
+      items: ["1x Fried Rice with Chicken Protein (+$2.00)", "1x Spring Water"],
       deliveryAddress: "Room N°12345",
       deliveryTime: "July 21, 11:36AM",
-      itemCount: 1,
+      itemCount: 2,
       deliveryType: "Room delivery",
-      timeRemaining: 32
+      timeRemaining: 32,
+      orderTotal: 15.90,
+      estimatedEarnings: 12.50
     },
     {
       orderId: "#23456790",
       restaurant: "Sunset Grill",
-      items: ["2x Grilled Chicken", "1x Caesar Salad", "1x Tropical Smoothie"],
+      items: ["2x Grilled Chicken Breast", "1x Caesar Salad (Extra Parmesan)", "1x Tropical Smoothie", "1x Garlic Bread"],
       deliveryAddress: "Pool Deck - Cabana 8",
       deliveryTime: "July 21, 12:15PM",
       itemCount: 4,
       deliveryType: "Poolside",
-      timeRemaining: 45
+      timeRemaining: 45,
+      orderTotal: 42.75,
+      estimatedEarnings: 18.90
     },
     {
       orderId: "#23456791",
       restaurant: "Ocean Breeze Café",
-      items: ["1x Fish Tacos", "1x Coconut Water"],
+      items: ["1x Fish Tacos (3 pieces with Mango Salsa)", "1x Coconut Water", "1x Sweet Potato Fries"],
       deliveryAddress: "Beach Chair Section A - Chair 15",
       deliveryTime: "July 21, 1:20PM",
-      itemCount: 2,
+      itemCount: 3,
       deliveryType: "Beach service",
-      timeRemaining: 28
+      timeRemaining: 28,
+      orderTotal: 28.50,
+      estimatedEarnings: 15.25
     }
   ];
 

@@ -17,6 +17,8 @@ interface OrderCardProps {
   itemCount: number;
   deliveryType: string;
   timeRemaining?: number;
+  orderTotal?: number;
+  estimatedEarnings?: number;
 }
 
 const OrderCard = ({
@@ -28,7 +30,9 @@ const OrderCard = ({
   deliveryTime,
   itemCount,
   deliveryType,
-  timeRemaining = 32
+  timeRemaining = 32,
+  orderTotal = 0,
+  estimatedEarnings = 0
 }: OrderCardProps) => {
   const navigate = useNavigate();
   const [countdown, setCountdown] = useState(timeRemaining);
@@ -105,17 +109,36 @@ const OrderCard = ({
           </Button>
         </div>
 
-        {/* Summary Row */}
-        <div className="flex items-center gap-2 text-sm">
-          <span className="text-foreground font-medium">
-            {itemCount} item{itemCount > 1 ? 's' : ''}
-          </span>
-          <div className="h-1 w-1 bg-muted-foreground rounded-full" />
+        {/* Enhanced Summary Row */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-sm">
+            <span className="text-foreground font-medium">
+              {itemCount} item{itemCount > 1 ? 's' : ''}
+            </span>
+            {orderTotal > 0 && (
+              <>
+                <div className="h-1 w-1 bg-muted-foreground rounded-full" />
+                <span className="text-foreground font-semibold">
+                  ${orderTotal.toFixed(2)}
+                </span>
+              </>
+            )}
+          </div>
           <Badge className="bg-accent text-white font-medium text-xs border-0">
             <Truck className="h-3 w-3 mr-1" />
             {deliveryType}
           </Badge>
         </div>
+        
+        {/* Earnings Preview */}
+        {estimatedEarnings > 0 && (
+          <div className="bg-success/10 rounded-lg p-3">
+            <div className="flex items-center justify-between">
+              <span className="text-success text-sm font-medium">Estimated Earnings</span>
+              <span className="text-success text-lg font-bold">${estimatedEarnings.toFixed(2)}</span>
+            </div>
+          </div>
+        )}
 
         {/* Action Row */}
         <div className="flex items-center justify-between">
@@ -139,36 +162,71 @@ const OrderCard = ({
         </div>
       </div>
 
-      {/* Expanded Details */}
+      {/* Enhanced Expanded Details */}
       {isExpanded && (
-        <div className="border-t border-border p-4 space-y-4 bg-muted/20">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground mb-2">Delivery Address</p>
-              <div className="flex items-center gap-2">
-                <MapPin className="h-4 w-4 text-accent" />
+        <div className="border-t border-border bg-gradient-to-r from-muted/10 to-muted/5">
+          {/* Delivery Info Section */}
+          <div className="p-4 border-b border-border/50">
+            <h4 className="text-base font-semibold text-foreground mb-3 flex items-center gap-2">
+              <MapPin className="h-4 w-4 text-accent" />
+              Delivery Information
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-background/60 rounded-lg p-3">
+                <p className="text-xs font-medium text-muted-foreground mb-1 uppercase tracking-wide">Address</p>
                 <p className="text-sm font-semibold text-foreground">{deliveryAddress}</p>
               </div>
-            </div>
-
-            <div>
-              <p className="text-sm font-medium text-muted-foreground mb-2">Delivery Time</p>
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-accent" />
-                <p className="text-sm font-medium text-foreground">{deliveryTime}</p>
+              <div className="bg-background/60 rounded-lg p-3">
+                <p className="text-xs font-medium text-muted-foreground mb-1 uppercase tracking-wide">Expected Time</p>
+                <div className="flex items-center gap-2">
+                  <Clock className="h-3 w-3 text-accent" />
+                  <p className="text-sm font-semibold text-foreground">{deliveryTime}</p>
+                </div>
               </div>
             </div>
           </div>
 
-          <div>
-            <p className="text-sm font-medium text-muted-foreground mb-2">Order Details</p>
-            <div className="space-y-1">
+          {/* Order Items Section */}
+          <div className="p-4">
+            <h4 className="text-base font-semibold text-foreground mb-3 flex items-center gap-2">
+              <Package className="h-4 w-4 text-accent" />
+              Order Items ({itemCount})
+            </h4>
+            <div className="space-y-2">
               {items.map((item, index) => (
-                <p key={index} className="text-sm text-foreground bg-background/50 p-2 rounded">
-                  {item}
-                </p>
+                <div key={index} className="bg-background/80 border border-border/50 rounded-lg p-3">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="h-2 w-2 bg-accent rounded-full flex-shrink-0 mt-2" />
+                      <p className="text-sm font-medium text-foreground leading-relaxed">{item}</p>
+                    </div>
+                    <Badge variant="secondary" className="text-xs">
+                      Item {index + 1}
+                    </Badge>
+                  </div>
+                </div>
               ))}
             </div>
+            
+            {/* Order Summary */}
+            {(orderTotal > 0 || estimatedEarnings > 0) && (
+              <div className="mt-4 bg-background/80 border border-border/50 rounded-lg p-3">
+                <div className="flex items-center justify-between">
+                  {orderTotal > 0 && (
+                    <div className="text-center">
+                      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Order Total</p>
+                      <p className="text-lg font-bold text-foreground">${orderTotal.toFixed(2)}</p>
+                    </div>
+                  )}
+                  {estimatedEarnings > 0 && (
+                    <div className="text-center">
+                      <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Your Earnings</p>
+                      <p className="text-lg font-bold text-success">${estimatedEarnings.toFixed(2)}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
