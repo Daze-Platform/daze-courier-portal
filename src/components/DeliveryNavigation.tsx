@@ -27,6 +27,9 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
   const [hasShownCloseNotification, setHasShownCloseNotification] = useState(false);
   const [currentWaypointIndex, setCurrentWaypointIndex] = useState(0);
   const [routeWaypoints, setRouteWaypoints] = useState<Position[]>([]);
+  const [mapTransform, setMapTransform] = useState({ scale: 1, translateX: 0, translateY: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [lastMousePos, setLastMousePos] = useState({ x: 0, y: 0 });
   const { toast } = useToast();
 
   // Get destination position based on delivery location
@@ -42,43 +45,52 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
     }
   };
 
-  // Generate realistic waypoints that follow concrete walkways around the pool
+  // Generate realistic waypoints that follow concrete walkways around the pool (NEVER through water)
   const generateRouteWaypoints = (destination: Position): Position[] => {
     const startPos = { top: "85%", left: "10%" };
     const waypoints = [startPos];
     
-    // For pool/cabana destinations, route around the pool following the exact concrete perimeter
+    // For pool/cabana destinations, route around the pool following the wide concrete perimeter path
     if (destination.top === "33%" && destination.left === "66%") {
-      // Follow the curved concrete path around the pool perimeter (matching user's yellow line)
-      waypoints.push({ top: "80%", left: "15%" }); // Start moving from kitchen
-      waypoints.push({ top: "72%", left: "22%" }); // Move toward pool area
-      waypoints.push({ top: "65%", left: "30%" }); // Approach left side of pool deck
-      waypoints.push({ top: "55%", left: "35%" }); // Follow left curve of pool
-      waypoints.push({ top: "45%", left: "38%" }); // Continue left side curve
-      waypoints.push({ top: "38%", left: "43%" }); // Upper left curve
-      waypoints.push({ top: "32%", left: "50%" }); // Top curve of pool
-      waypoints.push({ top: "30%", left: "58%" }); // Right side of top curve
-      waypoints.push({ top: "31%", left: "64%" }); // Final approach to cabana
+      // Follow the wide concrete walkway that curves around the LEFT side of pool (staying well away from water)
+      waypoints.push({ top: "82%", left: "12%" }); // Move slightly from kitchen
+      waypoints.push({ top: "78%", left: "16%" }); // Start moving toward pool area
+      waypoints.push({ top: "72%", left: "20%" }); // Move along bottom walkway
+      waypoints.push({ top: "65%", left: "24%" }); // Continue on concrete path
+      waypoints.push({ top: "58%", left: "28%" }); // Start curving left around pool
+      waypoints.push({ top: "50%", left: "30%" }); // Mid-left side of pool (on concrete)
+      waypoints.push({ top: "42%", left: "32%" }); // Upper left curve (staying on walkway)
+      waypoints.push({ top: "35%", left: "36%" }); // Top left corner curve
+      waypoints.push({ top: "30%", left: "42%" }); // Top side of pool (on concrete)
+      waypoints.push({ top: "28%", left: "50%" }); // Top center of pool walkway
+      waypoints.push({ top: "29%", left: "58%" }); // Top right curve
+      waypoints.push({ top: "32%", left: "64%" }); // Final approach to cabana (staying on concrete)
     } else if (destination.top === "20%" && destination.left === "85%") {
-      // Room destinations - follow walkways avoiding pool
-      waypoints.push({ top: "78%", left: "18%" });
-      waypoints.push({ top: "68%", left: "28%" });
-      waypoints.push({ top: "55%", left: "40%" });
-      waypoints.push({ top: "42%", left: "55%" });
-      waypoints.push({ top: "30%", left: "70%" });
-      waypoints.push({ top: "25%", left: "80%" });
+      // Room destinations - go up the RIGHT side avoiding pool completely
+      waypoints.push({ top: "82%", left: "15%" });
+      waypoints.push({ top: "78%", left: "25%" });
+      waypoints.push({ top: "72%", left: "35%" });
+      waypoints.push({ top: "65%", left: "45%" });
+      waypoints.push({ top: "55%", left: "55%" });
+      waypoints.push({ top: "45%", left: "65%" });
+      waypoints.push({ top: "35%", left: "75%" });
+      waypoints.push({ top: "25%", left: "82%" });
     } else if (destination.top === "70%" && destination.left === "90%") {
-      // Beach destinations - follow right side walkway around pool
-      waypoints.push({ top: "82%", left: "18%" });
-      waypoints.push({ top: "75%", left: "35%" });
-      waypoints.push({ top: "70%", left: "55%" });
+      // Beach destinations - follow RIGHT side walkway around pool
+      waypoints.push({ top: "82%", left: "15%" });
+      waypoints.push({ top: "78%", left: "25%" });
+      waypoints.push({ top: "74%", left: "35%" });
+      waypoints.push({ top: "70%", left: "45%" });
+      waypoints.push({ top: "68%", left: "55%" });
+      waypoints.push({ top: "67%", left: "65%" });
       waypoints.push({ top: "68%", left: "75%" });
       waypoints.push({ top: "69%", left: "85%" });
     } else {
-      // Default routing following pool perimeter
-      waypoints.push({ top: "78%", left: "18%" });
-      waypoints.push({ top: "65%", left: "32%" });
-      waypoints.push({ top: "50%", left: "45%" });
+      // Default routing following wide concrete perimeter (LEFT side route)
+      waypoints.push({ top: "80%", left: "15%" });
+      waypoints.push({ top: "70%", left: "22%" });
+      waypoints.push({ top: "55%", left: "28%" });
+      waypoints.push({ top: "40%", left: "35%" });
     }
     
     waypoints.push(destination);
@@ -149,6 +161,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
     setHasReachedDestination(false);
     setHasShownCloseNotification(false);
     setCurrentWaypointIndex(0);
+    setMapTransform({ scale: 1, translateX: 0, translateY: 0 });
   };
 
   // Auto-move courier when navigating using waypoints
@@ -263,160 +276,214 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
       </div>
 
       {/* Full Screen Interactive Resort Map */}
-      <div className="flex-1 relative bg-accent/5 overflow-hidden">
-        {/* Map Legend - Top Right */}
-        <div className="absolute top-4 right-4 z-40 bg-white/95 backdrop-blur-sm rounded-lg p-2 shadow-lg">
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-              <span className="text-xs font-medium">You</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-              <span className="text-xs font-medium">Destination</span>
+      <div 
+        className="flex-1 relative bg-accent/5 overflow-hidden cursor-grab active:cursor-grabbing"
+        onMouseDown={(e) => {
+          setIsDragging(true);
+          setLastMousePos({ x: e.clientX, y: e.clientY });
+        }}
+        onMouseMove={(e) => {
+          if (!isDragging) return;
+          const deltaX = e.clientX - lastMousePos.x;
+          const deltaY = e.clientY - lastMousePos.y;
+          setMapTransform(prev => ({
+            ...prev,
+            translateX: prev.translateX + deltaX,
+            translateY: prev.translateY + deltaY
+          }));
+          setLastMousePos({ x: e.clientX, y: e.clientY });
+        }}
+        onMouseUp={() => setIsDragging(false)}
+        onMouseLeave={() => setIsDragging(false)}
+        onWheel={(e) => {
+          e.preventDefault();
+          const delta = e.deltaY > 0 ? 0.9 : 1.1;
+          setMapTransform(prev => ({
+            ...prev,
+            scale: Math.max(0.5, Math.min(3, prev.scale * delta))
+          }));
+        }}
+        onTouchStart={(e) => {
+          if (e.touches.length === 1) {
+            setIsDragging(true);
+            setLastMousePos({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+          }
+        }}
+        onTouchMove={(e) => {
+          if (!isDragging || e.touches.length !== 1) return;
+          const deltaX = e.touches[0].clientX - lastMousePos.x;
+          const deltaY = e.touches[0].clientY - lastMousePos.y;
+          setMapTransform(prev => ({
+            ...prev,
+            translateX: prev.translateX + deltaX,
+            translateY: prev.translateY + deltaY
+          }));
+          setLastMousePos({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+        }}
+        onTouchEnd={() => setIsDragging(false)}
+      >
+        {/* Map Container with Transform */}
+        <div 
+          className="absolute inset-0 w-full h-full transition-transform duration-100"
+          style={{
+            transform: `scale(${mapTransform.scale}) translate(${mapTransform.translateX}px, ${mapTransform.translateY}px)`,
+            transformOrigin: 'center center'
+          }}
+        >
+          {/* Map Legend - Top Right */}
+          <div className="absolute top-4 right-4 z-40 bg-white/95 backdrop-blur-sm rounded-lg p-2 shadow-lg">
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                <span className="text-xs font-medium">You</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                <span className="text-xs font-medium">Destination</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Progress Indicator - Top Left */}
-        <div className="absolute top-4 left-4 z-40 bg-white/95 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg">
-          <div className={`text-xs font-medium ${progress >= 100 ? 'text-green-600' : 'text-foreground'}`}>
-            {progress >= 100 ? 'Complete!' : `${Math.round(progress)}% Complete`}
-          </div>
-        </div>
-        
-        <img 
-          src={luxuryPoolDeckMap} 
-          alt="Luxury resort map with navigation" 
-          className="w-full h-full object-cover"
-        />
-        
-        {/* Destination Pin */}
-        <div 
-          className="absolute transform -translate-x-1/2 -translate-y-1/2 z-20"
-          style={{ top: destinationPos.top, left: destinationPos.left }}
-        >
-          <div className="relative">
-            <MapPin className="h-10 w-10 text-red-500 fill-red-500 drop-shadow-lg" />
-            <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-red-500 rounded-full animate-pulse" />
-          </div>
-        </div>
-        
-        {/* Courier Position */}
-        <div 
-          className="absolute transform -translate-x-1/2 -translate-y-1/2 z-10 transition-all duration-200 ease-linear"
-          style={{ top: courierPosition.top, left: courierPosition.left }}
-        >
-          <div className="relative">
-            <div className="h-8 w-8 bg-blue-500 rounded-full border-3 border-white shadow-xl flex items-center justify-center">
-              <User className="h-4 w-4 text-white" />
+          {/* Progress Indicator - Top Left */}
+          <div className="absolute top-4 left-4 z-40 bg-white/95 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg">
+            <div className={`text-xs font-medium ${progress >= 100 ? 'text-green-600' : 'text-foreground'}`}>
+              {progress >= 100 ? 'Complete!' : `${Math.round(progress)}% Complete`}
             </div>
-            
-            {/* Pulse effect when navigating */}
-            {isNavigating && (
-              <div className="absolute inset-0 h-8 w-8 bg-blue-500 rounded-full animate-ping opacity-30"></div>
-            )}
-            
-            {/* Direction indicator - arrow pointing to destination */}
-            {isNavigating && (
-              <div 
-                className="absolute top-1/2 left-1/2 w-6 h-0.5 bg-blue-500 origin-left transform -translate-y-1/2"
-                style={{
-                  transform: `translate(-50%, -50%) rotate(${Math.atan2(
-                    parseFloat(destinationPos.top) - parseFloat(courierPosition.top),
-                    parseFloat(destinationPos.left) - parseFloat(courierPosition.left)
-                  ) * (180 / Math.PI)}deg)`,
-                }}
-              />
-            )}
           </div>
-        </div>
-        
-        {/* Route Path (curved path through waypoints when navigating) */}
-        {isNavigating && routeWaypoints.length > 0 && (
-          <svg 
-            className="absolute inset-0 w-full h-full pointer-events-none z-0"
-            style={{ overflow: 'visible' }}
+          
+          <img 
+            src={luxuryPoolDeckMap} 
+            alt="Luxury resort map with navigation" 
+            className="w-full h-full object-cover pointer-events-none"
+          />
+          
+          {/* Destination Pin */}
+          <div 
+            className="absolute transform -translate-x-1/2 -translate-y-1/2 z-20"
+            style={{ top: destinationPos.top, left: destinationPos.left }}
           >
-            <defs>
-              <pattern id="dashed" patternUnits="userSpaceOnUse" width="8" height="2">
-                <rect width="4" height="2" fill="#10b981" />
-              </pattern>
-            </defs>
-            {/* Draw path through all waypoints */}
-            {routeWaypoints.map((waypoint, index) => {
-              if (index === 0) return null;
-              const prevWaypoint = routeWaypoints[index - 1];
-              return (
+            <div className="relative">
+              <MapPin className="h-10 w-10 text-red-500 fill-red-500 drop-shadow-lg" />
+              <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+            </div>
+          </div>
+          
+          {/* Courier Position */}
+          <div 
+            className="absolute transform -translate-x-1/2 -translate-y-1/2 z-10 transition-all duration-200 ease-linear"
+            style={{ top: courierPosition.top, left: courierPosition.left }}
+          >
+            <div className="relative">
+              <div className="h-8 w-8 bg-blue-500 rounded-full border-3 border-white shadow-xl flex items-center justify-center">
+                <User className="h-4 w-4 text-white" />
+              </div>
+              
+              {/* Pulse effect when navigating */}
+              {isNavigating && (
+                <div className="absolute inset-0 h-8 w-8 bg-blue-500 rounded-full animate-ping opacity-30"></div>
+              )}
+              
+              {/* Direction indicator - arrow pointing to destination */}
+              {isNavigating && (
+                <div 
+                  className="absolute top-1/2 left-1/2 w-6 h-0.5 bg-blue-500 origin-left transform -translate-y-1/2"
+                  style={{
+                    transform: `translate(-50%, -50%) rotate(${Math.atan2(
+                      parseFloat(destinationPos.top) - parseFloat(courierPosition.top),
+                      parseFloat(destinationPos.left) - parseFloat(courierPosition.left)
+                    ) * (180 / Math.PI)}deg)`,
+                  }}
+                />
+              )}
+            </div>
+          </div>
+          
+          {/* Route Path (curved path through waypoints when navigating) */}
+          {isNavigating && routeWaypoints.length > 0 && (
+            <svg 
+              className="absolute inset-0 w-full h-full pointer-events-none z-0"
+              style={{ overflow: 'visible' }}
+            >
+              <defs>
+                <pattern id="dashed" patternUnits="userSpaceOnUse" width="8" height="2">
+                  <rect width="4" height="2" fill="#10b981" />
+                </pattern>
+              </defs>
+              {/* Draw path through all waypoints */}
+              {routeWaypoints.map((waypoint, index) => {
+                if (index === 0) return null;
+                const prevWaypoint = routeWaypoints[index - 1];
+                return (
+                  <line
+                    key={`route-${index}`}
+                    x1={`${parseFloat(prevWaypoint.left)}%`}
+                    y1={`${parseFloat(prevWaypoint.top)}%`}
+                    x2={`${parseFloat(waypoint.left)}%`}
+                    y2={`${parseFloat(waypoint.top)}%`}
+                    stroke="#10b981"
+                    strokeWidth="3"
+                    strokeDasharray="8,6"
+                    opacity={index <= currentWaypointIndex + 1 ? "0.7" : "0.3"}
+                  />
+                );
+              })}
+              {/* Current segment from courier to next waypoint */}
+              {currentWaypointIndex < routeWaypoints.length - 1 && (
                 <line
-                  key={`route-${index}`}
-                  x1={`${parseFloat(prevWaypoint.left)}%`}
-                  y1={`${parseFloat(prevWaypoint.top)}%`}
-                  x2={`${parseFloat(waypoint.left)}%`}
-                  y2={`${parseFloat(waypoint.top)}%`}
+                  x1={`${parseFloat(courierPosition.left)}%`}
+                  y1={`${parseFloat(courierPosition.top)}%`}
+                  x2={`${parseFloat(routeWaypoints[currentWaypointIndex + 1].left)}%`}
+                  y2={`${parseFloat(routeWaypoints[currentWaypointIndex + 1].top)}%`}
                   stroke="#10b981"
                   strokeWidth="3"
                   strokeDasharray="8,6"
-                  opacity={index <= currentWaypointIndex + 1 ? "0.7" : "0.3"}
+                  opacity="0.7"
                 />
-              );
-            })}
-            {/* Current segment from courier to next waypoint */}
-            {currentWaypointIndex < routeWaypoints.length - 1 && (
-              <line
-                x1={`${parseFloat(courierPosition.left)}%`}
-                y1={`${parseFloat(courierPosition.top)}%`}
-                x2={`${parseFloat(routeWaypoints[currentWaypointIndex + 1].left)}%`}
-                y2={`${parseFloat(routeWaypoints[currentWaypointIndex + 1].top)}%`}
-                stroke="#10b981"
-                strokeWidth="3"
-                strokeDasharray="8,6"
-                opacity="0.7"
-              />
-            )}
-          </svg>
-        )}
-        
-        {/* Location Labels */}
-        <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-foreground shadow-xl z-30 max-w-[calc(100vw-140px)] truncate">
-          📍 {destination}
-        </div>
-        
-        <div 
-          className="absolute bg-blue-500/95 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-white shadow-xl z-30 whitespace-nowrap"
-          style={{ 
-            top: (() => {
-              const courierTopPercent = parseFloat(courierPosition.top);
-              const courierLeftPercent = parseFloat(courierPosition.left);
-              
-              // Check if courier is near bottom-left where destination label is
-              const isNearDestinationLabel = courierTopPercent > 70 && courierLeftPercent < 40;
-              
-              if (isNearDestinationLabel) {
-                // Position above the courier when near destination label
-                return `calc(${courierPosition.top} - 40px)`;
-              } else {
-                // Default position below courier
-                return `calc(${courierPosition.top} + 50px)`;
-              }
-            })(),
-            left: (() => {
-              const courierLeftPercent = parseFloat(courierPosition.left);
-              
-              if (courierLeftPercent > 85) {
-                // Far right - position to the left of courier
-                return `calc(${courierPosition.left} - 60px)`;
-              } else if (courierLeftPercent < 15) {
-                // Far left - position to the right of courier  
-                return `calc(${courierPosition.left} + 30px)`;
-              } else {
-                // Center - position normally
-                return `calc(${courierPosition.left} - 25px)`;
-              }
-            })(),
-          }}
-        >
-          🚶 You
+              )}
+            </svg>
+          )}
+          
+          {/* Location Labels */}
+          <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-foreground shadow-xl z-30 max-w-[calc(100vw-140px)] truncate">
+            📍 {destination}
+          </div>
+          
+          <div 
+            className="absolute bg-blue-500/95 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-white shadow-xl z-30 whitespace-nowrap"
+            style={{ 
+              top: (() => {
+                const courierTopPercent = parseFloat(courierPosition.top);
+                const courierLeftPercent = parseFloat(courierPosition.left);
+                
+                // Check if courier is near bottom-left where destination label is
+                const isNearDestinationLabel = courierTopPercent > 70 && courierLeftPercent < 40;
+                
+                if (isNearDestinationLabel) {
+                  // Position above the courier when near destination label
+                  return `calc(${courierPosition.top} - 40px)`;
+                } else {
+                  // Default position below courier
+                  return `calc(${courierPosition.top} + 50px)`;
+                }
+              })(),
+              left: (() => {
+                const courierLeftPercent = parseFloat(courierPosition.left);
+                
+                if (courierLeftPercent > 85) {
+                  // Far right - position to the left of courier
+                  return `calc(${courierPosition.left} - 60px)`;
+                } else if (courierLeftPercent < 15) {
+                  // Far left - position to the right of courier  
+                  return `calc(${courierPosition.left} + 30px)`;
+                } else {
+                  // Center - position normally
+                  return `calc(${courierPosition.left} - 25px)`;
+                }
+              })(),
+            }}
+          >
+            🚶 You
+          </div>
         </div>
       </div>
 
