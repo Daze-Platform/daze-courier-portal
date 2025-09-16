@@ -159,8 +159,8 @@ const OrderDetail = () => {
                     alt="Luxury pool deck area - Customer location preview" 
                     className="w-full h-full object-cover"
                   />
-                  {/* Location Pin */}
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                  {/* Location Pin - positioned at poolside umbrella */}
+                  <div className="absolute top-1/3 left-2/3 transform -translate-x-1/2 -translate-y-1/2">
                     <div className="relative">
                       <MapPin className="h-8 w-8 text-red-500 fill-red-500 drop-shadow-lg" />
                       <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
