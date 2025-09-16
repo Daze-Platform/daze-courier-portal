@@ -19,6 +19,7 @@ interface OrderCardProps {
   timeRemaining?: number;
   orderTotal?: number;
   estimatedEarnings?: number;
+  specialNotes?: string;
 }
 
 const OrderCard = ({
@@ -32,7 +33,8 @@ const OrderCard = ({
   deliveryType,
   timeRemaining = 32,
   orderTotal = 0,
-  estimatedEarnings = 0
+  estimatedEarnings = 0,
+  specialNotes
 }: OrderCardProps) => {
   const navigate = useNavigate();
   const [countdown, setCountdown] = useState(timeRemaining);
@@ -225,6 +227,19 @@ const OrderCard = ({
                     </div>
                   )}
                 </div>
+              </div>
+            )}
+            
+            {/* Special Notes */}
+            {specialNotes && (
+              <div className="mt-4 bg-warning/10 border border-warning/20 rounded-lg p-3">
+                <h5 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                  <div className="h-6 w-6 bg-warning/20 rounded-full flex items-center justify-center">
+                    <span className="text-warning text-sm">💬</span>
+                  </div>
+                  Customer Notes
+                </h5>
+                <p className="text-sm text-foreground leading-relaxed">{specialNotes}</p>
               </div>
             )}
           </div>

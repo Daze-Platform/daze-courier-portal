@@ -20,7 +20,8 @@ const Index = () => {
       deliveryType: "Room delivery",
       timeRemaining: 32,
       orderTotal: 15.90,
-      estimatedEarnings: 12.50
+      estimatedEarnings: 12.50,
+      specialNotes: "Please knock softly - baby sleeping. Leave outside door if no answer."
     },
     {
       orderId: "#23456790",
@@ -32,7 +33,8 @@ const Index = () => {
       deliveryType: "Poolside",
       timeRemaining: 45,
       orderTotal: 42.75,
-      estimatedEarnings: 18.90
+      estimatedEarnings: 18.90,
+      specialNotes: "We're the family with blue umbrellas. Please bring extra napkins and utensils for kids."
     },
     {
       orderId: "#23456791",
@@ -44,7 +46,8 @@ const Index = () => {
       deliveryType: "Beach service",
       timeRemaining: 28,
       orderTotal: 28.50,
-      estimatedEarnings: 15.25
+      estimatedEarnings: 15.25,
+      specialNotes: "Allergic to shellfish - please confirm no cross-contamination. Thank you!"
     }
   ];
 
