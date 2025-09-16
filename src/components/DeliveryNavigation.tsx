@@ -20,7 +20,7 @@ interface Position {
 
 const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps) => {
   const [isNavigating, setIsNavigating] = useState(false);
-  const [courierPosition, setCourierPosition] = useState<Position>({ top: "85%", left: "10%" });
+  const [courierPosition, setCourierPosition] = useState<Position>({ top: "75%", left: "8%" });
   const [progress, setProgress] = useState(0);
   const [eta, setEta] = useState(8);
   const [totalDistance] = useState("0.7 mi");
@@ -34,65 +34,51 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
   const isMobile = useIsMobile();
   const { toast } = useToast();
 
-  // Get destination position based on delivery location
+  // Get destination position based on delivery location - positioned at actual umbrellas/cabanas
   const getDestinationPosition = (dest: string): Position => {
     if (dest.includes("Room")) {
       return { top: "20%", left: "85%" };
     } else if (dest.includes("Pool") || dest.includes("Cabana")) {
-      return { top: "33%", left: "66%" };
+      // Position at the circular cabana area with umbrellas (bottom left of pool)
+      return { top: "65%", left: "25%" };
     } else if (dest.includes("Beach")) {
       return { top: "70%", left: "90%" };
     } else {
-      return { top: "40%", left: "60%" };
+      // Default to cabana area
+      return { top: "65%", left: "25%" };
     }
   };
 
   // Generate realistic waypoints that follow concrete walkways around the pool (NEVER through water)
   const generateRouteWaypoints = (destination: Position): Position[] => {
-    const startPos = { top: "85%", left: "10%" };
+    const startPos = { top: "75%", left: "8%" }; // Restaurant/kitchen area
     const waypoints = [startPos];
     
-    // For pool/cabana destinations, route around the pool following the wide concrete perimeter path
-    if (destination.top === "33%" && destination.left === "66%") {
-      // Follow the wide concrete walkway that curves around the LEFT side of pool (staying well away from water)
-      waypoints.push({ top: "82%", left: "12%" }); // Move slightly from kitchen
-      waypoints.push({ top: "78%", left: "16%" }); // Start moving toward pool area
-      waypoints.push({ top: "72%", left: "20%" }); // Move along bottom walkway
-      waypoints.push({ top: "65%", left: "24%" }); // Continue on concrete path
-      waypoints.push({ top: "58%", left: "28%" }); // Start curving left around pool
-      waypoints.push({ top: "50%", left: "30%" }); // Mid-left side of pool (on concrete)
-      waypoints.push({ top: "42%", left: "32%" }); // Upper left curve (staying on walkway)
-      waypoints.push({ top: "35%", left: "36%" }); // Top left corner curve
-      waypoints.push({ top: "30%", left: "42%" }); // Top side of pool (on concrete)
-      waypoints.push({ top: "28%", left: "50%" }); // Top center of pool walkway
-      waypoints.push({ top: "29%", left: "58%" }); // Top right curve
-      waypoints.push({ top: "32%", left: "64%" }); // Final approach to cabana (staying on concrete)
+    // For pool/cabana destinations, route to the circular cabana area
+    if (destination.top === "65%" && destination.left === "25%") {
+      // Route to bottom-left cabana area following walkways
+      waypoints.push({ top: "72%", left: "12%" }); // Move from kitchen toward pool
+      waypoints.push({ top: "68%", left: "18%" }); // Continue along walkway
+      waypoints.push({ top: "65%", left: "22%" }); // Approach cabana area
     } else if (destination.top === "20%" && destination.left === "85%") {
       // Room destinations - go up the RIGHT side avoiding pool completely
-      waypoints.push({ top: "82%", left: "15%" });
-      waypoints.push({ top: "78%", left: "25%" });
-      waypoints.push({ top: "72%", left: "35%" });
-      waypoints.push({ top: "65%", left: "45%" });
-      waypoints.push({ top: "55%", left: "55%" });
-      waypoints.push({ top: "45%", left: "65%" });
-      waypoints.push({ top: "35%", left: "75%" });
-      waypoints.push({ top: "25%", left: "82%" });
+      waypoints.push({ top: "70%", left: "15%" });
+      waypoints.push({ top: "65%", left: "25%" });
+      waypoints.push({ top: "55%", left: "35%" });
+      waypoints.push({ top: "45%", left: "50%" });
+      waypoints.push({ top: "35%", left: "65%" });
+      waypoints.push({ top: "25%", left: "80%" });
     } else if (destination.top === "70%" && destination.left === "90%") {
       // Beach destinations - follow RIGHT side walkway around pool
-      waypoints.push({ top: "82%", left: "15%" });
-      waypoints.push({ top: "78%", left: "25%" });
-      waypoints.push({ top: "74%", left: "35%" });
-      waypoints.push({ top: "70%", left: "45%" });
-      waypoints.push({ top: "68%", left: "55%" });
-      waypoints.push({ top: "67%", left: "65%" });
-      waypoints.push({ top: "68%", left: "75%" });
-      waypoints.push({ top: "69%", left: "85%" });
+      waypoints.push({ top: "72%", left: "15%" });
+      waypoints.push({ top: "70%", left: "25%" });
+      waypoints.push({ top: "68%", left: "40%" });
+      waypoints.push({ top: "69%", left: "60%" });
+      waypoints.push({ top: "70%", left: "80%" });
     } else {
-      // Default routing following wide concrete perimeter (LEFT side route)
-      waypoints.push({ top: "80%", left: "15%" });
-      waypoints.push({ top: "70%", left: "22%" });
-      waypoints.push({ top: "55%", left: "28%" });
-      waypoints.push({ top: "40%", left: "35%" });
+      // Default routing to cabana area
+      waypoints.push({ top: "72%", left: "12%" });
+      waypoints.push({ top: "68%", left: "18%" });
     }
     
     waypoints.push(destination);
@@ -157,7 +143,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
   };
 
   const resetPosition = () => {
-    setCourierPosition({ top: "85%", left: "10%" });
+    setCourierPosition({ top: "75%", left: "8%" }); // Reset to restaurant/kitchen area
     setEta(8);
     setProgress(0);
     setHasReachedDestination(false);
