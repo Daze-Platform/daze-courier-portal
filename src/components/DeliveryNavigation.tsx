@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { useIsMobile } from "@/hooks/use-mobile";
 import luxuryPoolDeckMap from "@/assets/luxury-pool-deck-hd.jpg";
 
 interface DeliveryNavigationProps {
@@ -27,9 +28,10 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
   const [hasShownCloseNotification, setHasShownCloseNotification] = useState(false);
   const [currentWaypointIndex, setCurrentWaypointIndex] = useState(0);
   const [routeWaypoints, setRouteWaypoints] = useState<Position[]>([]);
-  const [mapTransform, setMapTransform] = useState({ scale: 1, translateX: 0, translateY: 0 });
+  const [mapTransform, setMapTransform] = useState({ scale: 1.5, translateX: 0, translateY: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [lastMousePos, setLastMousePos] = useState({ x: 0, y: 0 });
+  const isMobile = useIsMobile();
   const { toast } = useToast();
 
   // Get destination position based on delivery location
@@ -161,7 +163,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
     setHasReachedDestination(false);
     setHasShownCloseNotification(false);
     setCurrentWaypointIndex(0);
-    setMapTransform({ scale: 1, translateX: 0, translateY: 0 });
+    setMapTransform({ scale: isMobile ? 1.5 : 1, translateX: 0, translateY: 0 });
   };
 
   // Auto-move courier when navigating using waypoints
@@ -275,58 +277,67 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
         />
       </div>
 
-      {/* Full Screen Interactive Resort Map */}
+      {/* Full Screen Interactive Resort Map - Pokemon Go style on mobile */}
       <div 
-        className="flex-1 relative bg-accent/5 overflow-hidden cursor-grab active:cursor-grabbing"
-        onMouseDown={(e) => {
-          setIsDragging(true);
-          setLastMousePos({ x: e.clientX, y: e.clientY });
-        }}
-        onMouseMove={(e) => {
-          if (!isDragging) return;
-          const deltaX = e.clientX - lastMousePos.x;
-          const deltaY = e.clientY - lastMousePos.y;
-          setMapTransform(prev => ({
-            ...prev,
-            translateX: prev.translateX + deltaX,
-            translateY: prev.translateY + deltaY
-          }));
-          setLastMousePos({ x: e.clientX, y: e.clientY });
-        }}
-        onMouseUp={() => setIsDragging(false)}
-        onMouseLeave={() => setIsDragging(false)}
-        onWheel={(e) => {
-          e.preventDefault();
-          const delta = e.deltaY > 0 ? 0.9 : 1.1;
-          setMapTransform(prev => ({
-            ...prev,
-            scale: Math.max(0.5, Math.min(3, prev.scale * delta))
-          }));
-        }}
-        onTouchStart={(e) => {
-          if (e.touches.length === 1) {
+        className={`flex-1 relative bg-accent/5 overflow-hidden ${isMobile ? 'cursor-grab active:cursor-grabbing' : ''}`}
+        {...(isMobile ? {
+          onMouseDown: (e) => {
             setIsDragging(true);
+            setLastMousePos({ x: e.clientX, y: e.clientY });
+          },
+          onMouseMove: (e) => {
+            if (!isDragging) return;
+            const deltaX = e.clientX - lastMousePos.x;
+            const deltaY = e.clientY - lastMousePos.y;
+            setMapTransform(prev => ({
+              ...prev,
+              translateX: prev.translateX + deltaX / mapTransform.scale,
+              translateY: prev.translateY + deltaY / mapTransform.scale
+            }));
+            setLastMousePos({ x: e.clientX, y: e.clientY });
+          },
+          onMouseUp: () => setIsDragging(false),
+          onMouseLeave: () => setIsDragging(false),
+          onWheel: (e) => {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? 0.9 : 1.1;
+            const newScale = Math.max(1, Math.min(4, mapTransform.scale * delta));
+            setMapTransform(prev => ({
+              ...prev,
+              scale: newScale
+            }));
+          },
+          onTouchStart: (e) => {
+            if (e.touches.length === 1) {
+              setIsDragging(true);
+              setLastMousePos({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+            }
+          },
+          onTouchMove: (e) => {
+            if (!isDragging || e.touches.length !== 1) return;
+            const deltaX = e.touches[0].clientX - lastMousePos.x;
+            const deltaY = e.touches[0].clientY - lastMousePos.y;
+            setMapTransform(prev => ({
+              ...prev,
+              translateX: prev.translateX + deltaX / mapTransform.scale,
+              translateY: prev.translateY + deltaY / mapTransform.scale
+            }));
             setLastMousePos({ x: e.touches[0].clientX, y: e.touches[0].clientY });
-          }
-        }}
-        onTouchMove={(e) => {
-          if (!isDragging || e.touches.length !== 1) return;
-          const deltaX = e.touches[0].clientX - lastMousePos.x;
-          const deltaY = e.touches[0].clientY - lastMousePos.y;
-          setMapTransform(prev => ({
-            ...prev,
-            translateX: prev.translateX + deltaX,
-            translateY: prev.translateY + deltaY
-          }));
-          setLastMousePos({ x: e.touches[0].clientX, y: e.touches[0].clientY });
-        }}
-        onTouchEnd={() => setIsDragging(false)}
+          },
+          onTouchEnd: () => setIsDragging(false)
+        } : {})}
       >
-        {/* Map Container with Transform */}
+        {/* Map Container with Transform - Pokemon Go style */}
         <div 
-          className="absolute inset-0 w-full h-full transition-transform duration-100"
+          className="absolute transition-transform duration-100"
           style={{
-            transform: `scale(${mapTransform.scale}) translate(${mapTransform.translateX}px, ${mapTransform.translateY}px)`,
+            width: isMobile ? '200%' : '100%',
+            height: isMobile ? '200%' : '100%',
+            top: isMobile ? '-50%' : '0',
+            left: isMobile ? '-50%' : '0',
+            transform: isMobile 
+              ? `scale(${mapTransform.scale}) translate(${mapTransform.translateX}px, ${mapTransform.translateY}px)`
+              : 'none',
             transformOrigin: 'center center'
           }}
         >
@@ -355,6 +366,10 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
             src={luxuryPoolDeckMap} 
             alt="Luxury resort map with navigation" 
             className="w-full h-full object-cover pointer-events-none"
+            style={{
+              minWidth: isMobile ? '200%' : '100%',
+              minHeight: isMobile ? '200%' : '100%'
+            }}
           />
           
           {/* Destination Pin */}
