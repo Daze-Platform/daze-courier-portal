@@ -12,7 +12,7 @@ import OrderDetailsDrawer from "@/components/OrderDetailsDrawer";
 import margaritaMamasLogo from "@/assets/margarita-mamas-logo.png";
 import sunsetGrillLogo from "@/assets/sunset-grill-logo.png";
 import oceanBreezeLogo from "@/assets/ocean-breeze-logo.png";
-import luxuryPoolDeckMap from "@/assets/luxury-pool-deck-map.jpg";
+import luxuryPoolDeckMap from "@/assets/luxury-pool-deck-ai-v2.jpg";
 
 const OrderDetail = () => {
   const { orderId } = useParams();
