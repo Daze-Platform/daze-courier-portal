@@ -173,15 +173,6 @@ const OrderDetail = () => {
                 </div>
               </div>
 
-              {/* Complete Delivery Button - Desktop */}
-              <div className="hidden lg:block">
-                <Button 
-                  className="w-full bg-success hover:bg-success/90 text-white font-medium"
-                  onClick={handleCompleteDelivery}
-                >
-                  Complete Delivery
-                </Button>
-              </div>
             </div>
 
             {/* Customer & Order Details Sidebar */}
@@ -265,15 +256,6 @@ const OrderDetail = () => {
             </div>
           </div>
 
-          {/* Complete Delivery Button - Mobile */}
-          <div className="lg:hidden">
-            <Button 
-              className="w-full bg-success hover:bg-success/90 text-white font-medium"
-              onClick={handleCompleteDelivery}
-            >
-              Complete Delivery
-            </Button>
-          </div>
         </div>
       </div>
 
