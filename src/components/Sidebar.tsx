@@ -11,7 +11,7 @@ import NotificationDropdown from "@/components/NotificationDropdown";
 import { useLocation, Link } from "react-router-dom";
 import dazeLogo from "@/assets/daze-logo.png";
 
-const Sidebar = () => {
+const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
   const location = useLocation();
 
   const menuItems = [
@@ -46,6 +46,69 @@ const Sidebar = () => {
       active: location.pathname === "/help"
     }
   ];
+
+  // Mobile Sidebar (for Sheet)
+  if (isMobile) {
+    return (
+      <div className="flex flex-col h-full bg-sidebar">
+        {/* Header */}
+        <div className="bg-gradient-primary p-6">
+          <div className="flex items-center gap-2 mb-1">
+            <img src={dazeLogo} alt="Daze" className="h-6 w-6 object-contain" />
+            <span className="text-xl font-bold text-primary-foreground">PORTAL</span>
+          </div>
+          <span className="text-sm font-medium text-primary-foreground/90 tracking-wider">
+            DRIVER PORTAL
+          </span>
+        </div>
+
+        {/* Navigation */}
+        <nav className="flex-1 p-4 space-y-2">
+          {menuItems.map((item) => (
+            <Link key={item.path} to={item.path}>
+              <Button
+                variant={item.active ? "secondary" : "ghost"}
+                className={`w-full justify-start gap-3 h-12 ${
+                  item.active 
+                    ? "bg-primary/10 text-primary hover:bg-primary/15" 
+                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                }`}
+              >
+                <item.icon className="h-5 w-5" />
+                {item.label}
+              </Button>
+            </Link>
+          ))}
+        </nav>
+
+        {/* User Profile */}
+        <div className="p-4 border-t border-sidebar-border">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="w-full justify-between h-12 px-3">
+                <div className="flex items-center gap-3">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src="/placeholder.svg" />
+                    <AvatarFallback>FS</AvatarFallback>
+                  </Avatar>
+                  <div className="text-left">
+                    <p className="text-sm font-medium">Ferdinand S.</p>
+                    <p className="text-xs text-muted-foreground">Driver</p>
+                  </div>
+                </div>
+                <ChevronDown className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuItem>Profile Settings</DropdownMenuItem>
+              <DropdownMenuItem>Support</DropdownMenuItem>
+              <DropdownMenuItem>Sign Out</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>

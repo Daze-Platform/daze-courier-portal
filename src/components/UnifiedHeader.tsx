@@ -1,4 +1,4 @@
-import { Bell, ChevronDown } from "lucide-react";
+import { Bell, ChevronDown, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -7,23 +7,41 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import NotificationDropdown from "@/components/NotificationDropdown";
 import ferdinandProfile from "@/assets/ferdinand-profile.jpg";
 import dazeLogo from "@/assets/daze-logo.png";
+import Sidebar from "@/components/Sidebar";
 
 const UnifiedHeader = () => {
   return (
     <header className="bg-gradient-primary shadow-medium sticky top-0 z-50 w-full">
       <div className="flex items-center justify-between px-4 py-4 lg:px-8">
-        {/* Left: Logo and Branding */}
+        {/* Left: Mobile Menu + Logo and Branding */}
         <div className="flex items-center gap-3">
+          {/* Mobile Menu Button - Only visible on mobile */}
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="lg:hidden text-primary-foreground hover:bg-primary-foreground/10"
+              >
+                <Menu className="h-6 w-6" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="p-0 w-64">
+              <Sidebar isMobile={true} />
+            </SheetContent>
+          </Sheet>
+
+          {/* Logo and Text */}
           <div className="flex items-center gap-2">
             <img src={dazeLogo} alt="Daze" className="h-8 w-8 object-contain" />
+            <span className="text-sm font-medium text-primary-foreground/90 tracking-wider">
+              COURIER PORTAL
+            </span>
           </div>
-          <div className="h-6 w-px bg-primary-foreground/30" />
-          <span className="text-sm font-medium text-primary-foreground/90 tracking-wider">
-            COURIER PORTAL
-          </span>
         </div>
         
         {/* Right: Notifications and User Profile */}
