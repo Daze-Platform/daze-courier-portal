@@ -60,7 +60,8 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
       Math.pow(destTop - courierTop, 2) + Math.pow(destLeft - courierLeft, 2)
     );
     
-    const newProgress = Math.min(99, ((totalDistance - currentDistance) / totalDistance) * 100);
+    // Allow progress to reach 100% when at destination
+    const newProgress = hasReachedDestination ? 100 : Math.min(99, ((totalDistance - currentDistance) / totalDistance) * 100);
     setProgress(newProgress);
   };
 
@@ -115,6 +116,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
           // Reached destination
           setIsNavigating(false);
           setHasReachedDestination(true);
+          setProgress(100); // Ensure progress reaches 100%
           return current;
         }
         
@@ -169,7 +171,10 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
         </div>
 
         {/* Compact Progress Bar */}
-        <Progress value={progress} className="h-1.5" />
+        <Progress 
+          value={progress} 
+          className={`h-1.5 ${progress >= 100 ? '[&>div]:bg-green-500' : ''}`} 
+        />
       </div>
 
       {/* Full Screen Interactive Resort Map */}
@@ -190,8 +195,8 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
 
         {/* Progress Indicator - Top Left */}
         <div className="absolute top-4 left-4 z-40 bg-white/95 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg">
-          <div className="text-xs font-medium text-foreground">
-            {Math.round(progress)}% Complete
+          <div className={`text-xs font-medium ${progress >= 100 ? 'text-green-600' : 'text-foreground'}`}>
+            {progress >= 100 ? 'Complete!' : `${Math.round(progress)}% Complete`}
           </div>
         </div>
         
