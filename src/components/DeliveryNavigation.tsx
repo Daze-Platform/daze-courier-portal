@@ -259,18 +259,15 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
         />
       </div>
 
-      {/* Resort Map - Fixed Size */}
-      <div className="flex-1 relative bg-accent/5 overflow-hidden">
-        {/* Map Container */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url(${luxuryPoolDeckMap})`,
-            backgroundSize: '60%',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center center',
-          }}
-        >
+      {/* Resort Map - Static Display */}
+      <div className="flex-1 relative overflow-hidden">
+        <div className="relative w-full h-full">
+          <img 
+            src={luxuryPoolDeckMap} 
+            alt="Luxury resort map with navigation" 
+            className="w-full h-full object-cover pointer-events-none"
+            draggable={false}
+          />
           {/* Map Legend - Top Right */}
           <div className="absolute top-4 right-4 z-40 bg-white/95 backdrop-blur-sm rounded-lg p-2 shadow-lg">
             <div className="flex flex-col gap-1">
@@ -291,14 +288,6 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
               {progress >= 100 ? 'Complete!' : `${Math.round(progress)}% Complete`}
             </div>
           </div>
-          
-          <img 
-            src={luxuryPoolDeckMap} 
-            alt="Luxury resort map with navigation" 
-            className="w-full h-full object-cover pointer-events-none"
-            draggable={false}
-          />
-          
           {/* Destination Pin */}
           <div 
             className="absolute transform -translate-x-1/2 -translate-y-1/2 z-20"
