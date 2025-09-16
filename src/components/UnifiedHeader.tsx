@@ -32,7 +32,7 @@ const UnifiedHeader = () => {
             </SheetTrigger>
             <SheetContent 
               side="left" 
-              className="p-6 w-64 border-0 [&>button]:absolute [&>button]:right-4 [&>button]:top-4 [&>button]:z-50 [&>button]:flex [&>button]:items-center [&>button]:justify-center [&>button]:w-8 [&>button]:h-8 [&>button]:rounded-md [&>button]:bg-primary-foreground/10 [&>button]:text-primary-foreground [&>button]:hover:bg-primary-foreground/20 [&>button]:transition-colors [&>button]:duration-200"
+              className="p-0 w-64 border-0 [&>button]:absolute [&>button]:right-4 [&>button]:top-4 [&>button]:z-50 [&>button]:flex [&>button]:items-center [&>button]:justify-center [&>button]:w-8 [&>button]:h-8 [&>button]:rounded-md [&>button]:bg-primary-foreground/10 [&>button]:text-primary-foreground [&>button]:hover:bg-primary-foreground/20 [&>button]:transition-colors [&>button]:duration-200"
             >
               <Sidebar isMobile={true} />
             </SheetContent>
