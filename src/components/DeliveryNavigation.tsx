@@ -327,10 +327,14 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
           onTouchEnd: () => setIsDragging(false)
         } : {})}
       >
-        {/* Map Container with Transform - Mobile responsive */}
+        {/* Map Container with Transform - Oversized for continuous panning */}
         <div 
-          className="absolute inset-0 w-full h-full transition-transform duration-100"
+          className="absolute transition-transform duration-100"
           style={{
+            width: '300%',
+            height: '300%',
+            top: '-100%',
+            left: '-100%',
             transform: isMobile 
               ? `scale(${mapTransform.scale}) translate(${mapTransform.translateX}px, ${mapTransform.translateY}px)`
               : 'none',
