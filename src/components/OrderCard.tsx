@@ -125,6 +125,14 @@ const OrderCard = ({
                 </span>
               </>
             )}
+            {specialNotes && (
+              <>
+                <div className="h-1 w-1 bg-muted-foreground rounded-full" />
+                <Badge variant="outline" className="text-xs bg-warning/10 text-warning border-warning/30">
+                  💬 Special Notes
+                </Badge>
+              </>
+            )}
           </div>
           <Badge className="bg-accent text-white font-medium text-xs border-0">
             <Truck className="h-3 w-3 mr-1" />
@@ -230,16 +238,18 @@ const OrderCard = ({
               </div>
             )}
             
-            {/* Special Notes */}
+            {/* Special Notes - More Prominent */}
             {specialNotes && (
-              <div className="mt-4 bg-warning/10 border border-warning/20 rounded-lg p-3">
-                <h5 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
-                  <div className="h-6 w-6 bg-warning/20 rounded-full flex items-center justify-center">
-                    <span className="text-warning text-sm">💬</span>
+              <div className="mt-4 bg-gradient-to-r from-amber-50 to-orange-50 border-l-4 border-l-amber-400 rounded-lg p-3 shadow-sm">
+                <h5 className="text-sm font-semibold text-amber-800 mb-2 flex items-center gap-2">
+                  <div className="h-6 w-6 bg-amber-100 rounded-full flex items-center justify-center">
+                    <span className="text-amber-600 text-sm">💬</span>
                   </div>
-                  Customer Notes
+                  Special Instructions
                 </h5>
-                <p className="text-sm text-foreground leading-relaxed">{specialNotes}</p>
+                <p className="text-sm text-amber-700 leading-relaxed font-medium bg-white/60 p-2 rounded border border-amber-200">
+                  {specialNotes}
+                </p>
               </div>
             )}
           </div>
