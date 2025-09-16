@@ -67,7 +67,7 @@ const Index = () => {
           <StatusControl isOnline={isOnline} onStatusChange={setIsOnline} />
           
           {!isOnline ? (
-            <div className="text-center py-12 lg:py-20">
+            <div className="text-center py-6 lg:py-10">
               <div className="max-w-md mx-auto">
                 <img 
                   src={resortDeliveryIllustration} 
