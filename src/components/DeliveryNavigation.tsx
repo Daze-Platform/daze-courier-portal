@@ -25,6 +25,8 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
   const [totalDistance] = useState("0.7 mi");
   const [hasReachedDestination, setHasReachedDestination] = useState(false);
   const [hasShownCloseNotification, setHasShownCloseNotification] = useState(false);
+  const [currentWaypointIndex, setCurrentWaypointIndex] = useState(0);
+  const [routeWaypoints, setRouteWaypoints] = useState<Position[]>([]);
   const { toast } = useToast();
 
   // Get destination position based on delivery location
@@ -40,29 +42,82 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
     }
   };
 
+  // Generate realistic waypoints that avoid going through the pool
+  const generateRouteWaypoints = (destination: Position): Position[] => {
+    const startPos = { top: "85%", left: "10%" };
+    const waypoints = [startPos];
+    
+    // For pool/cabana destinations, route around the pool
+    if (destination.top === "33%" && destination.left === "66%") {
+      // Go up along the left side, then around the pool perimeter
+      waypoints.push({ top: "65%", left: "15%" }); // Move up from kitchen
+      waypoints.push({ top: "45%", left: "25%" }); // Approach pool area
+      waypoints.push({ top: "35%", left: "45%" }); // Go around left side of pool
+      waypoints.push({ top: "33%", left: "60%" }); // Approach cabana area
+    } else if (destination.top === "20%" && destination.left === "85%") {
+      // Room destinations - go up and around
+      waypoints.push({ top: "65%", left: "20%" });
+      waypoints.push({ top: "45%", left: "35%" });
+      waypoints.push({ top: "30%", left: "55%" });
+      waypoints.push({ top: "25%", left: "75%" });
+    } else if (destination.top === "70%" && destination.left === "90%") {
+      // Beach destinations - go around the right side
+      waypoints.push({ top: "75%", left: "25%" });
+      waypoints.push({ top: "70%", left: "50%" });
+      waypoints.push({ top: "68%", left: "75%" });
+    } else {
+      // Default routing for other destinations
+      waypoints.push({ top: "65%", left: "20%" });
+      waypoints.push({ top: "50%", left: "40%" });
+    }
+    
+    waypoints.push(destination);
+    return waypoints;
+  };
+
   const destinationPos = getDestinationPosition(destination);
 
-  // Calculate progress based on courier position relative to destination
+  // Initialize route waypoints when destination changes
+  useEffect(() => {
+    const waypoints = generateRouteWaypoints(destinationPos);
+    setRouteWaypoints(waypoints);
+    setCurrentWaypointIndex(0);
+  }, [destination]);
+
+  // Calculate progress based on waypoint progression
   const calculateProgress = () => {
-    const courierTop = parseFloat(courierPosition.top);
-    const courierLeft = parseFloat(courierPosition.left);
-    const destTop = parseFloat(destinationPos.top);
-    const destLeft = parseFloat(destinationPos.left);
+    if (routeWaypoints.length === 0) return;
     
-    const startTop = 85;
-    const startLeft = 10;
+    const totalWaypoints = routeWaypoints.length - 1;
+    const waypointProgress = currentWaypointIndex / totalWaypoints;
     
-    const totalDistance = Math.sqrt(
-      Math.pow(destTop - startTop, 2) + Math.pow(destLeft - startLeft, 2)
-    );
-    
-    const currentDistance = Math.sqrt(
-      Math.pow(destTop - courierTop, 2) + Math.pow(destLeft - courierLeft, 2)
-    );
-    
-    // Allow progress to reach 100% when at destination
-    const newProgress = hasReachedDestination ? 100 : Math.min(99, ((totalDistance - currentDistance) / totalDistance) * 100);
-    setProgress(newProgress);
+    // Add sub-progress within current waypoint segment
+    if (currentWaypointIndex < routeWaypoints.length - 1) {
+      const currentWaypoint = routeWaypoints[currentWaypointIndex];
+      const nextWaypoint = routeWaypoints[currentWaypointIndex + 1];
+      
+      const courierTop = parseFloat(courierPosition.top);
+      const courierLeft = parseFloat(courierPosition.left);
+      const currentTop = parseFloat(currentWaypoint.top);
+      const currentLeft = parseFloat(currentWaypoint.left);
+      const nextTop = parseFloat(nextWaypoint.top);
+      const nextLeft = parseFloat(nextWaypoint.left);
+      
+      const segmentDistance = Math.sqrt(
+        Math.pow(nextTop - currentTop, 2) + Math.pow(nextLeft - currentLeft, 2)
+      );
+      
+      const progressInSegment = Math.sqrt(
+        Math.pow(courierTop - currentTop, 2) + Math.pow(courierLeft - currentLeft, 2)
+      );
+      
+      const segmentProgress = Math.min(1, progressInSegment / segmentDistance);
+      const totalProgress = ((currentWaypointIndex + segmentProgress) / totalWaypoints) * 100;
+      
+      setProgress(hasReachedDestination ? 100 : Math.min(99, totalProgress));
+    } else {
+      setProgress(hasReachedDestination ? 100 : 95);
+    }
   };
 
   const startNavigation = () => {
@@ -83,44 +138,64 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
     setProgress(0);
     setHasReachedDestination(false);
     setHasShownCloseNotification(false);
+    setCurrentWaypointIndex(0);
   };
 
-  // Auto-move courier when navigating
+  // Auto-move courier when navigating using waypoints
   useEffect(() => {
-    if (!isNavigating) return;
+    if (!isNavigating || routeWaypoints.length === 0) return;
 
     const interval = setInterval(() => {
       setCourierPosition(current => {
         const currentTop = parseFloat(current.top);
         const currentLeft = parseFloat(current.left);
-        const destTop = parseFloat(destinationPos.top);
-        const destLeft = parseFloat(destinationPos.left);
         
-        const dx = destLeft - currentLeft;
-        const dy = destTop - currentTop;
+        // Get the current target waypoint
+        const targetWaypoint = routeWaypoints[currentWaypointIndex];
+        if (!targetWaypoint) return current;
+        
+        const targetTop = parseFloat(targetWaypoint.top);
+        const targetLeft = parseFloat(targetWaypoint.left);
+        
+        const dx = targetLeft - currentLeft;
+        const dy = targetTop - currentTop;
         const distance = Math.sqrt(dx * dx + dy * dy);
         
-        // Show notification when within ~10ft of customer (distance < 8)
-        if (distance < 8 && !hasShownCloseNotification && !hasReachedDestination) {
-          setHasShownCloseNotification(true);
-          toast({
-            variant: "warning",
-            title: "🎯 Almost there!",
-            description: "You're within 10ft of the customer. Get ready to complete delivery!",
-            duration: 4000,
-            className: "border-l-4 border-l-yellow-400",
-          });
+        // Check if we've reached the current waypoint
+        if (distance < 2) {
+          if (currentWaypointIndex < routeWaypoints.length - 1) {
+            // Move to next waypoint
+            setCurrentWaypointIndex(prev => prev + 1);
+            return current;
+          } else {
+            // Reached final destination
+            const finalDistance = Math.sqrt(
+              Math.pow(parseFloat(destinationPos.top) - currentTop, 2) + 
+              Math.pow(parseFloat(destinationPos.left) - currentLeft, 2)
+            );
+            
+            // Show notification when within ~10ft of customer
+            if (finalDistance < 8 && !hasShownCloseNotification && !hasReachedDestination) {
+              setHasShownCloseNotification(true);
+              toast({
+                variant: "warning",
+                title: "🎯 Almost there!",
+                description: "You're within 10ft of the customer. Get ready to complete delivery!",
+                duration: 4000,
+                className: "border-l-4 border-l-yellow-400",
+              });
+            }
+            
+            if (finalDistance < 3) {
+              setIsNavigating(false);
+              setHasReachedDestination(true);
+              setProgress(100);
+              return current;
+            }
+          }
         }
         
-        if (distance < 3) {
-          // Reached destination
-          setIsNavigating(false);
-          setHasReachedDestination(true);
-          setProgress(100); // Ensure progress reaches 100%
-          return current;
-        }
-        
-        // Move towards destination
+        // Move towards current target waypoint
         const speed = 1.5;
         const moveX = (dx / distance) * speed;
         const moveY = (dy / distance) * speed;
@@ -135,7 +210,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
     }, 200);
 
     return () => clearInterval(interval);
-  }, [isNavigating, destinationPos, onComplete]);
+  }, [isNavigating, routeWaypoints, currentWaypointIndex, destinationPos, hasShownCloseNotification, hasReachedDestination]);
 
   // Update progress when courier position changes
   useEffect(() => {
@@ -247,8 +322,8 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
           </div>
         </div>
         
-        {/* Route Path (dashed line when navigating) */}
-        {isNavigating && (
+        {/* Route Path (curved path through waypoints when navigating) */}
+        {isNavigating && routeWaypoints.length > 0 && (
           <svg 
             className="absolute inset-0 w-full h-full pointer-events-none z-0"
             style={{ overflow: 'visible' }}
@@ -258,16 +333,37 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
                 <rect width="4" height="2" fill="#10b981" />
               </pattern>
             </defs>
-            <line
-              x1={`${parseFloat(courierPosition.left)}%`}
-              y1={`${parseFloat(courierPosition.top)}%`}
-              x2={`${parseFloat(destinationPos.left)}%`}
-              y2={`${parseFloat(destinationPos.top)}%`}
-              stroke="#10b981"
-              strokeWidth="3"
-              strokeDasharray="8,6"
-              opacity="0.7"
-            />
+            {/* Draw path through all waypoints */}
+            {routeWaypoints.map((waypoint, index) => {
+              if (index === 0) return null;
+              const prevWaypoint = routeWaypoints[index - 1];
+              return (
+                <line
+                  key={`route-${index}`}
+                  x1={`${parseFloat(prevWaypoint.left)}%`}
+                  y1={`${parseFloat(prevWaypoint.top)}%`}
+                  x2={`${parseFloat(waypoint.left)}%`}
+                  y2={`${parseFloat(waypoint.top)}%`}
+                  stroke="#10b981"
+                  strokeWidth="3"
+                  strokeDasharray="8,6"
+                  opacity={index <= currentWaypointIndex + 1 ? "0.7" : "0.3"}
+                />
+              );
+            })}
+            {/* Current segment from courier to next waypoint */}
+            {currentWaypointIndex < routeWaypoints.length - 1 && (
+              <line
+                x1={`${parseFloat(courierPosition.left)}%`}
+                y1={`${parseFloat(courierPosition.top)}%`}
+                x2={`${parseFloat(routeWaypoints[currentWaypointIndex + 1].left)}%`}
+                y2={`${parseFloat(routeWaypoints[currentWaypointIndex + 1].top)}%`}
+                stroke="#10b981"
+                strokeWidth="3"
+                strokeDasharray="8,6"
+                opacity="0.7"
+              />
+            )}
           </svg>
         )}
         
