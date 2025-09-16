@@ -96,6 +96,7 @@ export const useNotifications = () => {
       title: notification.title,
       description: notification.message,
       duration: 5000,
+      className: "border-l-4 border-l-primary bg-card shadow-lg",
     });
   }, [toast]);
 
