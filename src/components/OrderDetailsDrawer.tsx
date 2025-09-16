@@ -151,7 +151,7 @@ const OrderDetailsDrawer = ({ order }: OrderDetailsDrawerProps) => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Customer Tip</span>
-                    <span className="text-foreground">${order.earnings.customerTip}</span>
+                    <span className="text-success font-medium">${order.earnings.customerTip}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Additional Pay</span>
