@@ -336,7 +336,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
             top: '-50%',
             left: '-50%',
             backgroundImage: `url(${luxuryPoolDeckMap})`,
-            backgroundSize: 'contain',
+            backgroundSize: '80%',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center center',
             transform: isMobile 
