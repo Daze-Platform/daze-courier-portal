@@ -267,15 +267,16 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
         )}
         
         {/* Location Labels */}
-        <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-foreground shadow-xl z-30">
+        <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-foreground shadow-xl z-30 max-w-[calc(100vw-140px)] truncate">
           📍 {destination}
         </div>
         
         <div 
-          className="absolute bg-blue-500/95 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-white shadow-xl z-30"
+          className="absolute bg-blue-500/95 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-white shadow-xl z-30 whitespace-nowrap"
           style={{ 
             top: `calc(${courierPosition.top} + 50px)`, 
-            left: `calc(${courierPosition.left} - 25px)`
+            left: `calc(${courierPosition.left} - 25px)`,
+            transform: `translateX(${parseFloat(courierPosition.left) > 80 ? '-100%' : parseFloat(courierPosition.left) < 20 ? '25px' : '0'})`,
           }}
         >
           🚶 You
