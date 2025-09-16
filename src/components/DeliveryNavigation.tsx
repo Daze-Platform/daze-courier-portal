@@ -1,83 +1,207 @@
-import { useState, useEffect } from "react";
-import { MapPin, Navigation, Clock, ArrowRight, CheckCircle, Play, Pause, RotateCcw } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { MapPin, Navigation, Clock, Play, Pause, Target, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-
-interface NavigationStep {
-  id: number;
-  instruction: string;
-  distance: string;
-  type: 'start' | 'turn' | 'straight' | 'destination';
-  completed: boolean;
-}
 
 interface DeliveryNavigationProps {
   destination: string;
   onComplete: () => void;
 }
 
+interface Position {
+  x: number;
+  y: number;
+}
+
+interface MapLocation {
+  id: string;
+  name: string;
+  position: Position;
+  type: 'start' | 'destination' | 'landmark';
+}
+
 const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isNavigating, setIsNavigating] = useState(false);
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [eta, setEta] = useState(8); // minutes
+  const [courierPosition, setCourierPosition] = useState<Position>({ x: 50, y: 350 });
+  const [progress, setProgress] = useState(0);
+  const [eta, setEta] = useState(8);
   const [totalDistance, setTotalDistance] = useState("0.7 mi");
-  
-  // Mock navigation steps based on destination
-  const getNavigationSteps = (dest: string): NavigationStep[] => {
+
+  // Map locations based on destination
+  const getMapLocations = (dest: string): { locations: MapLocation[], route: Position[] } => {
+    const baseLocations: MapLocation[] = [
+      { id: 'kitchen', name: 'Kitchen', position: { x: 50, y: 350 }, type: 'start' },
+      { id: 'lobby', name: 'Main Lobby', position: { x: 200, y: 250 }, type: 'landmark' },
+      { id: 'elevator', name: 'Elevator', position: { x: 300, y: 200 }, type: 'landmark' },
+      { id: 'pool', name: 'Pool Area', position: { x: 450, y: 300 }, type: 'landmark' },
+      { id: 'beach', name: 'Beach Access', position: { x: 500, y: 450 }, type: 'landmark' },
+    ];
+
+    let destinationLocation: MapLocation;
+    let route: Position[];
+
     if (dest.includes("Room")) {
-      return [
-        { id: 1, instruction: "Start from Kitchen - Main Building", distance: "0.0 mi", type: 'start', completed: false },
-        { id: 2, instruction: "Head north toward Main Lobby", distance: "0.1 mi", type: 'straight', completed: false },
-        { id: 3, instruction: "Take elevator to Floor 12", distance: "0.1 mi", type: 'turn', completed: false },
-        { id: 4, instruction: "Turn right down hallway", distance: "0.2 mi", type: 'turn', completed: false },
-        { id: 5, instruction: "Continue straight to room corridor", distance: "0.2 mi", type: 'straight', completed: false },
-        { id: 6, instruction: `Arrive at ${dest}`, distance: "0.1 mi", type: 'destination', completed: false }
+      destinationLocation = { id: 'room', name: dest, position: { x: 400, y: 150 }, type: 'destination' };
+      route = [
+        { x: 50, y: 350 },   // Kitchen
+        { x: 200, y: 250 },  // Lobby  
+        { x: 300, y: 200 },  // Elevator
+        { x: 400, y: 150 }   // Room
       ];
     } else if (dest.includes("Pool")) {
-      return [
-        { id: 1, instruction: "Start from Kitchen - Main Building", distance: "0.0 mi", type: 'start', completed: false },
-        { id: 2, instruction: "Exit through Pool Terrace doors", distance: "0.1 mi", type: 'straight', completed: false },
-        { id: 3, instruction: "Walk along poolside path", distance: "0.3 mi", type: 'straight', completed: false },
-        { id: 4, instruction: "Turn left toward cabana area", distance: "0.2 mi", type: 'turn', completed: false },
-        { id: 5, instruction: `Arrive at ${dest}`, distance: "0.1 mi", type: 'destination', completed: false }
+      destinationLocation = { id: 'poolside', name: dest, position: { x: 450, y: 300 }, type: 'destination' };
+      route = [
+        { x: 50, y: 350 },   // Kitchen
+        { x: 200, y: 250 },  // Lobby
+        { x: 450, y: 300 }   // Pool
       ];
     } else if (dest.includes("Beach")) {
-      return [
-        { id: 1, instruction: "Start from Kitchen - Main Building", distance: "0.0 mi", type: 'start', completed: false },
-        { id: 2, instruction: "Head toward Beach Access Path", distance: "0.2 mi", type: 'straight', completed: false },
-        { id: 3, instruction: "Take beach walkway", distance: "0.3 mi", type: 'straight', completed: false },
-        { id: 4, instruction: "Turn right along shoreline", distance: "0.1 mi", type: 'turn', completed: false },
-        { id: 5, instruction: `Arrive at ${dest}`, distance: "0.1 mi", type: 'destination', completed: false }
+      destinationLocation = { id: 'beachside', name: dest, position: { x: 500, y: 450 }, type: 'destination' };
+      route = [
+        { x: 50, y: 350 },   // Kitchen
+        { x: 200, y: 250 },  // Lobby
+        { x: 500, y: 450 }   // Beach
+      ];
+    } else {
+      destinationLocation = { id: 'other', name: dest, position: { x: 350, y: 200 }, type: 'destination' };
+      route = [
+        { x: 50, y: 350 },   // Kitchen
+        { x: 350, y: 200 }   // Destination
       ];
     }
+
+    return {
+      locations: [...baseLocations, destinationLocation],
+      route
+    };
+  };
+
+  const { locations, route } = getMapLocations(destination);
+  const destinationPos = locations.find(loc => loc.type === 'destination')?.position || { x: 350, y: 200 };
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw map background
+    ctx.fillStyle = '#f8fafc';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw buildings/areas
+    ctx.fillStyle = '#e2e8f0';
+    ctx.strokeStyle = '#94a3b8';
+    ctx.lineWidth = 2;
+
+    // Main building
+    ctx.fillRect(20, 100, 250, 300);
+    ctx.strokeRect(20, 100, 250, 300);
     
-    return [
-      { id: 1, instruction: "Start from Kitchen", distance: "0.0 mi", type: 'start', completed: false },
-      { id: 2, instruction: `Navigate to ${dest}`, distance: "0.5 mi", type: 'straight', completed: false },
-      { id: 3, instruction: `Arrive at ${dest}`, distance: "0.2 mi", type: 'destination', completed: false }
-    ];
-  };
+    // Pool area
+    ctx.fillStyle = '#3b82f6';
+    ctx.fillRect(400, 250, 120, 100);
+    ctx.strokeRect(400, 250, 120, 100);
+    
+    // Beach area
+    ctx.fillStyle = '#eab308';
+    ctx.fillRect(450, 400, 100, 80);
+    ctx.strokeRect(450, 400, 100, 80);
 
-  const [steps, setSteps] = useState<NavigationStep[]>(getNavigationSteps(destination));
-
-  const progress = (currentStepIndex / (steps.length - 1)) * 100;
-
-  const getStepIcon = (type: NavigationStep['type']) => {
-    switch (type) {
-      case 'start':
-        return <Play className="h-4 w-4 text-green-600" />;
-      case 'turn':
-        return <RotateCcw className="h-4 w-4 text-blue-600" />;
-      case 'straight':
-        return <ArrowRight className="h-4 w-4 text-gray-600" />;
-      case 'destination':
-        return <MapPin className="h-4 w-4 text-red-600" />;
-      default:
-        return <Navigation className="h-4 w-4 text-gray-600" />;
+    // Draw route path
+    if (route.length > 1) {
+      ctx.strokeStyle = '#10b981';
+      ctx.lineWidth = 3;
+      ctx.setLineDash([5, 5]);
+      ctx.beginPath();
+      ctx.moveTo(route[0].x, route[0].y);
+      for (let i = 1; i < route.length; i++) {
+        ctx.lineTo(route[i].x, route[i].y);
+      }
+      ctx.stroke();
+      ctx.setLineDash([]);
     }
-  };
+
+    // Draw locations
+    locations.forEach((location) => {
+      const { x, y } = location.position;
+      
+      if (location.type === 'start') {
+        ctx.fillStyle = '#10b981';
+        ctx.beginPath();
+        ctx.arc(x, y, 8, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.fillStyle = '#000';
+        ctx.font = '12px sans-serif';
+        ctx.fillText(location.name, x + 12, y + 4);
+      } else if (location.type === 'destination') {
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath();
+        ctx.arc(x, y, 10, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.fillStyle = '#000';
+        ctx.font = '12px sans-serif';
+        ctx.fillText(location.name, x - 30, y - 15);
+      } else {
+        ctx.fillStyle = '#6b7280';
+        ctx.beginPath();
+        ctx.arc(x, y, 6, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.fillStyle = '#000';
+        ctx.font = '10px sans-serif';
+        ctx.fillText(location.name, x + 10, y + 3);
+      }
+    });
+
+    // Draw courier position
+    ctx.fillStyle = '#3b82f6';
+    ctx.strokeStyle = '#1e40af';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(courierPosition.x, courierPosition.y, 12, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.stroke();
+    
+    // Add courier pulse effect when navigating
+    if (isNavigating) {
+      ctx.strokeStyle = '#3b82f6';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([]);
+      ctx.beginPath();
+      ctx.arc(courierPosition.x, courierPosition.y, 20, 0, 2 * Math.PI);
+      ctx.stroke();
+    }
+
+    // Draw distance line to destination
+    ctx.strokeStyle = '#94a3b8';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([2, 2]);
+    ctx.beginPath();
+    ctx.moveTo(courierPosition.x, courierPosition.y);
+    ctx.lineTo(destinationPos.x, destinationPos.y);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Calculate distance for display
+    const distance = Math.sqrt(
+      Math.pow(destinationPos.x - courierPosition.x, 2) + 
+      Math.pow(destinationPos.y - courierPosition.y, 2)
+    );
+    const totalRouteDistance = Math.sqrt(
+      Math.pow(destinationPos.x - route[0].x, 2) + 
+      Math.pow(destinationPos.y - route[0].y, 2)
+    );
+    
+    setProgress(((totalRouteDistance - distance) / totalRouteDistance) * 100);
+
+  }, [courierPosition, locations, route, isNavigating, destinationPos]);
 
   const startNavigation = () => {
     setIsNavigating(true);
@@ -87,33 +211,39 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
     setIsNavigating(false);
   };
 
-  const nextStep = () => {
-    if (currentStepIndex < steps.length - 1) {
-      const newSteps = [...steps];
-      newSteps[currentStepIndex].completed = true;
-      setSteps(newSteps);
-      setCurrentStepIndex(currentStepIndex + 1);
-      setEta(eta - 1);
-      
-      if (currentStepIndex === steps.length - 2) {
-        // Reached destination
-        setTimeout(() => {
-          onComplete();
-        }, 1000);
-      }
-    }
-  };
-
-  // Auto-advance steps when navigating
+  // Auto-move courier when navigating
   useEffect(() => {
-    if (isNavigating && currentStepIndex < steps.length - 1) {
-      const timer = setTimeout(() => {
-        nextStep();
-      }, 3000); // 3 seconds per step for demo
+    if (!isNavigating) return;
 
-      return () => clearTimeout(timer);
-    }
-  }, [isNavigating, currentStepIndex]);
+    const interval = setInterval(() => {
+      setCourierPosition(current => {
+        const dx = destinationPos.x - current.x;
+        const dy = destinationPos.y - current.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance < 15) {
+          // Reached destination
+          setIsNavigating(false);
+          onComplete();
+          return current;
+        }
+        
+        // Move towards destination
+        const speed = 2;
+        const moveX = (dx / distance) * speed;
+        const moveY = (dy / distance) * speed;
+        
+        setEta(prev => Math.max(0, prev - 0.1));
+        
+        return {
+          x: current.x + moveX,
+          y: current.y + moveY
+        };
+      });
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [isNavigating, destinationPos, onComplete]);
 
   return (
     <div className="space-y-4">
@@ -125,7 +255,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
               <Navigation className="h-5 w-5 text-primary" />
             </div>
             <div>
-              <h3 className="font-semibold text-foreground">Delivery Navigation</h3>
+              <h3 className="font-semibold text-foreground">Interactive Navigation</h3>
               <p className="text-sm text-muted-foreground">To: {destination}</p>
             </div>
           </div>
@@ -133,7 +263,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
           <div className="text-right">
             <div className="flex items-center gap-2 text-sm">
               <Clock className="h-4 w-4 text-muted-foreground" />
-              <span className="font-medium">{eta} min</span>
+              <span className="font-medium">{eta.toFixed(1)} min</span>
             </div>
             <p className="text-xs text-muted-foreground">{totalDistance}</p>
           </div>
@@ -149,28 +279,43 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
         </div>
       </Card>
 
-      {/* Current Step */}
-      {currentStepIndex < steps.length && (
-        <Card className="p-4 border-l-4 border-l-primary bg-primary/5">
-          <div className="flex items-center gap-3">
-            {getStepIcon(steps[currentStepIndex].type)}
-            <div className="flex-1">
-              <p className="font-medium text-foreground">
-                Step {currentStepIndex + 1}: {steps[currentStepIndex].instruction}
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Distance: {steps[currentStepIndex].distance}
-              </p>
+      {/* Interactive Map */}
+      <Card className="p-4">
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="font-medium text-foreground flex items-center gap-2">
+            <Target className="h-4 w-4" />
+            Resort Map
+          </h4>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
+              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+              <span className="text-xs text-muted-foreground">Start</span>
             </div>
-            <Badge variant="secondary">Current</Badge>
+            <div className="flex items-center gap-1">
+              <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+              <span className="text-xs text-muted-foreground">You</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+              <span className="text-xs text-muted-foreground">Destination</span>
+            </div>
           </div>
-        </Card>
-      )}
+        </div>
+        
+        <div className="border rounded-lg overflow-hidden bg-background">
+          <canvas 
+            ref={canvasRef}
+            width={560}
+            height={500}
+            className="w-full h-auto max-w-full"
+          />
+        </div>
+      </Card>
 
       {/* Navigation Controls */}
       <div className="flex gap-2">
         {!isNavigating ? (
-          <Button onClick={startNavigation} className="flex-1" disabled={currentStepIndex >= steps.length - 1}>
+          <Button onClick={startNavigation} className="flex-1" disabled={progress >= 99}>
             <Play className="h-4 w-4 mr-2" />
             Start Navigation
           </Button>
@@ -182,57 +327,14 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
         )}
         
         <Button 
-          onClick={nextStep} 
+          onClick={() => setCourierPosition({ x: 50, y: 350 })}
           variant="outline"
-          disabled={currentStepIndex >= steps.length - 1}
+          disabled={isNavigating}
         >
-          Next Step
+          <Zap className="h-4 w-4 mr-2" />
+          Reset Position
         </Button>
       </div>
-
-      {/* All Steps List */}
-      <Card className="p-4">
-        <h4 className="font-medium text-foreground mb-3">All Steps</h4>
-        <div className="space-y-3">
-          {steps.map((step, index) => (
-            <div 
-              key={step.id}
-              className={`flex items-center gap-3 p-2 rounded-lg transition-colors ${
-                index === currentStepIndex 
-                  ? 'bg-primary/10 border border-primary/20' 
-                  : step.completed 
-                    ? 'bg-green-50 border border-green-200' 
-                    : 'bg-muted/30'
-              }`}
-            >
-              <div className="flex-shrink-0">
-                {step.completed ? (
-                  <CheckCircle className="h-4 w-4 text-green-600" />
-                ) : (
-                  getStepIcon(step.type)
-                )}
-              </div>
-              
-              <div className="flex-1">
-                <p className={`text-sm font-medium ${
-                  step.completed ? 'text-green-700 line-through' : 'text-foreground'
-                }`}>
-                  {step.instruction}
-                </p>
-                <p className="text-xs text-muted-foreground">{step.distance}</p>
-              </div>
-              
-              <Badge variant={
-                index === currentStepIndex ? 'default' : 
-                step.completed ? 'secondary' : 'outline'
-              } className="text-xs">
-                {index === currentStepIndex ? 'Current' : 
-                 step.completed ? 'Done' : 'Pending'}
-              </Badge>
-            </div>
-          ))}
-        </div>
-      </Card>
     </div>
   );
 };
