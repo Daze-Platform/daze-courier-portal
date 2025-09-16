@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import luxuryPoolDeckMap from "@/assets/ai-generated-pool-deck.jpg";
+import luxuryPoolDeckMap from "@/assets/luxury-pool-deck-ai-v2.jpg";
 
 interface DeliveryNavigationProps {
   destination: string;
