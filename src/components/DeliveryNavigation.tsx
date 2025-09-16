@@ -327,16 +327,16 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
           onTouchEnd: () => setIsDragging(false)
         } : {})}
       >
-        {/* Map Container with Transform - Oversized for continuous panning */}
+        {/* Map Container - Larger than viewport for continuous panning */}
         <div 
           className="absolute transition-transform duration-100"
           style={{
-            width: '300%',
-            height: '300%',
-            top: '-100%',
-            left: '-100%',
+            width: '200%',
+            height: '200%',
+            top: '-50%',
+            left: '-50%',
             transform: isMobile 
-              ? `scale(${mapTransform.scale}) translate(${mapTransform.translateX}px, ${mapTransform.translateY}px)`
+              ? `translate(${mapTransform.translateX}px, ${mapTransform.translateY}px) scale(${mapTransform.scale})`
               : 'none',
             transformOrigin: 'center center'
           }}
@@ -366,6 +366,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
             src={luxuryPoolDeckMap} 
             alt="Luxury resort map with navigation" 
             className="w-full h-full object-cover pointer-events-none"
+            draggable={false}
           />
           
           {/* Destination Pin */}
