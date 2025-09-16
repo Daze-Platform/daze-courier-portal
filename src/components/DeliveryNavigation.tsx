@@ -28,9 +28,6 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
   const [hasShownCloseNotification, setHasShownCloseNotification] = useState(false);
   const [currentWaypointIndex, setCurrentWaypointIndex] = useState(0);
   const [routeWaypoints, setRouteWaypoints] = useState<Position[]>([]);
-  const [mapTransform, setMapTransform] = useState({ scale: 1, translateX: 0, translateY: 0 });
-  const [isDragging, setIsDragging] = useState(false);
-  const [lastMousePos, setLastMousePos] = useState({ x: 0, y: 0 });
   const isMobile = useIsMobile();
   const { toast } = useToast();
 
@@ -149,7 +146,6 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
     setHasReachedDestination(false);
     setHasShownCloseNotification(false);
     setCurrentWaypointIndex(0);
-    setMapTransform({ scale: 1, translateX: 0, translateY: 0 });
   };
 
   // Auto-move courier when navigating using waypoints
@@ -263,70 +259,16 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
         />
       </div>
 
-      {/* Full Screen Interactive Resort Map */}
-      <div 
-        className="flex-1 relative bg-accent/5 overflow-hidden"
-        onMouseDown={isMobile ? (e) => {
-          setIsDragging(true);
-          setLastMousePos({ x: e.clientX, y: e.clientY });
-        } : undefined}
-        onMouseMove={isMobile ? (e) => {
-          if (!isDragging) return;
-          const deltaX = e.clientX - lastMousePos.x;
-          const deltaY = e.clientY - lastMousePos.y;
-          setMapTransform(prev => ({
-            ...prev,
-            translateX: prev.translateX + deltaX / mapTransform.scale,
-            translateY: prev.translateY + deltaY / mapTransform.scale
-          }));
-          setLastMousePos({ x: e.clientX, y: e.clientY });
-        } : undefined}
-        onMouseUp={isMobile ? () => setIsDragging(false) : undefined}
-        onMouseLeave={isMobile ? () => setIsDragging(false) : undefined}
-        onWheel={isMobile ? (e) => {
-          e.preventDefault();
-          const delta = e.deltaY > 0 ? 0.9 : 1.1;
-          const newScale = Math.max(0.8, Math.min(3, mapTransform.scale * delta));
-          setMapTransform(prev => ({
-            ...prev,
-            scale: newScale
-          }));
-        } : undefined}
-        onTouchStart={isMobile ? (e) => {
-          if (e.touches.length === 1) {
-            setIsDragging(true);
-            setLastMousePos({ x: e.touches[0].clientX, y: e.touches[0].clientY });
-          }
-        } : undefined}
-        onTouchMove={isMobile ? (e) => {
-          if (!isDragging || e.touches.length !== 1) return;
-          const deltaX = e.touches[0].clientX - lastMousePos.x;
-          const deltaY = e.touches[0].clientY - lastMousePos.y;
-          setMapTransform(prev => ({
-            ...prev,
-            translateX: prev.translateX + deltaX / mapTransform.scale,
-            translateY: prev.translateY + deltaY / mapTransform.scale
-          }));
-          setLastMousePos({ x: e.touches[0].clientX, y: e.touches[0].clientY });
-        } : undefined}
-        onTouchEnd={isMobile ? () => setIsDragging(false) : undefined}
-      >
-        {/* Map Container - Larger than viewport for continuous panning */}
+      {/* Resort Map - Fixed Size */}
+      <div className="flex-1 relative bg-accent/5 overflow-hidden">
+        {/* Map Container */}
         <div 
-          className="absolute transition-transform duration-100"
+          className="absolute inset-0"
           style={{
-            width: '200%',
-            height: '200%',
-            top: '-50%',
-            left: '-50%',
             backgroundImage: `url(${luxuryPoolDeckMap})`,
-            backgroundSize: '80%',
+            backgroundSize: '60%',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center center',
-            transform: isMobile 
-              ? `translate(${mapTransform.translateX}px, ${mapTransform.translateY}px) scale(${mapTransform.scale})`
-              : 'none',
-            transformOrigin: 'center center'
           }}
         >
           {/* Map Legend - Top Right */}
