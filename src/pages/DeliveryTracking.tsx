@@ -277,17 +277,6 @@ const DeliveryTracking = () => {
             </div>
           </div>
 
-          {/* Complete Delivery Button - Mobile */}
-          {navigationStarted && (
-            <div className="lg:hidden">
-              <Button 
-                className="w-full bg-success hover:bg-success/90 text-white font-medium"
-                onClick={handleNavigationComplete}
-              >
-                Complete Delivery
-              </Button>
-            </div>
-          )}
         </div>
       </div>
 
