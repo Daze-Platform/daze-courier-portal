@@ -63,7 +63,6 @@ const StatusControl = ({ isOnline, onStatusChange }: StatusControlProps) => {
               <SelectItem value="room-delivery">Room Delivery</SelectItem>
               <SelectItem value="poolside">Poolside Service</SelectItem>
               <SelectItem value="beach-service">Beach Service</SelectItem>
-              <SelectItem value="restaurant">Restaurant Pickup</SelectItem>
             </SelectContent>
           </Select>
         </div>
