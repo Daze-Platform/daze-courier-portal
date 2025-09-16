@@ -52,7 +52,7 @@ const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
     return (
       <div className="flex flex-col h-full bg-sidebar">
         {/* Header */}
-        <div className="bg-gradient-primary p-6">
+        <div className="bg-gradient-primary px-6 py-6 w-full">
           <div className="flex items-center gap-2 mb-1">
             <img src={dazeLogo} alt="Daze" className="h-6 w-6 object-contain" />
             <span className="text-xl font-bold text-primary-foreground">PORTAL</span>
