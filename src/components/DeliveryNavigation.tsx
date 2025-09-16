@@ -28,7 +28,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
   const [courierPosition, setCourierPosition] = useState<Position>({ x: 50, y: 350 });
   const [progress, setProgress] = useState(0);
   const [eta, setEta] = useState(8);
-  const [totalDistance, setTotalDistance] = useState("0.7 mi");
+  const [totalDistance] = useState("0.7 mi");
 
   // Map locations based on destination
   const getMapLocations = (dest: string): { locations: MapLocation[], route: Position[] } => {
@@ -82,44 +82,68 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
   const { locations, route } = getMapLocations(destination);
   const destinationPos = locations.find(loc => loc.type === 'destination')?.position || { x: 350, y: 200 };
 
-  useEffect(() => {
+  const drawMap = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Set canvas dimensions
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = 560;
+    canvas.height = 500;
 
-    // Draw map background
-    ctx.fillStyle = '#f8fafc';
+    // Clear canvas with white background
+    ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Draw buildings/areas
-    ctx.fillStyle = '#e2e8f0';
-    ctx.strokeStyle = '#94a3b8';
-    ctx.lineWidth = 2;
+    // Draw map background areas
+    ctx.save();
 
-    // Main building
+    // Main building (light gray)
+    ctx.fillStyle = '#f1f5f9';
+    ctx.strokeStyle = '#64748b';
+    ctx.lineWidth = 2;
     ctx.fillRect(20, 100, 250, 300);
     ctx.strokeRect(20, 100, 250, 300);
     
-    // Pool area
-    ctx.fillStyle = '#3b82f6';
+    // Add building label
+    ctx.fillStyle = '#334155';
+    ctx.font = 'bold 14px sans-serif';
+    ctx.fillText('MAIN BUILDING', 80, 260);
+    
+    // Pool area (blue)
+    ctx.fillStyle = '#dbeafe';
+    ctx.strokeStyle = '#3b82f6';
     ctx.fillRect(400, 250, 120, 100);
     ctx.strokeRect(400, 250, 120, 100);
     
-    // Beach area
-    ctx.fillStyle = '#eab308';
+    // Pool water
+    ctx.fillStyle = '#3b82f6';
+    ctx.fillRect(410, 260, 100, 80);
+    
+    // Pool label
+    ctx.fillStyle = '#1e40af';
+    ctx.font = 'bold 12px sans-serif';
+    ctx.fillText('POOL', 440, 305);
+    
+    // Beach area (sand colored)
+    ctx.fillStyle = '#fef3c7';
+    ctx.strokeStyle = '#f59e0b';
     ctx.fillRect(450, 400, 100, 80);
     ctx.strokeRect(450, 400, 100, 80);
+    
+    // Beach label
+    ctx.fillStyle = '#92400e';
+    ctx.font = 'bold 12px sans-serif';
+    ctx.fillText('BEACH', 475, 445);
 
-    // Draw route path
+    // Draw planned route (dashed line)
     if (route.length > 1) {
       ctx.strokeStyle = '#10b981';
       ctx.lineWidth = 3;
-      ctx.setLineDash([5, 5]);
+      ctx.setLineDash([8, 4]);
       ctx.beginPath();
       ctx.moveTo(route[0].x, route[0].y);
       for (let i = 1; i < route.length; i++) {
@@ -129,67 +153,106 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
       ctx.setLineDash([]);
     }
 
-    // Draw locations
+    // Draw location markers
     locations.forEach((location) => {
       const { x, y } = location.position;
       
+      ctx.save();
+      
       if (location.type === 'start') {
-        ctx.fillStyle = '#10b981';
-        ctx.beginPath();
-        ctx.arc(x, y, 8, 0, 2 * Math.PI);
-        ctx.fill();
-        ctx.fillStyle = '#000';
-        ctx.font = '12px sans-serif';
-        ctx.fillText(location.name, x + 12, y + 4);
-      } else if (location.type === 'destination') {
-        ctx.fillStyle = '#ef4444';
+        // Start location (green circle)
+        ctx.fillStyle = '#22c55e';
+        ctx.strokeStyle = '#15803d';
+        ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.arc(x, y, 10, 0, 2 * Math.PI);
         ctx.fill();
-        ctx.fillStyle = '#000';
-        ctx.font = '12px sans-serif';
-        ctx.fillText(location.name, x - 30, y - 15);
-      } else {
-        ctx.fillStyle = '#6b7280';
+        ctx.stroke();
+        
+        // Label
+        ctx.fillStyle = '#000000';
+        ctx.font = 'bold 12px sans-serif';
+        ctx.fillText(location.name, x + 15, y + 4);
+      } else if (location.type === 'destination') {
+        // Destination (red marker)
+        ctx.fillStyle = '#ef4444';
+        ctx.strokeStyle = '#dc2626';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(x, y, 12, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.stroke();
+        
+        // Inner dot
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(x, y, 4, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        // Label
+        ctx.fillStyle = '#000000';
+        ctx.font = 'bold 12px sans-serif';
+        ctx.fillText(location.name, x - 40, y - 20);
+      } else if (location.type === 'landmark') {
+        // Landmarks (gray dots)
+        ctx.fillStyle = '#9ca3af';
+        ctx.strokeStyle = '#6b7280';
+        ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.arc(x, y, 6, 0, 2 * Math.PI);
         ctx.fill();
-        ctx.fillStyle = '#000';
+        ctx.stroke();
+        
+        // Label
+        ctx.fillStyle = '#374151';
         ctx.font = '10px sans-serif';
         ctx.fillText(location.name, x + 10, y + 3);
       }
+      
+      ctx.restore();
     });
 
-    // Draw courier position
+    // Draw courier position (animated blue dot)
+    ctx.save();
     ctx.fillStyle = '#3b82f6';
-    ctx.strokeStyle = '#1e40af';
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#1d4ed8';
+    ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.arc(courierPosition.x, courierPosition.y, 12, 0, 2 * Math.PI);
+    ctx.arc(courierPosition.x, courierPosition.y, 15, 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();
     
-    // Add courier pulse effect when navigating
+    // Courier inner dot
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(courierPosition.x, courierPosition.y, 6, 0, 2 * Math.PI);
+    ctx.fill();
+    
+    // Pulse effect when navigating
     if (isNavigating) {
       ctx.strokeStyle = '#3b82f6';
-      ctx.lineWidth = 1;
-      ctx.setLineDash([]);
+      ctx.lineWidth = 2;
+      ctx.globalAlpha = 0.5;
       ctx.beginPath();
-      ctx.arc(courierPosition.x, courierPosition.y, 20, 0, 2 * Math.PI);
+      ctx.arc(courierPosition.x, courierPosition.y, 25, 0, 2 * Math.PI);
       ctx.stroke();
     }
+    
+    ctx.restore();
 
-    // Draw distance line to destination
+    // Draw direct line to destination (dotted)
+    ctx.save();
     ctx.strokeStyle = '#94a3b8';
     ctx.lineWidth = 1;
-    ctx.setLineDash([2, 2]);
+    ctx.setLineDash([3, 3]);
+    ctx.globalAlpha = 0.7;
     ctx.beginPath();
     ctx.moveTo(courierPosition.x, courierPosition.y);
     ctx.lineTo(destinationPos.x, destinationPos.y);
     ctx.stroke();
-    ctx.setLineDash([]);
+    ctx.restore();
 
-    // Calculate distance for display
+    // Calculate and update progress
     const distance = Math.sqrt(
       Math.pow(destinationPos.x - courierPosition.x, 2) + 
       Math.pow(destinationPos.y - courierPosition.y, 2)
@@ -199,9 +262,14 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
       Math.pow(destinationPos.y - route[0].y, 2)
     );
     
-    setProgress(((totalRouteDistance - distance) / totalRouteDistance) * 100);
+    const newProgress = Math.min(99, ((totalRouteDistance - distance) / totalRouteDistance) * 100);
+    setProgress(newProgress);
+  };
 
-  }, [courierPosition, locations, route, isNavigating, destinationPos]);
+  // Draw map when component mounts or updates
+  useEffect(() => {
+    drawMap();
+  }, [courierPosition, isNavigating, destination]);
 
   const startNavigation = () => {
     setIsNavigating(true);
@@ -209,6 +277,12 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
 
   const pauseNavigation = () => {
     setIsNavigating(false);
+  };
+
+  const resetPosition = () => {
+    setCourierPosition({ x: 50, y: 350 });
+    setEta(8);
+    setProgress(0);
   };
 
   // Auto-move courier when navigating
@@ -221,7 +295,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
         const dy = destinationPos.y - current.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
         
-        if (distance < 15) {
+        if (distance < 20) {
           // Reached destination
           setIsNavigating(false);
           onComplete();
@@ -229,7 +303,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
         }
         
         // Move towards destination
-        const speed = 2;
+        const speed = 2.5;
         const moveX = (dx / distance) * speed;
         const moveY = (dy / distance) * speed;
         
@@ -286,10 +360,10 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
             <Target className="h-4 w-4" />
             Resort Map
           </h4>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
             <div className="flex items-center gap-1">
               <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              <span className="text-xs text-muted-foreground">Start</span>
+              <span className="text-xs text-muted-foreground">Kitchen</span>
             </div>
             <div className="flex items-center gap-1">
               <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
@@ -302,12 +376,11 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
           </div>
         </div>
         
-        <div className="border rounded-lg overflow-hidden bg-background">
+        <div className="border rounded-lg overflow-hidden bg-white">
           <canvas 
             ref={canvasRef}
-            width={560}
-            height={500}
-            className="w-full h-auto max-w-full"
+            className="w-full h-auto max-w-full block"
+            style={{ maxHeight: '500px' }}
           />
         </div>
       </Card>
@@ -315,7 +388,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
       {/* Navigation Controls */}
       <div className="flex gap-2">
         {!isNavigating ? (
-          <Button onClick={startNavigation} className="flex-1" disabled={progress >= 99}>
+          <Button onClick={startNavigation} className="flex-1" disabled={progress >= 95}>
             <Play className="h-4 w-4 mr-2" />
             Start Navigation
           </Button>
@@ -327,12 +400,12 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
         )}
         
         <Button 
-          onClick={() => setCourierPosition({ x: 50, y: 350 })}
+          onClick={resetPosition}
           variant="outline"
           disabled={isNavigating}
         >
           <Zap className="h-4 w-4 mr-2" />
-          Reset Position
+          Reset
         </Button>
       </div>
     </div>
