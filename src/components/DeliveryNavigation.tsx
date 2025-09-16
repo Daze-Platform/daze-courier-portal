@@ -133,6 +133,9 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
             <div className="h-8 w-8 bg-primary/10 rounded-full flex items-center justify-center">
               <Navigation className="h-4 w-4 text-primary" />
             </div>
+            <Badge variant={isNavigating ? "default" : "secondary"} className="text-xs">
+              {isNavigating ? "Navigating" : "Ready"}
+            </Badge>
             <div>
               <h3 className="font-medium text-foreground text-sm">To: {destination}</h3>
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -145,9 +148,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
           </div>
           
           <div className="flex items-center gap-2 text-sm font-medium">
-            <Badge variant={isNavigating ? "default" : "secondary"} className="text-xs">
-              {isNavigating ? "Navigating" : "Ready"}
-            </Badge>
+            {/* Space for close icon */}
           </div>
         </div>
 
