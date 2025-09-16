@@ -2,9 +2,13 @@ import UnifiedHeader from "@/components/UnifiedHeader";
 import DesktopSidebar from "@/components/DesktopSidebar";
 import StatusControl from "@/components/StatusControl";
 import OrderCard from "@/components/OrderCard";
-import { Package } from "lucide-react";
+import { Package, Truck } from "lucide-react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import startDeliveringIllustration from "@/assets/start-delivering-illustration.jpg";
 
 const Index = () => {
+  const [isOnline, setIsOnline] = useState(false);
   const mockOrders = [
     {
       orderId: "#23456789",
@@ -51,9 +55,30 @@ const Index = () => {
             <p className="text-muted-foreground lg:text-lg">Manage your current delivery assignments</p>
           </div>
           
-          <StatusControl />
+          <StatusControl isOnline={isOnline} onStatusChange={setIsOnline} />
           
-          {mockOrders.length > 0 ? (
+          {!isOnline ? (
+            <div className="text-center py-12 lg:py-20">
+              <div className="max-w-md mx-auto">
+                <img 
+                  src={startDeliveringIllustration} 
+                  alt="Start delivering illustration" 
+                  className="w-full h-48 object-cover rounded-lg mb-6"
+                />
+                <h2 className="text-2xl font-bold text-foreground mb-3">Ready to Start Delivering?</h2>
+                <p className="text-muted-foreground mb-6">
+                  Turn on your account status to start receiving delivery orders and earn money at your resort!
+                </p>
+                <Button 
+                  onClick={() => setIsOnline(true)}
+                  className="bg-primary hover:bg-primary/90 text-white px-8 py-3 text-lg font-medium"
+                >
+                  <Truck className="h-5 w-5 mr-2" />
+                  Start Delivering
+                </Button>
+              </div>
+            </div>
+          ) : mockOrders.length > 0 ? (
             <div className="space-y-4 lg:space-y-6">
               {mockOrders.map((order) => (
                 <OrderCard key={order.orderId} {...order} />

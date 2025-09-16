@@ -8,7 +8,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const StatusControl = () => {
+interface StatusControlProps {
+  isOnline: boolean;
+  onStatusChange: (status: boolean) => void;
+}
+
+const StatusControl = ({ isOnline, onStatusChange }: StatusControlProps) => {
   return (
     <div className="bg-card rounded-lg p-4 shadow-soft border border-border lg:p-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
@@ -17,10 +22,11 @@ const StatusControl = () => {
           <label className="text-sm font-medium text-muted-foreground">Account status</label>
           <div className="flex items-center gap-3">
             <Switch 
-              defaultChecked 
+              checked={isOnline}
+              onCheckedChange={onStatusChange}
               className="data-[state=checked]:bg-success data-[state=unchecked]:bg-input"
             />
-            <span className="text-sm font-medium text-foreground">On</span>
+            <span className="text-sm font-medium text-foreground">{isOnline ? 'On' : 'Off'}</span>
           </div>
         </div>
 
