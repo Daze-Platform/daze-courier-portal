@@ -30,7 +30,10 @@ const UnifiedHeader = () => {
                 <Menu className="h-6 w-6" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="p-0 w-64 border-0">
+            <SheetContent 
+              side="left" 
+              className="p-0 w-64 border-0 [&>button]:hover:bg-primary-foreground/20 [&>button]:transition-colors [&>button]:rounded-md [&>button]:h-8 [&>button]:w-8"
+            >
               <Sidebar isMobile={true} />
             </SheetContent>
           </Sheet>
