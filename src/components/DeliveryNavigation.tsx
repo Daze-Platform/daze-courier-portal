@@ -119,190 +119,180 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
   }, [courierPosition, destinationPos]);
 
   return (
-    <div className="space-y-4">
-      {/* Navigation Header */}
-      <Card className="p-4">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 bg-primary/10 rounded-full flex items-center justify-center">
-              <Navigation className="h-5 w-5 text-primary" />
+    <div className="flex flex-col h-screen">
+      {/* Compact Navigation Header */}
+      <div className="bg-background border-b border-border p-3 flex-shrink-0">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <div className="h-8 w-8 bg-primary/10 rounded-full flex items-center justify-center">
+              <Navigation className="h-4 w-4 text-primary" />
             </div>
             <div>
-              <h3 className="font-semibold text-foreground">Interactive Navigation</h3>
-              <p className="text-sm text-muted-foreground">To: {destination}</p>
-            </div>
-          </div>
-          
-          <div className="text-right">
-            <div className="flex items-center gap-2 text-sm">
-              <Clock className="h-4 w-4 text-muted-foreground" />
-              <span className="font-medium">{eta.toFixed(1)} min</span>
-            </div>
-            <p className="text-xs text-muted-foreground">{totalDistance}</p>
-          </div>
-        </div>
-
-        {/* Progress Bar */}
-        <div className="space-y-2">
-          <div className="flex justify-between items-center">
-            <span className="text-sm font-medium">Progress</span>
-            <span className="text-sm text-muted-foreground">{Math.round(progress)}% complete</span>
-          </div>
-          <Progress value={progress} className="h-2" />
-        </div>
-      </Card>
-
-      {/* Interactive Resort Map */}
-      <Card className="p-4">
-        <div className="flex items-center justify-between mb-4">
-          <h4 className="font-medium text-foreground flex items-center gap-2">
-            <Target className="h-4 w-4" />
-            Resort Navigation Map
-          </h4>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-              <span className="text-xs text-muted-foreground">You</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-              <span className="text-xs text-muted-foreground">Destination</span>
-            </div>
-          </div>
-        </div>
-        
-        <div className="relative aspect-video bg-accent/5 rounded-lg border border-border overflow-hidden">
-          <img 
-            src={luxuryPoolDeckMap} 
-            alt="Luxury resort map with navigation" 
-            className="w-full h-full object-cover"
-          />
-          
-          {/* Destination Pin */}
-          <div 
-            className="absolute transform -translate-x-1/2 -translate-y-1/2 z-20"
-            style={{ top: destinationPos.top, left: destinationPos.left }}
-          >
-            <div className="relative">
-              <MapPin className="h-8 w-8 text-red-500 fill-red-500 drop-shadow-lg" />
-              <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-            </div>
-          </div>
-          
-          {/* Courier Position */}
-          <div 
-            className="absolute transform -translate-x-1/2 -translate-y-1/2 z-10 transition-all duration-200 ease-linear"
-            style={{ top: courierPosition.top, left: courierPosition.left }}
-          >
-            <div className="relative">
-              <div className="h-6 w-6 bg-blue-500 rounded-full border-2 border-white shadow-lg flex items-center justify-center">
-                <User className="h-3 w-3 text-white" />
+              <h3 className="font-medium text-foreground text-sm">To: {destination}</h3>
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Clock className="h-3 w-3" />
+                <span>{eta.toFixed(1)} min</span>
+                <span>•</span>
+                <span>{totalDistance}</span>
               </div>
-              
-              {/* Pulse effect when navigating */}
-              {isNavigating && (
-                <div className="absolute inset-0 h-6 w-6 bg-blue-500 rounded-full animate-ping opacity-30"></div>
-              )}
-              
-              {/* Direction indicator - arrow pointing to destination */}
-              {isNavigating && (
-                <div 
-                  className="absolute top-1/2 left-1/2 w-4 h-0.5 bg-blue-500 origin-left transform -translate-y-1/2"
-                  style={{
-                    transform: `translate(-50%, -50%) rotate(${Math.atan2(
-                      parseFloat(destinationPos.top) - parseFloat(courierPosition.top),
-                      parseFloat(destinationPos.left) - parseFloat(courierPosition.left)
-                    ) * (180 / Math.PI)}deg)`,
-                  }}
-                />
-              )}
             </div>
           </div>
           
-          {/* Route Path (dashed line when navigating) */}
-          {isNavigating && (
-            <svg 
-              className="absolute inset-0 w-full h-full pointer-events-none z-0"
-              style={{ overflow: 'visible' }}
-            >
-              <defs>
-                <pattern id="dashed" patternUnits="userSpaceOnUse" width="8" height="2">
-                  <rect width="4" height="2" fill="#10b981" />
-                </pattern>
-              </defs>
-              <line
-                x1={`${parseFloat(courierPosition.left)}%`}
-                y1={`${parseFloat(courierPosition.top)}%`}
-                x2={`${parseFloat(destinationPos.left)}%`}
-                y2={`${parseFloat(destinationPos.top)}%`}
-                stroke="#10b981"
-                strokeWidth="2"
-                strokeDasharray="6,4"
-                opacity="0.6"
-              />
-            </svg>
-          )}
-          
-          {/* Location Labels */}
-          <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-foreground shadow-lg z-30">
-            {destination}
-          </div>
-          
-          <div 
-            className="absolute bg-blue-500/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-medium text-white shadow-lg z-30"
-            style={{ 
-              top: `calc(${courierPosition.top} + 40px)`, 
-              left: `calc(${courierPosition.left} - 20px)`
-            }}
-          >
-            You
-          </div>
-        </div>
-      </Card>
-
-      {/* Navigation Controls */}
-      <div className="flex gap-2">
-        {!isNavigating ? (
-          <Button onClick={startNavigation} className="flex-1" disabled={progress >= 95}>
-            <Play className="h-4 w-4 mr-2" />
-            Start Navigation
-          </Button>
-        ) : (
-          <Button onClick={pauseNavigation} variant="outline" className="flex-1">
-            <Pause className="h-4 w-4 mr-2" />
-            Pause Navigation
-          </Button>
-        )}
-        
-        <Button 
-          onClick={resetPosition}
-          variant="outline"
-          disabled={isNavigating}
-        >
-          <Zap className="h-4 w-4 mr-2" />
-          Reset
-        </Button>
-      </div>
-
-      {/* Navigation Status */}
-      <Card className="p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Badge variant={isNavigating ? "default" : "secondary"}>
+          <div className="flex items-center gap-2 text-sm font-medium">
+            <Badge variant={isNavigating ? "default" : "secondary"} className="text-xs">
               {isNavigating ? "Navigating" : "Ready"}
             </Badge>
-            <span className="text-sm text-muted-foreground">
-              {isNavigating 
-                ? `Moving to ${destination}...` 
-                : `Tap "Start Navigation" to begin`
-              }
-            </span>
           </div>
-          <div className="text-sm font-medium text-foreground">
+        </div>
+
+        {/* Compact Progress Bar */}
+        <Progress value={progress} className="h-1.5" />
+      </div>
+
+      {/* Full Screen Interactive Resort Map */}
+      <div className="flex-1 relative bg-accent/5 overflow-hidden">
+        {/* Map Legend - Top Right */}
+        <div className="absolute top-4 right-4 z-40 bg-white/95 backdrop-blur-sm rounded-lg p-2 shadow-lg">
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+              <span className="text-xs font-medium">You</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+              <span className="text-xs font-medium">Destination</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Progress Indicator - Top Left */}
+        <div className="absolute top-4 left-4 z-40 bg-white/95 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg">
+          <div className="text-xs font-medium text-foreground">
             {Math.round(progress)}% Complete
           </div>
         </div>
-      </Card>
+        
+        <img 
+          src={luxuryPoolDeckMap} 
+          alt="Luxury resort map with navigation" 
+          className="w-full h-full object-cover"
+        />
+        
+        {/* Destination Pin */}
+        <div 
+          className="absolute transform -translate-x-1/2 -translate-y-1/2 z-20"
+          style={{ top: destinationPos.top, left: destinationPos.left }}
+        >
+          <div className="relative">
+            <MapPin className="h-10 w-10 text-red-500 fill-red-500 drop-shadow-lg" />
+            <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+          </div>
+        </div>
+        
+        {/* Courier Position */}
+        <div 
+          className="absolute transform -translate-x-1/2 -translate-y-1/2 z-10 transition-all duration-200 ease-linear"
+          style={{ top: courierPosition.top, left: courierPosition.left }}
+        >
+          <div className="relative">
+            <div className="h-8 w-8 bg-blue-500 rounded-full border-3 border-white shadow-xl flex items-center justify-center">
+              <User className="h-4 w-4 text-white" />
+            </div>
+            
+            {/* Pulse effect when navigating */}
+            {isNavigating && (
+              <div className="absolute inset-0 h-8 w-8 bg-blue-500 rounded-full animate-ping opacity-30"></div>
+            )}
+            
+            {/* Direction indicator - arrow pointing to destination */}
+            {isNavigating && (
+              <div 
+                className="absolute top-1/2 left-1/2 w-6 h-0.5 bg-blue-500 origin-left transform -translate-y-1/2"
+                style={{
+                  transform: `translate(-50%, -50%) rotate(${Math.atan2(
+                    parseFloat(destinationPos.top) - parseFloat(courierPosition.top),
+                    parseFloat(destinationPos.left) - parseFloat(courierPosition.left)
+                  ) * (180 / Math.PI)}deg)`,
+                }}
+              />
+            )}
+          </div>
+        </div>
+        
+        {/* Route Path (dashed line when navigating) */}
+        {isNavigating && (
+          <svg 
+            className="absolute inset-0 w-full h-full pointer-events-none z-0"
+            style={{ overflow: 'visible' }}
+          >
+            <defs>
+              <pattern id="dashed" patternUnits="userSpaceOnUse" width="8" height="2">
+                <rect width="4" height="2" fill="#10b981" />
+              </pattern>
+            </defs>
+            <line
+              x1={`${parseFloat(courierPosition.left)}%`}
+              y1={`${parseFloat(courierPosition.top)}%`}
+              x2={`${parseFloat(destinationPos.left)}%`}
+              y2={`${parseFloat(destinationPos.top)}%`}
+              stroke="#10b981"
+              strokeWidth="3"
+              strokeDasharray="8,6"
+              opacity="0.7"
+            />
+          </svg>
+        )}
+        
+        {/* Location Labels */}
+        <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-foreground shadow-xl z-30">
+          📍 {destination}
+        </div>
+        
+        <div 
+          className="absolute bg-blue-500/95 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-white shadow-xl z-30"
+          style={{ 
+            top: `calc(${courierPosition.top} + 50px)`, 
+            left: `calc(${courierPosition.left} - 25px)`
+          }}
+        >
+          🚶 You
+        </div>
+      </div>
+
+      {/* Bottom Navigation Controls */}
+      <div className="bg-background border-t border-border p-4 flex-shrink-0">
+        <div className="flex gap-3">
+          {!isNavigating ? (
+            <Button onClick={startNavigation} className="flex-1 h-12 text-base" disabled={progress >= 95}>
+              <Play className="h-5 w-5 mr-2" />
+              Start Navigation
+            </Button>
+          ) : (
+            <Button onClick={pauseNavigation} variant="outline" className="flex-1 h-12 text-base">
+              <Pause className="h-5 w-5 mr-2" />
+              Pause Navigation
+            </Button>
+          )}
+          
+          <Button 
+            onClick={resetPosition}
+            variant="outline"
+            disabled={isNavigating}
+            className="h-12 px-6"
+          >
+            <Zap className="h-5 w-5" />
+          </Button>
+        </div>
+        
+        <div className="mt-3 text-center">
+          <span className="text-sm text-muted-foreground">
+            {isNavigating 
+              ? `Moving to ${destination}...` 
+              : `Ready to navigate to ${destination}`
+            }
+          </span>
+        </div>
+      </div>
     </div>
   );
 };
