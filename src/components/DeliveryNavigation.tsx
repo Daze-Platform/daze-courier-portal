@@ -22,6 +22,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
   const [progress, setProgress] = useState(0);
   const [eta, setEta] = useState(8);
   const [totalDistance] = useState("0.7 mi");
+  const [hasReachedDestination, setHasReachedDestination] = useState(false);
 
   // Get destination position based on delivery location
   const getDestinationPosition = (dest: string): Position => {
@@ -68,10 +69,15 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
     setIsNavigating(false);
   };
 
+  const completeDelivery = () => {
+    onComplete();
+  };
+
   const resetPosition = () => {
     setCourierPosition({ top: "85%", left: "10%" });
     setEta(8);
     setProgress(0);
+    setHasReachedDestination(false);
   };
 
   // Auto-move courier when navigating
@@ -92,7 +98,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
         if (distance < 3) {
           // Reached destination
           setIsNavigating(false);
-          onComplete();
+          setHasReachedDestination(true);
           return current;
         }
         
@@ -262,10 +268,15 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
       {/* Bottom Navigation Controls */}
       <div className="bg-background border-t border-border p-4 flex-shrink-0">
         <div className="flex gap-3">
-          {!isNavigating ? (
+          {!isNavigating && !hasReachedDestination ? (
             <Button onClick={startNavigation} className="flex-1 h-12 text-base" disabled={progress >= 95}>
               <Play className="h-5 w-5 mr-2" />
               Start Navigation
+            </Button>
+          ) : hasReachedDestination ? (
+            <Button onClick={completeDelivery} className="flex-1 h-12 text-base bg-success hover:bg-success/90 text-white">
+              <Target className="h-5 w-5 mr-2" />
+              Complete Delivery
             </Button>
           ) : (
             <Button onClick={pauseNavigation} variant="outline" className="flex-1 h-12 text-base">
@@ -286,9 +297,11 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
         
         <div className="mt-3 text-center">
           <span className="text-sm text-muted-foreground">
-            {isNavigating 
-              ? `Moving to ${destination}...` 
-              : `Ready to navigate to ${destination}`
+            {hasReachedDestination 
+              ? `Arrived at ${destination}! Ready to complete delivery.`
+              : isNavigating 
+                ? `Moving to ${destination}...` 
+                : `Ready to navigate to ${destination}`
             }
           </span>
         </div>
