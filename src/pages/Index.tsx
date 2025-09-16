@@ -5,7 +5,7 @@ import OrderCard from "@/components/OrderCard";
 import { Package, Truck } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import resortDeliveryIllustration from "@/assets/resort-delivery-illustration.jpg";
+import resortDeliveryIllustration from "@/assets/resort-delivery-with-logo.jpg";
 
 const Index = () => {
   const [isOnline, setIsOnline] = useState(false);
