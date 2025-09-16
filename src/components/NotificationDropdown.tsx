@@ -48,7 +48,7 @@ const NotificationDropdown = ({ className }: NotificationDropdownProps) => {
           <div className="relative">
             <Bell className="h-5 w-5" />
             {unreadCount > 0 && (
-              <div className="absolute -top-2 -right-2 h-5 w-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-md border-2 border-background">
+              <div className="absolute -top-1.5 -right-1.5 h-4 w-4 bg-red-500 text-white rounded-full flex items-center justify-center text-xs font-semibold shadow-md border-2 border-background">
                 {unreadCount > 9 ? '9+' : unreadCount}
               </div>
             )}
