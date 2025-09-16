@@ -274,9 +274,35 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
         <div 
           className="absolute bg-blue-500/95 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-white shadow-xl z-30 whitespace-nowrap"
           style={{ 
-            top: `calc(${courierPosition.top} + 50px)`, 
-            left: `calc(${courierPosition.left} - 25px)`,
-            transform: `translateX(${parseFloat(courierPosition.left) > 80 ? '-100%' : parseFloat(courierPosition.left) < 20 ? '25px' : '0'})`,
+            top: (() => {
+              const courierTopPercent = parseFloat(courierPosition.top);
+              const courierLeftPercent = parseFloat(courierPosition.left);
+              
+              // Check if courier is near bottom-left where destination label is
+              const isNearDestinationLabel = courierTopPercent > 70 && courierLeftPercent < 40;
+              
+              if (isNearDestinationLabel) {
+                // Position above the courier when near destination label
+                return `calc(${courierPosition.top} - 40px)`;
+              } else {
+                // Default position below courier
+                return `calc(${courierPosition.top} + 50px)`;
+              }
+            })(),
+            left: (() => {
+              const courierLeftPercent = parseFloat(courierPosition.left);
+              
+              if (courierLeftPercent > 85) {
+                // Far right - position to the left of courier
+                return `calc(${courierPosition.left} - 60px)`;
+              } else if (courierLeftPercent < 15) {
+                // Far left - position to the right of courier  
+                return `calc(${courierPosition.left} + 30px)`;
+              } else {
+                // Center - position normally
+                return `calc(${courierPosition.left} - 25px)`;
+              }
+            })(),
           }}
         >
           🚶 You
