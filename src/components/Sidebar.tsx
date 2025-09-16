@@ -50,14 +50,14 @@ const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
   // Mobile Sidebar (for Sheet)
   if (isMobile) {
     return (
-      <div className="flex flex-col h-full bg-sidebar">
+      <div className="flex flex-col h-full bg-sidebar overflow-hidden">
         {/* Header */}
-        <div className="bg-gradient-primary px-6 py-8 -mx-8 -mt-8 mb-6 relative">
-          <div className="flex items-center gap-3 mb-2">
-            <img src={dazeLogo} alt="Daze" className="h-7 w-7 object-contain" />
-            <span className="text-xl font-bold text-primary-foreground tracking-wide">PORTAL</span>
+        <div className="bg-gradient-primary px-6 py-6 relative">
+          <div className="flex items-center gap-3 mb-1">
+            <img src={dazeLogo} alt="Daze" className="h-6 w-6 object-contain" />
+            <span className="text-lg font-bold text-primary-foreground tracking-wide">PORTAL</span>
           </div>
-          <span className="text-sm font-medium text-primary-foreground/90 tracking-wider">
+          <span className="text-xs font-medium text-primary-foreground/80 tracking-wider uppercase">
             DRIVER PORTAL
           </span>
         </div>
