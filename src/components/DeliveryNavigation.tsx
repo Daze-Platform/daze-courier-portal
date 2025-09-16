@@ -28,7 +28,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
   const [hasShownCloseNotification, setHasShownCloseNotification] = useState(false);
   const [currentWaypointIndex, setCurrentWaypointIndex] = useState(0);
   const [routeWaypoints, setRouteWaypoints] = useState<Position[]>([]);
-  const [mapTransform, setMapTransform] = useState({ scale: 1.5, translateX: 0, translateY: 0 });
+  const [mapTransform, setMapTransform] = useState({ scale: 1, translateX: 0, translateY: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [lastMousePos, setLastMousePos] = useState({ x: 0, y: 0 });
   const isMobile = useIsMobile();
@@ -163,7 +163,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
     setHasReachedDestination(false);
     setHasShownCloseNotification(false);
     setCurrentWaypointIndex(0);
-    setMapTransform({ scale: isMobile ? 1.5 : 1, translateX: 0, translateY: 0 });
+    setMapTransform({ scale: 1, translateX: 0, translateY: 0 });
   };
 
   // Auto-move courier when navigating using waypoints
@@ -301,7 +301,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
           onWheel: (e) => {
             e.preventDefault();
             const delta = e.deltaY > 0 ? 0.9 : 1.1;
-            const newScale = Math.max(1, Math.min(4, mapTransform.scale * delta));
+            const newScale = Math.max(0.8, Math.min(3, mapTransform.scale * delta));
             setMapTransform(prev => ({
               ...prev,
               scale: newScale
@@ -327,14 +327,10 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
           onTouchEnd: () => setIsDragging(false)
         } : {})}
       >
-        {/* Map Container with Transform - Pokemon Go style */}
+        {/* Map Container with Transform - Mobile responsive */}
         <div 
-          className="absolute transition-transform duration-100"
+          className="absolute inset-0 w-full h-full transition-transform duration-100"
           style={{
-            width: isMobile ? '200%' : '100%',
-            height: isMobile ? '200%' : '100%',
-            top: isMobile ? '-50%' : '0',
-            left: isMobile ? '-50%' : '0',
             transform: isMobile 
               ? `scale(${mapTransform.scale}) translate(${mapTransform.translateX}px, ${mapTransform.translateY}px)`
               : 'none',
@@ -366,10 +362,6 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
             src={luxuryPoolDeckMap} 
             alt="Luxury resort map with navigation" 
             className="w-full h-full object-cover pointer-events-none"
-            style={{
-              minWidth: isMobile ? '200%' : '100%',
-              minHeight: isMobile ? '200%' : '100%'
-            }}
           />
           
           {/* Destination Pin */}
