@@ -1,13 +1,13 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, MessageCircle, MapPin, Clock, CheckCircle, Package, Play, Phone } from "lucide-react";
+import { ArrowLeft, MapPin, Clock, Package, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useState } from "react";
 import UnifiedHeader from "@/components/UnifiedHeader";
 import DesktopSidebar from "@/components/DesktopSidebar";
 import DeliveryNavigation from "@/components/DeliveryNavigation";
+import OrderDetailsDrawer from "@/components/OrderDetailsDrawer";
 import margaritaMamasLogo from "@/assets/margarita-mamas-logo.png";
 import sunsetGrillLogo from "@/assets/sunset-grill-logo.png";
 import oceanBreezeLogo from "@/assets/ocean-breeze-logo.png";
@@ -18,6 +18,7 @@ const DeliveryTracking = () => {
   const navigate = useNavigate();
   const [showCompletionModal, setShowCompletionModal] = useState(false);
   const [navigationStarted, setNavigationStarted] = useState(false);
+  const [showNavigationModal, setShowNavigationModal] = useState(false);
 
   // Mock order data - in real app would fetch based on orderId
   const order = {
@@ -68,9 +69,11 @@ const DeliveryTracking = () => {
 
   const handleStartNavigation = () => {
     setNavigationStarted(true);
+    setShowNavigationModal(true);
   };
 
   const handleNavigationComplete = () => {
+    setShowNavigationModal(false);
     setShowCompletionModal(true);
   };
 
@@ -111,174 +114,83 @@ const DeliveryTracking = () => {
             </Badge>
           </div>
 
-          {/* Order Content - Responsive Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-            {/* Navigation Section */}
-            <div className="lg:col-span-2 space-y-6">
-              {!navigationStarted ? (
-                /* Pre-Navigation Overview */
-                <>
-                  {/* Restaurant Info */}
-                  <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="h-12 w-12 rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm">
-                        {restaurantLogo ? (
-                          <img src={restaurantLogo} alt={`${order.restaurant} logo`} className="h-10 w-10 object-contain" />
-                        ) : (
-                          <Package className="h-6 w-6 text-accent" />
-                        )}
-                      </div>
-                      <div className="flex-1">
-                        <h2 className="text-lg font-semibold text-foreground lg:text-xl">Delivering from {order.restaurant}</h2>
-                        <Badge className="bg-accent text-white font-medium mt-1 border-0">
-                          {order.deliveryType}
-                        </Badge>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                      <div className="flex items-center gap-2">
-                        <MapPin className="h-4 w-4 text-accent" />
-                        <span className="font-medium text-foreground">{order.deliveryAddress}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Clock className="h-4 w-4 text-accent" />
-                        <span className="text-foreground">{order.deliveryTime}</span>
-                      </div>
-                    </div>
-
-                    <Button 
-                      className="w-full font-medium text-white"
-                      style={{ backgroundColor: '#29b6f6' }}
-                      onMouseEnter={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#1e88e5'}
-                      onMouseLeave={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#29b6f6'}
-                      onClick={handleStartNavigation}
-                    >
-                      <Play className="h-4 w-4 mr-2" />
-                      Start Navigation
-                    </Button>
-                  </div>
-
-                  {/* Customer Location Map */}
-                  <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
-                    <h3 className="text-lg font-semibold text-foreground mb-4">Customer Location</h3>
-                    <div className="relative aspect-video bg-accent/5 rounded-lg border border-border overflow-hidden">
-                      <img 
-                        src={luxuryPoolDeckMap} 
-                        alt="Luxury pool deck area - Customer location preview" 
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute top-1/3 left-2/3 transform -translate-x-1/2 -translate-y-1/2">
-                        <div className="relative">
-                          <MapPin className="h-8 w-8 text-red-500 fill-red-500 drop-shadow-lg" />
-                          <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                        </div>
-                      </div>
-                      <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-foreground shadow-lg">
-                        {order.deliveryAddress}
-                      </div>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                /* Active Navigation */
-                <DeliveryNavigation 
-                  destination={order.deliveryAddress}
-                  onComplete={handleNavigationComplete}
-                />
-              )}
-            </div>
-
-            {/* Customer & Order Details Sidebar */}
-            <div className="space-y-6">
-              {/* Customer Info */}
-              <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-foreground">Delivery For</h3>
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm">
-                      <Phone className="h-4 w-4" />
-                    </Button>
-                    <Button 
-                      className="font-medium text-white"
-                      style={{ backgroundColor: '#29b6f6' }}
-                      onMouseEnter={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#1e88e5'}
-                      onMouseLeave={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#29b6f6'}
-                      size="sm"
-                    >
-                      <MessageCircle className="h-4 w-4 mr-2" />
-                      Chat
-                    </Button>
-                  </div>
+          {/* Main Content */}
+          <div className="space-y-6">
+            {/* Restaurant Info */}
+            <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="h-12 w-12 rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm">
+                  {restaurantLogo ? (
+                    <img src={restaurantLogo} alt={`${order.restaurant} logo`} className="h-10 w-10 object-contain" />
+                  ) : (
+                    <Package className="h-6 w-6 text-accent" />
+                  )}
                 </div>
-                <div className="flex items-center gap-3 mb-4">
-                  <Avatar className="h-12 w-12">
-                    <AvatarImage src={order.customer.avatar} />
-                    <AvatarFallback>GB</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="font-semibold text-foreground">{order.customer.name}</p>
-                    <p className="text-sm text-muted-foreground">{order.customer.phone}</p>
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-sm font-medium text-foreground">Delivery Address:</p>
-                  <p className="text-sm text-muted-foreground">{order.deliveryAddress}</p>
+                <div className="flex-1">
+                  <h2 className="text-lg font-semibold text-foreground lg:text-xl">Delivering from {order.restaurant}</h2>
+                  <Badge className="bg-accent text-white font-medium mt-1 border-0">
+                    {order.deliveryType}
+                  </Badge>
                 </div>
               </div>
 
-              {/* Order Details */}
-              <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
-                <h3 className="text-lg font-semibold text-foreground mb-4">Order Details</h3>
-                
-                <div className="space-y-4">
-                  {order.items.map((item, index) => (
-                    <div key={index} className="flex items-start gap-3">
-                      <CheckCircle className="h-5 w-5 text-success mt-0.5" />
-                      <div className="flex-1">
-                        <div className="flex justify-between items-center">
-                          <p className="font-medium text-foreground">{item.name}</p>
-                          <p className="font-semibold text-foreground">${item.price}</p>
-                        </div>
-                        <p className="text-sm text-muted-foreground">{item.modifications}</p>
-                      </div>
-                    </div>
-                  ))}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div className="flex items-center gap-2">
+                  <MapPin className="h-4 w-4 text-accent" />
+                  <span className="font-medium text-foreground">{order.deliveryAddress}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-accent" />
+                  <span className="text-foreground">{order.deliveryTime}</span>
+                </div>
+              </div>
 
-                  {order.specialNotes && (
-                    <div className="bg-gradient-to-r from-amber-50 to-orange-50 border-l-4 border-l-amber-400 rounded-lg p-3 shadow-sm mt-4">
-                      <div className="flex items-start gap-2">
-                        <div className="h-6 w-6 bg-amber-100 rounded-full flex items-center justify-center">
-                          <span className="text-amber-600 text-sm">💬</span>
-                        </div>
-                        <div>
-                          <p className="font-medium text-amber-800 text-sm">Special Instructions</p>
-                          <p className="text-sm text-amber-700 leading-relaxed font-medium bg-white/60 p-2 rounded border border-amber-200 mt-1">
-                            {order.specialNotes}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+              <Button 
+                className="w-full font-medium text-white bg-primary hover:bg-primary/90"
+                onClick={handleStartNavigation}
+              >
+                <Play className="h-4 w-4 mr-2" />
+                Start Navigation
+              </Button>
+            </div>
 
-                  {/* Order Total */}
-                  <div className="border-t border-border pt-4 space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Order Total</span>
-                      <span className="text-foreground">${order.total}</span>
-                    </div>
-                    <div className="flex justify-between font-semibold text-lg border-t border-border pt-2">
-                      <span className="text-foreground">Your Earnings</span>
-                      <span className="text-success">+${order.earnings.total}</span>
-                    </div>
+            {/* Customer Location Preview */}
+            <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
+              <h3 className="text-lg font-semibold text-foreground mb-4">Customer Location</h3>
+              <div className="relative aspect-video bg-accent/5 rounded-lg border border-border overflow-hidden">
+                <img 
+                  src={luxuryPoolDeckMap} 
+                  alt="Luxury pool deck area - Customer location preview" 
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute top-1/3 left-2/3 transform -translate-x-1/2 -translate-y-1/2">
+                  <div className="relative">
+                    <MapPin className="h-8 w-8 text-red-500 fill-red-500 drop-shadow-lg" />
+                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
                   </div>
+                </div>
+                <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-foreground shadow-lg">
+                  {order.deliveryAddress}
                 </div>
               </div>
             </div>
           </div>
 
+          {/* Navigation started - Show drawer for order details */}
+          {navigationStarted && <OrderDetailsDrawer order={order} />}
+
         </div>
       </div>
+
+      {/* Full Screen Navigation Modal */}
+      <Dialog open={showNavigationModal} onOpenChange={setShowNavigationModal}>
+        <DialogContent className="max-w-full max-h-full w-screen h-screen p-0 m-0 border-0">
+          <DeliveryNavigation 
+            destination={order.deliveryAddress}
+            onComplete={handleNavigationComplete}
+          />
+        </DialogContent>
+      </Dialog>
 
       {/* Completion Modal */}
       <Dialog open={showCompletionModal} onOpenChange={setShowCompletionModal}>
