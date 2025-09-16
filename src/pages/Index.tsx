@@ -5,7 +5,7 @@ import OrderCard from "@/components/OrderCard";
 import { Package, Truck } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import inclusiveDeliveryIllustration from "@/assets/inclusive-delivery-illustration.jpg";
+import resortDeliveryIllustration from "@/assets/resort-delivery-illustration.jpg";
 
 const Index = () => {
   const [isOnline, setIsOnline] = useState(false);
@@ -70,7 +70,7 @@ const Index = () => {
             <div className="text-center py-12 lg:py-20">
               <div className="max-w-md mx-auto">
                 <img 
-                  src={inclusiveDeliveryIllustration} 
+                  src={resortDeliveryIllustration} 
                   alt="Start delivering illustration" 
                   className="w-full h-48 object-cover rounded-lg mb-6"
                 />
