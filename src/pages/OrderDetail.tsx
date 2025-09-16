@@ -10,7 +10,7 @@ import DesktopSidebar from "@/components/DesktopSidebar";
 import margaritaMamasLogo from "@/assets/margarita-mamas-logo.png";
 import sunsetGrillLogo from "@/assets/sunset-grill-logo.png";
 import oceanBreezeLogo from "@/assets/ocean-breeze-logo.png";
-import poolDeckMap from "@/assets/pool-deck-map.jpg";
+import luxuryPoolDeckMap from "@/assets/luxury-pool-deck-map.jpg";
 
 const OrderDetail = () => {
   const { orderId } = useParams();
@@ -150,15 +150,26 @@ const OrderDetail = () => {
                 </Button>
               </div>
 
-              {/* Customer Location Map Placeholder */}
+              {/* Customer Location Map */}
               <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
                 <h3 className="text-lg font-semibold text-foreground mb-4">Customer Location</h3>
-                <div className="aspect-video bg-accent/5 rounded-lg border border-border overflow-hidden">
+                <div className="relative aspect-video bg-accent/5 rounded-lg border border-border overflow-hidden">
                   <img 
-                    src={poolDeckMap} 
-                    alt="Pool deck area - Customer location preview" 
+                    src={luxuryPoolDeckMap} 
+                    alt="Luxury pool deck area - Customer location preview" 
                     className="w-full h-full object-cover"
                   />
+                  {/* Location Pin */}
+                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <div className="relative">
+                      <MapPin className="h-8 w-8 text-red-500 fill-red-500 drop-shadow-lg" />
+                      <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                    </div>
+                  </div>
+                  {/* Location Label */}
+                  <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-foreground shadow-lg">
+                    Pool Deck - Cabana 8
+                  </div>
                 </div>
               </div>
 
