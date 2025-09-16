@@ -7,6 +7,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { useState } from "react";
 import UnifiedHeader from "@/components/UnifiedHeader";
 import DesktopSidebar from "@/components/DesktopSidebar";
+import DeliveryNavigation from "@/components/DeliveryNavigation";
+import OrderDetailsDrawer from "@/components/OrderDetailsDrawer";
 import margaritaMamasLogo from "@/assets/margarita-mamas-logo.png";
 import sunsetGrillLogo from "@/assets/sunset-grill-logo.png";
 import oceanBreezeLogo from "@/assets/ocean-breeze-logo.png";
@@ -16,17 +18,20 @@ const OrderDetail = () => {
   const { orderId } = useParams();
   const navigate = useNavigate();
   const [showCompletionModal, setShowCompletionModal] = useState(false);
+  const [showNavigationModal, setShowNavigationModal] = useState(false);
+  const [navigationStarted, setNavigationStarted] = useState(false);
 
   // Mock order data - in real app would fetch based on orderId
   const order = {
     orderId: "#867899",
     restaurant: "Margarita Mama's",
-    deliveryAddress: "Room N°12",
+    deliveryAddress: "Pool Deck - Cabana 8",
     deliveryTime: "July 21, 11:36AM",
     deliveryType: "Room Delivery",
     customer: {
       name: "Gretche Bergson",
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=150&h=150&fit=crop&crop=face"
+      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=150&h=150&fit=crop&crop=face",
+      phone: "+1 (555) 123-4567"
     },
     items: [
       {
@@ -40,7 +45,7 @@ const OrderDetail = () => {
         modifications: "Extra slices of cheese ($1.00)"
       }
     ],
-    specialNotes: "Make sure to include free samples on every Order.",
+    specialNotes: "We're the family with blue umbrellas. Please bring extra napkins and utensils for kids.",
     subtotal: 35.90,
     processingFee: 4.00,
     deliveryTips: 4.00,
@@ -54,8 +59,13 @@ const OrderDetail = () => {
   };
 
   const handleStartDelivery = () => {
-    // Navigate to delivery tracking page
-    navigate(`/delivery/${orderId}`);
+    setNavigationStarted(true);
+    setShowNavigationModal(true);
+  };
+
+  const handleNavigationComplete = () => {
+    setShowNavigationModal(false);
+    setShowCompletionModal(true);
   };
 
   const handleCompleteDelivery = () => {
@@ -168,7 +178,7 @@ const OrderDetail = () => {
                   </div>
                   {/* Location Label */}
                   <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-foreground shadow-lg">
-                    Pool Deck - Cabana 8
+                    {order.deliveryAddress}
                   </div>
                 </div>
               </div>
@@ -257,7 +267,21 @@ const OrderDetail = () => {
           </div>
 
         </div>
+
+        {/* Navigation started - Show drawer for order details */}
+        {navigationStarted && <OrderDetailsDrawer order={order} />}
+
       </div>
+
+      {/* Full Screen Navigation Modal */}
+      <Dialog open={showNavigationModal} onOpenChange={setShowNavigationModal}>
+        <DialogContent className="max-w-full max-h-full w-screen h-screen p-0 m-0 border-0">
+          <DeliveryNavigation 
+            destination={order.deliveryAddress}
+            onComplete={handleNavigationComplete}
+          />
+        </DialogContent>
+      </Dialog>
 
       {/* Completion Modal */}
       <Dialog open={showCompletionModal} onOpenChange={setShowCompletionModal}>
