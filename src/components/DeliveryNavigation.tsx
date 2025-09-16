@@ -103,9 +103,11 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
         if (distance < 8 && !hasShownCloseNotification && !hasReachedDestination) {
           setHasShownCloseNotification(true);
           toast({
-            title: "Almost there! 📍",
-            description: "You're within 10ft of the customer",
-            duration: 3000,
+            variant: "warning",
+            title: "🎯 Almost there!",
+            description: "You're within 10ft of the customer. Get ready to complete delivery!",
+            duration: 4000,
+            className: "border-l-4 border-l-yellow-400",
           });
         }
         
