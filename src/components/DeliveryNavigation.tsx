@@ -263,55 +263,53 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
         />
       </div>
 
-      {/* Full Screen Interactive Resort Map - Pokemon Go style on mobile */}
+      {/* Full Screen Interactive Resort Map */}
       <div 
-        className={`flex-1 relative bg-accent/5 overflow-hidden ${isMobile ? 'cursor-grab active:cursor-grabbing' : ''}`}
-        {...(isMobile ? {
-          onMouseDown: (e) => {
+        className="flex-1 relative bg-accent/5 overflow-hidden"
+        onMouseDown={isMobile ? (e) => {
+          setIsDragging(true);
+          setLastMousePos({ x: e.clientX, y: e.clientY });
+        } : undefined}
+        onMouseMove={isMobile ? (e) => {
+          if (!isDragging) return;
+          const deltaX = e.clientX - lastMousePos.x;
+          const deltaY = e.clientY - lastMousePos.y;
+          setMapTransform(prev => ({
+            ...prev,
+            translateX: prev.translateX + deltaX / mapTransform.scale,
+            translateY: prev.translateY + deltaY / mapTransform.scale
+          }));
+          setLastMousePos({ x: e.clientX, y: e.clientY });
+        } : undefined}
+        onMouseUp={isMobile ? () => setIsDragging(false) : undefined}
+        onMouseLeave={isMobile ? () => setIsDragging(false) : undefined}
+        onWheel={isMobile ? (e) => {
+          e.preventDefault();
+          const delta = e.deltaY > 0 ? 0.9 : 1.1;
+          const newScale = Math.max(0.8, Math.min(3, mapTransform.scale * delta));
+          setMapTransform(prev => ({
+            ...prev,
+            scale: newScale
+          }));
+        } : undefined}
+        onTouchStart={isMobile ? (e) => {
+          if (e.touches.length === 1) {
             setIsDragging(true);
-            setLastMousePos({ x: e.clientX, y: e.clientY });
-          },
-          onMouseMove: (e) => {
-            if (!isDragging) return;
-            const deltaX = e.clientX - lastMousePos.x;
-            const deltaY = e.clientY - lastMousePos.y;
-            setMapTransform(prev => ({
-              ...prev,
-              translateX: prev.translateX + deltaX / mapTransform.scale,
-              translateY: prev.translateY + deltaY / mapTransform.scale
-            }));
-            setLastMousePos({ x: e.clientX, y: e.clientY });
-          },
-          onMouseUp: () => setIsDragging(false),
-          onMouseLeave: () => setIsDragging(false),
-          onWheel: (e) => {
-            e.preventDefault();
-            const delta = e.deltaY > 0 ? 0.9 : 1.1;
-            const newScale = Math.max(0.8, Math.min(3, mapTransform.scale * delta));
-            setMapTransform(prev => ({
-              ...prev,
-              scale: newScale
-            }));
-          },
-          onTouchStart: (e) => {
-            if (e.touches.length === 1) {
-              setIsDragging(true);
-              setLastMousePos({ x: e.touches[0].clientX, y: e.touches[0].clientY });
-            }
-          },
-          onTouchMove: (e) => {
-            if (!isDragging || e.touches.length !== 1) return;
-            const deltaX = e.touches[0].clientX - lastMousePos.x;
-            const deltaY = e.touches[0].clientY - lastMousePos.y;
-            setMapTransform(prev => ({
-              ...prev,
-              translateX: prev.translateX + deltaX / mapTransform.scale,
-              translateY: prev.translateY + deltaY / mapTransform.scale
-            }));
             setLastMousePos({ x: e.touches[0].clientX, y: e.touches[0].clientY });
-          },
-          onTouchEnd: () => setIsDragging(false)
-        } : {})}
+          }
+        } : undefined}
+        onTouchMove={isMobile ? (e) => {
+          if (!isDragging || e.touches.length !== 1) return;
+          const deltaX = e.touches[0].clientX - lastMousePos.x;
+          const deltaY = e.touches[0].clientY - lastMousePos.y;
+          setMapTransform(prev => ({
+            ...prev,
+            translateX: prev.translateX + deltaX / mapTransform.scale,
+            translateY: prev.translateY + deltaY / mapTransform.scale
+          }));
+          setLastMousePos({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+        } : undefined}
+        onTouchEnd={isMobile ? () => setIsDragging(false) : undefined}
       >
         {/* Map Container - Larger than viewport for continuous panning */}
         <div 
