@@ -42,33 +42,39 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
     }
   };
 
-  // Generate realistic waypoints that avoid going through the pool
+  // Generate realistic waypoints that follow concrete walkways around the pool
   const generateRouteWaypoints = (destination: Position): Position[] => {
     const startPos = { top: "85%", left: "10%" };
     const waypoints = [startPos];
     
-    // For pool/cabana destinations, route around the pool
+    // For pool/cabana destinations, route around the pool following the concrete perimeter
     if (destination.top === "33%" && destination.left === "66%") {
-      // Go up along the left side, then around the pool perimeter
-      waypoints.push({ top: "65%", left: "15%" }); // Move up from kitchen
-      waypoints.push({ top: "45%", left: "25%" }); // Approach pool area
-      waypoints.push({ top: "35%", left: "45%" }); // Go around left side of pool
-      waypoints.push({ top: "33%", left: "60%" }); // Approach cabana area
+      // Follow the curved concrete path around the pool perimeter (like the yellow line in user's image)
+      waypoints.push({ top: "78%", left: "18%" }); // Move up from kitchen area
+      waypoints.push({ top: "70%", left: "28%" }); // Start curving toward pool area
+      waypoints.push({ top: "60%", left: "35%" }); // Follow left side of pool deck
+      waypoints.push({ top: "50%", left: "40%" }); // Continue around left curve
+      waypoints.push({ top: "42%", left: "48%" }); // Upper left curve of pool
+      waypoints.push({ top: "38%", left: "55%" }); // Top curve of pool
+      waypoints.push({ top: "35%", left: "62%" }); // Approach cabana area around pool edge
     } else if (destination.top === "20%" && destination.left === "85%") {
-      // Room destinations - go up and around
-      waypoints.push({ top: "65%", left: "20%" });
-      waypoints.push({ top: "45%", left: "35%" });
-      waypoints.push({ top: "30%", left: "55%" });
+      // Room destinations - go up following walkways
+      waypoints.push({ top: "75%", left: "20%" });
+      waypoints.push({ top: "60%", left: "30%" });
+      waypoints.push({ top: "45%", left: "45%" });
+      waypoints.push({ top: "35%", left: "60%" });
       waypoints.push({ top: "25%", left: "75%" });
     } else if (destination.top === "70%" && destination.left === "90%") {
-      // Beach destinations - go around the right side
-      waypoints.push({ top: "75%", left: "25%" });
-      waypoints.push({ top: "70%", left: "50%" });
-      waypoints.push({ top: "68%", left: "75%" });
+      // Beach destinations - follow right side walkway
+      waypoints.push({ top: "80%", left: "25%" });
+      waypoints.push({ top: "75%", left: "45%" });
+      waypoints.push({ top: "72%", left: "65%" });
+      waypoints.push({ top: "70%", left: "80%" });
     } else {
-      // Default routing for other destinations
-      waypoints.push({ top: "65%", left: "20%" });
-      waypoints.push({ top: "50%", left: "40%" });
+      // Default routing following pool perimeter
+      waypoints.push({ top: "75%", left: "20%" });
+      waypoints.push({ top: "60%", left: "35%" });
+      waypoints.push({ top: "45%", left: "50%" });
     }
     
     waypoints.push(destination);
