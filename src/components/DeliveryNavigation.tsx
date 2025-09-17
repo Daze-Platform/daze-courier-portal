@@ -262,14 +262,9 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
       </div>
 
       {/* Resort Map - Static Display */}
-      <div className="flex-1 relative overflow-hidden">
-        <div className="relative w-full h-full">
-          <img 
-            src={luxuryPoolDeckMap} 
-            alt="Luxury resort map with navigation" 
-            className="w-full h-full object-contain pointer-events-none"
-            draggable={false}
-          />
+      <div className="flex-1 relative overflow-hidden bg-cover bg-center bg-no-repeat" 
+           style={{ backgroundImage: `url(${luxuryPoolDeckMap})` }}>
+        <div className="absolute inset-0 bg-black/10"></div> {/* Slight overlay for better contrast */}
           {/* Map Legend - Top Right */}
           <div className="absolute top-4 right-4 z-40 bg-white/95 backdrop-blur-sm rounded-lg p-2 shadow-lg">
             <div className="flex flex-col gap-1">
@@ -437,7 +432,6 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
             🚶 You
           </div>
         </div>
-      </div>
 
       {/* Bottom Navigation Controls */}
       <div className="bg-background border-t border-border p-4 flex-shrink-0">
