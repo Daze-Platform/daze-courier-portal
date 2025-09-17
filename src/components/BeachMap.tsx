@@ -17,6 +17,19 @@ const BeachMap = ({ destination, onUmbrellaSelect, showTokenInput = true }: Beac
   const [mapboxToken, setMapboxToken] = useState<string>('');
   const [tokenSubmitted, setTokenSubmitted] = useState<boolean>(false);
 
+  // Load saved token from localStorage on component mount
+  useEffect(() => {
+    const savedToken = localStorage.getItem('mapbox-token');
+    console.log('BeachMap: Loading saved token:', savedToken ? 'Token found' : 'No token found');
+    if (savedToken) {
+      setMapboxToken(savedToken);
+      setTokenSubmitted(true);
+      console.log('BeachMap: Initializing map with saved token');
+      // Initialize map immediately if token exists
+      setTimeout(() => initializeMap(savedToken), 100);
+    }
+  }, []);
+
   // Pelican Beach Resort coordinates
   const RESORT_CENTER: [number, number] = [-86.4747922, 30.3844906];
 
@@ -53,14 +66,20 @@ const BeachMap = ({ destination, onUmbrellaSelect, showTokenInput = true }: Beac
 
   const handleTokenSubmit = () => {
     if (mapboxToken.trim()) {
+      // Save token to localStorage for persistence
+      localStorage.setItem('mapbox-token', mapboxToken.trim());
       setTokenSubmitted(true);
       initializeMap(mapboxToken.trim());
     }
   };
 
   const initializeMap = (token: string) => {
-    if (!mapContainer.current) return;
+    if (!mapContainer.current) {
+      console.log('BeachMap: Map container not ready, skipping initialization');
+      return;
+    }
 
+    console.log('BeachMap: Initializing map with token');
     mapboxgl.accessToken = token;
     
     map.current = new mapboxgl.Map({
@@ -298,7 +317,7 @@ const BeachMap = ({ destination, onUmbrellaSelect, showTokenInput = true }: Beac
     };
   }, []);
 
-  if (showTokenInput && !tokenSubmitted) {
+  if (showTokenInput && !tokenSubmitted && !localStorage.getItem('mapbox-token')) {
     return (
       <div className="flex flex-col items-center justify-center h-96 bg-card rounded-lg border border-border p-6">
         <Umbrella className="h-12 w-12 text-blue-500 mb-4" />

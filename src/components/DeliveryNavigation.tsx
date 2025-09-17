@@ -37,6 +37,14 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
   const isBeachDelivery = deliveryType?.toLowerCase().includes('beach') || 
                         destination?.toLowerCase().includes('beach');
 
+  console.log('DeliveryNavigation Debug:', {
+    deliveryType,
+    destination,
+    isBeachDelivery,
+    deliveryTypeLower: deliveryType?.toLowerCase(),
+    destinationLower: destination?.toLowerCase()
+  });
+
   // Get destination position based on delivery location - positioned at actual umbrellas
   const getDestinationPosition = (dest: string): Position => {
     if (dest.includes("Room")) {

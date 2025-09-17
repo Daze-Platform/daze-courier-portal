@@ -61,6 +61,10 @@ const OrderDetail = () => {
   };
 
   const handleStartDelivery = () => {
+    console.log('Starting delivery with:', { 
+      deliveryType: order.deliveryType, 
+      deliveryAddress: order.deliveryAddress 
+    });
     setNavigationStarted(true);
     setShowNavigationModal(true);
   };

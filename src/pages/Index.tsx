@@ -44,17 +44,17 @@ const Index = () => {
       specialNotes: "We're the family with blue umbrellas. Please bring extra napkins and utensils for kids."
     },
     {
-      orderId: "#23456791",
-      restaurant: "Ocean Breeze Café",
-      items: ["1x Fish Tacos (3 pieces with Mango Salsa)", "1x Coconut Water", "1x Sweet Potato Fries"],
-      deliveryAddress: "Beach Chair Section A - Chair 15",
-      deliveryTime: "July 21, 1:20PM",
-      itemCount: 3,
-      deliveryType: "Beach service",
+      orderId: "#867899",
+      restaurant: "Margarita Mama's",
+      items: ["1x Fried Rice", "2x Ham & Cheese Croissant"],
+      deliveryAddress: "Beach - Umbrella A3",
+      deliveryTime: "July 21, 11:36AM",
+      itemCount: 2,
+      deliveryType: "Beach Service",
       timeRemaining: 28,
-      orderTotal: 28.50,
-      estimatedEarnings: 15.25,
-      specialNotes: "Allergic to shellfish - please confirm no cross-contamination. Thank you!"
+      orderTotal: 39.90,
+      estimatedEarnings: 24.80,
+      specialNotes: "We're the family with blue umbrellas. Please bring extra napkins and utensils for kids."
     }
   ];
 
