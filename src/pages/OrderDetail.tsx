@@ -299,21 +299,21 @@ const OrderDetail = () => {
             <div className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-xl font-semibold text-foreground">Total Earnings</span>
-                <span className="text-xl font-bold text-success">+${order.earnings.total}</span>
+                <span className="text-xl font-bold text-success">+${order.earnings.total.toFixed(2)}</span>
               </div>
               
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Base Pay</span>
-                  <span className="text-foreground">${order.earnings.basePay}</span>
+                  <span className="text-foreground">${order.earnings.basePay.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Customer Tip</span>
-                  <span className="text-foreground">${order.earnings.customerTip}</span>
+                  <span className="text-foreground">${order.earnings.customerTip.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Additional Pay</span>
-                  <span className="text-foreground">${order.earnings.additionalPay}</span>
+                  <span className="text-foreground">${order.earnings.additionalPay.toFixed(2)}</span>
                 </div>
               </div>
             </div>
