@@ -20,7 +20,7 @@ interface Position {
 
 const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps) => {
   const [isNavigating, setIsNavigating] = useState(false);
-  const [courierPosition, setCourierPosition] = useState<Position>({ top: "75%", left: "8%" });
+  const [courierPosition, setCourierPosition] = useState<Position>({ top: "65%", left: "25%" }); // Pool Bar starting position
   const [progress, setProgress] = useState(0);
   const [eta, setEta] = useState(8);
   const [totalDistance] = useState("0.7 mi");
@@ -48,35 +48,35 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
 
   // Generate realistic waypoints that follow concrete walkways around the pool (NEVER through water)
   const generateRouteWaypoints = (destination: Position): Position[] => {
-    const startPos = { top: "75%", left: "8%" }; // Restaurant/kitchen area
+    const startPos = { top: "65%", left: "25%" }; // Pool Bar starting position
     const waypoints = [startPos];
     
     // For pool/umbrella destinations, route around the pool on concrete walkways
     if (destination.top === "55%" && destination.left === "65%") {
       // Route to umbrella area following concrete walkways around pool
-      waypoints.push({ top: "75%", left: "20%" }); // Move right from kitchen on walkway
-      waypoints.push({ top: "70%", left: "35%" }); // Follow bottom walkway around pool
-      waypoints.push({ top: "65%", left: "50%" }); // Continue on right side walkway
-      waypoints.push({ top: "58%", left: "60%" }); // Approach umbrella area
+      waypoints.push({ top: "65%", left: "35%" }); // Move right from pool bar
+      waypoints.push({ top: "62%", left: "45%" }); // Follow walkway around pool
+      waypoints.push({ top: "58%", left: "55%" }); // Continue on right side walkway
+      waypoints.push({ top: "56%", left: "60%" }); // Approach umbrella area
     } else if (destination.top === "20%" && destination.left === "85%") {
       // Room destinations - go around the RIGHT side of pool on concrete
-      waypoints.push({ top: "72%", left: "15%" }); // Move from kitchen toward pool edge
-      waypoints.push({ top: "65%", left: "30%" }); // Go to right side of pool
-      waypoints.push({ top: "55%", left: "45%" }); // Follow right walkway up
-      waypoints.push({ top: "45%", left: "60%" }); // Continue on right side
-      waypoints.push({ top: "35%", left: "70%" }); // Move toward rooms
-      waypoints.push({ top: "25%", left: "80%" }); // Final approach to rooms
+      waypoints.push({ top: "60%", left: "35%" }); // Move from pool bar toward pool edge
+      waypoints.push({ top: "55%", left: "45%" }); // Go to right side of pool
+      waypoints.push({ top: "50%", left: "55%" }); // Follow right walkway up
+      waypoints.push({ top: "40%", left: "65%" }); // Continue on right side
+      waypoints.push({ top: "30%", left: "75%" }); // Move toward rooms
+      waypoints.push({ top: "22%", left: "82%" }); // Final approach to rooms
     } else if (destination.top === "70%" && destination.left === "90%") {
       // Beach destinations - follow RIGHT side walkway around pool
-      waypoints.push({ top: "72%", left: "15%" }); // Move from kitchen
-      waypoints.push({ top: "68%", left: "30%" }); // Go to right side of pool
-      waypoints.push({ top: "65%", left: "50%" }); // Follow concrete around right
-      waypoints.push({ top: "67%", left: "70%" }); // Continue on walkway
-      waypoints.push({ top: "69%", left: "85%" }); // Approach beach area
+      waypoints.push({ top: "68%", left: "35%" }); // Move from pool bar
+      waypoints.push({ top: "66%", left: "50%" }); // Go to right side of pool
+      waypoints.push({ top: "68%", left: "65%" }); // Follow concrete around right
+      waypoints.push({ top: "69%", left: "75%" }); // Continue on walkway
+      waypoints.push({ top: "70%", left: "87%" }); // Approach beach area
     } else {
       // Default routing around pool on concrete to umbrella area
-      waypoints.push({ top: "72%", left: "20%" }); // Safe concrete path
-      waypoints.push({ top: "68%", left: "40%" }); // Continue on walkway around pool
+      waypoints.push({ top: "66%", left: "35%" }); // Safe concrete path from pool bar
+      waypoints.push({ top: "63%", left: "50%" }); // Continue on walkway around pool
       waypoints.push({ top: "60%", left: "60%" }); // Approach destination
     }
     
@@ -142,7 +142,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
   };
 
   const resetPosition = () => {
-    setCourierPosition({ top: "75%", left: "8%" }); // Reset to restaurant/kitchen area
+    setCourierPosition({ top: "65%", left: "25%" }); // Reset to Pool Bar
     setEta(8);
     setProgress(0);
     setHasReachedDestination(false);
@@ -281,6 +281,10 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
                 <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                 <span className="text-xs font-medium">Destination</span>
               </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-amber-500 rounded-full"></div>
+                <span className="text-xs font-medium">Pool Bar</span>
+              </div>
             </div>
           </div>
 
@@ -290,6 +294,19 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
               {progress >= 100 ? 'Complete!' : `${Math.round(progress)}% Complete`}
             </div>
           </div>
+          {/* Pool Bar Marker */}
+          <div 
+            className="absolute transform -translate-x-1/2 -translate-y-1/2 z-25"
+            style={{ top: "65%", left: "25%" }}
+          >
+            <div className="relative">
+              <MapPin className="h-8 w-8 text-amber-500 fill-amber-500 drop-shadow-lg" />
+              <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-amber-500 text-white px-2 py-1 rounded text-xs font-medium whitespace-nowrap">
+                Pool Bar
+              </div>
+            </div>
+          </div>
+
           {/* Destination Pin */}
           <div 
             className="absolute transform -translate-x-1/2 -translate-y-1/2 z-20"
