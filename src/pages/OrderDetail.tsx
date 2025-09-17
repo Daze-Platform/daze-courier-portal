@@ -169,6 +169,18 @@ const OrderDetail = () => {
                     alt="Luxury pool deck area - Customer location preview" 
                     className="w-full h-full object-cover"
                   />
+                  {/* Pool Bar Marker */}
+                  <div 
+                    className="absolute transform -translate-x-1/2 -translate-y-1/2"
+                    style={{ top: "35%", left: "50%" }}
+                  >
+                    <div className="relative">
+                      <MapPin className="h-6 w-6 text-amber-500 fill-amber-500 drop-shadow-lg" />
+                      <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-amber-500 text-white px-2 py-1 rounded text-xs font-medium whitespace-nowrap">
+                        Pool Bar
+                      </div>
+                    </div>
+                  </div>
                   {/* Location Pin - positioned at poolside umbrella */}
                   <div className="absolute top-1/3 left-2/3 transform -translate-x-1/2 -translate-y-1/2">
                     <div className="relative">
