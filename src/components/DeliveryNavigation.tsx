@@ -267,7 +267,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
           <img 
             src={luxuryPoolDeckMap} 
             alt="Luxury resort map with navigation" 
-            className="w-full h-full object-cover pointer-events-none"
+            className="w-full h-full object-contain pointer-events-none"
             draggable={false}
           />
           {/* Map Legend - Top Right */}
