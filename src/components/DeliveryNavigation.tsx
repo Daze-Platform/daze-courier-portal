@@ -20,7 +20,7 @@ interface Position {
 
 const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps) => {
   const [isNavigating, setIsNavigating] = useState(false);
-  const [courierPosition, setCourierPosition] = useState<Position>({ top: "28%", left: "12%" }); // Pool Bar starting position
+  const [courierPosition, setCourierPosition] = useState<Position>({ top: "35%", left: "50%" }); // Pool Bar starting position
   const [progress, setProgress] = useState(0);
   const [eta, setEta] = useState(8);
   const [totalDistance] = useState("0.7 mi");
@@ -48,36 +48,28 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
 
   // Generate realistic waypoints that follow concrete walkways around the pool (NEVER through water)
   const generateRouteWaypoints = (destination: Position): Position[] => {
-    const startPos = { top: "28%", left: "12%" }; // Pool Bar starting position
+    const startPos = { top: "35%", left: "50%" }; // Pool Bar starting position
     const waypoints = [startPos];
     
     // For pool/umbrella destinations, route around the pool on concrete walkways
     if (destination.top === "55%" && destination.left === "65%") {
       // Route to umbrella area following concrete walkways around pool
-      waypoints.push({ top: "35%", left: "20%" }); // Move down from pool bar
-      waypoints.push({ top: "45%", left: "30%" }); // Follow left side walkway  
-      waypoints.push({ top: "55%", left: "40%" }); // Continue around pool
-      waypoints.push({ top: "57%", left: "55%" }); // Approach umbrella area
+      waypoints.push({ top: "40%", left: "55%" }); // Move down from pool bar
+      waypoints.push({ top: "50%", left: "60%" }); // Approach umbrella area directly
     } else if (destination.top === "20%" && destination.left === "85%") {
-      // Room destinations - go around the RIGHT side of pool on concrete
-      waypoints.push({ top: "25%", left: "20%" }); // Move from pool bar
-      waypoints.push({ top: "22%", left: "35%" }); // Move toward right side
-      waypoints.push({ top: "20%", left: "50%" }); // Follow walkway to right
-      waypoints.push({ top: "20%", left: "65%" }); // Continue toward rooms
-      waypoints.push({ top: "20%", left: "75%" }); // Move toward rooms
-      waypoints.push({ top: "20%", left: "82%" }); // Final approach to rooms
+      // Room destinations - go toward rooms from center pool bar
+      waypoints.push({ top: "30%", left: "60%" }); // Move from pool bar toward rooms
+      waypoints.push({ top: "25%", left: "70%" }); // Continue toward rooms
+      waypoints.push({ top: "20%", left: "80%" }); // Final approach to rooms
     } else if (destination.top === "70%" && destination.left === "90%") {
-      // Beach destinations - follow RIGHT side walkway around pool
-      waypoints.push({ top: "35%", left: "20%" }); // Move down from pool bar
-      waypoints.push({ top: "50%", left: "30%" }); // Go toward right side of pool
-      waypoints.push({ top: "65%", left: "45%" }); // Follow concrete around right
-      waypoints.push({ top: "68%", left: "65%" }); // Continue on walkway
+      // Beach destinations - route toward beach area
+      waypoints.push({ top: "45%", left: "60%" }); // Move from pool bar toward beach
+      waypoints.push({ top: "60%", left: "75%" }); // Continue toward beach
       waypoints.push({ top: "70%", left: "85%" }); // Approach beach area
     } else {
-      // Default routing around pool on concrete to umbrella area
-      waypoints.push({ top: "35%", left: "20%" }); // Safe concrete path from pool bar
-      waypoints.push({ top: "50%", left: "35%" }); // Continue on walkway around pool
-      waypoints.push({ top: "60%", left: "50%" }); // Approach destination
+      // Default routing from center pool bar to umbrella area
+      waypoints.push({ top: "40%", left: "55%" }); // Move from pool bar
+      waypoints.push({ top: "50%", left: "60%" }); // Approach destination
     }
     
     waypoints.push(destination);
@@ -142,7 +134,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
   };
 
   const resetPosition = () => {
-    setCourierPosition({ top: "28%", left: "12%" }); // Reset to Pool Bar
+    setCourierPosition({ top: "35%", left: "50%" }); // Reset to Pool Bar
     setEta(8);
     setProgress(0);
     setHasReachedDestination(false);
@@ -292,7 +284,7 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
           {/* Pool Bar Marker */}
           <div 
             className="absolute transform -translate-x-1/2 -translate-y-1/2 z-25"
-            style={{ top: "28%", left: "12%" }}
+            style={{ top: "35%", left: "50%" }}
           >
             <div className="relative">
               <MapPin className="h-8 w-8 text-amber-500 fill-amber-500 drop-shadow-lg" />
