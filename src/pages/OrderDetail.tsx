@@ -27,9 +27,9 @@ const OrderDetail = () => {
   const order = {
     orderId: "#867899",
     restaurant: "Margarita Mama's",
-    deliveryAddress: "Pool Deck - Cabana 8",
+    deliveryAddress: "Beach - Umbrella A3",
     deliveryTime: "July 21, 11:36AM",
-    deliveryType: "Room Delivery",
+    deliveryType: "Beach Service",
     customer: {
       name: "Gretche Bergson",
       avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=150&h=150&fit=crop&crop=face",
