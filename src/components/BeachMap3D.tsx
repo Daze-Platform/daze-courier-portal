@@ -1,8 +1,13 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Text, Html } from '@react-three/drei';
+import React, { useState, useEffect, Suspense } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, Environment, Sky } from '@react-three/drei';
 import { MapPin, Umbrella } from 'lucide-react';
 import * as THREE from 'three';
+import ResortBuilding from './3d/ResortBuilding';
+import SwimmingPool from './3d/SwimmingPool';
+import BeachLoungers from './3d/BeachLoungers';
+import PalmTrees from './3d/PalmTrees';
+import RealisticTerrain from './3d/RealisticTerrain';
 
 interface BeachMap3DProps {
   destination?: string;
@@ -10,226 +15,54 @@ interface BeachMap3DProps {
   showTokenInput?: boolean;
 }
 
-// 3D Umbrella Component
-const UmbrellaModel = ({ 
-  position, 
-  umbrellaId, 
-  type = 'standard', 
-  onSelect, 
-  isSelected = false 
-}: {
-  position: [number, number, number];
-  umbrellaId: string;
-  type?: 'standard' | 'premium';
-  onSelect?: (id: string) => void;
-  isSelected?: boolean;
-}) => {
-  const meshRef = useRef<THREE.Group>(null);
-  const [hovered, setHovered] = useState(false);
+// Loading component
+const LoadingFallback = () => (
+  <mesh>
+    <boxGeometry args={[1, 1, 1]} />
+    <meshStandardMaterial color="#cccccc" />
+  </mesh>
+);
 
-  useFrame((state) => {
-    if (meshRef.current && hovered) {
-      meshRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 2) * 0.1;
-    }
-  });
-
-  const color = type === 'premium' ? '#fbbf24' : '#3b82f6';
-  const poleColor = '#8b4513';
-
-  return (
-    <group
-      ref={meshRef}
-      position={position}
-      onClick={() => onSelect?.(umbrellaId)}
-      onPointerOver={() => setHovered(true)}
-      onPointerOut={() => setHovered(false)}
-    >
-      {/* Umbrella Pole */}
-      <mesh position={[0, 1, 0]}>
-        <cylinderGeometry args={[0.05, 0.05, 2]} />
-        <meshStandardMaterial color={poleColor} />
-      </mesh>
-      
-      {/* Umbrella Top */}
-      <mesh position={[0, 2.2, 0]} rotation={[0, 0, 0]}>
-        <coneGeometry args={[1.2, 0.8, 8]} />
-        <meshStandardMaterial 
-          color={color} 
-          transparent 
-          opacity={isSelected ? 0.9 : 0.7}
-        />
-      </mesh>
-      
-      {/* Selection indicator */}
-      {isSelected && (
-        <mesh position={[0, 0.1, 0]}>
-          <ringGeometry args={[1.5, 1.8, 16]} />
-          <meshBasicMaterial color="#10b981" transparent opacity={0.6} />
-        </mesh>
-      )}
-      
-      {/* Umbrella label */}
-      <Text
-        position={[0, 3, 0]}
-        fontSize={0.3}
-        color="white"
-        anchorX="center"
-        anchorY="middle"
-        outlineWidth={0.02}
-        outlineColor="black"
-      >
-        {umbrellaId}
-      </Text>
-      
-      {/* Hover effect */}
-      {hovered && (
-        <Html position={[0, 3.5, 0]} center>
-          <div className="bg-black/80 text-white px-2 py-1 rounded text-xs whitespace-nowrap pointer-events-none">
-            {type === 'premium' ? 'Premium' : 'Standard'} - {umbrellaId}
-          </div>
-        </Html>
-      )}
-    </group>
-  );
-};
-
-// Resort Building Component
-const ResortBuilding = () => {
-  return (
-    <group position={[-8, 0, -5]}>
-      {/* Main building */}
-      <mesh position={[0, 2, 0]}>
-        <boxGeometry args={[6, 4, 3]} />
-        <meshStandardMaterial color="#f5f5dc" />
-      </mesh>
-      
-      {/* Roof */}
-      <mesh position={[0, 4.5, 0]}>
-        <coneGeometry args={[4, 1.5, 4]} />
-        <meshStandardMaterial color="#8b4513" />
-      </mesh>
-      
-      {/* Windows */}
-      {Array.from({ length: 8 }).map((_, i) => (
-        <mesh key={i} position={[
-          -2 + (i % 4) * 1.3, 
-          1.5 + Math.floor(i / 4) * 1, 
-          1.51
-        ]}>
-          <boxGeometry args={[0.6, 0.8, 0.02]} />
-          <meshStandardMaterial color="#87ceeb" />
-        </mesh>
-      ))}
-      
-      {/* Door */}
-      <mesh position={[0, 1, 1.51]}>
-        <boxGeometry args={[0.8, 2, 0.02]} />
-        <meshStandardMaterial color="#654321" />
-      </mesh>
-      
-      {/* Building label */}
-      <Text
-        position={[0, 5.5, 0]}
-        fontSize={0.5}
-        color="white"
-        anchorX="center"
-        anchorY="middle"
-        outlineWidth={0.03}
-        outlineColor="black"
-      >
-        Pelican Beach Resort
-      </Text>
-    </group>
-  );
-};
-
-// Ocean Component with animated waves
-const Ocean = () => {
-  const meshRef = useRef<THREE.Mesh>(null);
-  
-  useFrame((state) => {
-    if (meshRef.current) {
-      const time = state.clock.elapsedTime;
-      meshRef.current.position.y = Math.sin(time * 0.5) * 0.1;
-    }
-  });
-
-  return (
-    <mesh ref={meshRef} position={[0, -0.5, 5]} rotation={[-Math.PI / 2, 0, 0]}>
-      <planeGeometry args={[50, 20]} />
-      <meshStandardMaterial 
-        color="#006994" 
-        transparent 
-        opacity={0.8}
-        roughness={0.1}
-        metalness={0.2}
-      />
+// Destination Marker Component
+const DestinationMarker = ({ position, label }: { position: [number, number, number]; label: string }) => (
+  <group position={position}>
+    <mesh position={[0, 2, 0]}>
+      <coneGeometry args={[0.4, 1.5, 8]} />
+      <meshStandardMaterial color="#ef4444" />
     </mesh>
-  );
-};
-
-// Beach Terrain
-const Beach = () => {
-  return (
-    <mesh position={[0, -0.8, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-      <planeGeometry args={[50, 30]} />
-      <meshStandardMaterial color="#f4e4bc" roughness={0.8} />
+    <mesh position={[0, 0.3, 0]}>
+      <sphereGeometry args={[0.3]} />
+      <meshStandardMaterial color="#ef4444" />
     </mesh>
-  );
-};
-
-// Destination Marker
-const DestinationMarker = ({ position, label }: { position: [number, number, number]; label: string }) => {
-  const meshRef = useRef<THREE.Group>(null);
-  
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 3) * 0.1;
-    }
-  });
-
-  return (
-    <group ref={meshRef} position={position}>
-      {/* Pin */}
-      <mesh position={[0, 1, 0]}>
-        <coneGeometry args={[0.3, 1, 8]} />
-        <meshStandardMaterial color="#ef4444" />
-      </mesh>
-      
-      {/* Pin base */}
-      <mesh position={[0, 0.2, 0]}>
-        <sphereGeometry args={[0.2]} />
-        <meshStandardMaterial color="#ef4444" />
-      </mesh>
-      
-      {/* Label */}
-      <Html position={[0, 2, 0]} center>
-        <div className="bg-red-500 text-white px-2 py-1 rounded text-xs whitespace-nowrap pointer-events-none">
-          📍 {label}
-        </div>
-      </Html>
-    </group>
-  );
-};
+  </group>
+);
 
 const BeachMap3D: React.FC<BeachMap3DProps> = ({ destination, onUmbrellaSelect }) => {
   const [selectedUmbrella, setSelectedUmbrella] = useState<string | null>(null);
 
-  // Umbrella positions and types
+  // Beach lounger positions arranged in realistic rows
   const umbrellas = [
-    { id: 'A1', position: [-3, 0, -2] as [number, number, number], type: 'standard' as const },
-    { id: 'A2', position: [-1, 0, -2] as [number, number, number], type: 'standard' as const },
-    { id: 'A3', position: [1, 0, -2] as [number, number, number], type: 'premium' as const },
-    { id: 'A4', position: [3, 0, -2] as [number, number, number], type: 'standard' as const },
-    { id: 'B1', position: [-4, 0, 0] as [number, number, number], type: 'premium' as const },
-    { id: 'B2', position: [-2, 0, 0] as [number, number, number], type: 'standard' as const },
-    { id: 'B3', position: [0, 0, 0] as [number, number, number], type: 'premium' as const },
-    { id: 'B4', position: [2, 0, 0] as [number, number, number], type: 'standard' as const },
-    { id: 'B5', position: [4, 0, 0] as [number, number, number], type: 'premium' as const },
-    { id: 'C1', position: [-3, 0, 2] as [number, number, number], type: 'standard' as const },
-    { id: 'C2', position: [-1, 0, 2] as [number, number, number], type: 'premium' as const },
-    { id: 'C3', position: [1, 0, 2] as [number, number, number], type: 'standard' as const },
-    { id: 'C4', position: [3, 0, 2] as [number, number, number], type: 'premium' as const },
+    // Front row - closest to ocean
+    { id: 'A1', position: [-15, 0, 8] as [number, number, number], type: 'standard' as const },
+    { id: 'A2', position: [-10, 0, 8] as [number, number, number], type: 'premium' as const },
+    { id: 'A3', position: [-5, 0, 8] as [number, number, number], type: 'standard' as const },
+    { id: 'A4', position: [0, 0, 8] as [number, number, number], type: 'premium' as const },
+    { id: 'A5', position: [5, 0, 8] as [number, number, number], type: 'standard' as const },
+    { id: 'A6', position: [10, 0, 8] as [number, number, number], type: 'premium' as const },
+    { id: 'A7', position: [15, 0, 8] as [number, number, number], type: 'standard' as const },
+    
+    // Second row
+    { id: 'B1', position: [-12, 0, 3] as [number, number, number], type: 'premium' as const },
+    { id: 'B2', position: [-6, 0, 3] as [number, number, number], type: 'standard' as const },
+    { id: 'B3', position: [0, 0, 3] as [number, number, number], type: 'premium' as const },
+    { id: 'B4', position: [6, 0, 3] as [number, number, number], type: 'standard' as const },
+    { id: 'B5', position: [12, 0, 3] as [number, number, number], type: 'premium' as const },
+    
+    // Third row - near pool area
+    { id: 'C1', position: [-8, 0, -2] as [number, number, number], type: 'standard' as const },
+    { id: 'C2', position: [-3, 0, -2] as [number, number, number], type: 'premium' as const },
+    { id: 'C3', position: [3, 0, -2] as [number, number, number], type: 'standard' as const },
+    { id: 'C4', position: [8, 0, -2] as [number, number, number], type: 'premium' as const },
   ];
 
   const handleUmbrellaSelect = (umbrellaId: string) => {
@@ -248,61 +81,86 @@ const BeachMap3D: React.FC<BeachMap3DProps> = ({ destination, onUmbrellaSelect }
   }, [destination]);
 
   return (
-    <div className="relative w-full h-full bg-gradient-to-b from-sky-300 to-sky-500">
+    <div className="relative w-full h-full bg-gradient-to-b from-blue-200 to-blue-400">
       <Canvas
-        camera={{ position: [0, 8, 10], fov: 60 }}
-        shadows
+        camera={{ 
+          position: [30, 25, 40], 
+          fov: 50 
+        }}
+        shadows={{
+          enabled: true,
+          type: THREE.PCFSoftShadowMap
+        }}
       >
-        {/* Lighting */}
-        <ambientLight intensity={0.4} />
-        <directionalLight
-          position={[10, 20, 5]}
-          intensity={1}
-          castShadow
-          shadow-mapSize-width={2048}
-          shadow-mapSize-height={2048}
-        />
-        <pointLight position={[-10, 10, -10]} intensity={0.3} />
-
-        {/* Scene Components */}
-        <Beach />
-        <Ocean />
-        <ResortBuilding />
-
-        {/* Umbrellas */}
-        {umbrellas.map((umbrella) => (
-          <UmbrellaModel
-            key={umbrella.id}
-            position={umbrella.position}
-            umbrellaId={umbrella.id}
-            type={umbrella.type}
-            onSelect={handleUmbrellaSelect}
-            isSelected={selectedUmbrella === umbrella.id}
+        <Suspense fallback={<LoadingFallback />}>
+          {/* Enhanced Lighting for CAD-like rendering */}
+          <ambientLight intensity={0.3} />
+          <directionalLight
+            position={[50, 50, 25]}
+            intensity={1.2}
+            castShadow
+            shadow-mapSize-width={4096}
+            shadow-mapSize-height={4096}
+            shadow-camera-far={100}
+            shadow-camera-left={-50}
+            shadow-camera-right={50}
+            shadow-camera-top={50}
+            shadow-camera-bottom={-50}
           />
-        ))}
-
-        {/* Destination marker */}
-        {destinationUmbrella && (
-          <DestinationMarker
-            position={[
-              destinationUmbrella.position[0],
-              destinationUmbrella.position[1] + 0.5,
-              destinationUmbrella.position[2]
-            ]}
-            label={destination || ''}
+          <hemisphereLight 
+            args={["#87CEEB", "#F4E4BC", 0.4]} 
           />
-        )}
 
-        {/* Camera Controls */}
-        <OrbitControls
-          enablePan={true}
-          enableZoom={true}
-          enableRotate={true}
-          minDistance={5}
-          maxDistance={20}
-          minPolarAngle={0}
-          maxPolarAngle={Math.PI / 2}
-        />
+          {/* Environment and Sky */}
+          <Sky 
+            sunPosition={[100, 20, 100]}
+            turbidity={0.1}
+            rayleigh={0.5}
+          />
+          <Environment preset="sunset" />
+
+          {/* Scene Components */}
+          <RealisticTerrain />
+          <ResortBuilding />
+          <SwimmingPool />
+          <PalmTrees />
+
+          {/* Beach Loungers */}
+          {umbrellas.map((umbrella) => (
+            <BeachLoungers
+              key={umbrella.id}
+              umbrellaId={umbrella.id}
+              position={umbrella.position}
+              type={umbrella.type}
+              onSelect={handleUmbrellaSelect}
+              isSelected={selectedUmbrella === umbrella.id}
+            />
+          ))}
+
+          {/* Destination marker */}
+          {destinationUmbrella && (
+            <DestinationMarker
+              position={[
+                destinationUmbrella.position[0],
+                destinationUmbrella.position[1] + 4,
+                destinationUmbrella.position[2]
+              ]}
+              label={destination || ''}
+            />
+          )}
+
+          {/* Enhanced Camera Controls for CAD-like navigation */}
+          <OrbitControls
+            enablePan={true}
+            enableZoom={true}
+            enableRotate={true}
+            minDistance={15}
+            maxDistance={80}
+            minPolarAngle={Math.PI / 8}
+            maxPolarAngle={Math.PI / 2.2}
+            target={[0, 0, 0]}
+          />
+        </Suspense>
       </Canvas>
 
       {/* UI Overlays */}
@@ -314,11 +172,11 @@ const BeachMap3D: React.FC<BeachMap3DProps> = ({ destination, onUmbrellaSelect }
         <div className="text-xs text-muted-foreground space-y-1">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-            <span>Standard Umbrellas</span>
+            <span>Standard Loungers</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-            <span>Premium Umbrellas</span>
+            <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+            <span>Premium Loungers</span>
           </div>
         </div>
       </div>
@@ -333,7 +191,7 @@ const BeachMap3D: React.FC<BeachMap3DProps> = ({ destination, onUmbrellaSelect }
       )}
 
       <div className="absolute bottom-4 right-4 text-xs text-white/70">
-        Click and drag to rotate • Scroll to zoom • Click umbrellas to select
+        Click and drag to rotate • Scroll to zoom • Click loungers to select
       </div>
     </div>
   );
