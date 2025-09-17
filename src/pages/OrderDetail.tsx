@@ -297,6 +297,7 @@ const OrderDetail = () => {
         <DialogContent className="max-w-full max-h-full w-screen h-screen p-0 m-0 border-0">
           <DeliveryNavigation 
             destination={order.deliveryAddress}
+            deliveryType={order.deliveryType}
             onComplete={handleNavigationComplete}
           />
         </DialogContent>

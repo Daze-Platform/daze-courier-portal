@@ -7,9 +7,11 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
 import luxuryPoolDeckMap from "@/assets/luxury-pool-deck-hd.jpg";
+import BeachMap from "@/components/BeachMap";
 
 interface DeliveryNavigationProps {
   destination: string;
+  deliveryType?: string;
   onComplete: () => void;
 }
 
@@ -18,7 +20,7 @@ interface Position {
   left: string;
 }
 
-const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps) => {
+const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onComplete }: DeliveryNavigationProps) => {
   const [isNavigating, setIsNavigating] = useState(false);
   const [courierPosition, setCourierPosition] = useState<Position>({ top: "35%", left: "50%" }); // Pool Bar starting position
   const [progress, setProgress] = useState(0);
@@ -30,6 +32,8 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
   const [routeWaypoints, setRouteWaypoints] = useState<Position[]>([]);
   const isMobile = useIsMobile();
   const { toast } = useToast();
+
+  const isBeachDelivery = deliveryType?.toLowerCase().includes('beach');
 
   // Get destination position based on delivery location - positioned at actual umbrellas
   const getDestinationPosition = (dest: string): Position => {
@@ -253,177 +257,183 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
         />
       </div>
 
-      {/* Resort Map - Static Display */}
-      <div className="flex-1 relative overflow-hidden bg-cover bg-center bg-no-repeat" 
-           style={{ backgroundImage: `url(${luxuryPoolDeckMap})` }}>
-        <div className="absolute inset-0 bg-black/10"></div> {/* Slight overlay for better contrast */}
-          {/* Map Legend - Top Right */}
-          <div className="absolute top-4 right-4 z-40 bg-white/95 backdrop-blur-sm rounded-lg p-2 shadow-lg">
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                <span className="text-xs font-medium">You</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                <span className="text-xs font-medium">Destination</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-amber-500 rounded-full"></div>
-                <span className="text-xs font-medium">Pool Bar</span>
+      {/* Resort Map - Conditional rendering based on delivery type */}
+      {isBeachDelivery ? (
+        <div className="flex-1">
+          <BeachMap destination={destination} showTokenInput={true} />
+        </div>
+      ) : (
+        <div className="flex-1 relative overflow-hidden bg-cover bg-center bg-no-repeat" 
+             style={{ backgroundImage: `url(${luxuryPoolDeckMap})` }}>
+          <div className="absolute inset-0 bg-black/10"></div> {/* Slight overlay for better contrast */}
+            {/* Map Legend - Top Right */}
+            <div className="absolute top-4 right-4 z-40 bg-white/95 backdrop-blur-sm rounded-lg p-2 shadow-lg">
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                  <span className="text-xs font-medium">You</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                  <span className="text-xs font-medium">Destination</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-amber-500 rounded-full"></div>
+                  <span className="text-xs font-medium">Pool Bar</span>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Progress Indicator - Top Left */}
-          <div className="absolute top-4 left-4 z-40 bg-white/95 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg">
-            <div className={`text-xs font-medium ${progress >= 100 ? 'text-green-600' : 'text-foreground'}`}>
-              {progress >= 100 ? 'Complete!' : `${Math.round(progress)}% Complete`}
-            </div>
-          </div>
-          {/* Pool Bar Marker */}
-          <div 
-            className="absolute transform -translate-x-1/2 -translate-y-1/2 z-25"
-            style={{ top: "35%", left: "50%" }}
-          >
-            <div className="relative">
-              <MapPin className="h-8 w-8 text-amber-500 fill-amber-500 drop-shadow-lg" />
-              <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-amber-500 text-white px-2 py-1 rounded text-xs font-medium whitespace-nowrap">
-                Pool Bar
+            {/* Progress Indicator - Top Left */}
+            <div className="absolute top-4 left-4 z-40 bg-white/95 backdrop-blur-sm rounded-lg px-3 py-2 shadow-lg">
+              <div className={`text-xs font-medium ${progress >= 100 ? 'text-green-600' : 'text-foreground'}`}>
+                {progress >= 100 ? 'Complete!' : `${Math.round(progress)}% Complete`}
               </div>
             </div>
-          </div>
-
-          {/* Destination Pin */}
-          <div 
-            className="absolute transform -translate-x-1/2 -translate-y-1/2 z-20"
-            style={{ top: destinationPos.top, left: destinationPos.left }}
-          >
-            <div className="relative">
-              <MapPin className="h-10 w-10 text-red-500 fill-red-500 drop-shadow-lg" />
-              <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-red-500 rounded-full animate-pulse" />
-            </div>
-          </div>
-          
-          {/* Courier Position */}
-          <div 
-            className="absolute transform -translate-x-1/2 -translate-y-1/2 z-10 transition-all duration-200 ease-linear"
-            style={{ top: courierPosition.top, left: courierPosition.left }}
-          >
-            <div className="relative">
-              <div className="h-8 w-8 bg-blue-500 rounded-full border-3 border-white shadow-xl flex items-center justify-center">
-                <User className="h-4 w-4 text-white" />
-              </div>
-              
-              {/* Pulse effect when navigating */}
-              {isNavigating && (
-                <div className="absolute inset-0 h-8 w-8 bg-blue-500 rounded-full animate-ping opacity-30"></div>
-              )}
-              
-              {/* Direction indicator - arrow pointing to destination */}
-              {isNavigating && (
-                <div 
-                  className="absolute top-1/2 left-1/2 w-6 h-0.5 bg-blue-500 origin-left transform -translate-y-1/2"
-                  style={{
-                    transform: `translate(-50%, -50%) rotate(${Math.atan2(
-                      parseFloat(destinationPos.top) - parseFloat(courierPosition.top),
-                      parseFloat(destinationPos.left) - parseFloat(courierPosition.left)
-                    ) * (180 / Math.PI)}deg)`,
-                  }}
-                />
-              )}
-            </div>
-          </div>
-          
-          {/* Route Path (curved path through waypoints when navigating) */}
-          {isNavigating && routeWaypoints.length > 0 && (
-            <svg 
-              className="absolute inset-0 w-full h-full pointer-events-none z-0"
-              style={{ overflow: 'visible' }}
+            {/* Pool Bar Marker */}
+            <div 
+              className="absolute transform -translate-x-1/2 -translate-y-1/2 z-25"
+              style={{ top: "35%", left: "50%" }}
             >
-              <defs>
-                <pattern id="dashed" patternUnits="userSpaceOnUse" width="8" height="2">
-                  <rect width="4" height="2" fill="#10b981" />
-                </pattern>
-              </defs>
-              {/* Draw path through all waypoints */}
-              {routeWaypoints.map((waypoint, index) => {
-                if (index === 0) return null;
-                const prevWaypoint = routeWaypoints[index - 1];
-                return (
+              <div className="relative">
+                <MapPin className="h-8 w-8 text-amber-500 fill-amber-500 drop-shadow-lg" />
+                <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-amber-500 text-white px-2 py-1 rounded text-xs font-medium whitespace-nowrap">
+                  Pool Bar
+                </div>
+              </div>
+            </div>
+
+            {/* Destination Pin */}
+            <div 
+              className="absolute transform -translate-x-1/2 -translate-y-1/2 z-20"
+              style={{ top: destinationPos.top, left: destinationPos.left }}
+            >
+              <div className="relative">
+                <MapPin className="h-10 w-10 text-red-500 fill-red-500 drop-shadow-lg" />
+                <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+              </div>
+            </div>
+            
+            {/* Courier Position */}
+            <div 
+              className="absolute transform -translate-x-1/2 -translate-y-1/2 z-10 transition-all duration-200 ease-linear"
+              style={{ top: courierPosition.top, left: courierPosition.left }}
+            >
+              <div className="relative">
+                <div className="h-8 w-8 bg-blue-500 rounded-full border-3 border-white shadow-xl flex items-center justify-center">
+                  <User className="h-4 w-4 text-white" />
+                </div>
+                
+                {/* Pulse effect when navigating */}
+                {isNavigating && (
+                  <div className="absolute inset-0 h-8 w-8 bg-blue-500 rounded-full animate-ping opacity-30"></div>
+                )}
+                
+                {/* Direction indicator - arrow pointing to destination */}
+                {isNavigating && (
+                  <div 
+                    className="absolute top-1/2 left-1/2 w-6 h-0.5 bg-blue-500 origin-left transform -translate-y-1/2"
+                    style={{
+                      transform: `translate(-50%, -50%) rotate(${Math.atan2(
+                        parseFloat(destinationPos.top) - parseFloat(courierPosition.top),
+                        parseFloat(destinationPos.left) - parseFloat(courierPosition.left)
+                      ) * (180 / Math.PI)}deg)`,
+                    }}
+                  />
+                )}
+              </div>
+            </div>
+            
+            {/* Route Path (curved path through waypoints when navigating) */}
+            {isNavigating && routeWaypoints.length > 0 && (
+              <svg 
+                className="absolute inset-0 w-full h-full pointer-events-none z-0"
+                style={{ overflow: 'visible' }}
+              >
+                <defs>
+                  <pattern id="dashed" patternUnits="userSpaceOnUse" width="8" height="2">
+                    <rect width="4" height="2" fill="#10b981" />
+                  </pattern>
+                </defs>
+                {/* Draw path through all waypoints */}
+                {routeWaypoints.map((waypoint, index) => {
+                  if (index === 0) return null;
+                  const prevWaypoint = routeWaypoints[index - 1];
+                  return (
+                    <line
+                      key={`route-${index}`}
+                      x1={`${parseFloat(prevWaypoint.left)}%`}
+                      y1={`${parseFloat(prevWaypoint.top)}%`}
+                      x2={`${parseFloat(waypoint.left)}%`}
+                      y2={`${parseFloat(waypoint.top)}%`}
+                      stroke="#10b981"
+                      strokeWidth="6"
+                      strokeDasharray="12,8"
+                      opacity={index <= currentWaypointIndex + 1 ? "0.9" : "0.4"}
+                      strokeLinecap="round"
+                    />
+                  );
+                })}
+                {/* Current segment from courier to next waypoint */}
+                {currentWaypointIndex < routeWaypoints.length - 1 && (
                   <line
-                    key={`route-${index}`}
-                    x1={`${parseFloat(prevWaypoint.left)}%`}
-                    y1={`${parseFloat(prevWaypoint.top)}%`}
-                    x2={`${parseFloat(waypoint.left)}%`}
-                    y2={`${parseFloat(waypoint.top)}%`}
+                    x1={`${parseFloat(courierPosition.left)}%`}
+                    y1={`${parseFloat(courierPosition.top)}%`}
+                    x2={`${parseFloat(routeWaypoints[currentWaypointIndex + 1].left)}%`}
+                    y2={`${parseFloat(routeWaypoints[currentWaypointIndex + 1].top)}%`}
                     stroke="#10b981"
                     strokeWidth="6"
                     strokeDasharray="12,8"
-                    opacity={index <= currentWaypointIndex + 1 ? "0.9" : "0.4"}
+                    opacity="0.9"
                     strokeLinecap="round"
                   />
-                );
-              })}
-              {/* Current segment from courier to next waypoint */}
-              {currentWaypointIndex < routeWaypoints.length - 1 && (
-                <line
-                  x1={`${parseFloat(courierPosition.left)}%`}
-                  y1={`${parseFloat(courierPosition.top)}%`}
-                  x2={`${parseFloat(routeWaypoints[currentWaypointIndex + 1].left)}%`}
-                  y2={`${parseFloat(routeWaypoints[currentWaypointIndex + 1].top)}%`}
-                  stroke="#10b981"
-                  strokeWidth="6"
-                  strokeDasharray="12,8"
-                  opacity="0.9"
-                  strokeLinecap="round"
-                />
-              )}
-            </svg>
-          )}
-          
-          {/* Location Labels */}
-          <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-foreground shadow-xl z-30 max-w-[calc(100vw-140px)] truncate">
-            📍 {destination}
-          </div>
-          
-          <div 
-            className="absolute bg-blue-500/95 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-white shadow-xl z-30 whitespace-nowrap"
-            style={{ 
-              top: (() => {
-                const courierTopPercent = parseFloat(courierPosition.top);
-                const courierLeftPercent = parseFloat(courierPosition.left);
-                
-                // Check if courier is near bottom-left where destination label is
-                const isNearDestinationLabel = courierTopPercent > 70 && courierLeftPercent < 40;
-                
-                if (isNearDestinationLabel) {
-                  // Position above the courier when near destination label
-                  return `calc(${courierPosition.top} - 40px)`;
-                } else {
-                  // Default position below courier
-                  return `calc(${courierPosition.top} + 50px)`;
-                }
-              })(),
-              left: (() => {
-                const courierLeftPercent = parseFloat(courierPosition.left);
-                
-                if (courierLeftPercent > 85) {
-                  // Far right - position to the left of courier
-                  return `calc(${courierPosition.left} - 60px)`;
-                } else if (courierLeftPercent < 15) {
-                  // Far left - position to the right of courier  
-                  return `calc(${courierPosition.left} + 30px)`;
-                } else {
-                  // Center - position normally
-                  return `calc(${courierPosition.left} - 25px)`;
-                }
-              })(),
-            }}
-          >
-            🚶 You
-          </div>
+                )}
+              </svg>
+            )}
+            
+            {/* Location Labels */}
+            <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-foreground shadow-xl z-30 max-w-[calc(100vw-140px)] truncate">
+              📍 {destination}
+            </div>
+            
+            <div 
+              className="absolute bg-blue-500/95 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-white shadow-xl z-30 whitespace-nowrap"
+              style={{ 
+                top: (() => {
+                  const courierTopPercent = parseFloat(courierPosition.top);
+                  const courierLeftPercent = parseFloat(courierPosition.left);
+                  
+                  // Check if courier is near bottom-left where destination label is
+                  const isNearDestinationLabel = courierTopPercent > 70 && courierLeftPercent < 40;
+                  
+                  if (isNearDestinationLabel) {
+                    // Position above the courier when near destination label
+                    return `calc(${courierPosition.top} - 40px)`;
+                  } else {
+                    // Default position below courier
+                    return `calc(${courierPosition.top} + 50px)`;
+                  }
+                })(),
+                left: (() => {
+                  const courierLeftPercent = parseFloat(courierPosition.left);
+                  
+                  if (courierLeftPercent > 85) {
+                    // Far right - position to the left of courier
+                    return `calc(${courierPosition.left} - 60px)`;
+                  } else if (courierLeftPercent < 15) {
+                    // Far left - position to the right of courier  
+                    return `calc(${courierPosition.left} + 30px)`;
+                  } else {
+                    // Center - position normally
+                    return `calc(${courierPosition.left} - 25px)`;
+                  }
+                })(),
+              }}
+            >
+              🚶 You
+            </div>
         </div>
+      )}
 
       {/* Bottom Navigation Controls */}
       <div className="bg-background border-t border-border p-4 flex-shrink-0">
