@@ -33,8 +33,9 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
   const isMobile = useIsMobile();
   const { toast } = useToast();
 
-  // Beach delivery detection - only when delivery type is "Beach Service"
-  const isBeachDelivery = deliveryType?.toLowerCase() === 'beach service';
+  // Beach delivery detection - check both delivery type and destination
+  const isBeachDelivery = deliveryType?.toLowerCase() === 'beach service' || 
+                          destination.toLowerCase().includes('beach');
 
   // Get destination position based on delivery location - positioned at actual umbrellas
   const getDestinationPosition = (dest: string): Position => {

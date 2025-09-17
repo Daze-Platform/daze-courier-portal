@@ -26,9 +26,9 @@ const DeliveryTracking = () => {
   const order = {
     orderId: "#867899",
     restaurant: "Margarita Mama's",
-    deliveryAddress: "Pool Deck - Cabana 8",
+    deliveryAddress: "Beach - Umbrella A3",
     deliveryTime: "July 21, 11:36AM",
-    deliveryType: "Poolside Service",
+    deliveryType: "Beach Service",
     customer: {
       name: "Gretche Bergson",
       avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=150&h=150&fit=crop&crop=face",
@@ -207,6 +207,7 @@ const DeliveryTracking = () => {
         <DialogContent className="max-w-full max-h-full w-screen h-screen p-0 m-0 border-0">
           <DeliveryNavigation 
             destination={order.deliveryAddress}
+            deliveryType={order.deliveryType}
             onComplete={handleNavigationComplete}
           />
         </DialogContent>
