@@ -157,11 +157,11 @@ const DeliveryTracking = () => {
             {/* Customer Location Preview */}
             <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
               <h3 className="text-lg font-semibold text-foreground mb-4">Customer Location</h3>
-              <div className="relative aspect-[4/3] sm:aspect-video bg-accent/5 rounded-lg border border-border overflow-hidden">
+              <div className="relative aspect-square sm:aspect-[4/3] lg:aspect-video bg-accent/5 rounded-lg border border-border overflow-hidden">
                 <img 
                   src={luxuryPoolDeckMap} 
                   alt="Luxury pool deck area - Customer location preview" 
-                  className="w-full h-full object-contain bg-muted/20"
+                  className="w-full h-full object-cover object-center"
                 />
                 {/* Pool Bar Marker */}
                 <div 
