@@ -161,7 +161,7 @@ const DeliveryTracking = () => {
                 <img 
                   src={luxuryPoolDeckMap} 
                   alt="Luxury pool deck area - Customer location preview" 
-                  className="w-full h-full object-cover object-center"
+                  className="w-full h-full object-contain"
                 />
                 {/* Pool Bar Marker */}
                 <div 
