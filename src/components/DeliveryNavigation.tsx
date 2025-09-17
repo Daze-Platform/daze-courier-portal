@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
 import luxuryPoolDeckMap from "@/assets/luxury-pool-deck-hd.jpg";
-import BeachMap from "@/components/BeachMap";
+import BeachMap3D from "@/components/BeachMap3D";
 
 interface DeliveryNavigationProps {
   destination: string;
@@ -261,7 +261,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
       {/* Resort Map - Conditional rendering based on delivery type */}
       {isBeachDelivery ? (
         <div className="flex-1">
-          <BeachMap destination={destination} showTokenInput={true} />
+          <BeachMap3D destination={destination} showTokenInput={true} />
         </div>
       ) : (
         <div className="flex-1 relative overflow-hidden bg-cover bg-center bg-no-repeat" 
