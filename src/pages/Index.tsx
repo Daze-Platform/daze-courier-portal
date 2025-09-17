@@ -3,12 +3,19 @@ import DesktopSidebar from "@/components/DesktopSidebar";
 import StatusControl from "@/components/StatusControl";
 import OrderCard from "@/components/OrderCard";
 import { Package, Truck } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import resortDeliveryIllustration from "@/assets/resort-delivery-with-logo.jpg";
 
 const Index = () => {
-  const [isOnline, setIsOnline] = useState(false);
+  const [isOnline, setIsOnline] = useState(() => {
+    const saved = localStorage.getItem('courier-status');
+    return saved ? JSON.parse(saved) : false;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('courier-status', JSON.stringify(isOnline));
+  }, [isOnline]);
   const mockOrders = [
     {
       orderId: "#23456789",
