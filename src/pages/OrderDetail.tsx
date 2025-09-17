@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 import UnifiedHeader from "@/components/UnifiedHeader";
 import DesktopSidebar from "@/components/DesktopSidebar";
 import DeliveryNavigation from "@/components/DeliveryNavigation";
@@ -17,6 +18,7 @@ import luxuryPoolDeckMap from "@/assets/luxury-pool-deck-hd.jpg";
 const OrderDetail = () => {
   const { orderId } = useParams();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [showCompletionModal, setShowCompletionModal] = useState(false);
   const [showNavigationModal, setShowNavigationModal] = useState(false);
   const [navigationStarted, setNavigationStarted] = useState(false);
@@ -74,6 +76,11 @@ const OrderDetail = () => {
 
   const handleCompletionConfirm = () => {
     setShowCompletionModal(false);
+    toast({
+      title: "🎉 Delivery Complete!",
+      description: "Order was successfully delivered. Great job!",
+      className: "border-l-4 border-l-green-500",
+    });
     navigate("/");
   };
 
