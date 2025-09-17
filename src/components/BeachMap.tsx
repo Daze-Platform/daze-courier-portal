@@ -351,7 +351,7 @@ const BeachMap = ({ destination, onUmbrellaSelect, showTokenInput = true }: Beac
   }
 
   return (
-    <div className="relative w-full h-96 bg-card rounded-lg border border-border overflow-hidden">
+    <div className="relative w-full h-full bg-card overflow-hidden">
       <div ref={mapContainer} className="absolute inset-0" />
       
       {/* Beach Info Overlay */}
