@@ -36,13 +36,13 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
     if (dest.includes("Room")) {
       return { top: "20%", left: "85%" };
     } else if (dest.includes("Pool") || dest.includes("Cabana")) {
-      // Position precisely on an umbrella on the concrete deck (bottom-right area)
-      return { top: "65%", left: "70%" };
+      // Position precisely on an umbrella on the top-right concrete deck area
+      return { top: "30%", left: "75%" };
     } else if (dest.includes("Beach")) {
       return { top: "70%", left: "90%" };
     } else {
       // Default to umbrella position on concrete deck
-      return { top: "65%", left: "70%" };
+      return { top: "30%", left: "75%" };
     }
   };
 
@@ -52,10 +52,10 @@ const DeliveryNavigation = ({ destination, onComplete }: DeliveryNavigationProps
     const waypoints = [startPos];
     
     // For pool/umbrella destinations, route around the pool on concrete walkways
-    if (destination.top === "65%" && destination.left === "70%") {
+    if (destination.top === "30%" && destination.left === "75%") {
       // Route to umbrella area following concrete walkways around pool
-      waypoints.push({ top: "45%", left: "60%" }); // Move from pool bar toward umbrella
-      waypoints.push({ top: "60%", left: "65%" }); // Approach umbrella area on concrete deck
+      waypoints.push({ top: "35%", left: "60%" }); // Move from pool bar toward umbrella
+      waypoints.push({ top: "30%", left: "70%" }); // Approach umbrella area on concrete deck
     } else if (destination.top === "20%" && destination.left === "85%") {
       // Room destinations - go toward rooms from center pool bar
       waypoints.push({ top: "30%", left: "60%" }); // Move from pool bar toward rooms
