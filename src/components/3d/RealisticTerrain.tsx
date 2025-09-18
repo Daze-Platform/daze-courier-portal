@@ -9,133 +9,206 @@ const RealisticTerrain = () => {
   useFrame((state) => {
     if (oceanRef.current) {
       const time = state.clock.elapsedTime;
-      oceanRef.current.position.y = Math.sin(time * 0.3) * 0.1;
+      oceanRef.current.position.y = Math.sin(time * 0.2) * 0.08;
     }
     
     if (waveRef.current) {
       const time = state.clock.elapsedTime;
-      waveRef.current.position.y = Math.sin(time * 0.8) * 0.05 + 0.1;
-      waveRef.current.position.z = 25 + Math.sin(time * 0.5) * 2;
+      waveRef.current.position.y = Math.sin(time * 0.6) * 0.04 + 0.1;
+      waveRef.current.position.z = 35 + Math.sin(time * 0.3) * 1.5;
     }
   });
 
   return (
     <group>
-      {/* Ocean */}
+      {/* Expansive tropical ocean */}
       <mesh 
         ref={oceanRef} 
-        position={[0, -0.5, 30]} 
+        position={[0, -0.8, 50]} 
         rotation={[-Math.PI / 2, 0, 0]}
         receiveShadow
       >
-        <planeGeometry args={[200, 100]} />
+        <planeGeometry args={[300, 150]} />
         <meshStandardMaterial 
-          color="#006994" 
+          color="#1E6091" 
           transparent 
-          opacity={0.9}
-          roughness={0.1}
-          metalness={0.3}
+          opacity={0.92}
+          roughness={0.05}
+          metalness={0.4}
         />
       </mesh>
 
-      {/* Animated waves */}
+      {/* Dynamic wave system */}
       <mesh 
         ref={waveRef}
-        position={[0, 0.1, 25]} 
+        position={[0, 0.05, 35]} 
         rotation={[-Math.PI / 2, 0, 0]}
       >
-        <planeGeometry args={[200, 5]} />
+        <planeGeometry args={[300, 8]} />
         <meshStandardMaterial 
-          color="#ffffff" 
+          color="#FFFFFF" 
           transparent 
-          opacity={0.6}
+          opacity={0.7}
+          roughness={0.1}
         />
       </mesh>
 
-      {/* Beach sand - multiple layers for depth */}
-      <mesh position={[0, -0.3, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[200, 60]} />
+      {/* Premium beach sand with natural variation */}
+      <mesh position={[0, -0.4, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[300, 80]} />
         <meshStandardMaterial 
-          color="#f4e4bc" 
-          roughness={0.9}
+          color="#F4E4BC" 
+          roughness={0.85}
+          metalness={0.02}
         />
       </mesh>
 
-      {/* Wet sand near water */}
-      <mesh position={[0, -0.25, 20]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[200, 10]} />
+      {/* Tidal zone - darker wet sand */}
+      <mesh position={[0, -0.35, 25]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[300, 20]} />
         <meshStandardMaterial 
-          color="#d2b48c" 
+          color="#D2B48C" 
+          roughness={0.4}
+          metalness={0.15}
+        />
+      </mesh>
+
+      {/* Resort grounds - luxury paving */}
+      <mesh position={[0, -0.25, -15]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[120, 60]} />
+        <meshStandardMaterial 
+          color="#F5F5DC" 
           roughness={0.3}
+          metalness={0.05}
+        />
+      </mesh>
+
+      {/* Decorative walkways */}
+      <mesh position={[0, -0.2, -15]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[100, 50]} />
+        <meshStandardMaterial 
+          color="#E8E8E8" 
+          roughness={0.4}
           metalness={0.1}
         />
       </mesh>
 
-      {/* Resort grounds - paved areas */}
-      <mesh position={[0, -0.2, -10]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[60, 40]} />
+      {/* Tropical landscaping - lush gardens */}
+      <mesh position={[-60, -0.18, -20]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[60, 80]} />
         <meshStandardMaterial 
-          color="#e0e0e0" 
-          roughness={0.4}
+          color="#228B22" 
+          roughness={0.9}
         />
       </mesh>
 
-      {/* Landscaping - grass areas */}
-      <mesh position={[-30, -0.15, -10]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[40, 40]} />
+      <mesh position={[60, -0.18, -20]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[60, 80]} />
         <meshStandardMaterial 
-          color="#32cd32" 
-          roughness={0.8}
+          color="#32CD32" 
+          roughness={0.9}
         />
       </mesh>
 
-      <mesh position={[30, -0.15, -10]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[40, 40]} />
+      {/* Resort pathways */}
+      <mesh position={[0, -0.15, 5]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[4, 50]} />
         <meshStandardMaterial 
-          color="#32cd32" 
-          roughness={0.8}
+          color="#DDD5C0" 
+          roughness={0.3}
         />
       </mesh>
 
-      {/* Decorative rocks */}
-      {Array.from({ length: 20 }).map((_, i) => {
-        const x = (Math.random() - 0.5) * 100;
-        const z = Math.random() * 15 + 15;
-        const scale = 0.5 + Math.random() * 1;
+      {/* Natural coral formations */}
+      {Array.from({ length: 15 }).map((_, i) => {
+        const x = (Math.random() - 0.5) * 200 + 30;
+        const z = Math.random() * 20 + 25;
+        const scale = 0.8 + Math.random() * 1.5;
         
         return (
           <mesh 
-            key={i}
-            position={[x, scale * 0.3, z]}
+            key={`coral-${i}`}
+            position={[x, scale * 0.4, z]}
+            scale={[scale * 0.8, scale, scale * 0.6]}
+            castShadow
+          >
+            <sphereGeometry args={[0.6, 12, 8]} />
+            <meshStandardMaterial 
+              color="#FF7F50" 
+              roughness={0.8}
+              metalness={0.1}
+            />
+          </mesh>
+        );
+      })}
+
+      {/* Beach vegetation */}
+      {Array.from({ length: 25 }).map((_, i) => {
+        const x = (Math.random() - 0.5) * 250;
+        const z = Math.random() * 15 + 10;
+        const scale = 0.3 + Math.random() * 0.8;
+        
+        return (
+          <mesh 
+            key={`vegetation-${i}`}
+            position={[x, scale * 0.2, z]}
             scale={scale}
             castShadow
           >
-            <sphereGeometry args={[0.5, 8, 6]} />
+            <sphereGeometry args={[0.4, 6, 4]} />
             <meshStandardMaterial 
-              color="#708090" 
+              color="#90EE90" 
               roughness={0.9}
             />
           </mesh>
         );
       })}
 
-      {/* Beach debris - shells, driftwood */}
-      {Array.from({ length: 30 }).map((_, i) => {
-        const x = (Math.random() - 0.5) * 150;
-        const z = Math.random() * 20 + 5;
-        const rotation = Math.random() * Math.PI * 2;
+      {/* Luxury resort features - decorative elements */}
+      {Array.from({ length: 12 }).map((_, i) => {
+        const angle = (i / 12) * Math.PI * 2;
+        const radius = 45;
+        const x = Math.cos(angle) * radius;
+        const z = Math.sin(angle) * radius - 15;
+        
+        return (
+          <group key={`feature-${i}`} position={[x, 0, z]}>
+            <mesh castShadow>
+              <cylinderGeometry args={[0.5, 0.8, 2]} />
+              <meshStandardMaterial 
+                color="#D2B48C" 
+                roughness={0.4}
+              />
+            </mesh>
+            <mesh position={[0, 1.5, 0]}>
+              <sphereGeometry args={[0.8, 8, 6]} />
+              <meshStandardMaterial 
+                color="#228B22" 
+                roughness={0.8}
+              />
+            </mesh>
+          </group>
+        );
+      })}
+
+      {/* Natural driftwood and beach details */}
+      {Array.from({ length: 20 }).map((_, i) => {
+        const x = (Math.random() - 0.5) * 200;
+        const z = Math.random() * 25 + 8;
+        const rotation = Math.random() * Math.PI;
+        const scale = 0.2 + Math.random() * 0.5;
         
         return (
           <mesh 
-            key={i}
-            position={[x, 0.05, z]}
-            rotation={[0, rotation, 0]}
-            scale={0.1 + Math.random() * 0.2}
+            key={`driftwood-${i}`}
+            position={[x, scale * 0.1, z]}
+            rotation={[0, rotation, Math.random() * 0.2]}
+            scale={scale}
           >
-            <boxGeometry args={[2, 0.2, 0.8]} />
+            <boxGeometry args={[3, 0.3, 0.8]} />
             <meshStandardMaterial 
-              color="#deb887" 
-              roughness={0.8}
+              color="#DEB887" 
+              roughness={0.9}
             />
           </mesh>
         );

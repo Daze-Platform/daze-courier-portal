@@ -84,8 +84,8 @@ const BeachMap3D: React.FC<BeachMap3DProps> = ({ destination, onUmbrellaSelect }
     <div className="relative w-full h-full bg-gradient-to-b from-blue-200 to-blue-400">
       <Canvas
         camera={{ 
-          position: [30, 25, 40], 
-          fov: 50 
+          position: [45, 35, 60], 
+          fov: 45 
         }}
         shadows={{
           enabled: true,
@@ -93,33 +93,60 @@ const BeachMap3D: React.FC<BeachMap3DProps> = ({ destination, onUmbrellaSelect }
         }}
       >
         <Suspense fallback={<LoadingFallback />}>
-          {/* Enhanced Lighting for CAD-like rendering */}
-          <ambientLight intensity={0.3} />
+          {/* Professional architectural lighting setup */}
+          <ambientLight intensity={0.4} color="#FFEAA7" />
+          
+          {/* Main sun light */}
           <directionalLight
-            position={[50, 50, 25]}
-            intensity={1.2}
+            position={[80, 60, 40]}
+            intensity={1.5}
+            color="#FFF4E6"
             castShadow
-            shadow-mapSize-width={4096}
-            shadow-mapSize-height={4096}
-            shadow-camera-far={100}
-            shadow-camera-left={-50}
-            shadow-camera-right={50}
-            shadow-camera-top={50}
-            shadow-camera-bottom={-50}
+            shadow-mapSize-width={8192}
+            shadow-mapSize-height={8192}
+            shadow-camera-far={200}
+            shadow-camera-left={-100}
+            shadow-camera-right={100}
+            shadow-camera-top={100}
+            shadow-camera-bottom={-100}
+            shadow-bias={-0.0005}
           />
+          
+          {/* Fill light from opposite direction */}
+          <directionalLight
+            position={[-40, 30, 60]}
+            intensity={0.6}
+            color="#E8F4FD"
+            castShadow={false}
+          />
+          
+          {/* Atmospheric hemisphere lighting */}
           <hemisphereLight 
-            args={["#87CEEB", "#F4E4BC", 0.4]} 
+            args={["#87CEEB", "#F4E4BC", 0.5]} 
+          />
+          
+          {/* Rim lighting for depth */}
+          <directionalLight
+            position={[20, 15, -50]}
+            intensity={0.4}
+            color="#FFE5CC"
           />
 
-          {/* Environment and Sky */}
+          {/* Enhanced environment and sky */}
           <Sky 
-            sunPosition={[100, 20, 100]}
-            turbidity={0.1}
-            rayleigh={0.5}
+            sunPosition={[100, 30, 50]}
+            turbidity={0.2}
+            rayleigh={0.8}
+            mieCoefficient={0.1}
+            mieDirectionalG={0.95}
           />
-          <Environment preset="sunset" />
+          <Environment 
+            preset="dawn"
+            background={false}
+            environmentIntensity={0.6}
+          />
 
-          {/* Scene Components */}
+          {/* Scene Components with enhanced shadows */}
           <RealisticTerrain />
           <ResortBuilding />
           <SwimmingPool />
@@ -149,16 +176,18 @@ const BeachMap3D: React.FC<BeachMap3DProps> = ({ destination, onUmbrellaSelect }
             />
           )}
 
-          {/* Enhanced Camera Controls for CAD-like navigation */}
+          {/* Professional camera controls */}
           <OrbitControls
             enablePan={true}
             enableZoom={true}
             enableRotate={true}
-            minDistance={15}
-            maxDistance={80}
-            minPolarAngle={Math.PI / 8}
-            maxPolarAngle={Math.PI / 2.2}
-            target={[0, 0, 0]}
+            minDistance={20}
+            maxDistance={120}
+            minPolarAngle={Math.PI / 12}
+            maxPolarAngle={Math.PI / 2.5}
+            target={[0, 5, 0]}
+            enableDamping={true}
+            dampingFactor={0.05}
           />
         </Suspense>
       </Canvas>
