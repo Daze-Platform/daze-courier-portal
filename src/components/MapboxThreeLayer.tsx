@@ -32,6 +32,7 @@ export class MapboxThreeLayer implements mapboxgl.CustomLayerInterface {
   }
 
   onAdd(map: mapboxgl.Map, gl: WebGLRenderingContext) {
+    console.log('MapboxThreeLayer onAdd called');
     this.map = map;
 
     // Camera setup
@@ -55,6 +56,7 @@ export class MapboxThreeLayer implements mapboxgl.CustomLayerInterface {
 
     // Add the SpringHill Suites resort
     this.addSpringHillResort();
+    console.log('SpringHill resort added, world children:', this.world.children.length);
     
     // Add click handler
     map.getCanvasContainer().addEventListener('click', this.onClick.bind(this));
@@ -63,6 +65,8 @@ export class MapboxThreeLayer implements mapboxgl.CustomLayerInterface {
   private addSpringHillResort() {
     if (!this.world) return;
 
+    console.log('Adding SpringHill resort...');
+    
     // SpringHill Suites Panama City Beach coordinates
     const modelOrigin: [number, number] = [-85.8764, 30.1766];
     const modelAltitude = 0;
@@ -75,6 +79,8 @@ export class MapboxThreeLayer implements mapboxgl.CustomLayerInterface {
 
     // Calculate scale - use a larger scale to make the resort visible and realistic
     const scale = modelAsMercatorCoordinate.meterInMercatorCoordinateUnits() * 2000;
+    console.log('Resort scale:', scale);
+    console.log('Mercator coordinate:', modelAsMercatorCoordinate);
 
     // Position the world at the resort location
     this.world.position.set(
@@ -82,13 +88,16 @@ export class MapboxThreeLayer implements mapboxgl.CustomLayerInterface {
       modelAsMercatorCoordinate.y,
       modelAsMercatorCoordinate.z || 0
     );
+    console.log('World position:', this.world.position);
     
     // Set scale and rotation
     this.world.scale.set(scale, -scale, scale);
     this.world.rotation.set(Math.PI / 2, 0, 0);
+    console.log('World scale:', this.world.scale);
 
     // Create the resort complex
     this.createResortComplex();
+    console.log('Resort complex created, total children:', this.world.children.length);
   }
 
   private createResortComplex() {
@@ -477,7 +486,14 @@ export class MapboxThreeLayer implements mapboxgl.CustomLayerInterface {
   }
 
   render(gl: WebGLRenderingContext, matrix: number[]) {
-    if (!this.camera || !this.scene || !this.renderer) return;
+    if (!this.camera || !this.scene || !this.renderer) {
+      console.log('Render called but missing components:', {
+        camera: !!this.camera,
+        scene: !!this.scene,
+        renderer: !!this.renderer
+      });
+      return;
+    }
 
     const rotationX = new THREE.Matrix4().makeRotationAxis(
       new THREE.Vector3(1, 0, 0),
