@@ -75,9 +75,9 @@ export class MapboxThreeLayer implements mapboxgl.CustomLayerInterface {
       modelAltitude
     );
 
-    // Calculate scale - use a much larger scale to make the resort visible
-    const scale = modelAsMercatorCoordinate.meterInMercatorCoordinateUnits() * 100000;
-    console.log('Resort scale:', scale);
+    // Calculate scale - try an even larger scale
+    const scale = modelAsMercatorCoordinate.meterInMercatorCoordinateUnits() * 500000;
+    console.log('Resort scale (new):', scale);
     console.log('Mercator coordinate:', modelAsMercatorCoordinate);
 
     // Position the world at the resort location
@@ -91,11 +91,47 @@ export class MapboxThreeLayer implements mapboxgl.CustomLayerInterface {
     // Set scale and rotation
     this.world.scale.set(scale, -scale, scale);
     this.world.rotation.set(Math.PI / 2, 0, 0);
-    console.log('World scale:', this.world.scale);
+    console.log('World scale (new):', this.world.scale);
 
-    // Create the resort complex
-    this.createResortComplex();
-    console.log('Resort complex created, total children:', this.world.children.length);
+    // Create a simple test cube first to see if anything renders
+    this.createTestObjects();
+    console.log('Test objects created, total children:', this.world.children.length);
+  }
+
+  private createTestObjects() {
+    if (!this.world) return;
+
+    // Create a large, bright red cube that should be very visible
+    const testCube = new THREE.Mesh(
+      new THREE.BoxGeometry(0.1, 0.1, 0.1),  // Large cube
+      new THREE.MeshBasicMaterial({ color: '#FF0000' })  // Bright red, no lighting needed
+    );
+    testCube.position.set(0, 0.05, 0);  // Elevated so it's above ground
+    this.world.add(testCube);
+    console.log('Added test cube at position:', testCube.position);
+
+    // Create a bright green cylinder
+    const testCylinder = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.05, 0.05, 0.2, 8),
+      new THREE.MeshBasicMaterial({ color: '#00FF00' })  // Bright green
+    );
+    testCylinder.position.set(0.1, 0.1, 0);
+    this.world.add(testCylinder);
+    console.log('Added test cylinder at position:', testCylinder.position);
+
+    // Create a bright blue sphere
+    const testSphere = new THREE.Mesh(
+      new THREE.SphereGeometry(0.05, 16, 16),
+      new THREE.MeshBasicMaterial({ color: '#0000FF' })  // Bright blue
+    );
+    testSphere.position.set(-0.1, 0.05, 0);
+    this.world.add(testSphere);
+    console.log('Added test sphere at position:', testSphere.position);
+
+    // Add bright ambient light to make sure everything is visible
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2.0);  // Very bright
+    this.scene!.add(ambientLight);
+    console.log('Added bright ambient light');
   }
 
   private createResortComplex() {
@@ -491,6 +527,11 @@ export class MapboxThreeLayer implements mapboxgl.CustomLayerInterface {
         renderer: !!this.renderer
       });
       return;
+    }
+
+    // Log render calls occasionally to confirm it's working
+    if (Math.random() < 0.01) { // Log ~1% of renders to avoid spam
+      console.log('Render method called, scene children:', this.scene.children.length);
     }
 
     const rotationX = new THREE.Matrix4().makeRotationAxis(
