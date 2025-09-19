@@ -94,164 +94,381 @@ export class MapboxThreeLayer implements mapboxgl.CustomLayerInterface {
   private createResortComplex() {
     if (!this.world) return;
 
-    // Materials
-    const buildingMaterial = new THREE.MeshLambertMaterial({ color: '#E8F4FD' });
-    const poolMaterial = new THREE.MeshLambertMaterial({ 
-      color: '#4A90E2',
-      transparent: true,
-      opacity: 0.8
+    // Enhanced materials with better visibility
+    const buildingMaterial = new THREE.MeshLambertMaterial({ 
+      color: '#E8F4FD',
+      transparent: false
     });
-    const deckMaterial = new THREE.MeshLambertMaterial({ color: '#D4D4AA' });
+    const accentMaterial = new THREE.MeshLambertMaterial({ color: '#1E90FF' });
+    const poolMaterial = new THREE.MeshLambertMaterial({ 
+      color: '#0066CC',
+      transparent: true,
+      opacity: 0.9
+    });
+    const deckMaterial = new THREE.MeshLambertMaterial({ color: '#E6D7B3' });
     const beachMaterial = new THREE.MeshLambertMaterial({ color: '#F4A460' });
+    const roofMaterial = new THREE.MeshLambertMaterial({ color: '#CC0000' });
 
-    // Main SpringHill Suites building (12-story tower)
-    const mainBuilding = new THREE.Mesh(
-      new THREE.BoxGeometry(0.03, 0.06, 0.02), // Smaller dimensions for better visibility
+    // SpringHill Suites Main Building Complex
+    // Based on typical SpringHill Suites 6-8 story layout with wings
+    
+    // Central main tower (8 floors)
+    const centralTower = new THREE.Mesh(
+      new THREE.BoxGeometry(0.025, 0.048, 0.015),
       buildingMaterial
     );
-    mainBuilding.position.set(0, 0, -0.01);
-    this.world.add(mainBuilding);
+    centralTower.position.set(0, 0.024, -0.008);
+    this.world.add(centralTower);
 
-    // Ground floor lobby
+    // Left wing (6 floors)
+    const leftWing = new THREE.Mesh(
+      new THREE.BoxGeometry(0.02, 0.036, 0.012),
+      buildingMaterial
+    );
+    leftWing.position.set(-0.022, 0.018, -0.005);
+    this.world.add(leftWing);
+
+    // Right wing (6 floors)
+    const rightWing = new THREE.Mesh(
+      new THREE.BoxGeometry(0.02, 0.036, 0.012),
+      buildingMaterial
+    );
+    rightWing.position.set(0.022, 0.018, -0.005);
+    this.world.add(rightWing);
+
+    // Red tile roofs
+    const centralRoof = new THREE.Mesh(
+      new THREE.BoxGeometry(0.027, 0.003, 0.017),
+      roofMaterial
+    );
+    centralRoof.position.set(0, 0.0495, -0.008);
+    this.world.add(centralRoof);
+
+    const leftRoof = new THREE.Mesh(
+      new THREE.BoxGeometry(0.022, 0.003, 0.014),
+      roofMaterial
+    );
+    leftRoof.position.set(-0.022, 0.0375, -0.005);
+    this.world.add(leftRoof);
+
+    const rightRoof = new THREE.Mesh(
+      new THREE.BoxGeometry(0.022, 0.003, 0.014),
+      roofMaterial
+    );
+    rightRoof.position.set(0.022, 0.0375, -0.005);
+    this.world.add(rightRoof);
+
+    // Ground floor lobby and entrance
     const lobby = new THREE.Mesh(
-      new THREE.BoxGeometry(0.035, 0.008, 0.025),
+      new THREE.BoxGeometry(0.035, 0.006, 0.02),
       new THREE.MeshLambertMaterial({ color: '#FFFFFF' })
     );
-    lobby.position.set(0, -0.026, 0);
+    lobby.position.set(0, 0.003, 0.005);
     this.world.add(lobby);
 
-    // Pool deck area
-    const poolDeck = new THREE.Mesh(
-      new THREE.BoxGeometry(0.08, 0.002, 0.05),
+    // Entrance canopy
+    const canopy = new THREE.Mesh(
+      new THREE.BoxGeometry(0.025, 0.002, 0.015),
+      accentMaterial
+    );
+    canopy.position.set(0, 0.008, 0.015);
+    this.world.add(canopy);
+
+    // Pool Complex Area
+    // Large pool deck platform
+    const mainDeck = new THREE.Mesh(
+      new THREE.BoxGeometry(0.12, 0.002, 0.08),
       deckMaterial
     );
-    poolDeck.position.set(0, -0.03, 0.03);
-    this.world.add(poolDeck);
+    mainDeck.position.set(0, -0.001, 0.05);
+    this.world.add(mainDeck);
 
-    // Main infinity pool
-    const mainPool = new THREE.Mesh(
-      new THREE.BoxGeometry(0.04, 0.003, 0.015),
+    // Large L-shaped infinity pool
+    const mainPoolSection = new THREE.Mesh(
+      new THREE.BoxGeometry(0.06, 0.004, 0.025),
       poolMaterial
     );
-    mainPool.position.set(0, -0.029, 0.035);
-    this.world.add(mainPool);
+    mainPoolSection.position.set(0.01, 0.002, 0.045);
+    this.world.add(mainPoolSection);
 
-    // Lazy river
+    const poolExtension = new THREE.Mesh(
+      new THREE.BoxGeometry(0.03, 0.004, 0.015),
+      poolMaterial
+    );
+    poolExtension.position.set(-0.025, 0.002, 0.032);
+    this.world.add(poolExtension);
+
+    // Lazy river connecting section
     const lazyRiver = new THREE.Mesh(
-      new THREE.BoxGeometry(0.02, 0.002, 0.008),
+      new THREE.BoxGeometry(0.025, 0.003, 0.012),
       poolMaterial
     );
-    lazyRiver.position.set(-0.015, -0.029, 0.02);
+    lazyRiver.position.set(-0.015, 0.0015, 0.065);
     this.world.add(lazyRiver);
 
-    // Hot tub/spa
-    const hotTub = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.006, 0.006, 0.003, 16),
-      new THREE.MeshLambertMaterial({ color: '#FF6B35', transparent: true, opacity: 0.8 })
+    // Kids pool area
+    const kidsPool = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.008, 0.008, 0.002, 16),
+      poolMaterial
     );
-    hotTub.position.set(0.025, -0.029, 0.025);
-    this.world.add(hotTub);
+    kidsPool.position.set(0.035, 0.001, 0.025);
+    this.world.add(kidsPool);
 
-    // Beach area
-    const beach = new THREE.Mesh(
-      new THREE.BoxGeometry(0.1, 0.001, 0.04),
+    // Hot tub/spa area
+    const hotTub1 = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.005, 0.005, 0.003, 16),
+      new THREE.MeshLambertMaterial({ color: '#FF6B35', transparent: true, opacity: 0.9 })
+    );
+    hotTub1.position.set(0.025, 0.0015, 0.065);
+    this.world.add(hotTub1);
+
+    const hotTub2 = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.005, 0.005, 0.003, 16),
+      new THREE.MeshLambertMaterial({ color: '#FF6B35', transparent: true, opacity: 0.9 })
+    );
+    hotTub2.position.set(0.035, 0.0015, 0.065);
+    this.world.add(hotTub2);
+
+    // Tiki Bar structure
+    const tikiBar = new THREE.Mesh(
+      new THREE.BoxGeometry(0.015, 0.008, 0.008),
+      new THREE.MeshLambertMaterial({ color: '#8B4513' })
+    );
+    tikiBar.position.set(-0.045, 0.004, 0.04);
+    this.world.add(tikiBar);
+
+    // Tiki Bar roof
+    const tikiRoof = new THREE.Mesh(
+      new THREE.ConeGeometry(0.012, 0.006, 8),
+      new THREE.MeshLambertMaterial({ color: '#DEB887' })
+    );
+    tikiRoof.position.set(-0.045, 0.011, 0.04);
+    this.world.add(tikiRoof);
+
+    // Beach Area - wider and more realistic
+    const beachArea = new THREE.Mesh(
+      new THREE.BoxGeometry(0.15, 0.001, 0.06),
       beachMaterial
     );
-    beach.position.set(0, -0.031, 0.08);
-    this.world.add(beach);
+    beachArea.position.set(0, -0.0005, 0.12);
+    this.world.add(beachArea);
 
+    // Boardwalk/walkway to beach
+    const boardwalk = new THREE.Mesh(
+      new THREE.BoxGeometry(0.08, 0.001, 0.008),
+      new THREE.MeshLambertMaterial({ color: '#DEB887' })
+    );
+    boardwalk.position.set(0, 0, 0.095);
+    this.world.add(boardwalk);
+
+    // Landscaping elements
+    // Palm trees around pool area
+    this.addPalmTrees();
+    
     // Add resort umbrellas and loungers
     this.addResortUmbrellas();
 
-    // Enhanced lighting for better visibility
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    // Enhanced lighting system
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     this.scene!.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    directionalLight.position.set(0.1, 0.1, 0.1);
-    this.scene!.add(directionalLight);
+    const sunLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    sunLight.position.set(0.1, 0.15, 0.1);
+    sunLight.castShadow = true;
+    this.scene!.add(sunLight);
+
+    const fillLight = new THREE.DirectionalLight(0x87CEEB, 0.3);
+    fillLight.position.set(-0.1, 0.1, -0.05);
+    this.scene!.add(fillLight);
+  }
+
+  private addPalmTrees() {
+    if (!this.world) return;
+
+    const palmPositions = [
+      [-0.06, 0, 0.02], [0.06, 0, 0.02],
+      [-0.08, 0, 0.07], [0.08, 0, 0.07],
+      [-0.03, 0, 0.09], [0.03, 0, 0.09]
+    ];
+
+    palmPositions.forEach(pos => {
+      // Palm tree trunk
+      const trunk = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.0008, 0.001, 0.012, 8),
+        new THREE.MeshLambertMaterial({ color: '#8B4513' })
+      );
+      trunk.position.set(pos[0], 0.006, pos[2]);
+      this.world!.add(trunk);
+
+      // Palm fronds
+      for (let i = 0; i < 6; i++) {
+        const frond = new THREE.Mesh(
+          new THREE.BoxGeometry(0.006, 0.001, 0.002),
+          new THREE.MeshLambertMaterial({ color: '#228B22' })
+        );
+        frond.position.set(pos[0], 0.012, pos[2]);
+        frond.rotation.y = (Math.PI * 2 / 6) * i;
+        frond.rotation.z = -0.3;
+        this.world!.add(frond);
+      }
+    });
   }
 
   private addResortUmbrellas() {
     if (!this.world) return;
 
     const umbrellaPositions = [
-      // Pool deck umbrellas
-      { id: 'P1', pos: [-0.02, 0, 0.045], type: 'premium' },
-      { id: 'P2', pos: [-0.01, 0, 0.045], type: 'standard' },
-      { id: 'P3', pos: [0, 0, 0.045], type: 'premium' },
-      { id: 'P4', pos: [0.01, 0, 0.045], type: 'standard' },
-      { id: 'P5', pos: [0.02, 0, 0.045], type: 'premium' },
-      { id: 'P6', pos: [-0.015, 0, 0.025], type: 'standard' },
-      { id: 'P7', pos: [-0.005, 0, 0.025], type: 'premium' },
-      { id: 'P8', pos: [0.005, 0, 0.025], type: 'standard' },
-      { id: 'P9', pos: [0.015, 0, 0.025], type: 'premium' },
-      // Beach umbrellas  
-      { id: 'B1', pos: [-0.03, 0, 0.08], type: 'standard' },
-      { id: 'B2', pos: [-0.02, 0, 0.08], type: 'premium' },
-      { id: 'B3', pos: [-0.01, 0, 0.08], type: 'standard' },
-      { id: 'B4', pos: [0, 0, 0.08], type: 'premium' },
-      { id: 'B5', pos: [0.01, 0, 0.08], type: 'standard' },
-      { id: 'B6', pos: [0.02, 0, 0.08], type: 'premium' },
-      { id: 'B7', pos: [0.03, 0, 0.08], type: 'standard' },
-      { id: 'B8', pos: [-0.025, 0, 0.09], type: 'premium' },
-      { id: 'B9', pos: [-0.015, 0, 0.09], type: 'standard' },
-      { id: 'B10', pos: [-0.005, 0, 0.09], type: 'premium' },
-      { id: 'B11', pos: [0.005, 0, 0.09], type: 'standard' },
-      { id: 'B12', pos: [0.015, 0, 0.09], type: 'premium' },
-      { id: 'B13', pos: [0.025, 0, 0.09], type: 'standard' },
+      // Pool deck umbrellas - around main pool
+      { id: 'P1', pos: [-0.025, 0, 0.035], type: 'premium' },
+      { id: 'P2', pos: [-0.015, 0, 0.035], type: 'standard' },
+      { id: 'P3', pos: [-0.005, 0, 0.035], type: 'premium' },
+      { id: 'P4', pos: [0.005, 0, 0.035], type: 'standard' },
+      { id: 'P5', pos: [0.015, 0, 0.035], type: 'premium' },
+      { id: 'P6', pos: [0.025, 0, 0.035], type: 'standard' },
+      // Pool deck second row
+      { id: 'P7', pos: [-0.035, 0, 0.055], type: 'premium' },
+      { id: 'P8', pos: [-0.02, 0, 0.055], type: 'standard' },
+      { id: 'P9', pos: [-0.005, 0, 0.055], type: 'premium' },
+      { id: 'P10', pos: [0.01, 0, 0.055], type: 'standard' },
+      { id: 'P11', pos: [0.025, 0, 0.055], type: 'premium' },
+      { id: 'P12', pos: [0.04, 0, 0.055], type: 'standard' },
+      // Beach umbrellas - first row  
+      { id: 'B1', pos: [-0.06, 0, 0.115], type: 'standard' },
+      { id: 'B2', pos: [-0.045, 0, 0.115], type: 'premium' },
+      { id: 'B3', pos: [-0.03, 0, 0.115], type: 'standard' },
+      { id: 'B4', pos: [-0.015, 0, 0.115], type: 'premium' },
+      { id: 'B5', pos: [0, 0, 0.115], type: 'standard' },
+      { id: 'B6', pos: [0.015, 0, 0.115], type: 'premium' },
+      { id: 'B7', pos: [0.03, 0, 0.115], type: 'standard' },
+      { id: 'B8', pos: [0.045, 0, 0.115], type: 'premium' },
+      { id: 'B9', pos: [0.06, 0, 0.115], type: 'standard' },
+      // Beach umbrellas - second row
+      { id: 'B10', pos: [-0.05, 0, 0.135], type: 'premium' },
+      { id: 'B11', pos: [-0.035, 0, 0.135], type: 'standard' },
+      { id: 'B12', pos: [-0.02, 0, 0.135], type: 'premium' },
+      { id: 'B13', pos: [-0.005, 0, 0.135], type: 'standard' },
+      { id: 'B14', pos: [0.01, 0, 0.135], type: 'premium' },
+      { id: 'B15', pos: [0.025, 0, 0.135], type: 'standard' },
+      { id: 'B16', pos: [0.04, 0, 0.135], type: 'premium' },
+      // VIP Beach umbrellas - premium beachfront
+      { id: 'VIP1', pos: [-0.025, 0, 0.15], type: 'premium' },
+      { id: 'VIP2', pos: [-0.01, 0, 0.15], type: 'premium' },
+      { id: 'VIP3', pos: [0.005, 0, 0.15], type: 'premium' },
+      { id: 'VIP4', pos: [0.02, 0, 0.15], type: 'premium' },
     ];
 
     umbrellaPositions.forEach(umbrella => {
       const umbrellaGroup = new THREE.Group();
       
-      // Umbrella pole
+      // Umbrella pole - taller and more visible
       const pole = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.0003, 0.0003, 0.006, 8),
+        new THREE.CylinderGeometry(0.0005, 0.0008, 0.012, 8),
         new THREE.MeshLambertMaterial({ color: '#8B4513' })
       );
-      pole.position.set(0, -0.027, 0);
+      pole.position.set(0, 0.006, 0);
       umbrellaGroup.add(pole);
 
-      // Umbrella canopy
+      // Umbrella canopy - larger and more colorful
       const canopyColor = umbrella.type === 'premium' ? '#FF6B35' : '#4A90E2';
       const canopy = new THREE.Mesh(
-        new THREE.ConeGeometry(0.003, 0.002, 8),
+        new THREE.ConeGeometry(0.006, 0.004, 12),
         new THREE.MeshLambertMaterial({ 
           color: canopyColor,
           transparent: true,
           opacity: 0.9
         })
       );
-      canopy.position.set(0, -0.024, 0);
+      canopy.position.set(0, 0.014, 0);
       umbrellaGroup.add(canopy);
 
-      // Loungers
-      const loungerMaterial = new THREE.MeshLambertMaterial({ color: '#F5F5DC' });
-      
-      const lounger1 = new THREE.Mesh(
-        new THREE.BoxGeometry(0.001, 0.0002, 0.003),
-        loungerMaterial
-      );
-      lounger1.position.set(-0.002, -0.03, 0);
-      umbrellaGroup.add(lounger1);
+      // Umbrella ribs for realism
+      for (let i = 0; i < 8; i++) {
+        const rib = new THREE.Mesh(
+          new THREE.BoxGeometry(0.0002, 0.005, 0.0002),
+          new THREE.MeshLambertMaterial({ color: '#666666' })
+        );
+        rib.position.set(
+          Math.cos(i * Math.PI / 4) * 0.003,
+          0.012,
+          Math.sin(i * Math.PI / 4) * 0.003
+        );
+        rib.rotation.y = i * Math.PI / 4;
+        rib.rotation.z = 0.3;
+        umbrellaGroup.add(rib);
+      }
 
-      const lounger2 = new THREE.Mesh(
-        new THREE.BoxGeometry(0.001, 0.0002, 0.003),
+      // Premium loungers (better design)
+      const loungerColor = umbrella.type === 'premium' ? '#FFFFFF' : '#F5F5DC';
+      const loungerMaterial = new THREE.MeshLambertMaterial({ color: loungerColor });
+      
+      // Lounger 1 - with backrest
+      const lounger1Base = new THREE.Mesh(
+        new THREE.BoxGeometry(0.0015, 0.0003, 0.004),
         loungerMaterial
       );
-      lounger2.position.set(0.002, -0.03, 0);
-      umbrellaGroup.add(lounger2);
+      lounger1Base.position.set(-0.003, 0.0015, 0);
+      umbrellaGroup.add(lounger1Base);
+
+      const lounger1Back = new THREE.Mesh(
+        new THREE.BoxGeometry(0.0015, 0.002, 0.0003),
+        loungerMaterial
+      );
+      lounger1Back.position.set(-0.003, 0.003, -0.0015);
+      lounger1Back.rotation.x = 0.2;
+      umbrellaGroup.add(lounger1Back);
+
+      // Lounger 2 - with backrest  
+      const lounger2Base = new THREE.Mesh(
+        new THREE.BoxGeometry(0.0015, 0.0003, 0.004),
+        loungerMaterial
+      );
+      lounger2Base.position.set(0.003, 0.0015, 0);
+      umbrellaGroup.add(lounger2Base);
+
+      const lounger2Back = new THREE.Mesh(
+        new THREE.BoxGeometry(0.0015, 0.002, 0.0003),
+        loungerMaterial
+      );
+      lounger2Back.position.set(0.003, 0.003, -0.0015);
+      lounger2Back.rotation.x = 0.2;
+      umbrellaGroup.add(lounger2Back);
+
+      // Side table between loungers
+      const sideTable = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.0008, 0.0008, 0.002, 8),
+        new THREE.MeshLambertMaterial({ color: '#FFFFFF' })
+      );
+      sideTable.position.set(0, 0.002, 0);
+      umbrellaGroup.add(sideTable);
 
       // Selection ring for interactivity
       if (this.selectedUmbrella === umbrella.id) {
         const selectionRing = new THREE.Mesh(
-          new THREE.RingGeometry(0.004, 0.005, 16),
-          new THREE.MeshBasicMaterial({ color: '#FFD700', transparent: true, opacity: 0.6 })
+          new THREE.RingGeometry(0.008, 0.01, 16),
+          new THREE.MeshBasicMaterial({ color: '#FFD700', transparent: true, opacity: 0.8 })
         );
-        selectionRing.position.set(0, -0.0299, 0);
+        selectionRing.position.set(0, 0.0001, 0);
         selectionRing.rotation.x = -Math.PI / 2;
         umbrellaGroup.add(selectionRing);
+      }
+
+      // Premium umbrellas get extra features
+      if (umbrella.type === 'premium') {
+        // Umbrella base weight
+        const base = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.002, 0.002, 0.001, 8),
+          new THREE.MeshLambertMaterial({ color: '#333333' })
+        );
+        base.position.set(0, 0.0005, 0);
+        umbrellaGroup.add(base);
+
+        // Premium flag
+        const flag = new THREE.Mesh(
+          new THREE.BoxGeometry(0.002, 0.001, 0.0002),
+          new THREE.MeshLambertMaterial({ color: '#FF6B35' })
+        );
+        flag.position.set(0, 0.016, 0);
+        umbrellaGroup.add(flag);
       }
 
       umbrellaGroup.position.set(umbrella.pos[0], umbrella.pos[1], umbrella.pos[2]);
