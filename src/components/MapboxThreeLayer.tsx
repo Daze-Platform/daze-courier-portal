@@ -75,9 +75,9 @@ export class MapboxThreeLayer implements mapboxgl.CustomLayerInterface {
       modelAltitude
     );
 
-    // Calculate scale - try an even larger scale
-    const scale = modelAsMercatorCoordinate.meterInMercatorCoordinateUnits() * 500000;
-    console.log('Resort scale (new):', scale);
+    // Use a fixed large scale instead of calculated
+    const scale = 10; // Fixed large scale
+    console.log('Resort scale (fixed):', scale);
     console.log('Mercator coordinate:', modelAsMercatorCoordinate);
 
     // Position the world at the resort location
@@ -88,10 +88,10 @@ export class MapboxThreeLayer implements mapboxgl.CustomLayerInterface {
     );
     console.log('World position:', this.world.position);
     
-    // Set scale and rotation
-    this.world.scale.set(scale, -scale, scale);
-    this.world.rotation.set(Math.PI / 2, 0, 0);
-    console.log('World scale (new):', this.world.scale);
+    // Set scale and rotation - try different rotation
+    this.world.scale.set(scale, scale, scale); // No negative scale
+    this.world.rotation.set(0, 0, 0); // No rotation initially
+    console.log('World scale (fixed):', this.world.scale);
 
     // Create a simple test cube first to see if anything renders
     this.createTestObjects();
@@ -101,35 +101,17 @@ export class MapboxThreeLayer implements mapboxgl.CustomLayerInterface {
   private createTestObjects() {
     if (!this.world) return;
 
-    // Create a large, bright red cube that should be very visible
+    // Create a HUGE, bright red cube that should be very visible
     const testCube = new THREE.Mesh(
-      new THREE.BoxGeometry(0.1, 0.1, 0.1),  // Large cube
+      new THREE.BoxGeometry(1000, 1000, 1000),  // Massive cube
       new THREE.MeshBasicMaterial({ color: '#FF0000' })  // Bright red, no lighting needed
     );
-    testCube.position.set(0, 0.05, 0);  // Elevated so it's above ground
+    testCube.position.set(0, 500, 0);  // Elevated so it's above ground
     this.world.add(testCube);
-    console.log('Added test cube at position:', testCube.position);
-
-    // Create a bright green cylinder
-    const testCylinder = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.05, 0.05, 0.2, 8),
-      new THREE.MeshBasicMaterial({ color: '#00FF00' })  // Bright green
-    );
-    testCylinder.position.set(0.1, 0.1, 0);
-    this.world.add(testCylinder);
-    console.log('Added test cylinder at position:', testCylinder.position);
-
-    // Create a bright blue sphere
-    const testSphere = new THREE.Mesh(
-      new THREE.SphereGeometry(0.05, 16, 16),
-      new THREE.MeshBasicMaterial({ color: '#0000FF' })  // Bright blue
-    );
-    testSphere.position.set(-0.1, 0.05, 0);
-    this.world.add(testSphere);
-    console.log('Added test sphere at position:', testSphere.position);
+    console.log('Added HUGE test cube at position:', testCube.position);
 
     // Add bright ambient light to make sure everything is visible
-    const ambientLight = new THREE.AmbientLight(0xffffff, 2.0);  // Very bright
+    const ambientLight = new THREE.AmbientLight(0xffffff, 3.0);  // Very bright
     this.scene!.add(ambientLight);
     console.log('Added bright ambient light');
   }
