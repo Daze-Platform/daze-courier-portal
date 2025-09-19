@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import springhillSuitesImage from '@/assets/springhill-suites-ai-generated.jpg';
+import springhillFrontView from '@/assets/springhill-front-view.jpg';
 
 interface ResortImageViewProps {
   destination?: string;
@@ -22,25 +22,25 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
 
   // Define umbrella/delivery spots on the resort image
   const umbrellaSpots: UmbrellaSpot[] = [
-    // Pool area spots (left side of image)
-    { id: 'P1', x: 25, y: 65, type: 'pool', label: 'Pool Deck P1' },
-    { id: 'P2', x: 30, y: 70, type: 'pool', label: 'Pool Deck P2' },
-    { id: 'P3', x: 35, y: 68, type: 'pool', label: 'Pool Deck P3' },
-    { id: 'P4', x: 40, y: 72, type: 'pool', label: 'Pool Deck P4' },
-    { id: 'P5', x: 28, y: 58, type: 'pool', label: 'Pool Deck P5' },
-    { id: 'P6', x: 33, y: 62, type: 'pool', label: 'Pool Deck P6' },
+    // Pool area spots (center-left of image)
+    { id: 'P1', x: 30, y: 60, type: 'pool', label: 'Pool Deck P1' },
+    { id: 'P2', x: 35, y: 65, type: 'pool', label: 'Pool Deck P2' },
+    { id: 'P3', x: 40, y: 62, type: 'pool', label: 'Pool Deck P3' },
+    { id: 'P4', x: 45, y: 68, type: 'pool', label: 'Pool Deck P4' },
+    { id: 'P5', x: 32, y: 55, type: 'pool', label: 'Pool Deck P5' },
+    { id: 'P6', x: 38, y: 58, type: 'pool', label: 'Pool Deck P6' },
     
-    // Beach area spots (bottom of image)
-    { id: 'B1', x: 20, y: 85, type: 'beach', label: 'Beach B1' },
-    { id: 'B2', x: 30, y: 88, type: 'beach', label: 'Beach B2' },
-    { id: 'B3', x: 40, y: 86, type: 'beach', label: 'Beach B3' },
-    { id: 'B4', x: 50, y: 90, type: 'beach', label: 'Beach B4' },
-    { id: 'B5', x: 60, y: 87, type: 'beach', label: 'Beach B5' },
+    // Beach area spots (foreground of image)
+    { id: 'B1', x: 20, y: 80, type: 'beach', label: 'Beach B1' },
+    { id: 'B2', x: 30, y: 85, type: 'beach', label: 'Beach B2' },
+    { id: 'B3', x: 40, y: 82, type: 'beach', label: 'Beach B3' },
+    { id: 'B4', x: 50, y: 88, type: 'beach', label: 'Beach B4' },
+    { id: 'B5', x: 60, y: 85, type: 'beach', label: 'Beach B5' },
+    { id: 'B6', x: 70, y: 83, type: 'beach', label: 'Beach B6' },
     
-    // Lawn area spots (right side)
-    { id: 'L1', x: 70, y: 65, type: 'lawn', label: 'Lawn Area L1' },
-    { id: 'L2', x: 75, y: 70, type: 'lawn', label: 'Lawn Area L2' },
-    { id: 'L3', x: 80, y: 68, type: 'lawn', label: 'Lawn Area L3' },
+    // Additional pool deck spots
+    { id: 'P7', x: 50, y: 63, type: 'pool', label: 'Pool Deck P7' },
+    { id: 'P8', x: 55, y: 60, type: 'pool', label: 'Pool Deck P8' },
   ];
 
   const handleUmbrellaClick = (umbrellaId: string) => {
@@ -60,11 +60,11 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   };
 
   return (
-    <div className="relative w-full h-full min-h-[400px] bg-gray-100 rounded-lg overflow-hidden">
+    <div className="relative w-full h-full max-h-80 bg-gray-100 rounded-lg overflow-hidden">
       {/* Resort Image */}
       <img 
-        src={springhillSuitesImage} 
-        alt="SpringHill Suites Panama City Beach Resort"
+        src={springhillFrontView} 
+        alt="SpringHill Suites Panama City Beach Resort - Front View"
         className="w-full h-full object-cover"
       />
       
