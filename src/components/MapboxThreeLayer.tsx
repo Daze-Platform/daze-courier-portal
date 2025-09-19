@@ -86,120 +86,133 @@ export class MapboxThreeLayer implements mapboxgl.CustomLayerInterface {
   private createSpringHillResort() {
     if (!this.scene) return;
 
-    console.log('Creating SpringHill Suites resort...');
+    console.log('Creating accurate SpringHill Suites resort based on reference images...');
 
     // Materials - SpringHill Suites specific colors from reference images
     const buildingMaterial = new THREE.MeshLambertMaterial({ color: '#FFFFFF' }); // White building
-    const blueAccentMaterial = new THREE.MeshLambertMaterial({ color: '#0066CC' }); // Blue accents
+    const blueAccentMaterial = new THREE.MeshLambertMaterial({ color: '#4A90E2' }); // Blue balcony railings
     const poolMaterial = new THREE.MeshLambertMaterial({ 
       color: '#0088FF', 
       transparent: true, 
       opacity: 0.8 
     });
-    const deckMaterial = new THREE.MeshLambertMaterial({ color: '#F5F5DC' }); // Beige deck
-    const beachMaterial = new THREE.MeshLambertMaterial({ color: '#F4A460' }); // Sandy beach
-    const garageMaterial = new THREE.MeshLambertMaterial({ color: '#E0E0E0' }); // Light gray parking
+    const deckMaterial = new THREE.MeshLambertMaterial({ color: '#F5F5DC' }); // Pool deck
+    const garageMaterial = new THREE.MeshLambertMaterial({ color: '#FFFFFF' }); // White parking garage
+    const garageOpeningMaterial = new THREE.MeshLambertMaterial({ color: '#333333' }); // Dark openings
+    const grassMaterial = new THREE.MeshLambertMaterial({ color: '#4CAF50' }); // Green lawn
 
-    // MAIN HOTEL TOWER - 12 story white tower
+    // MAIN HOTEL TOWER - 12 story white tower (positioned at center)
     const mainTower = new THREE.Mesh(
-      new THREE.BoxGeometry(40, 72, 20), // Width, Height, Depth in meters
+      new THREE.BoxGeometry(60, 90, 30), // Width, Height, Depth
       buildingMaterial
     );
-    mainTower.position.set(0, 36, -15); // Positioned behind pool area
+    mainTower.position.set(0, 45, 0); // Center of the complex
     this.scene.add(mainTower);
 
-    // Add blue accent stripes on the building (balcony railings)
-    for (let floor = 2; floor < 12; floor += 2) {
-      const blueStripe = new THREE.Mesh(
-        new THREE.BoxGeometry(41, 2, 21),
+    // Add blue balcony railings on each floor
+    for (let floor = 1; floor <= 12; floor++) {
+      // Front balconies
+      const frontBalcony = new THREE.Mesh(
+        new THREE.BoxGeometry(62, 1, 2),
         blueAccentMaterial
       );
-      blueStripe.position.set(0, 6 * floor, -15);
-      this.scene.add(blueStripe);
+      frontBalcony.position.set(0, floor * 7, 16);
+      this.scene.add(frontBalcony);
+
+      // Side balconies
+      const sideBalcony1 = new THREE.Mesh(
+        new THREE.BoxGeometry(2, 1, 32),
+        blueAccentMaterial
+      );
+      sideBalcony1.position.set(31, floor * 7, 0);
+      this.scene.add(sideBalcony1);
+
+      const sideBalcony2 = new THREE.Mesh(
+        new THREE.BoxGeometry(2, 1, 32),
+        blueAccentMaterial
+      );
+      sideBalcony2.position.set(-31, floor * 7, 0);
+      this.scene.add(sideBalcony2);
     }
 
-    // PARKING GARAGE STRUCTURE - lower structure attached to main tower
+    // PARKING GARAGE - multi-level white structure at base
     const parkingGarage = new THREE.Mesh(
-      new THREE.BoxGeometry(45, 24, 25), // 4-story parking structure
+      new THREE.BoxGeometry(80, 30, 40), // Wider than tower
       garageMaterial
     );
-    parkingGarage.position.set(0, 12, 5);
+    parkingGarage.position.set(0, 15, -5);
     this.scene.add(parkingGarage);
 
-    // "PCB" SIGNAGE on the building
+    // Add dark openings to parking garage to show it's not solid
+    for (let level = 0; level < 4; level++) {
+      for (let i = 0; i < 8; i++) {
+        const opening = new THREE.Mesh(
+          new THREE.BoxGeometry(8, 6, 2),
+          garageOpeningMaterial
+        );
+        opening.position.set(-28 + i * 8, 6 + level * 6, 15);
+        this.scene.add(opening);
+      }
+    }
+
+    // "PCB" SIGNAGE on the right side of building
     const pcbSign = new THREE.Mesh(
-      new THREE.BoxGeometry(8, 6, 1),
+      new THREE.BoxGeometry(2, 15, 20),
       blueAccentMaterial
     );
-    pcbSign.position.set(15, 18, 17.5);
+    pcbSign.position.set(32, 25, 0);
     this.scene.add(pcbSign);
 
-    // CURVED POOL COMPLEX - kidney/curved shape
+    // GREEN LAWN AREA (to the right of the building as seen in reference)
+    const lawnArea = new THREE.Mesh(
+      new THREE.BoxGeometry(40, 1, 60),
+      grassMaterial
+    );
+    lawnArea.position.set(60, 0.5, 0);
+    this.scene.add(lawnArea);
+
+    // POOL COMPLEX - positioned to the LEFT of the main building
     const poolDeck = new THREE.Mesh(
-      new THREE.BoxGeometry(80, 1, 50),
+      new THREE.BoxGeometry(70, 2, 50),
       deckMaterial
     );
-    poolDeck.position.set(0, 0.5, 45);
+    poolDeck.position.set(-55, 1, 10); // Left side of building
     this.scene.add(poolDeck);
 
-    // Main curved pool - create kidney shape with multiple sections
+    // Main curved pool - kidney shaped (using connected circular sections)
     const pool1 = new THREE.Mesh(
-      new THREE.CylinderGeometry(15, 15, 3, 16),
-      poolMaterial
-    );
-    pool1.position.set(-10, 1.5, 40);
-    this.scene.add(pool1);
-
-    const pool2 = new THREE.Mesh(
       new THREE.CylinderGeometry(12, 12, 3, 16),
       poolMaterial
     );
-    pool2.position.set(5, 1.5, 45);
+    pool1.position.set(-65, 2.5, 5);
+    this.scene.add(pool1);
+
+    const pool2 = new THREE.Mesh(
+      new THREE.CylinderGeometry(15, 15, 3, 16),
+      poolMaterial
+    );
+    pool2.position.set(-50, 2.5, 15);
     this.scene.add(pool2);
 
     const pool3 = new THREE.Mesh(
-      new THREE.CylinderGeometry(18, 18, 3, 16),
+      new THREE.CylinderGeometry(10, 10, 3, 16),
       poolMaterial
     );
-    pool3.position.set(20, 1.5, 55);
+    pool3.position.set(-40, 2.5, 5);
     this.scene.add(pool3);
 
-    // Central island feature in the pool
-    const poolIsland = new THREE.Mesh(
-      new THREE.CylinderGeometry(4, 4, 2, 12),
-      deckMaterial
+    // Small spa/hot tub
+    const spa = new THREE.Mesh(
+      new THREE.CylinderGeometry(4, 4, 3, 12),
+      poolMaterial
     );
-    poolIsland.position.set(5, 2, 48);
-    this.scene.add(poolIsland);
+    spa.position.set(-35, 2.5, -5);
+    this.scene.add(spa);
 
-    // Pool bar structure
-    const poolBar = new THREE.Mesh(
-      new THREE.BoxGeometry(12, 4, 8),
-      new THREE.MeshLambertMaterial({ color: '#8B4513' })
-    );
-    poolBar.position.set(-25, 2, 35);
-    this.scene.add(poolBar);
-
-    // BEACH AREA
-    const beachArea = new THREE.Mesh(
-      new THREE.BoxGeometry(120, 1, 40),
-      beachMaterial
-    );
-    beachArea.position.set(0, -0.5, 85);
-    this.scene.add(beachArea);
-
-    // Beach boardwalk
-    const boardwalk = new THREE.Mesh(
-      new THREE.BoxGeometry(80, 1, 6),
-      new THREE.MeshLambertMaterial({ color: '#DEB887' })
-    );
-    boardwalk.position.set(0, 0, 75);
-    this.scene.add(boardwalk);
-
-    // Add palm trees
+    // Add palm trees around the pool area
     this.addPalmTrees();
     
-    // Add umbrella layouts
+    // Add realistic umbrella layout matching the reference image
     this.addResortUmbrellas();
 
     // Lighting
@@ -217,15 +230,16 @@ export class MapboxThreeLayer implements mapboxgl.CustomLayerInterface {
     if (!this.scene) return;
 
     const palmPositions = [
-      // Around pool area - matching the satellite image layout
-      [-50, 0, 15], [50, 0, 15],  // Pool sides
-      [-40, 0, 30], [40, 0, 30],    // Pool corners
-      [-30, 0, 65], [30, 0, 65],  // Pool deck outer edge
-      // Between pool and beach
-      [-20, 0, 75], [20, 0, 75],
-      // Beach area landscaping
-      [-60, 0, 95], [60, 0, 95],
-      [-40, 0, 105], [40, 0, 105]
+      // Around pool deck area - matching the reference layout
+      [-75, 0, -10], [-45, 0, -15], // Left side of pool area
+      [-65, 0, 25], [-35, 0, 30],   // Around pool perimeter
+      [-80, 0, 5], [-25, 0, 20],    // Pool deck landscaping
+      // Between main building and pool
+      [-15, 0, -5], [15, 0, -10],   
+      // Around the lawn area
+      [45, 0, -20], [75, 0, -15], [85, 0, 15],
+      // Front entrance area
+      [25, 0, -35], [-25, 0, -35]
     ];
 
     palmPositions.forEach(pos => {
@@ -255,89 +269,46 @@ export class MapboxThreeLayer implements mapboxgl.CustomLayerInterface {
     if (!this.scene) return;
 
     const umbrellaPositions = [
-      // POOL DECK UMBRELLAS - organized rows around the curved pool
-      // First row - closest to pool
-      { id: 'P1', pos: [-35, 0, 25], type: 'premium' },
-      { id: 'P2', pos: [-25, 0, 25], type: 'standard' },
-      { id: 'P3', pos: [-15, 0, 25], type: 'premium' },
-      { id: 'P4', pos: [-5, 0, 25], type: 'standard' },
-      { id: 'P5', pos: [5, 0, 25], type: 'premium' },
-      { id: 'P6', pos: [15, 0, 25], type: 'standard' },
-      { id: 'P7', pos: [25, 0, 25], type: 'premium' },
-      { id: 'P8', pos: [35, 0, 25], type: 'standard' },
+      // POOL DECK UMBRELLAS - organized around the curved pool (left side of building)
+      // First row - closest to main pool
+      { id: 'P1', pos: [-75, 0, 0], type: 'standard' },
+      { id: 'P2', pos: [-70, 0, 5], type: 'premium' },
+      { id: 'P3', pos: [-65, 0, 0], type: 'standard' },
+      { id: 'P4', pos: [-60, 0, 10], type: 'premium' },
+      { id: 'P5', pos: [-55, 0, 0], type: 'standard' },
+      { id: 'P6', pos: [-50, 0, 8], type: 'premium' },
+      { id: 'P7', pos: [-45, 0, 0], type: 'standard' },
+      { id: 'P8', pos: [-40, 0, 12], type: 'premium' },
       
-      // Second row - pool deck
-      { id: 'P9', pos: [-40, 0, 35], type: 'standard' },
-      { id: 'P10', pos: [-30, 0, 35], type: 'premium' },
-      { id: 'P11', pos: [-20, 0, 35], type: 'standard' },
-      { id: 'P12', pos: [-10, 0, 35], type: 'premium' },
-      { id: 'P13', pos: [0, 0, 35], type: 'standard' },
-      { id: 'P14', pos: [10, 0, 35], type: 'premium' },
-      { id: 'P15', pos: [20, 0, 35], type: 'standard' },
-      { id: 'P16', pos: [30, 0, 35], type: 'premium' },
-      { id: 'P17', pos: [40, 0, 35], type: 'standard' },
+      // Second row - around pool perimeter
+      { id: 'P9', pos: [-75, 0, 15], type: 'premium' },
+      { id: 'P10', pos: [-70, 0, 20], type: 'standard' },
+      { id: 'P11', pos: [-60, 0, 25], type: 'premium' },
+      { id: 'P12', pos: [-50, 0, 25], type: 'standard' },
+      { id: 'P13', pos: [-40, 0, 25], type: 'premium' },
+      { id: 'P14', pos: [-35, 0, 15], type: 'standard' },
+      { id: 'P15', pos: [-30, 0, 8], type: 'premium' },
+      { id: 'P16', pos: [-25, 0, 0], type: 'standard' },
 
-      // Third row - outer pool deck
-      { id: 'P18', pos: [-35, 0, 55], type: 'premium' },
-      { id: 'P19', pos: [-25, 0, 55], type: 'standard' },
-      { id: 'P20', pos: [-15, 0, 55], type: 'premium' },
-      { id: 'P21', pos: [-5, 0, 55], type: 'standard' },
-      { id: 'P22', pos: [5, 0, 55], type: 'premium' },
-      { id: 'P23', pos: [15, 0, 55], type: 'standard' },
-      { id: 'P24', pos: [25, 0, 55], type: 'premium' },
-      { id: 'P25', pos: [35, 0, 55], type: 'standard' },
+      // Third row - outer pool deck area
+      { id: 'P17', pos: [-80, 0, 30], type: 'standard' },
+      { id: 'P18', pos: [-70, 0, 35], type: 'premium' },
+      { id: 'P19', pos: [-60, 0, 35], type: 'standard' },
+      { id: 'P20', pos: [-50, 0, 35], type: 'premium' },
+      { id: 'P21', pos: [-40, 0, 35], type: 'standard' },
+      { id: 'P22', pos: [-30, 0, 30], type: 'premium' },
+      { id: 'P23', pos: [-25, 0, 20], type: 'standard' },
+      { id: 'P24', pos: [-20, 0, 10], type: 'premium' },
 
-      // BEACH UMBRELLAS - organized rows on the beach
-      // First beach row - closest to hotel
-      { id: 'B1', pos: [-50, 0, 80], type: 'standard' },
-      { id: 'B2', pos: [-40, 0, 80], type: 'premium' },
-      { id: 'B3', pos: [-30, 0, 80], type: 'standard' },
-      { id: 'B4', pos: [-20, 0, 80], type: 'premium' },
-      { id: 'B5', pos: [-10, 0, 80], type: 'standard' },
-      { id: 'B6', pos: [0, 0, 80], type: 'premium' },
-      { id: 'B7', pos: [10, 0, 80], type: 'standard' },
-      { id: 'B8', pos: [20, 0, 80], type: 'premium' },
-      { id: 'B9', pos: [30, 0, 80], type: 'standard' },
-      { id: 'B10', pos: [40, 0, 80], type: 'premium' },
-      { id: 'B11', pos: [50, 0, 80], type: 'standard' },
-
-      // Second beach row
-      { id: 'B12', pos: [-50, 0, 90], type: 'premium' },
-      { id: 'B13', pos: [-40, 0, 90], type: 'standard' },
-      { id: 'B14', pos: [-30, 0, 90], type: 'premium' },
-      { id: 'B15', pos: [-20, 0, 90], type: 'standard' },
-      { id: 'B16', pos: [-10, 0, 90], type: 'premium' },
-      { id: 'B17', pos: [0, 0, 90], type: 'standard' },
-      { id: 'B18', pos: [10, 0, 90], type: 'premium' },
-      { id: 'B19', pos: [20, 0, 90], type: 'standard' },
-      { id: 'B20', pos: [30, 0, 90], type: 'premium' },
-      { id: 'B21', pos: [40, 0, 90], type: 'standard' },
-      { id: 'B22', pos: [50, 0, 90], type: 'premium' },
-
-      // Third beach row
-      { id: 'B23', pos: [-50, 0, 100], type: 'standard' },
-      { id: 'B24', pos: [-40, 0, 100], type: 'premium' },
-      { id: 'B25', pos: [-30, 0, 100], type: 'standard' },
-      { id: 'B26', pos: [-20, 0, 100], type: 'premium' },
-      { id: 'B27', pos: [-10, 0, 100], type: 'standard' },
-      { id: 'B28', pos: [0, 0, 100], type: 'premium' },
-      { id: 'B29', pos: [10, 0, 100], type: 'standard' },
-      { id: 'B30', pos: [30, 0, 100], type: 'premium' },
-      { id: 'B31', pos: [30, 0, 100], type: 'standard' },
-      { id: 'B32', pos: [40, 0, 100], type: 'premium' },
-      { id: 'B33', pos: [50, 0, 100], type: 'standard' },
-
-      // Fourth beach row (beachfront VIP)
-      { id: 'B34', pos: [-45, 0, 110], type: 'premium' },
-      { id: 'B35', pos: [-35, 0, 110], type: 'premium' },
-      { id: 'B36', pos: [-25, 0, 110], type: 'premium' },
-      { id: 'B37', pos: [-15, 0, 110], type: 'premium' },
-      { id: 'B38', pos: [-5, 0, 110], type: 'premium' },
-      { id: 'B39', pos: [5, 0, 110], type: 'premium' },
-      { id: 'B40', pos: [15, 0, 110], type: 'premium' },
-      { id: 'B41', pos: [25, 0, 110], type: 'premium' },
-      { id: 'B42', pos: [35, 0, 110], type: 'premium' },
-      { id: 'B43', pos: [45, 0, 110], type: 'premium' },
+      // LAWN AREA UMBRELLAS (right side near green space)
+      { id: 'L1', pos: [45, 0, -10], type: 'premium' },
+      { id: 'L2', pos: [55, 0, -5], type: 'standard' },
+      { id: 'L3', pos: [65, 0, 0], type: 'premium' },
+      { id: 'L4', pos: [75, 0, 5], type: 'standard' },
+      { id: 'L5', pos: [50, 0, 10], type: 'premium' },
+      { id: 'L6', pos: [60, 0, 15], type: 'standard' },
+      { id: 'L7', pos: [70, 0, 20], type: 'premium' },
+      { id: 'L8', pos: [80, 0, 25], type: 'standard' }
     ];
 
     umbrellaPositions.forEach(umbrella => {
