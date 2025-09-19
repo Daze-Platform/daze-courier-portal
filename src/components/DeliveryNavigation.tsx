@@ -261,7 +261,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
 
       {/* Resort Map - Conditional rendering based on delivery type */}
       {isBeachDelivery ? (
-        <div className="flex-1 min-h-0 max-h-96">
+        <div className="flex-1 overflow-hidden">
           <ResortImageView destination={destination} />
         </div>
       ) : (
