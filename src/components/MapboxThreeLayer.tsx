@@ -32,7 +32,6 @@ export class MapboxThreeLayer implements mapboxgl.CustomLayerInterface {
   }
 
   onAdd(map: mapboxgl.Map, gl: WebGLRenderingContext) {
-    console.log('MapboxThreeLayer onAdd called');
     this.map = map;
 
     // Camera setup
@@ -56,7 +55,6 @@ export class MapboxThreeLayer implements mapboxgl.CustomLayerInterface {
 
     // Add the SpringHill Suites resort
     this.addSpringHillResort();
-    console.log('SpringHill resort added, world children:', this.world.children.length);
     
     // Add click handler
     map.getCanvasContainer().addEventListener('click', this.onClick.bind(this));
@@ -77,8 +75,8 @@ export class MapboxThreeLayer implements mapboxgl.CustomLayerInterface {
       modelAltitude
     );
 
-    // Calculate scale - use a larger scale to make the resort visible and realistic
-    const scale = modelAsMercatorCoordinate.meterInMercatorCoordinateUnits() * 2000;
+    // Calculate scale - use a much larger scale to make the resort visible
+    const scale = modelAsMercatorCoordinate.meterInMercatorCoordinateUnits() * 100000;
     console.log('Resort scale:', scale);
     console.log('Mercator coordinate:', modelAsMercatorCoordinate);
 
