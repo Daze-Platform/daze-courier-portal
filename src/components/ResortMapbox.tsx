@@ -29,17 +29,126 @@ const ResortMapbox: React.FC<ResortMapboxProps> = ({
   // Resort location coordinates (example: Four Seasons Resort in Naples, FL)
   const resortCenter: [number, number] = [-81.8081, 26.2347];
   
-  // Beach umbrella locations around the resort
-  const umbrellaLocations = [
-    { id: 'A1', coordinates: [-81.8085, 26.2350], type: 'standard' },
-    { id: 'A2', coordinates: [-81.8083, 26.2349], type: 'premium' },
-    { id: 'A3', coordinates: [-81.8081, 26.2348], type: 'standard' },
-    { id: 'A4', coordinates: [-81.8079, 26.2347], type: 'premium' },
-    { id: 'B1', coordinates: [-81.8084, 26.2346], type: 'standard' },
-    { id: 'B2', coordinates: [-81.8082, 26.2345], type: 'premium' },
-    { id: 'B3', coordinates: [-81.8080, 26.2344], type: 'standard' },
-    { id: 'C1', coordinates: [-81.8086, 26.2343], type: 'premium' },
-  ];
+  // Resort building GeoJSON
+  const resortBuilding = {
+    type: 'FeatureCollection' as const,
+    features: [
+      {
+        type: 'Feature' as const,
+        properties: { type: 'main-building', name: 'Pelican Beach Resort' },
+        geometry: {
+          type: 'Polygon' as const,
+          coordinates: [[
+            [-81.8088, 26.2352],
+            [-81.8076, 26.2352],
+            [-81.8076, 26.2340],
+            [-81.8088, 26.2340],
+            [-81.8088, 26.2352]
+          ]]
+        }
+      }
+    ]
+  };
+
+  // Pool deck GeoJSON
+  const poolDeck = {
+    type: 'FeatureCollection' as const,
+    features: [
+      {
+        type: 'Feature' as const,
+        properties: { type: 'pool', name: 'Main Pool' },
+        geometry: {
+          type: 'Polygon' as const,
+          coordinates: [[
+            [-81.8084, 26.2348],
+            [-81.8078, 26.2348],
+            [-81.8078, 26.2344],
+            [-81.8084, 26.2344],
+            [-81.8084, 26.2348]
+          ]]
+        }
+      },
+      {
+        type: 'Feature' as const,
+        properties: { type: 'pool-deck', name: 'Pool Deck' },
+        geometry: {
+          type: 'Polygon' as const,
+          coordinates: [[
+            [-81.8086, 26.2350],
+            [-81.8076, 26.2350],
+            [-81.8076, 26.2342],
+            [-81.8086, 26.2342],
+            [-81.8086, 26.2350]
+          ]]
+        }
+      }
+    ]
+  };
+
+  // Beach area GeoJSON
+  const beachArea = {
+    type: 'FeatureCollection' as const,
+    features: [
+      {
+        type: 'Feature' as const,
+        properties: { type: 'beach', name: 'Private Beach' },
+        geometry: {
+          type: 'Polygon' as const,
+          coordinates: [[
+            [-81.8090, 26.2355],
+            [-81.8074, 26.2355],
+            [-81.8074, 26.2340],
+            [-81.8090, 26.2340],
+            [-81.8090, 26.2355]
+          ]]
+        }
+      }
+    ]
+  };
+
+  // Beach umbrella locations
+  const beachUmbrellas = {
+    type: 'FeatureCollection' as const,
+    features: [
+      {
+        type: 'Feature' as const,
+        properties: { id: 'A1', type: 'standard', area: 'beach' },
+        geometry: { type: 'Point' as const, coordinates: [-81.8085, 26.2350] }
+      },
+      {
+        type: 'Feature' as const,
+        properties: { id: 'A2', type: 'premium', area: 'beach' },
+        geometry: { type: 'Point' as const, coordinates: [-81.8083, 26.2349] }
+      },
+      {
+        type: 'Feature' as const,
+        properties: { id: 'A3', type: 'standard', area: 'beach' },
+        geometry: { type: 'Point' as const, coordinates: [-81.8081, 26.2348] }
+      }
+    ]
+  };
+
+  // Pool umbrellas locations
+  const poolUmbrellas = {
+    type: 'FeatureCollection' as const,
+    features: [
+      {
+        type: 'Feature' as const,
+        properties: { id: 'P1', type: 'premium', area: 'pool' },
+        geometry: { type: 'Point' as const, coordinates: [-81.8082, 26.2347] }
+      },
+      {
+        type: 'Feature' as const,
+        properties: { id: 'P2', type: 'standard', area: 'pool' },
+        geometry: { type: 'Point' as const, coordinates: [-81.8080, 26.2346] }
+      },
+      {
+        type: 'Feature' as const,
+        properties: { id: 'P3', type: 'premium', area: 'pool' },
+        geometry: { type: 'Point' as const, coordinates: [-81.8078, 26.2345] }
+      }
+    ]
+  };
 
   // Load token from localStorage on mount
   useEffect(() => {
@@ -74,31 +183,167 @@ const ResortMapbox: React.FC<ResortMapboxProps> = ({
         map.current.setConfigProperty('basemap', 'lightPreset', 'dusk');
         map.current.setConfigProperty('basemap', 'show3dObjects', true);
         
-        // Add umbrella markers
-        umbrellaLocations.forEach((umbrella) => {
-          const el = document.createElement('div');
-          el.className = `umbrella-marker ${umbrella.type}`;
-          el.innerHTML = `
-            <div class="marker-pin ${umbrella.type === 'premium' ? 'bg-orange-500' : 'bg-blue-500'} w-8 h-8 rounded-full border-2 border-white shadow-lg flex items-center justify-center cursor-pointer hover:scale-110 transition-transform">
-              <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 2L3 7v11a2 2 0 002 2h10a2 2 0 002-2V7l-7-5z"/>
-              </svg>
-            </div>
-          `;
-          
-          el.addEventListener('click', () => {
-            onUmbrellaSelect?.(umbrella.id);
-          });
+        // Add resort building source and layer
+        map.current.addSource('resort-building', {
+          type: 'geojson',
+          data: resortBuilding
+        });
+        
+        map.current.addLayer({
+          id: 'resort-building-layer',
+          type: 'fill',
+          source: 'resort-building',
+          paint: {
+            'fill-color': '#8B4513',
+            'fill-opacity': 0.8,
+            'fill-outline-color': '#654321'
+          }
+        });
 
-          new mapboxgl.Marker(el)
-            .setLngLat(umbrella.coordinates as [number, number])
-            .addTo(map.current!);
+        // Add beach area source and layer
+        map.current.addSource('beach-area', {
+          type: 'geojson',
+          data: beachArea
+        });
+        
+        map.current.addLayer({
+          id: 'beach-area-layer',
+          type: 'fill',
+          source: 'beach-area',
+          paint: {
+            'fill-color': '#F4A460',
+            'fill-opacity': 0.6
+          }
+        });
+
+        // Add pool deck source and layers
+        map.current.addSource('pool-deck', {
+          type: 'geojson',
+          data: poolDeck
+        });
+        
+        map.current.addLayer({
+          id: 'pool-deck-layer',
+          type: 'fill',
+          source: 'pool-deck',
+          filter: ['==', 'type', 'pool-deck'],
+          paint: {
+            'fill-color': '#D2B48C',
+            'fill-opacity': 0.7
+          }
+        });
+        
+        map.current.addLayer({
+          id: 'pool-layer',
+          type: 'fill',
+          source: 'pool-deck',
+          filter: ['==', 'type', 'pool'],
+          paint: {
+            'fill-color': '#4169E1',
+            'fill-opacity': 0.8
+          }
+        });
+
+        // Add beach umbrella sources and layers
+        map.current.addSource('beach-umbrellas', {
+          type: 'geojson',
+          data: beachUmbrellas
+        });
+        
+        map.current.addLayer({
+          id: 'beach-umbrellas-layer',
+          type: 'circle',
+          source: 'beach-umbrellas',
+          paint: {
+            'circle-radius': [
+              'case',
+              ['==', ['get', 'type'], 'premium'], 8,
+              6
+            ],
+            'circle-color': [
+              'case',
+              ['==', ['get', 'type'], 'premium'], '#FF6B35',
+              '#4A90E2'
+            ],
+            'circle-stroke-color': '#FFFFFF',
+            'circle-stroke-width': 2
+          }
+        });
+
+        // Add pool umbrella sources and layers
+        map.current.addSource('pool-umbrellas', {
+          type: 'geojson',
+          data: poolUmbrellas
+        });
+        
+        map.current.addLayer({
+          id: 'pool-umbrellas-layer',
+          type: 'circle',
+          source: 'pool-umbrellas',
+          paint: {
+            'circle-radius': [
+              'case',
+              ['==', ['get', 'type'], 'premium'], 8,
+              6
+            ],
+            'circle-color': [
+              'case',
+              ['==', ['get', 'type'], 'premium'], '#FF6B35',
+              '#4A90E2'
+            ],
+            'circle-stroke-color': '#FFFFFF',
+            'circle-stroke-width': 2
+          }
+        });
+
+        // Add click handlers for umbrellas
+        map.current.on('click', 'beach-umbrellas-layer', (e) => {
+          if (e.features && e.features[0]) {
+            const umbrellaId = e.features[0].properties?.id;
+            if (umbrellaId) {
+              onUmbrellaSelect?.(umbrellaId);
+            }
+          }
+        });
+
+        map.current.on('click', 'pool-umbrellas-layer', (e) => {
+          if (e.features && e.features[0]) {
+            const umbrellaId = e.features[0].properties?.id;
+            if (umbrellaId) {
+              onUmbrellaSelect?.(umbrellaId);
+            }
+          }
+        });
+
+        // Change cursor on hover
+        map.current.on('mouseenter', 'beach-umbrellas-layer', () => {
+          if (map.current) map.current.getCanvas().style.cursor = 'pointer';
+        });
+        
+        map.current.on('mouseleave', 'beach-umbrellas-layer', () => {
+          if (map.current) map.current.getCanvas().style.cursor = '';
+        });
+
+        map.current.on('mouseenter', 'pool-umbrellas-layer', () => {
+          if (map.current) map.current.getCanvas().style.cursor = 'pointer';
+        });
+        
+        map.current.on('mouseleave', 'pool-umbrellas-layer', () => {
+          if (map.current) map.current.getCanvas().style.cursor = '';
         });
 
         // Add destination marker if specified
         if (destination) {
-          const destUmbrella = umbrellaLocations.find(u => 
-            destination.includes(u.id) || destination.toLowerCase().includes('beach')
+          // Check both beach and pool umbrellas for destination
+          const allUmbrellas = [
+            ...beachUmbrellas.features,
+            ...poolUmbrellas.features
+          ];
+          
+          const destUmbrella = allUmbrellas.find(u => 
+            destination.includes(u.properties?.id || '') || 
+            destination.toLowerCase().includes('beach') ||
+            destination.toLowerCase().includes('pool')
           );
           
           if (destUmbrella) {
@@ -112,7 +357,7 @@ const ResortMapbox: React.FC<ResortMapboxProps> = ({
             `;
             
             destinationMarkerRef.current = new mapboxgl.Marker(destEl)
-              .setLngLat(destUmbrella.coordinates as [number, number])
+              .setLngLat(destUmbrella.geometry.coordinates as [number, number])
               .addTo(map.current!);
           }
         }
@@ -232,6 +477,18 @@ const ResortMapbox: React.FC<ResortMapboxProps> = ({
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
             <span>Premium Loungers</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-amber-600 rounded"></div>
+            <span>Resort Building</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-blue-600 rounded"></div>
+            <span>Swimming Pool</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-yellow-600 rounded"></div>
+            <span>Beach Area</span>
           </div>
         </div>
       </div>
