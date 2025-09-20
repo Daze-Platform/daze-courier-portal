@@ -99,7 +99,9 @@ const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuItem>Profile Settings</DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/profile-settings">Profile Settings</Link>
+              </DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuItem>Sign Out</DropdownMenuItem>
             </DropdownMenuContent>
@@ -161,7 +163,9 @@ const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuItem>Profile Settings</DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/profile-settings">Profile Settings</Link>
+              </DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuItem>Sign Out</DropdownMenuItem>
             </DropdownMenuContent>
@@ -186,7 +190,9 @@ const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>Profile Settings</DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/profile-settings">Profile Settings</Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem>Support</DropdownMenuItem>
                 <DropdownMenuItem>Sign Out</DropdownMenuItem>
               </DropdownMenuContent>

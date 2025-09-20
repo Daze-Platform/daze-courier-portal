@@ -12,6 +12,7 @@ import NotificationDropdown from "@/components/NotificationDropdown";
 import ferdinandProfile from "@/assets/ferdinand-profile.jpg";
 import dazeLogo from "@/assets/daze-logo.png";
 import Sidebar from "@/components/Sidebar";
+import { Link } from "react-router-dom";
 
 const UnifiedHeader = () => {
   return (
@@ -68,8 +69,8 @@ const UnifiedHeader = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56 bg-card border border-border shadow-lg">
-              <DropdownMenuItem className="cursor-pointer hover:bg-accent/10 focus:bg-accent/20">
-                Profile Settings
+              <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent/10 focus:bg-accent/20">
+                <Link to="/profile-settings">Profile Settings</Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer hover:bg-accent/10 focus:bg-accent/20">
                 Support
