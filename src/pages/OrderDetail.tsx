@@ -216,7 +216,7 @@ const OrderDetail = () => {
 
       {/* Main Content */}
       <div className="min-h-screen bg-background lg:ml-64 pt-4">
-        <div className="container mx-auto px-4 py-6 space-y-6 lg:px-8 lg:py-8">
+        <div className={`container mx-auto px-4 py-6 space-y-6 lg:px-8 lg:py-8 ${showRoomStatus ? 'pb-32' : ''}`}>
           {/* Header */}
           <div className="flex items-center gap-4">
             <Button
