@@ -60,12 +60,12 @@ const OrderDetailsDrawer = ({ order }: OrderDetailsDrawerProps) => {
         </div>
       </DrawerTrigger>
       
-      <DrawerContent className="max-h-[80vh]">
-        <DrawerHeader className="pb-4">
+      <DrawerContent className="max-h-[85vh] flex flex-col">
+        <DrawerHeader className="pb-4 flex-shrink-0">
           <DrawerTitle className="text-xl font-semibold">Order Details</DrawerTitle>
         </DrawerHeader>
         
-        <div className="px-6 pb-32 space-y-6 overflow-y-auto">
+        <div className="px-6 pb-40 space-y-6 overflow-y-auto flex-1 min-h-0">
           {/* Customer Info */}
           <div className="bg-card rounded-lg p-4 border border-border">
             <div className="flex items-center justify-between mb-4">
