@@ -138,9 +138,9 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
           alt={`SpringHill Suites Panama City Beach Resort - ${focusArea === 'pool' ? 'Pool Area' : focusArea === 'beach' ? 'Beach Area' : 'Front Aerial View'}`}
           className="block w-full h-full object-cover object-center"
           style={{ 
-            minWidth: '100%', 
-            minHeight: '100%', 
-            margin: 0, 
+            width: '101%', 
+            height: '101%', 
+            margin: '-0.5%',
             padding: 0
           }}
         />
