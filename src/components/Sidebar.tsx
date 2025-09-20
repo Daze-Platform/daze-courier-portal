@@ -92,7 +92,7 @@ const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
                   </Avatar>
                   <div className="text-left">
                     <p className="text-sm font-medium">Ferdinand S.</p>
-                    <p className="text-xs text-muted-foreground">Driver</p>
+                    <p className="text-xs text-muted-foreground">Runner</p>
                   </div>
                 </div>
                 <ChevronDown className="h-4 w-4" />
@@ -154,7 +154,7 @@ const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
                   </Avatar>
                   <div className="text-left">
                     <p className="text-sm font-medium">Ferdinand S.</p>
-                    <p className="text-xs text-muted-foreground">Driver</p>
+                    <p className="text-xs text-muted-foreground">Runner</p>
                   </div>
                 </div>
                 <ChevronDown className="h-4 w-4" />
