@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { MapPin, Navigation, Clock, Play, Pause, Target, Zap, User } from "lucide-react";
+import { MapPin, Navigation, Clock, Play, Pause, Target, Zap, User, UtensilsCrossed, ChefHat } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -424,15 +424,28 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
               className="absolute transform -translate-x-1/2 -translate-y-1/2 z-10 transition-all duration-200 ease-linear"
               style={{ top: courierPosition.top, left: courierPosition.left }}
             >
-              <div className="relative">
-                <div className="h-8 w-8 bg-blue-500 rounded-full border-3 border-white shadow-xl flex items-center justify-center">
-                  <User className="h-4 w-4 text-white" />
-                </div>
+               <div className="relative">
+                 {/* Food Runner Avatar with Visual Elements */}
+                 <div className="h-10 w-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full border-3 border-white shadow-xl flex items-center justify-center relative overflow-hidden">
+                   {/* Background pattern */}
+                   <div className="absolute inset-0 bg-blue-400 opacity-20 rounded-full"></div>
+                   
+                   {/* Food delivery icon stack */}
+                   <div className="relative z-10 flex flex-col items-center">
+                     <UtensilsCrossed className="h-3 w-3 text-white mb-0.5" strokeWidth={2.5} />
+                     <User className="h-3 w-3 text-white" strokeWidth={2.5} />
+                   </div>
+                   
+                   {/* Small chef hat indicator */}
+                   <div className="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full border border-blue-500 flex items-center justify-center">
+                     <ChefHat className="h-1.5 w-1.5 text-blue-500" strokeWidth={3} />
+                   </div>
+                 </div>
                 
-                {/* Pulse effect when navigating */}
-                {isNavigating && (
-                  <div className="absolute inset-0 h-8 w-8 bg-blue-500 rounded-full animate-ping opacity-30"></div>
-                )}
+                 {/* Pulse effect when navigating */}
+                 {isNavigating && (
+                   <div className="absolute inset-0 h-10 w-10 bg-blue-500 rounded-full animate-ping opacity-30"></div>
+                 )}
                 
                 {/* Direction indicator - arrow pointing to destination */}
                 {isNavigating && (
