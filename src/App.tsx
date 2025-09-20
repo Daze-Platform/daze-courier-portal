@@ -11,6 +11,7 @@ import OrderHistoryDetail from "./pages/OrderHistoryDetail";
 import Ratings from "./pages/Ratings";
 import Earnings from "./pages/Earnings";
 import Help from "./pages/Help";
+import ProfileSettings from "./pages/ProfileSettings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/ratings" element={<Ratings />} />
           <Route path="/earnings" element={<Earnings />} />
           <Route path="/help" element={<Help />} />
+          <Route path="/profile-settings" element={<ProfileSettings />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
