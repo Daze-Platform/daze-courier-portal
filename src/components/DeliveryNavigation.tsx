@@ -13,6 +13,31 @@ interface DeliveryNavigationProps {
   destination: string;
   deliveryType?: string;
   onComplete: () => void;
+  order?: {
+    orderId: string;
+    restaurant: string;
+    deliveryAddress: string;
+    deliveryTime: string;
+    deliveryType: string;
+    customer: {
+      name: string;
+      avatar: string;
+      phone: string;
+    };
+    items: Array<{
+      name: string;
+      price: number;
+      modifications: string;
+    }>;
+    specialNotes?: string;
+    total: number;
+    earnings: {
+      basePay: number;
+      customerTip: number;
+      additionalPay: number;
+      total: number;
+    };
+  };
 }
 
 interface Position {
@@ -20,7 +45,7 @@ interface Position {
   left: string;
 }
 
-const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onComplete }: DeliveryNavigationProps) => {
+const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onComplete, order }: DeliveryNavigationProps) => {
   const [isNavigating, setIsNavigating] = useState(false);
   const [courierPosition, setCourierPosition] = useState<Position>({ top: "85%", left: "25%" }); // Beach Bar starting position
   const [progress, setProgress] = useState(0);
@@ -328,59 +353,89 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
 
           {/* Order Details Panel - Sliding from bottom */}
           {showOrderDetails && (
-            <div className="absolute bottom-0 left-0 right-0 bg-background border-t border-border shadow-lg z-40 max-h-[60vh] overflow-y-auto">
+            <div className="absolute bottom-0 left-0 right-0 bg-background border-t border-border shadow-lg z-40 max-h-[70vh] overflow-y-auto">
               <div className="p-4 space-y-4">
-                {/* Delivery Instructions for Beach/Pool */}
-                <Card className="p-4">
-                  <h3 className="text-lg font-semibold mb-3 text-foreground">Delivery Instructions</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3 p-3 bg-primary/5 rounded-lg">
-                      <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-sm">1</div>
-                      <div>
-                        <p className="font-medium text-foreground">Navigate to {isBeachDelivery ? 'Beach Area' : 'Pool Deck'}</p>
-                        <p className="text-sm text-muted-foreground">Follow the map to reach the customer location</p>
-                      </div>
+                {/* Order Items */}
+                {order && (
+                  <Card className="p-4">
+                    <h3 className="text-lg font-semibold mb-3 text-foreground">Order Items ({order.items.length})</h3>
+                    <div className="space-y-3 max-h-48 overflow-y-auto">
+                      {order.items.map((item, index) => (
+                        <div key={index} className="flex items-start gap-3 p-2 bg-accent/10 rounded-lg">
+                          <div className="flex-1">
+                            <div className="flex justify-between items-center">
+                              <p className="font-medium text-foreground">{item.name}</p>
+                              <p className="font-semibold text-foreground">${item.price}</p>
+                            </div>
+                            {item.modifications && (
+                              <p className="text-sm text-muted-foreground">{item.modifications}</p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
                     </div>
                     
-                    <div className="flex items-center gap-3 p-3 bg-primary/5 rounded-lg">
-                      <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-sm">2</div>
-                      <div>
-                        <p className="font-medium text-foreground">Look for Customer</p>
-                        <p className="text-sm text-muted-foreground">Find the customer at {destination}</p>
+                    <div className="border-t border-border mt-4 pt-3">
+                      <div className="flex justify-between font-semibold text-lg">
+                        <span className="text-foreground">Order Total</span>
+                        <span className="text-foreground">${order.total}</span>
                       </div>
                     </div>
-                    
-                    <div className="flex items-center gap-3 p-3 bg-green-500/10 rounded-lg border border-green-500/20">
-                      <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">3</div>
-                      <div>
-                        <p className="font-medium text-foreground">Complete Delivery</p>
-                        <p className="text-sm text-muted-foreground">Hand over the order and confirm completion</p>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
+                  </Card>
+                )}
 
-                {/* Order Summary */}
+                {/* Special Instructions */}
+                {order?.specialNotes && (
+                  <Card className="p-4">
+                    <h3 className="text-lg font-semibold mb-3 text-foreground">Special Instructions</h3>
+                    <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
+                      <p className="text-foreground font-medium">{order.specialNotes}</p>
+                    </div>
+                  </Card>
+                )}
+
+                {/* Customer Info */}
+                {order && (
+                  <Card className="p-4">
+                    <h3 className="text-lg font-semibold mb-3 text-foreground">Customer Info</h3>
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-muted-foreground">Name:</span>
+                        <span className="font-medium text-foreground">{order.customer.name}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-muted-foreground">Phone:</span>
+                        <span className="font-medium text-foreground">{order.customer.phone}</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-muted-foreground">Location:</span>
+                        <span className="font-medium text-foreground">{destination}</span>
+                      </div>
+                    </div>
+                  </Card>
+                )}
+
+                {/* Delivery Status */}
                 <Card className="p-4">
-                  <h3 className="text-lg font-semibold mb-3 text-foreground">Order Summary</h3>
+                  <h3 className="text-lg font-semibold mb-3 text-foreground">Delivery Status</h3>
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">Delivery Type:</span>
+                      <span className="text-muted-foreground">Type:</span>
                       <Badge variant="outline">{deliveryType}</Badge>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">Destination:</span>
-                      <span className="font-medium text-foreground">{destination}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">Status:</span>
+                      <span className="text-muted-foreground">Progress:</span>
                       <Badge variant={hasReachedDestination ? "default" : "secondary"}>
-                        {hasReachedDestination ? "Ready to Complete" : "In Progress"}
+                        {hasReachedDestination ? "Ready to Complete" : `${Math.round(progress)}%`}
                       </Badge>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground">Distance:</span>
                       <span className="font-medium text-foreground">{totalDistance}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground">ETA:</span>
+                      <span className="font-medium text-foreground">{eta.toFixed(1)} min</span>
                     </div>
                   </div>
                 </Card>

@@ -454,6 +454,7 @@ const OrderDetail = () => {
             destination={order.deliveryAddress}
             deliveryType={order.deliveryType}
             onComplete={handleNavigationComplete}
+            order={order}
           />
         </DialogContent>
       </Dialog>
