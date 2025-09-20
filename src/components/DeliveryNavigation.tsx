@@ -58,7 +58,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
   const [navigationStartTime, setNavigationStartTime] = useState<number>(0);
   const [totalEstimatedTime] = useState(8); // 8 seconds total navigation time
   const [showOrderDetails, setShowOrderDetails] = useState(false);
-  const [modalState, setModalState] = useState<'closed' | 'peek' | 'half' | 'full'>('closed');
+  const [modalState, setModalState] = useState<'closed' | 'half' | 'full'>('closed');
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartY, setDragStartY] = useState(0);
   const [dragCurrentY, setDragCurrentY] = useState(0);
@@ -66,30 +66,27 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
   const { toast } = useToast();
 
   // Modal snap point handlers
-  const getModalHeight = (state: 'closed' | 'peek' | 'half' | 'full') => {
+  const getModalHeight = (state: 'closed' | 'half' | 'full') => {
     switch (state) {
       case 'closed': return '0%';
-      case 'peek': return '20%';
       case 'half': return '50%';
       case 'full': return '85%';
       default: return '0%';
     }
   };
 
-  const getNextModalState = (currentState: 'closed' | 'peek' | 'half' | 'full', direction: 'up' | 'down') => {
+  const getNextModalState = (currentState: 'closed' | 'half' | 'full', direction: 'up' | 'down') => {
     if (direction === 'up') {
       switch (currentState) {
-        case 'closed': return 'peek';
-        case 'peek': return 'half';
+        case 'closed': return 'half';
         case 'half': return 'full';
         case 'full': return 'full';
-        default: return 'peek';
+        default: return 'half';
       }
     } else {
       switch (currentState) {
         case 'full': return 'half';
-        case 'half': return 'peek';
-        case 'peek': return 'closed';
+        case 'half': return 'closed';
         case 'closed': return 'closed';
         default: return 'closed';
       }
@@ -98,7 +95,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
 
   const handleModalToggle = () => {
     if (modalState === 'closed') {
-      setModalState('peek');
+      setModalState('half');
     } else {
       setModalState('closed');
     }
@@ -605,23 +602,6 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
                       <li>• Ask pool/beach staff for assistance if needed</li>
                     </ul>
                   </div>
-                </div>
-              </div>
-            )}
-
-            {/* Peek State Content - Show quick summary */}
-            {modalState === 'peek' && (
-              <div className="bg-background px-6 pb-4">
-                <div className="flex items-center justify-between py-2">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Order Total</p>
-                    <p className="font-semibold text-foreground">${order?.total || '0.00'}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm text-muted-foreground">Items</p>
-                    <p className="font-semibold text-foreground">{order?.items.length || 0}</p>
-                  </div>
-                  <ChevronUp className="h-4 w-4 text-muted-foreground animate-pulse" />
                 </div>
               </div>
             )}
