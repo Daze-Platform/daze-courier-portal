@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import springhillFrontAerial from '@/assets/springhill-front-aerial.jpg';
+import luxuryPoolDeckHD from '@/assets/luxury-pool-deck-hd.jpg';
+import beachView from '@/assets/beach-view.jpg';
 import { MapPin, Navigation, Coffee, Waves, Umbrella } from 'lucide-react';
 
 interface ResortImageViewProps {
@@ -92,6 +94,19 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
     }
   }, [focusArea]);
 
+  // Get the appropriate image based on focus area
+  const getResortImage = () => {
+    if (focusArea === 'pool') {
+      return luxuryPoolDeckHD;
+    } else if (focusArea === 'beach') {
+      return beachView;
+    } else {
+      return springhillFrontAerial;
+    }
+  };
+
+  const resortImage = getResortImage();
+
   const getLocationStyle = (type: string) => {
     switch (type) {
       case 'runner-start': return 'bg-green-500 border-green-600 text-white';
@@ -119,8 +134,8 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
         }}
       >
         <img 
-          src={springhillFrontAerial} 
-          alt="SpringHill Suites Panama City Beach Resort - Front Aerial View"
+          src={resortImage} 
+          alt={`SpringHill Suites Panama City Beach Resort - ${focusArea === 'pool' ? 'Pool Area' : focusArea === 'beach' ? 'Beach Area' : 'Front Aerial View'}`}
           className="w-full h-full object-cover"
         />
       </div>
