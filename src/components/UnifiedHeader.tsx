@@ -60,7 +60,10 @@ const UnifiedHeader = () => {
                     FS
                   </AvatarFallback>
                 </Avatar>
-                <span className="hidden sm:inline font-medium">Ferdinand S.</span>
+                <div className="hidden sm:block text-left">
+                  <div className="font-medium">Ferdinand S.</div>
+                  <div className="text-xs text-primary-foreground/70">Runner</div>
+                </div>
                 <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
