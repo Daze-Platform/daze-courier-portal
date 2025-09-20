@@ -155,14 +155,17 @@ const OrderDetail = () => {
   const handleStartDelivery = () => {
     console.log('Starting delivery with:', { 
       deliveryType: order.deliveryType, 
-      deliveryAddress: order.deliveryAddress 
+      deliveryAddress: order.deliveryAddress,
+      orderId: order.orderId
     });
     setNavigationStarted(true);
     
     // For room deliveries, show status bar instead of navigation modal
-    if (order.deliveryType === "Room Delivery") {
+    if (order.deliveryType === "Room Delivery" || order.deliveryAddress?.toLowerCase().includes('room')) {
+      console.log('Room delivery detected - showing status bar');
       setShowRoomStatus(true);
     } else {
+      console.log('Non-room delivery - showing navigation modal');
       setShowNavigationModal(true);
     }
   };
