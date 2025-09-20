@@ -4,8 +4,11 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar, ChevronRight, Package, Clock, DollarSign } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { DateRange } from 'react-day-picker';
+import { isWithinInterval, parseISO } from 'date-fns';
 import UnifiedHeader from "@/components/UnifiedHeader";
 import DesktopSidebar from "@/components/DesktopSidebar";
+import DateRangePicker from "@/components/DateRangePicker";
 import margaritaMamasLogo from '@/assets/margarita-mamas-logo.png';
 import salDeMarLogo from '@/assets/sal-de-mar-logo.png';
 import oceanBreezeLogo from '@/assets/ocean-breeze-logo.png';
@@ -21,14 +24,18 @@ interface Order {
   deliveryFee: number;
   date: string;
   time: string;
+  dateTime: Date; // Add datetime for filtering
 }
 
 const OrderHistory: React.FC = () => {
   const navigate = useNavigate();
-  const [dateRange, setDateRange] = useState('May 8, 2021 - Oct 8, 2021');
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: new Date(2021, 4, 8), // May 8, 2021
+    to: new Date(2021, 9, 8), // Oct 8, 2021
+  });
 
-  // Sample order data based on the Figma design
-  const orders: Order[] = [
+  // Sample order data with actual datetime objects for filtering
+  const allOrders: Order[] = [
     {
       id: '1',
       restaurantName: "Margarita Mama's",
@@ -38,31 +45,74 @@ const OrderHistory: React.FC = () => {
       customer: 'Johny Smith',
       deliveryFee: 12.50,
       date: 'May 6, 2021',
-      time: '17:30 PM'
+      time: '17:30 PM',
+      dateTime: new Date(2021, 4, 6, 17, 30)
     },
     {
       id: '2',
       restaurantName: 'Souvla-NoPa',
       restaurantLogo: salDeMarLogo,
       status: 'cancelled',
-      orderId: '1234646',
+      orderId: '1234647',
       customer: 'Aaron Smith',
       deliveryFee: 9.10,
-      date: 'May 6, 2021',
-      time: '17:30 PM'
+      date: 'May 15, 2021',
+      time: '14:20 PM',
+      dateTime: new Date(2021, 4, 15, 14, 20)
     },
     {
       id: '3',
       restaurantName: 'Cheese Kitchen',
       restaurantLogo: oceanBreezeLogo,
-      status: 'cancelled',
-      orderId: '1234646',
-      customer: 'Aaron Smith',
-      deliveryFee: 9.10,
-      date: 'May 6, 2021',
-      time: '17:30 PM'
+      status: 'delivered',
+      orderId: '1234648',
+      customer: 'Sarah Johnson',
+      deliveryFee: 15.75,
+      date: 'Jun 3, 2021',
+      time: '19:45 PM',
+      dateTime: new Date(2021, 5, 3, 19, 45)
+    },
+    {
+      id: '4',
+      restaurantName: 'Sunset Grill',
+      restaurantLogo: sunsetGrillLogo,
+      status: 'delivered',
+      orderId: '1234649',
+      customer: 'Mike Wilson',
+      deliveryFee: 11.25,
+      date: 'Sep 22, 2021',
+      time: '12:15 PM',
+      dateTime: new Date(2021, 8, 22, 12, 15)
+    },
+    {
+      id: '5',
+      restaurantName: "Margarita Mama's",
+      restaurantLogo: margaritaMamasLogo,
+      status: 'pending',
+      orderId: '1234650',
+      customer: 'Emma Davis',
+      deliveryFee: 13.00,
+      date: 'Oct 1, 2021',
+      time: '18:00 PM',
+      dateTime: new Date(2021, 9, 1, 18, 0)
     }
   ];
+
+  // Filter orders based on date range
+  const filteredOrders = allOrders.filter((order) => {
+    if (!dateRange?.from) return true;
+    
+    if (dateRange.to) {
+      return isWithinInterval(order.dateTime, {
+        start: dateRange.from,
+        end: dateRange.to,
+      });
+    }
+    
+    return order.dateTime >= dateRange.from;
+  });
+
+  const orders = filteredOrders;
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -114,10 +164,11 @@ const OrderHistory: React.FC = () => {
                   <Clock className="h-5 w-5" />
                   Order History
                 </CardTitle>
-                <Button variant="outline" size="sm">
-                  <Calendar className="w-4 h-4 mr-2" />
-                  {dateRange}
-                </Button>
+                <DateRangePicker
+                  date={dateRange}
+                  onDateChange={setDateRange}
+                  placeholder="Select date range"
+                />
               </div>
             </CardHeader>
             <CardContent>

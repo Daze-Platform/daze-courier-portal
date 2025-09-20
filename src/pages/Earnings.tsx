@@ -31,8 +31,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { DateRange } from 'react-day-picker';
+import { isWithinInterval, parseISO } from 'date-fns';
 import UnifiedHeader from "@/components/UnifiedHeader";
 import DesktopSidebar from "@/components/DesktopSidebar";
+import DateRangePicker from "@/components/DateRangePicker";
 import margaritaMamasLogo from '@/assets/margarita-mamas-logo.png';
 import salDeMarLogo from '@/assets/sal-de-mar-logo.png';
 import { useToast } from "@/hooks/use-toast";
@@ -45,6 +48,7 @@ interface EarningDetail {
   deliveryFee: number;
   tips: number;
   deliveryDate: string;
+  dateTime: Date; // Add datetime for filtering
 }
 
 interface PaymentMethod {
@@ -55,7 +59,10 @@ interface PaymentMethod {
 }
 
 const Earnings: React.FC = () => {
-  const [dateRange, setDateRange] = useState('May 8, 2021 - Oct 8, 2021');
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: new Date(2021, 4, 8), // May 8, 2021
+    to: new Date(2021, 9, 8), // Oct 8, 2021
+  });
   const [searchTerm, setSearchTerm] = useState('');
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
   const [showMethodModal, setShowMethodModal] = useState(false);
@@ -74,30 +81,47 @@ const Earnings: React.FC = () => {
   const availableBalance = 50.00;
   const changePercent = 4.07;
 
-  // Chart data for earnings overview
-  const chartData = [
-    { date: 'Jul 28', basePay: 3, tip: 2 },
-    { date: 'Jul 29', basePay: 5, tip: 3 },
-    { date: 'Jul 30', basePay: 8, tip: 6 },
-    { date: 'Aug 1', basePay: 12, tip: 8 },
-    { date: 'Aug 2', basePay: 15, tip: 12 },
-    { date: 'Aug 3', basePay: 16, tip: 13 },
-    { date: 'Aug 4', basePay: 17, tip: 14 },
-    { date: 'Aug 5', basePay: 16, tip: 13 },
-    { date: 'Aug 6', basePay: 14.5, tip: 11 },
-    { date: 'Aug 7', basePay: 13, tip: 10 },
-    { date: 'Aug 8', basePay: 11, tip: 8 },
-    { date: 'Aug 9', basePay: 12, tip: 9 },
-    { date: 'Aug 15', basePay: 8, tip: 6 },
-    { date: 'Aug 18', basePay: 4, tip: 3 }
+  // Chart data for earnings overview with dates
+  const allChartData = [
+    { date: 'Jul 28', basePay: 3, tip: 2, dateTime: new Date(2021, 6, 28) },
+    { date: 'Jul 29', basePay: 5, tip: 3, dateTime: new Date(2021, 6, 29) },
+    { date: 'Jul 30', basePay: 8, tip: 6, dateTime: new Date(2021, 6, 30) },
+    { date: 'Aug 1', basePay: 12, tip: 8, dateTime: new Date(2021, 7, 1) },
+    { date: 'Aug 2', basePay: 15, tip: 12, dateTime: new Date(2021, 7, 2) },
+    { date: 'Aug 3', basePay: 16, tip: 13, dateTime: new Date(2021, 7, 3) },
+    { date: 'Aug 4', basePay: 17, tip: 14, dateTime: new Date(2021, 7, 4) },
+    { date: 'Aug 5', basePay: 16, tip: 13, dateTime: new Date(2021, 7, 5) },
+    { date: 'Aug 6', basePay: 14.5, tip: 11, dateTime: new Date(2021, 7, 6) },
+    { date: 'Aug 7', basePay: 13, tip: 10, dateTime: new Date(2021, 7, 7) },
+    { date: 'Aug 8', basePay: 11, tip: 8, dateTime: new Date(2021, 7, 8) },
+    { date: 'Aug 9', basePay: 12, tip: 9, dateTime: new Date(2021, 7, 9) },
+    { date: 'Aug 15', basePay: 8, tip: 6, dateTime: new Date(2021, 7, 15) },
+    { date: 'Aug 18', basePay: 4, tip: 3, dateTime: new Date(2021, 7, 18) },
+    { date: 'Sep 12', basePay: 18, tip: 15, dateTime: new Date(2021, 8, 12) },
+    { date: 'Sep 25', basePay: 14, tip: 12, dateTime: new Date(2021, 8, 25) },
+    { date: 'Oct 5', basePay: 16, tip: 11, dateTime: new Date(2021, 9, 5) }
   ];
+
+  // Filter chart data based on date range
+  const chartData = allChartData.filter((dataPoint) => {
+    if (!dateRange?.from) return true;
+    
+    if (dateRange.to) {
+      return isWithinInterval(dataPoint.dateTime, {
+        start: dateRange.from,
+        end: dateRange.to,
+      });
+    }
+    
+    return dataPoint.dateTime >= dateRange.from;
+  });
 
   const paymentMethods: PaymentMethod[] = [
     { id: '1', type: 'visa', label: 'Visa .... 1316', lastFour: '1316' },
     { id: '2', type: 'paypal', label: 'PayPal' }
   ];
 
-  const earningDetails: EarningDetail[] = [
+  const allEarningDetails: EarningDetail[] = [
     {
       id: '1',
       restaurantName: "Margarita Mama's",
@@ -105,23 +129,69 @@ const Earnings: React.FC = () => {
       orderId: '13456787',
       deliveryFee: 20.00,
       tips: 12.50,
-      deliveryDate: 'May 7, 2021 11:50AM'
+      deliveryDate: 'May 7, 2021 11:50AM',
+      dateTime: new Date(2021, 4, 7, 11, 50)
     },
     {
       id: '2',
       restaurantName: 'Cheese Kitchen',
       restaurantLogo: salDeMarLogo,
-      orderId: '13456787',
-      deliveryFee: 20.00,
-      tips: 12.50,
-      deliveryDate: 'May 7, 2021 11:50AM'
+      orderId: '13456788',
+      deliveryFee: 18.00,
+      tips: 8.75,
+      deliveryDate: 'Jun 15, 2021 2:30PM',
+      dateTime: new Date(2021, 5, 15, 14, 30)
+    },
+    {
+      id: '3',
+      restaurantName: "Margarita Mama's",
+      restaurantLogo: margaritaMamasLogo,
+      orderId: '13456789',
+      deliveryFee: 22.50,
+      tips: 15.00,
+      deliveryDate: 'Jul 20, 2021 7:15PM',
+      dateTime: new Date(2021, 6, 20, 19, 15)
+    },
+    {
+      id: '4',
+      restaurantName: 'Cheese Kitchen',
+      restaurantLogo: salDeMarLogo,
+      orderId: '13456790',
+      deliveryFee: 16.25,
+      tips: 9.50,
+      deliveryDate: 'Aug 10, 2021 12:45PM',
+      dateTime: new Date(2021, 7, 10, 12, 45)
+    },
+    {
+      id: '5',
+      restaurantName: "Margarita Mama's",
+      restaurantLogo: margaritaMamasLogo,
+      orderId: '13456791',
+      deliveryFee: 19.75,
+      tips: 11.25,
+      deliveryDate: 'Sep 5, 2021 6:20PM',
+      dateTime: new Date(2021, 8, 5, 18, 20)
     }
   ];
 
-  const filteredDetails = earningDetails.filter(detail =>
-    detail.restaurantName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    detail.orderId.includes(searchTerm)
-  );
+  // Filter earning details based on date range and search term
+  const filteredDetails = allEarningDetails.filter(detail => {
+    const matchesSearch = detail.restaurantName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      detail.orderId.includes(searchTerm);
+    
+    if (!dateRange?.from) return matchesSearch;
+    
+    const matchesDate = dateRange.to 
+      ? isWithinInterval(detail.dateTime, {
+          start: dateRange.from,
+          end: dateRange.to,
+        })
+      : detail.dateTime >= dateRange.from;
+    
+    return matchesSearch && matchesDate;
+  });
+
+  const earningDetails = filteredDetails;
 
   const balanceProgress = (currentBalance / minimumWithdraw) * 100;
 
@@ -191,8 +261,11 @@ const Earnings: React.FC = () => {
             </div>
             
             <div className="flex items-center gap-2 text-muted-foreground">
-              <Calendar className="w-4 h-4" />
-              <span className="text-sm">{dateRange}</span>
+              <DateRangePicker
+                date={dateRange}
+                onDateChange={setDateRange}
+                placeholder="Select date range"
+              />
             </div>
           </div>
 
