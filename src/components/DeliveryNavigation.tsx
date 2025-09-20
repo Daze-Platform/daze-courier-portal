@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { MapPin, Navigation, Clock, Play, Pause, Target, Zap, User, UtensilsCrossed, ChefHat } from "lucide-react";
+import { MapPin, Navigation, Clock, Play, Pause, Target, Zap, User, UtensilsCrossed, ChefHat, PersonStanding } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -415,7 +415,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
             >
               <div className="relative">
                 <MapPin className="h-10 w-10 text-red-500 fill-red-500 drop-shadow-lg" />
-                <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+                <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-red-500 rounded-full" />
               </div>
             </div>
             
@@ -430,17 +430,21 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
                    {/* Background pattern */}
                    <div className="absolute inset-0 bg-blue-400 opacity-20 rounded-full"></div>
                    
-                   {/* Food delivery icon stack */}
-                   <div className="relative z-10 flex flex-col items-center">
-                     <UtensilsCrossed className="h-3 w-3 text-white mb-0.5" strokeWidth={2.5} />
-                     <User className="h-3 w-3 text-white" strokeWidth={2.5} />
-                   </div>
-                   
-                   {/* Small chef hat indicator */}
-                   <div className="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full border border-blue-500 flex items-center justify-center">
-                     <ChefHat className="h-1.5 w-1.5 text-blue-500" strokeWidth={3} />
-                   </div>
-                 </div>
+                    {/* Food delivery walking icon */}
+                    <div className="relative z-10 flex items-center justify-center">
+                      <PersonStanding className="h-4 w-4 text-white" strokeWidth={2.5} />
+                    </div>
+                    
+                    {/* Food delivery indicator */}
+                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full border border-blue-500 flex items-center justify-center">
+                      <UtensilsCrossed className="h-1.5 w-1.5 text-blue-500" strokeWidth={3} />
+                    </div>
+                  </div>
+                  
+                  {/* "You" Label */}
+                  <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-2 py-1 rounded text-xs font-medium whitespace-nowrap shadow-lg">
+                    🚶 You
+                  </div>
                  
                  {/* Direction indicator - arrow pointing to destination */}
                 {isNavigating && (
