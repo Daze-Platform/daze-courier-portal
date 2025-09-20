@@ -58,7 +58,7 @@ const NotificationDropdown = ({ className }: NotificationDropdownProps) => {
       
       <DropdownMenuContent 
         align="end" 
-        className="w-80 max-h-96 p-0 bg-card border border-border shadow-lg z-50"
+        className="w-80 p-0 bg-card border border-border shadow-lg z-50"
         sideOffset={8}
       >
         {/* Header */}
@@ -88,14 +88,14 @@ const NotificationDropdown = ({ className }: NotificationDropdownProps) => {
         </div>
 
         {/* Notifications List */}
-        <ScrollArea className="max-h-80">
+        <ScrollArea className="h-96 max-h-[calc(100vh-200px)]">
           {notifications.length === 0 ? (
             <div className="p-6 text-center bg-card">
               <Bell className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
               <p className="text-sm text-muted-foreground">No notifications yet</p>
             </div>
           ) : (
-            <div className="p-1 bg-card">
+            <div className="p-1 bg-card space-y-0">
               {notifications.map((notification, index) => (
                 <div key={notification.id} className="group">
                   <div
