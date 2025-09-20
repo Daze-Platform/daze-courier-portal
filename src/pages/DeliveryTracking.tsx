@@ -186,7 +186,7 @@ const DeliveryTracking = () => {
                 <div className="absolute top-1/3 left-2/3 transform -translate-x-1/2 -translate-y-1/2">
                   <div className="relative">
                     <MapPin className="h-8 w-8 text-red-500 fill-red-500 drop-shadow-lg" />
-                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                    <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-red-500 rounded-full" />
                   </div>
                 </div>
                 <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-foreground shadow-lg">

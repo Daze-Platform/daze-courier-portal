@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import springhillFrontAerial from '@/assets/springhill-front-aerial.jpg';
 import luxuryPoolDeckHD from '@/assets/luxury-pool-deck-hd.jpg';
 import luxuryBeachAerial4K from '@/assets/luxury-beach-aerial-4k.jpg';
-import { MapPin, Navigation, Coffee, Waves, Umbrella } from 'lucide-react';
+import { MapPin, Navigation, Coffee, Waves, Umbrella, PersonStanding, UtensilsCrossed } from 'lucide-react';
 
 interface ResortImageViewProps {
   destination?: string;
@@ -110,7 +110,7 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   const getLocationStyle = (type: string) => {
     switch (type) {
       case 'runner-start': return 'bg-gradient-to-br from-emerald-400 to-emerald-600 border-emerald-700 text-white shadow-lg';
-      case 'customer': return 'bg-gradient-to-br from-rose-500 to-red-600 border-red-700 text-white shadow-xl animate-pulse';
+      case 'customer': return 'bg-gradient-to-br from-rose-500 to-red-600 border-red-700 text-white shadow-xl';
       case 'pool-bar': return 'bg-gradient-to-br from-blue-400 to-blue-600 border-blue-700 text-white shadow-lg';
       case 'tiki-hut': return 'bg-gradient-to-br from-orange-400 to-orange-600 border-orange-700 text-white shadow-lg';
       case 'beach-hut': return 'bg-gradient-to-br from-cyan-400 to-cyan-600 border-cyan-700 text-white shadow-lg';
@@ -157,7 +157,7 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
             stroke="rgba(59, 130, 246, 0.6)"
             strokeWidth="3"
             strokeDasharray="10,5"
-            className="animate-pulse"
+            className="animate-bounce"
           />
         </svg>
       )}
@@ -221,22 +221,24 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
           }}
         >
           {/* Main runner icon */}
-          <div className="relative w-10 h-10 bg-gradient-to-br from-amber-400 via-yellow-500 to-orange-500 border-3 border-orange-600 rounded-full flex items-center justify-center shadow-2xl animate-bounce">
-            <Navigation size={18} className="text-orange-900 font-bold" />
-            {/* Outer pulse ring */}
-            <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-40" />
-            {/* Inner glow */}
-            <div className="absolute inset-1 bg-yellow-300 rounded-full animate-pulse opacity-60" />
+          <div className="relative w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 border-3 border-white rounded-full flex items-center justify-center shadow-2xl">
+            <PersonStanding size={18} className="text-white font-bold" />
+            {/* Food delivery indicator */}
+            <div className="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full border border-blue-500 flex items-center justify-center">
+              <UtensilsCrossed className="h-1.5 w-1.5 text-blue-500" strokeWidth={3} />
+            </div>
           </div>
-          {/* Movement trail */}
-          <div className="absolute -top-1 -left-1 w-12 h-12 border-2 border-yellow-400 rounded-full animate-spin opacity-30" />
+          {/* "You" Label */}
+          <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-2 py-1 rounded text-xs font-medium whitespace-nowrap shadow-lg">
+            🚶 You
+          </div>
         </div>
       )}
 
       {/* Customer highlight when focused */}
       {focusArea === 'beach' && (
         <div
-          className="absolute w-16 h-16 border-4 border-red-400 rounded-full animate-pulse"
+          className="absolute w-16 h-16 border-4 border-red-400 rounded-full"
           style={{
             left: `${customerLocation.x}%`,
             top: `${customerLocation.y}%`,
