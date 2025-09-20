@@ -61,6 +61,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
   const [modalState, setModalState] = useState<'closed' | 'half' | 'full'>('closed');
   const [touchStartY, setTouchStartY] = useState(0);
   const [isScrollingModal, setIsScrollingModal] = useState(false);
+  const [hasStartedNavigation, setHasStartedNavigation] = useState(false);
 
   // Simple click-based state management
   const handleModalAreaClick = () => {
@@ -266,6 +267,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
   const startNavigation = () => {
     setIsNavigating(true);
     setNavigationStartTime(Date.now());
+    setHasStartedNavigation(true);
   };
 
   const pauseNavigation = () => {
@@ -968,27 +970,32 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
       {/* Bottom Navigation Controls */}
       <div className="bg-background border-t border-border p-4 flex-shrink-0">
         <div className="flex gap-3">
-          {!isNavigating && !hasReachedDestination ? (
+          {!isNavigating && !hasReachedDestination && !(isRoomDelivery && hasStartedNavigation) ? (
             <Button onClick={startNavigation} className="flex-1 h-12 text-base" disabled={progress >= 95}>
               <Play className="h-5 w-5 mr-2" />
-              Start Navigation
+              Start Delivery
             </Button>
           ) : hasReachedDestination ? (
             <Button onClick={completeDelivery} className="flex-1 h-12 text-base bg-success hover:bg-success/90 text-white">
               <Target className="h-5 w-5 mr-2" />
               Complete Delivery
             </Button>
-          ) : (
+          ) : isNavigating ? (
             <Button onClick={pauseNavigation} variant="outline" className="flex-1 h-12 text-base">
               <Pause className="h-5 w-5 mr-2" />
               Pause Navigation
             </Button>
-          )}
+          ) : (isRoomDelivery && hasStartedNavigation) ? (
+            <div className="flex-1 h-12 flex items-center justify-center text-muted-foreground">
+              <Target className="h-5 w-5 mr-2" />
+              Delivery in progress...
+            </div>
+          ) : null}
           
           <Button 
             onClick={resetPosition}
             variant="outline"
-            disabled={isNavigating}
+            disabled={isNavigating || (isRoomDelivery && hasStartedNavigation)}
             className="h-12 px-6"
           >
             <Zap className="h-5 w-5" />
