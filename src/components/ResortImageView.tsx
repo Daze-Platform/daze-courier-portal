@@ -125,7 +125,7 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   const runnerY = startLocation.y + (customerLocation.y - startLocation.y) * (runnerProgress / 100);
 
   return (
-    <div className="absolute inset-0">
+    <div className="relative w-full h-full">
       {/* Resort Image with Pan/Zoom */}
       <div 
         className="absolute inset-0 transition-all duration-1000 ease-out"
