@@ -260,7 +260,7 @@ const OrderDetail = () => {
               {(order.deliveryType === "Beach Service" || order.deliveryType === "Poolside Service") && (
                 <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
                   <h3 className="text-lg font-semibold text-foreground mb-4">Customer Location</h3>
-                  <div className="relative aspect-video bg-accent/5 rounded-lg border border-border overflow-hidden">
+                  <div className="relative aspect-video rounded-lg border border-border overflow-hidden">
                     <ResortImageView 
                       destination={order.deliveryAddress}
                       isDelivering={false}
