@@ -316,12 +316,27 @@ const OrderDetail = () => {
 
                 <Button 
                   className="w-full font-medium text-white"
-                  style={{ backgroundColor: '#29b6f6' }}
-                  onMouseEnter={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#1e88e5'}
-                  onMouseLeave={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#29b6f6'}
+                  style={{ 
+                    backgroundColor: navigationStarted && order.deliveryType === "Room Delivery" ? '#94a3b8' : '#29b6f6',
+                    cursor: navigationStarted && order.deliveryType === "Room Delivery" ? 'not-allowed' : 'pointer'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!(navigationStarted && order.deliveryType === "Room Delivery")) {
+                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#1e88e5';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!(navigationStarted && order.deliveryType === "Room Delivery")) {
+                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#29b6f6';
+                    }
+                  }}
                   onClick={handleStartDelivery}
+                  disabled={navigationStarted && order.deliveryType === "Room Delivery"}
                 >
-                  Start Delivery
+                  {navigationStarted && order.deliveryType === "Room Delivery" 
+                    ? 'Delivery In Progress...' 
+                    : 'Start Delivery'
+                  }
                 </Button>
               </div>
 
