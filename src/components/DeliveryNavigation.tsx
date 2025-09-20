@@ -441,13 +441,8 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
                      <ChefHat className="h-1.5 w-1.5 text-blue-500" strokeWidth={3} />
                    </div>
                  </div>
-                
-                 {/* Pulse effect when navigating */}
-                 {isNavigating && (
-                   <div className="absolute inset-0 h-10 w-10 bg-blue-500 rounded-full animate-ping opacity-30"></div>
-                 )}
-                
-                {/* Direction indicator - arrow pointing to destination */}
+                 
+                 {/* Direction indicator - arrow pointing to destination */}
                 {isNavigating && (
                   <div 
                     className="absolute top-1/2 left-1/2 w-6 h-0.5 bg-blue-500 origin-left transform -translate-y-1/2"
