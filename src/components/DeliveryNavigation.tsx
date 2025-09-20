@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { MapPin, Navigation, Clock, Play, Pause, Target, Zap, User, UtensilsCrossed, ChefHat, PersonStanding } from "lucide-react";
+import { MapPin, Navigation, Clock, Play, Pause, Target, Zap, User, UtensilsCrossed, ChefHat, PersonStanding, Info, ChevronUp, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -32,6 +32,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
   const [routeWaypoints, setRouteWaypoints] = useState<Position[]>([]);
   const [navigationStartTime, setNavigationStartTime] = useState<number>(0);
   const [totalEstimatedTime] = useState(8); // 8 seconds total navigation time
+  const [showOrderDetails, setShowOrderDetails] = useState(false);
   const isMobile = useIsMobile();
   const { toast } = useToast();
 
@@ -311,6 +312,102 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
             isDelivering={isNavigating}
             focusArea={getMapType()}
           />
+          
+          {/* Order Details Button - Floating */}
+          <div className="absolute bottom-4 right-4 z-50">
+            <Button
+              onClick={() => setShowOrderDetails(!showOrderDetails)}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg"
+              size="sm"
+            >
+              <Info className="h-4 w-4 mr-2" />
+              Order Details
+              {showOrderDetails ? <ChevronDown className="h-4 w-4 ml-2" /> : <ChevronUp className="h-4 w-4 ml-2" />}
+            </Button>
+          </div>
+
+          {/* Order Details Panel - Sliding from bottom */}
+          {showOrderDetails && (
+            <div className="absolute bottom-0 left-0 right-0 bg-background border-t border-border shadow-lg z-40 max-h-[60vh] overflow-y-auto">
+              <div className="p-4 space-y-4">
+                {/* Delivery Instructions for Beach/Pool */}
+                <Card className="p-4">
+                  <h3 className="text-lg font-semibold mb-3 text-foreground">Delivery Instructions</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3 p-3 bg-primary/5 rounded-lg">
+                      <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-sm">1</div>
+                      <div>
+                        <p className="font-medium text-foreground">Navigate to {isBeachDelivery ? 'Beach Area' : 'Pool Deck'}</p>
+                        <p className="text-sm text-muted-foreground">Follow the map to reach the customer location</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3 p-3 bg-primary/5 rounded-lg">
+                      <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold text-sm">2</div>
+                      <div>
+                        <p className="font-medium text-foreground">Look for Customer</p>
+                        <p className="text-sm text-muted-foreground">Find the customer at {destination}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3 p-3 bg-green-500/10 rounded-lg border border-green-500/20">
+                      <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm">3</div>
+                      <div>
+                        <p className="font-medium text-foreground">Complete Delivery</p>
+                        <p className="text-sm text-muted-foreground">Hand over the order and confirm completion</p>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Order Summary */}
+                <Card className="p-4">
+                  <h3 className="text-lg font-semibold mb-3 text-foreground">Order Summary</h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground">Delivery Type:</span>
+                      <Badge variant="outline">{deliveryType}</Badge>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground">Destination:</span>
+                      <span className="font-medium text-foreground">{destination}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground">Status:</span>
+                      <Badge variant={hasReachedDestination ? "default" : "secondary"}>
+                        {hasReachedDestination ? "Ready to Complete" : "In Progress"}
+                      </Badge>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-muted-foreground">Distance:</span>
+                      <span className="font-medium text-foreground">{totalDistance}</span>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Navigation Tips */}
+                <div className="bg-accent/50 border border-accent rounded-lg p-4">
+                  <h4 className="font-medium text-foreground mb-2">💡 {isBeachDelivery ? 'Beach' : 'Pool'} Delivery Tips</h4>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    {isBeachDelivery ? (
+                      <>
+                        <li>• Look for beach umbrellas and lounge chairs</li>
+                        <li>• Customers may be in the water or walking on the beach</li>
+                        <li>• Call out the customer's name if needed</li>
+                      </>
+                    ) : (
+                      <>
+                        <li>• Check poolside cabanas and lounge areas</li>
+                        <li>• Look for the specific cabana number</li>
+                        <li>• Be careful around wet pool deck areas</li>
+                      </>
+                    )}
+                    <li>• Ask pool/beach staff for assistance if needed</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       ) : isRoomDelivery ? (
         <div className="flex-1 overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
