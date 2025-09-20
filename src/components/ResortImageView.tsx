@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import springhillFrontAerial from '@/assets/springhill-front-aerial.jpg';
 import luxuryPoolDeckHD from '@/assets/luxury-pool-deck-hd.jpg';
-import beachView from '@/assets/beach-view.jpg';
+import luxuryBeachAerial from '@/assets/luxury-beach-aerial.jpg';
 import { MapPin, Navigation, Coffee, Waves, Umbrella } from 'lucide-react';
 
 interface ResortImageViewProps {
@@ -99,7 +99,7 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
     if (focusArea === 'pool') {
       return luxuryPoolDeckHD;
     } else if (focusArea === 'beach') {
-      return beachView;
+      return luxuryBeachAerial;
     } else {
       return springhillFrontAerial;
     }
