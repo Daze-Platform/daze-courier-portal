@@ -136,7 +136,8 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
         <img 
           src={resortImage} 
           alt={`SpringHill Suites Panama City Beach Resort - ${focusArea === 'pool' ? 'Pool Area' : focusArea === 'beach' ? 'Beach Area' : 'Front Aerial View'}`}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover object-center"
+          style={{ minWidth: '100%', minHeight: '100%' }}
         />
       </div>
       
