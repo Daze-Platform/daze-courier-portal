@@ -66,25 +66,27 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
     const startPos = { top: "85%", left: "25%" }; // Beach Bar starting position
     const waypoints = [startPos];
     
-    // For pool/umbrella destinations, route around the pool on concrete walkways
+    // For pool/umbrella destinations, route from beach bar to destination
     if (destination.top === "30%" && destination.left === "75%") {
-      // Route to umbrella area following concrete walkways around pool
-      waypoints.push({ top: "35%", left: "60%" }); // Move from pool bar toward umbrella
+      // Route to umbrella area from beach bar
+      waypoints.push({ top: "70%", left: "40%" }); // Move up from beach bar
+      waypoints.push({ top: "50%", left: "60%" }); // Continue toward pool area
       waypoints.push({ top: "30%", left: "70%" }); // Approach umbrella area on concrete deck
     } else if (destination.top === "20%" && destination.left === "85%") {
-      // Room destinations - go toward rooms from center pool bar
-      waypoints.push({ top: "30%", left: "60%" }); // Move from pool bar toward rooms
+      // Room destinations - go toward rooms from beach bar
+      waypoints.push({ top: "70%", left: "40%" }); // Move up from beach bar
+      waypoints.push({ top: "40%", left: "60%" }); // Continue toward center
       waypoints.push({ top: "25%", left: "70%" }); // Continue toward rooms
       waypoints.push({ top: "20%", left: "80%" }); // Final approach to rooms
     } else if (destination.top === "70%" && destination.left === "90%") {
-      // Beach destinations - route toward beach area
-      waypoints.push({ top: "45%", left: "60%" }); // Move from pool bar toward beach
-      waypoints.push({ top: "60%", left: "75%" }); // Continue toward beach
-      waypoints.push({ top: "70%", left: "85%" }); // Approach beach area
+      // Beach destinations - route along beach from beach bar
+      waypoints.push({ top: "80%", left: "40%" }); // Move slightly along beach
+      waypoints.push({ top: "75%", left: "60%" }); // Continue along beach
+      waypoints.push({ top: "70%", left: "85%" }); // Approach beach destination
     } else {
-      // Default routing from center pool bar to umbrella area
-      waypoints.push({ top: "40%", left: "55%" }); // Move from pool bar
-      waypoints.push({ top: "50%", left: "60%" }); // Approach destination
+      // Default routing from beach bar to destination
+      waypoints.push({ top: "70%", left: "40%" }); // Move up from beach bar
+      waypoints.push({ top: "50%", left: "50%" }); // Move toward center
     }
     
     waypoints.push(destination);
