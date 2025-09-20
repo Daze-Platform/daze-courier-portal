@@ -33,7 +33,7 @@ const mockNotifications: Notification[] = [
   {
     id: '3',
     title: 'Delivery Completed',
-    message: 'Order #23456789 to Room N°12345 was successfully delivered',
+    message: 'Order #23456789 to Room #1234 was successfully delivered',
     type: 'order',
     timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
     read: true

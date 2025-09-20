@@ -35,7 +35,7 @@ const OrderDetail = () => {
     {
       orderId: "#23456789",
       restaurant: "Margarita Mama's",
-      deliveryAddress: "Room N°12345",
+      deliveryAddress: "Room #1234",
       deliveryTime: "July 21, 11:36AM",
       deliveryType: "Room Delivery",
       customer: {
@@ -310,10 +310,10 @@ const OrderDetail = () => {
                       <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">2</div>
                       <div>
                         <p className="font-medium text-gray-900">Take Elevator</p>
-                        <p className="text-sm text-gray-600">
-                          Go to Floor {Math.floor(parseInt(order.deliveryAddress.replace(/\D/g, '')) / 100) || 'X'}
-                          {order.deliveryAddress.includes('0') && ' (Ground Floor)'}
-                        </p>
+                         <p className="text-sm text-gray-600">
+                           Go to Floor {Math.floor(parseInt(order.deliveryAddress.replace(/\D/g, '')) / 1000) || 1}
+                           {order.deliveryAddress.includes('0') && parseInt(order.deliveryAddress.replace(/\D/g, '')) < 1000 && ' (Ground Floor)'}
+                         </p>
                       </div>
                     </div>
                     

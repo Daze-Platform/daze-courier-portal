@@ -23,7 +23,7 @@ const Index = () => {
       orderId: "#23456789",
       restaurant: "Margarita Mama's",
       items: ["1x Fried Rice with Chicken Protein (+$2.00)", "1x Spring Water"],
-      deliveryAddress: "Room N°12345",
+      deliveryAddress: "Room #1234",
       deliveryTime: "July 21, 11:36AM",
       itemCount: 2,
       deliveryType: "Room Delivery",

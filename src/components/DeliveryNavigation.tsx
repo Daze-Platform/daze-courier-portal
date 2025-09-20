@@ -307,10 +307,10 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
                   <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">2</div>
                   <div>
                     <p className="font-medium text-gray-900">Take Elevator</p>
-                    <p className="text-sm text-gray-600">
-                      Go to Floor {Math.floor(parseInt(destination.replace(/\D/g, '')) / 100) || 'X'}
-                      {destination.includes('0') && ' (Ground Floor)'}
-                    </p>
+                     <p className="text-sm text-gray-600">
+                       Go to Floor {Math.floor(parseInt(destination.replace(/\D/g, '')) / 1000) || 1}
+                       {destination.includes('0') && parseInt(destination.replace(/\D/g, '')) < 1000 && ' (Ground Floor)'}
+                     </p>
                   </div>
                 </div>
                 
