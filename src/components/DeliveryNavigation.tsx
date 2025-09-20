@@ -286,6 +286,10 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
     setHasShownCloseNotification(false);
     setCurrentWaypointIndex(0);
     setNavigationStartTime(0);
+    // Only reset hasStartedNavigation for non-room deliveries to allow restart
+    if (!isRoomDelivery) {
+      setHasStartedNavigation(false);
+    }
   };
 
   // Handle automatic completion based on time
@@ -969,8 +973,13 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
 
       {/* Bottom Navigation Controls */}
       <div className="bg-background border-t border-border p-4 flex-shrink-0">
+        {/* Debug info - remove after testing */}
+        <div className="text-xs text-muted-foreground mb-2">
+          Debug: isRoomDelivery={String(isRoomDelivery)}, hasStartedNavigation={String(hasStartedNavigation)}, isNavigating={String(isNavigating)}
+        </div>
+        
         <div className="flex gap-3">
-          {!isNavigating && !hasReachedDestination && !(isRoomDelivery && hasStartedNavigation) ? (
+          {!hasStartedNavigation && !hasReachedDestination ? (
             <Button onClick={startNavigation} className="flex-1 h-12 text-base" disabled={progress >= 95}>
               <Play className="h-5 w-5 mr-2" />
               Start Delivery
@@ -985,10 +994,10 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
               <Pause className="h-5 w-5 mr-2" />
               Pause Navigation
             </Button>
-          ) : (isRoomDelivery && hasStartedNavigation) ? (
+          ) : hasStartedNavigation ? (
             <div className="flex-1 h-12 flex items-center justify-center text-muted-foreground">
               <Target className="h-5 w-5 mr-2" />
-              Delivery in progress...
+              {isRoomDelivery ? 'Room delivery in progress...' : 'Delivery paused'}
             </div>
           ) : null}
           
@@ -997,6 +1006,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
             variant="outline"
             disabled={isNavigating || (isRoomDelivery && hasStartedNavigation)}
             className="h-12 px-6"
+            title={isRoomDelivery && hasStartedNavigation ? "Cannot reset room delivery once started" : "Reset position"}
           >
             <Zap className="h-5 w-5" />
           </Button>
