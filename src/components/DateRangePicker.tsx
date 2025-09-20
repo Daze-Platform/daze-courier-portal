@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { format, subDays, startOfMonth, endOfMonth, subMonths } from "date-fns";
-import { Calendar as CalendarIcon, X } from "lucide-react";
+import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
 
 import { cn } from "@/lib/utils";
@@ -19,42 +19,11 @@ interface DateRangePickerProps {
   placeholder?: string;
 }
 
-const presets = [
-  {
-    label: "Today",
-    range: {
-      from: new Date(),
-      to: new Date(),
-    },
-  },
-  {
-    label: "Last 7 days",
-    range: {
-      from: subDays(new Date(), 6),
-      to: new Date(),
-    },
-  },
-  {
-    label: "Last 30 days", 
-    range: {
-      from: subDays(new Date(), 29),
-      to: new Date(),
-    },
-  },
-  {
-    label: "This month",
-    range: {
-      from: startOfMonth(new Date()),
-      to: new Date(),
-    },
-  },
-  {
-    label: "Last month",
-    range: {
-      from: startOfMonth(subMonths(new Date(), 1)),
-      to: endOfMonth(subMonths(new Date(), 1)),
-    },
-  },
+const quickFilters = [
+  { label: "Today", days: 0 },
+  { label: "Last 7 days", days: 7 },
+  { label: "Last 30 days", days: 30 },
+  { label: "This month", days: "month" },
 ];
 
 export function DateRangePicker({
@@ -65,26 +34,37 @@ export function DateRangePicker({
 }: DateRangePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handlePresetSelect = (preset: typeof presets[0]) => {
-    if (onDateChange) {
-      onDateChange(preset.range);
-      setIsOpen(false);
+  const getQuickFilterRange = (days: number | string) => {
+    const today = new Date();
+    if (days === "month") {
+      return { from: startOfMonth(today), to: today };
     }
+    if (days === 0) {
+      return { from: today, to: today };
+    }
+    return { from: subDays(today, days as number - 1), to: today };
+  };
+
+  const handleQuickFilter = (days: number | string) => {
+    const range = getQuickFilterRange(days);
+    onDateChange?.(range);
+    setIsOpen(false);
   };
 
   const formatDateRange = (dateRange: DateRange | undefined) => {
-    if (!dateRange?.from) {
-      return placeholder;
-    }
-
+    if (!dateRange?.from) return placeholder;
+    
     if (dateRange.to && dateRange.from.getTime() !== dateRange.to.getTime()) {
-      return `${format(dateRange.from, "MMM d")} - ${format(
-        dateRange.to,
-        "MMM d, yyyy"
-      )}`;
+      return `${format(dateRange.from, "MMM d")} - ${format(dateRange.to, "MMM d")}`;
     }
+    return format(dateRange.from, "MMM d");
+  };
 
-    return format(dateRange.from, "MMM d, yyyy");
+  const isQuickFilterActive = (days: number | string) => {
+    if (!date?.from || !date?.to) return false;
+    const range = getQuickFilterRange(days);
+    return date.from.getTime() === range.from.getTime() && 
+           date.to.getTime() === range.to.getTime();
   };
 
   return (
@@ -94,114 +74,111 @@ export function DateRangePicker({
           variant="outline"
           size="sm"
           className={cn(
-            "h-9 px-3 font-normal justify-start text-left border-input bg-background hover:bg-accent hover:text-accent-foreground",
+            "h-9 px-3 font-normal justify-start bg-background border-input",
+            "hover:bg-accent/5 hover:border-accent-foreground/20",
+            "focus:ring-2 focus:ring-primary/20 focus:border-primary",
             !date && "text-muted-foreground",
             className
           )}
         >
-          <CalendarIcon className="mr-2 h-4 w-4 flex-shrink-0" />
-          <span className="truncate text-sm">{formatDateRange(date)}</span>
+          <CalendarIcon className="mr-2 h-4 w-4 text-muted-foreground" />
+          <span className="text-sm">{formatDateRange(date)}</span>
         </Button>
       </PopoverTrigger>
+      
       <PopoverContent 
-        className="w-auto p-0 bg-card border shadow-md z-50" 
+        className="w-[380px] p-0 bg-background border shadow-xl rounded-xl" 
         align="start"
-        sideOffset={4}
+        sideOffset={8}
       >
-        <div className="p-4 border-b border-border">
-          <div className="flex items-center justify-between mb-3">
-            <h4 className="font-semibold text-sm text-card-foreground">Select Date Range</h4>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-6 w-6 p-0 hover:bg-accent"
-              onClick={() => setIsOpen(false)}
-            >
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            {presets.map((preset) => (
+        {/* Quick Filters */}
+        <div className="p-4 border-b border-border/50">
+          <div className="flex flex-wrap gap-2">
+            {quickFilters.map((filter) => (
               <Button
-                key={preset.label}
-                variant="ghost"
+                key={filter.label}
+                variant={isQuickFilterActive(filter.days) ? "default" : "ghost"}
                 size="sm"
-                className="h-8 px-2 text-xs font-normal justify-start hover:bg-accent hover:text-accent-foreground"
-                onClick={() => handlePresetSelect(preset)}
+                className={cn(
+                  "h-7 px-3 text-xs font-medium rounded-full",
+                  isQuickFilterActive(filter.days) 
+                    ? "bg-primary text-primary-foreground" 
+                    : "hover:bg-accent/80 text-muted-foreground"
+                )}
+                onClick={() => handleQuickFilter(filter.days)}
               >
-                {preset.label}
+                {filter.label}
               </Button>
             ))}
           </div>
         </div>
-        
+
+        {/* Calendar */}
         <div className="p-4">
           <Calendar
-            initialFocus
             mode="range"
-            defaultMonth={date?.from}
             selected={date}
             onSelect={(newDate) => {
               onDateChange?.(newDate);
               if (newDate?.from && newDate?.to) {
-                setIsOpen(false);
+                // Small delay to show selection before closing
+                setTimeout(() => setIsOpen(false), 150);
               }
             }}
             numberOfMonths={1}
-            className="p-0"
+            className="w-full"
             classNames={{
-              months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
-              month: "space-y-4",
-              caption: "flex justify-center pt-1 relative items-center",
-              caption_label: "text-sm font-medium",
+              months: "flex flex-col space-y-4",
+              month: "space-y-4 w-full",
+              caption: "flex justify-center pt-1 relative items-center mb-4",
+              caption_label: "text-sm font-semibold text-foreground",
               nav: "space-x-1 flex items-center",
               nav_button: cn(
-                "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
+                "h-8 w-8 bg-transparent p-0 hover:bg-accent rounded-md",
+                "border border-transparent hover:border-border"
               ),
-              nav_button_previous: "absolute left-1",
-              nav_button_next: "absolute right-1",
+              nav_button_previous: "absolute left-0",
+              nav_button_next: "absolute right-0",
               table: "w-full border-collapse space-y-1",
-              head_row: "flex",
-              head_cell: "text-muted-foreground rounded-md w-8 font-normal text-[0.8rem]",
-              row: "flex w-full mt-2",
-              cell: cn(
-                "relative p-0 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-accent [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected].day-range-end)]:rounded-r-md",
-                "[&:has([aria-selected].day-range-start)]:rounded-l-md first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md"
-              ),
+              head_row: "flex w-full",
+              head_cell: "text-muted-foreground w-9 font-medium text-xs text-center",
+              row: "flex w-full mt-1",
+              cell: "relative p-0 text-center focus-within:relative focus-within:z-20",
               day: cn(
-                "h-8 w-8 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground rounded-md"
+                "h-9 w-9 p-0 font-normal text-sm rounded-md",
+                "hover:bg-accent hover:text-accent-foreground",
+                "focus:bg-accent focus:text-accent-foreground"
               ),
-              day_range_start: "day-range-start",
-              day_range_end: "day-range-end",
-              day_selected: "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
-              day_today: "bg-accent text-accent-foreground",
-              day_outside: "day-outside text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30",
-              day_disabled: "text-muted-foreground opacity-50",
-              day_range_middle: "aria-selected:bg-accent aria-selected:text-accent-foreground",
-              day_hidden: "invisible",
+              day_selected: "bg-primary text-primary-foreground font-medium hover:bg-primary/90",
+              day_today: "bg-accent/50 text-accent-foreground font-medium",
+              day_outside: "text-muted-foreground/50",
+              day_disabled: "text-muted-foreground/30 cursor-not-allowed",
+              day_range_middle: "bg-primary/10 text-primary rounded-none",
+              day_range_start: "bg-primary text-primary-foreground rounded-l-md rounded-r-none",
+              day_range_end: "bg-primary text-primary-foreground rounded-r-md rounded-l-none",
             }}
           />
         </div>
-        
-        <div className="flex items-center justify-between p-4 border-t border-border bg-muted/10">
+
+        {/* Footer */}
+        <div className="flex items-center justify-between p-4 border-t border-border/50 bg-muted/20">
           <Button
-            variant="outline" 
+            variant="ghost"
             size="sm"
-            className="h-8 px-3 text-xs"
             onClick={() => {
               onDateChange?.(undefined);
               setIsOpen(false);
             }}
+            className="text-xs h-8 px-3 text-muted-foreground hover:text-foreground"
           >
-            Clear
+            Clear dates
           </Button>
           <Button
             size="sm"
-            className="h-8 px-4 text-xs"
             onClick={() => setIsOpen(false)}
-            disabled={!date?.from}
+            className="h-8 px-4 text-xs"
           >
-            Apply
+            Done
           </Button>
         </div>
       </PopoverContent>
