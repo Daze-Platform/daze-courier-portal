@@ -42,10 +42,10 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
 
   // Define key locations on the resort (updated for front aerial view)
   const locations: LocationPoint[] = [
-    // Runner starting location (hotel entrance/lobby)
-    { id: 'start', x: 50, y: 15, type: 'runner-start', label: 'Delivery Station', icon: Navigation },
+    // Runner starting location (inside hotel/resort area)
+    { id: 'start', x: 45, y: 35, type: 'runner-start', label: 'Delivery Station', icon: Navigation },
     
-    // Points of interest
+    // Points of interest (keeping for positioning but won't show labels)
     { id: 'pool-bar', x: 45, y: 40, type: 'pool-bar', label: 'Pool Bar', icon: Coffee },
     { id: 'tiki-hut', x: 65, y: 55, type: 'tiki-hut', label: 'Tiki Hut', icon: Umbrella },
     { id: 'beach-hut', x: 55, y: 80, type: 'beach-hut', label: 'Beach Hut', icon: Waves },
@@ -125,7 +125,7 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   const runnerY = startLocation.y + (customerLocation.y - startLocation.y) * (runnerProgress / 100);
 
   return (
-    <div className="relative w-full h-full overflow-hidden">
+    <div className="relative w-full h-full">
       {/* Resort Image with Pan/Zoom */}
       <div 
         className="absolute inset-0 transition-all duration-1000 ease-out"
@@ -156,11 +156,16 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
         </svg>
       )}
 
-      {/* Location Markers */}
+      {/* Location Markers - Only show runner and customer */}
       <div className="absolute inset-0">
         {locations.map((location) => {
           const IconComponent = location.icon;
           const isCustomer = location.type === 'customer';
+          const isRunner = location.type === 'runner-start';
+          
+          // Only show customer and runner start positions
+          if (!isCustomer && !isRunner) return null;
+          
           return (
             <div key={location.id}>
               {/* Enhanced marker with glow effect */}
@@ -181,7 +186,7 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
                   <div className="absolute inset-0 bg-red-400 rounded-full animate-ping opacity-30" />
                 )}
               </div>
-              {/* Location label for customer */}
+              {/* Location label for customer only */}
               {isCustomer && destination && (
                 <div 
                   className="absolute bg-white/95 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-medium shadow-lg border"
@@ -233,77 +238,6 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
           }}
         />
       )}
-
-      {/* Room Delivery Instructions */}
-      {focusArea === 'room' && (
-        <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg p-4 shadow-lg max-w-sm">
-          <h3 className="text-sm font-semibold mb-2 text-gray-900">Room Delivery Instructions</h3>
-          <div className="space-y-2 text-xs text-gray-700">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-              <span>Enter hotel through main lobby</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-              <span>Take elevator to room floor</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-              <span>Follow room number signs</span>
-            </div>
-            {destination && (
-              <div className="mt-2 p-2 bg-blue-50 rounded text-sm font-medium text-blue-900">
-                Delivering to: {destination}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Delivery Status */}
-      {isDelivering && (
-        <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg">
-          <p className="text-sm font-medium text-gray-900">
-            {runnerProgress < 100 ? 'Delivering...' : 'Delivered!'}
-          </p>
-          <div className="w-32 h-2 bg-gray-200 rounded-full mt-1">
-            <div 
-              className="h-full bg-green-500 rounded-full transition-all duration-300"
-              style={{ width: `${runnerProgress}%` }}
-            />
-          </div>
-          <p className="text-xs text-gray-600 mt-1">
-            {destination && `To: ${destination}`}
-          </p>
-        </div>
-      )}
-
-      {/* Location Legend */}
-      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg">
-        <h3 className="text-sm font-semibold mb-2">Resort Locations</h3>
-        <div className="space-y-1">
-          <div className="flex items-center gap-2 text-xs">
-            <Navigation size={12} className="text-green-500" />
-            <span>Delivery Station</span>
-          </div>
-          <div className="flex items-center gap-2 text-xs">
-            <Coffee size={12} className="text-blue-500" />
-            <span>Pool Bar</span>
-          </div>
-          <div className="flex items-center gap-2 text-xs">
-            <Umbrella size={12} className="text-orange-500" />
-            <span>Tiki Hut</span>
-          </div>
-          <div className="flex items-center gap-2 text-xs">
-            <Waves size={12} className="text-cyan-500" />
-            <span>Beach Hut</span>
-          </div>
-          <div className="flex items-center gap-2 text-xs">
-            <MapPin size={12} className="text-red-500" />
-            <span>Customer</span>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
