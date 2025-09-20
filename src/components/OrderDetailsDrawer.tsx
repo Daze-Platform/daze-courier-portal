@@ -36,7 +36,7 @@ const OrderDetailsDrawer = ({ order }: OrderDetailsDrawerProps) => {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <div className="fixed bottom-0 left-0 right-0 z-50">
+        <div className="fixed bottom-0 left-0 right-0 z-60">
           <div className="bg-white/95 backdrop-blur-sm border-t border-border p-4 shadow-xl">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -60,7 +60,7 @@ const OrderDetailsDrawer = ({ order }: OrderDetailsDrawerProps) => {
         </div>
       </DrawerTrigger>
       
-      <DrawerContent className="max-h-[85vh] flex flex-col">
+      <DrawerContent className="max-h-[85vh] flex flex-col z-50">
         <DrawerHeader className="pb-4 flex-shrink-0">
           <DrawerTitle className="text-xl font-semibold">Order Details</DrawerTitle>
         </DrawerHeader>

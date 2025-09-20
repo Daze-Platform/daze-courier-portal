@@ -73,7 +73,7 @@ const RoomDeliveryStatus = ({ destination, onComplete }: RoomDeliveryStatusProps
   const roomNumber = destination.replace(/\D/g, '') || '###';
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border shadow-lg z-50 lg:left-64">
+    <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border shadow-lg z-40 lg:left-64">
       <div className="container mx-auto px-4 py-4">
         {/* Status Header */}
         <div className="flex items-center justify-between mb-3">
