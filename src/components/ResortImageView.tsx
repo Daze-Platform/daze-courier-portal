@@ -125,7 +125,7 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   const runnerY = startLocation.y + (customerLocation.y - startLocation.y) * (runnerProgress / 100);
 
   return (
-    <div className="absolute inset-0 w-full h-full overflow-hidden bg-background">
+    <div className="absolute inset-0 w-full h-full overflow-hidden">
       {/* Resort Image with Pan/Zoom */}
       <div 
         className="absolute inset-0 w-full h-full transition-all duration-1000 ease-out"
@@ -136,14 +136,12 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
         <img 
           src={resortImage} 
           alt={`SpringHill Suites Panama City Beach Resort - ${focusArea === 'pool' ? 'Pool Area' : focusArea === 'beach' ? 'Beach Area' : 'Front Aerial View'}`}
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          className="absolute inset-0 w-full h-full object-cover object-center block"
           style={{ 
-            display: 'block',
             margin: 0,
             padding: 0,
             width: '100%',
-            height: '105%',
-            top: '-2.5%'
+            height: '100%'
           }}
         />
       </div>
