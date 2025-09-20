@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, ChevronRight, Package, Clock, DollarSign } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Calendar, ChevronRight, Package, Clock, DollarSign, User, Star, TrendingUp, MapPin, Phone, Mail, Edit } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import UnifiedHeader from "@/components/UnifiedHeader";
+import DesktopSidebar from "@/components/DesktopSidebar";
 import margaritaMamasLogo from '@/assets/margarita-mamas-logo.png';
 import salDeMarLogo from '@/assets/sal-de-mar-logo.png';
 import oceanBreezeLogo from '@/assets/ocean-breeze-logo.png';
 import sunsetGrillLogo from '@/assets/sunset-grill-logo.png';
+import ferdinandProfile from '@/assets/ferdinand-profile.jpg';
 
 interface Order {
   id: string;
@@ -94,59 +98,141 @@ const OrderHistory: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="bg-slate-900 text-white p-4">
-        <div className="flex items-center justify-between max-w-4xl mx-auto">
-          <div className="flex items-center space-x-2">
-            <h1 className="text-xl font-bold">DAZE</h1>
-            <span className="text-blue-400 text-sm">DRIVER PORTAL</span>
+      <UnifiedHeader />
+      <DesktopSidebar />
+      
+      {/* Main Content */}
+      <div className="lg:ml-64 pt-4">
+        <div className="container mx-auto px-4 py-6 space-y-6 lg:px-8 lg:py-8">
+          <div>
+            <h1 className="text-2xl font-bold text-foreground mb-2 lg:text-3xl">My Profile</h1>
+            <p className="text-muted-foreground lg:text-lg">Manage your account and delivery history</p>
           </div>
-          <Button variant="ghost" size="sm" className="text-white">
-            <div className="grid grid-cols-3 gap-1">
-              <div className="w-1 h-1 bg-white rounded-full"></div>
-              <div className="w-1 h-1 bg-white rounded-full"></div>
-              <div className="w-1 h-1 bg-white rounded-full"></div>
-              <div className="w-1 h-1 bg-white rounded-full"></div>
-              <div className="w-1 h-1 bg-white rounded-full"></div>
-              <div className="w-1 h-1 bg-white rounded-full"></div>
-              <div className="w-1 h-1 bg-white rounded-full"></div>
-              <div className="w-1 h-1 bg-white rounded-full"></div>
-              <div className="w-1 h-1 bg-white rounded-full"></div>
-            </div>
-          </Button>
-        </div>
-      </div>
-
-      <div className="max-w-4xl mx-auto p-4 space-y-6">
-        {/* Page Title */}
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Order History</h2>
           
-          {/* Date Range Selector */}
-          <Button variant="outline" className="flex items-center space-x-2">
-            <Calendar className="w-4 h-4" />
-            <span className="text-sm">{dateRange}</span>
-          </Button>
-        </div>
+          {/* Profile Section */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <User className="h-5 w-5" />
+                Profile Information
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <Avatar className="h-20 w-20 lg:h-24 lg:w-24">
+                  <AvatarImage src={ferdinandProfile} alt="Ferdinand S." />
+                  <AvatarFallback>FS</AvatarFallback>
+                </Avatar>
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold">Ferdinand S.</h3>
+                  <p className="text-muted-foreground">Senior Courier</p>
+                  <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-1">
+                      <MapPin className="h-4 w-4" />
+                      <span>SpringHill Suites Resort</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      <span>4.9 Rating</span>
+                    </div>
+                  </div>
+                </div>
+                <Button variant="outline" size="sm">
+                  <Edit className="h-4 w-4 mr-2" />
+                  Edit Profile
+                </Button>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-muted-foreground">Email</label>
+                  <div className="flex items-center gap-2">
+                    <Mail className="h-4 w-4 text-muted-foreground" />
+                    <span>ferdinand.s@daze.com</span>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-muted-foreground">Phone</label>
+                  <div className="flex items-center gap-2">
+                    <Phone className="h-4 w-4 text-muted-foreground" />
+                    <span>+1 (555) 123-4567</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-        {/* Orders Section */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Orders</h3>
-          
-          {orders.length === 0 ? (
-            <EmptyState />
-          ) : (
-            <div className="space-y-4">
-              {orders.map((order) => (
-                <Card 
-                  key={order.id} 
-                  className="cursor-pointer hover:shadow-md transition-shadow"
-                  onClick={() => handleOrderClick(order.id)}
-                >
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-primary/10 rounded-full">
+                    <Package className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold">247</p>
+                    <p className="text-sm text-muted-foreground">Total Deliveries</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-green-100 rounded-full">
+                    <DollarSign className="h-6 w-6 text-green-600" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold">$3,247</p>
+                    <p className="text-sm text-muted-foreground">Total Earnings</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-yellow-100 rounded-full">
+                    <Star className="h-6 w-6 text-yellow-600" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold">4.9</p>
+                    <p className="text-sm text-muted-foreground">Average Rating</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Recent Order History */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2">
+                  <Clock className="h-5 w-5" />
+                  Recent Order History
+                </CardTitle>
+                <Button variant="outline" size="sm">
+                  <Calendar className="w-4 h-4 mr-2" />
+                  {dateRange}
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              {orders.length === 0 ? (
+                <EmptyState />
+              ) : (
+                <div className="space-y-4">
+                  {orders.map((order) => (
+                    <div 
+                      key={order.id} 
+                      className="flex items-center justify-between p-4 border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors"
+                      onClick={() => handleOrderClick(order.id)}
+                    >
                       <div className="flex items-center space-x-4">
-                        {/* Restaurant Logo */}
                         <div className="w-12 h-12 rounded-full overflow-hidden bg-muted flex items-center justify-center">
                           <img 
                             src={order.restaurantLogo} 
@@ -156,37 +242,27 @@ const OrderHistory: React.FC = () => {
                         </div>
                         
                         <div className="flex-1">
-                          <div className="flex items-center space-x-2 mb-2">
-                            <h4 className="font-semibold">{order.restaurantName}</h4>
+                          <div className="flex items-center space-x-2 mb-1">
+                            <h4 className="font-medium">{order.restaurantName}</h4>
                             {getStatusBadge(order.status)}
                           </div>
                           
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-muted-foreground">
-                            <div>
-                              <span className="font-medium">Order ID:</span> {order.orderId}
-                            </div>
-                            <div>
-                              <span className="font-medium">Customer:</span> {order.customer}
-                            </div>
-                            <div className="flex items-center space-x-1">
-                              <DollarSign className="w-3 h-3" />
-                              <span className="font-medium">Delivery Fee:</span> ${order.deliveryFee.toFixed(2)}
-                            </div>
-                            <div className="flex items-center space-x-1">
-                              <Clock className="w-3 h-3" />
-                              <span className="font-medium">Date:</span> {order.date} {order.time}
-                            </div>
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                            <span>#{order.orderId}</span>
+                            <span>{order.customer}</span>
+                            <span>${order.deliveryFee.toFixed(2)}</span>
+                            <span>{order.date}</span>
                           </div>
                         </div>
                       </div>
                       
                       <ChevronRight className="w-5 h-5 text-muted-foreground" />
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
