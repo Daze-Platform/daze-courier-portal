@@ -465,49 +465,82 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
               </div>
             </div>
             
-            {/* Route Path (curved path through waypoints when navigating) */}
+            {/* Route Path - Professional GPS-style routing */}
             {isNavigating && routeWaypoints.length > 0 && (
               <svg 
                 className="absolute inset-0 w-full h-full pointer-events-none z-0"
                 style={{ overflow: 'visible' }}
               >
                 <defs>
-                  <pattern id="dashed" patternUnits="userSpaceOnUse" width="8" height="2">
-                    <rect width="4" height="2" fill="#10b981" />
-                  </pattern>
+                  {/* Professional gradient for route line */}
+                  <linearGradient id="routeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.8" />
+                    <stop offset="100%" stopColor="#1d4ed8" stopOpacity="0.9" />
+                  </linearGradient>
                 </defs>
-                {/* Draw path through all waypoints */}
+                
+                {/* Main route path through waypoints */}
                 {routeWaypoints.map((waypoint, index) => {
                   if (index === 0) return null;
                   const prevWaypoint = routeWaypoints[index - 1];
+                  const isCompleted = index <= currentWaypointIndex;
+                  
                   return (
-                    <line
-                      key={`route-${index}`}
-                      x1={`${parseFloat(prevWaypoint.left)}%`}
-                      y1={`${parseFloat(prevWaypoint.top)}%`}
-                      x2={`${parseFloat(waypoint.left)}%`}
-                      y2={`${parseFloat(waypoint.top)}%`}
-                      stroke="#10b981"
-                      strokeWidth="6"
-                      strokeDasharray="12,8"
-                      opacity={index <= currentWaypointIndex + 1 ? "0.9" : "0.4"}
-                      strokeLinecap="round"
-                    />
+                    <g key={`route-segment-${index}`}>
+                      {/* Background route line */}
+                      <line
+                        x1={`${parseFloat(prevWaypoint.left)}%`}
+                        y1={`${parseFloat(prevWaypoint.top)}%`}
+                        x2={`${parseFloat(waypoint.left)}%`}
+                        y2={`${parseFloat(waypoint.top)}%`}
+                        stroke="#e5e7eb"
+                        strokeWidth="8"
+                        strokeLinecap="round"
+                      />
+                      {/* Active route line */}
+                      <line
+                        x1={`${parseFloat(prevWaypoint.left)}%`}
+                        y1={`${parseFloat(prevWaypoint.top)}%`}
+                        x2={`${parseFloat(waypoint.left)}%`}
+                        y2={`${parseFloat(waypoint.top)}%`}
+                        stroke={isCompleted ? "#10b981" : "url(#routeGradient)"}
+                        strokeWidth="4"
+                        strokeDasharray={isCompleted ? "none" : "8,4"}
+                        strokeDashoffset="0"
+                        opacity={isCompleted ? "1" : "0.8"}
+                        strokeLinecap="round"
+                      />
+                    </g>
                   );
                 })}
-                {/* Current segment from courier to next waypoint */}
+                
+                {/* Current active segment */}
                 {currentWaypointIndex < routeWaypoints.length - 1 && (
-                  <line
-                    x1={`${parseFloat(courierPosition.left)}%`}
-                    y1={`${parseFloat(courierPosition.top)}%`}
-                    x2={`${parseFloat(routeWaypoints[currentWaypointIndex + 1].left)}%`}
-                    y2={`${parseFloat(routeWaypoints[currentWaypointIndex + 1].top)}%`}
-                    stroke="#10b981"
-                    strokeWidth="6"
-                    strokeDasharray="12,8"
-                    opacity="0.9"
-                    strokeLinecap="round"
-                  />
+                  <g>
+                    {/* Background */}
+                    <line
+                      x1={`${parseFloat(courierPosition.left)}%`}
+                      y1={`${parseFloat(courierPosition.top)}%`}
+                      x2={`${parseFloat(routeWaypoints[currentWaypointIndex + 1].left)}%`}
+                      y2={`${parseFloat(routeWaypoints[currentWaypointIndex + 1].top)}%`}
+                      stroke="#e5e7eb"
+                      strokeWidth="8"
+                      strokeLinecap="round"
+                    />
+                    {/* Active line */}
+                    <line
+                      x1={`${parseFloat(courierPosition.left)}%`}
+                      y1={`${parseFloat(courierPosition.top)}%`}
+                      x2={`${parseFloat(routeWaypoints[currentWaypointIndex + 1].left)}%`}
+                      y2={`${parseFloat(routeWaypoints[currentWaypointIndex + 1].top)}%`}
+                      stroke="#3b82f6"
+                      strokeWidth="4"
+                      strokeDasharray="8,4"
+                      strokeDashoffset="0"
+                      opacity="1"
+                      strokeLinecap="round"
+                    />
+                  </g>
                 )}
               </svg>
             )}
