@@ -140,10 +140,10 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
           style={{ 
             margin: 0,
             padding: 0,
-            width: focusArea === 'beach' ? '108%' : '102%',
+            width: focusArea === 'beach' ? '115%' : '102%',
             height: focusArea === 'beach' ? '115%' : '102%',
             top: focusArea === 'beach' ? '-7%' : '-1%',
-            left: focusArea === 'beach' ? '-4%' : '-1%',
+            left: focusArea === 'beach' ? '-7%' : '-1%',
             objectFit: 'cover'
           }}
         />
