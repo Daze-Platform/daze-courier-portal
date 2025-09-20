@@ -140,9 +140,10 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
           style={{ 
             margin: 0,
             padding: 0,
-            width: '100%',
-            height: '100%',
-            minHeight: '100%',
+            width: '102%',
+            height: '102%',
+            top: '-1%',
+            left: '-1%',
             objectFit: 'cover'
           }}
         />
