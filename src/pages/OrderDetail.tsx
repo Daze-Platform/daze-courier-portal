@@ -15,6 +15,7 @@ import RoomDeliveryStatus from "@/components/RoomDeliveryStatus";
 import margaritaMamasLogo from "@/assets/margarita-mamas-logo.png";
 import sunsetGrillLogo from "@/assets/sunset-grill-logo.png";
 import oceanBreezeLogo from "@/assets/ocean-breeze-logo.png";
+import salDeMarLogo from "@/assets/sal-de-mar-logo.png";
 
 const OrderDetail = () => {
   const { orderId } = useParams();
@@ -202,6 +203,8 @@ const OrderDetail = () => {
         return sunsetGrillLogo;
       case "ocean breeze café":
         return oceanBreezeLogo;
+      case "sal de mar":
+        return salDeMarLogo;
       default:
         return null;
     }
@@ -242,7 +245,7 @@ const OrderDetail = () => {
                 <div className="flex items-center gap-3 mb-4">
                   <div className="h-12 w-12 rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm">
                     {restaurantLogo ? (
-                      <img src={restaurantLogo} alt={`${order.restaurant} logo`} className="h-10 w-10 object-contain" />
+                      <img src={restaurantLogo} alt={`${order.restaurant} logo`} className="h-12 w-12 object-cover rounded-full" />
                     ) : (
                       <Package className="h-6 w-6 text-accent" />
                     )}

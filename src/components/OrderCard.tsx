@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import margaritaMamasLogo from "@/assets/margarita-mamas-logo.png";
 import sunsetGrillLogo from "@/assets/sunset-grill-logo.png";
 import oceanBreezeLogo from "@/assets/ocean-breeze-logo.png";
+import salDeMarLogo from "@/assets/sal-de-mar-logo.png";
 
 interface OrderCardProps {
   orderId: string;
@@ -69,6 +70,8 @@ const OrderCard = ({
         return sunsetGrillLogo;
       case "ocean breeze café":
         return oceanBreezeLogo;
+      case "sal de mar":
+        return salDeMarLogo;
       default:
         return null;
     }
@@ -84,7 +87,7 @@ const OrderCard = ({
         <div className="flex items-center gap-3">
           <div className="h-12 w-12 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden bg-white shadow-sm">
             {currentRestaurantLogo ? (
-              <img src={currentRestaurantLogo} alt={`${restaurant} logo`} className="h-10 w-10 object-contain" />
+              <img src={currentRestaurantLogo} alt={`${restaurant} logo`} className="h-12 w-12 object-cover rounded-full" />
             ) : (
               <Package className="h-6 w-6 text-accent" />
             )}
