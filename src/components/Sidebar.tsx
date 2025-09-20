@@ -24,8 +24,8 @@ const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
     {
       icon: FileText,
       label: "Order History", 
-      path: "/history",
-      active: location.pathname === "/history"
+      path: "/order-history",
+      active: location.pathname === "/order-history"
     },
     {
       icon: Star,
