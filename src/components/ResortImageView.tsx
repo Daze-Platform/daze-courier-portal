@@ -5,7 +5,7 @@ import { MapPin, Navigation, Coffee, Waves, Umbrella } from 'lucide-react';
 interface ResortImageViewProps {
   destination?: string;
   isDelivering?: boolean;
-  focusArea?: 'beach' | 'pool' | 'hotel' | null;
+  focusArea?: 'beach' | 'pool' | 'room' | null;
 }
 
 interface LocationPoint {
@@ -63,13 +63,17 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   // Pan and zoom effect based on focus area
   useEffect(() => {
     if (focusArea === 'beach') {
-      setZoomLevel(1.5);
-      setPanX(-20);
-      setPanY(-30);
-    } else if (focusArea === 'pool') {
-      setZoomLevel(1.3);
+      setZoomLevel(1.2);
       setPanX(-10);
       setPanY(-15);
+    } else if (focusArea === 'pool') {
+      setZoomLevel(1.15);
+      setPanX(-5);
+      setPanY(-10);
+    } else if (focusArea === 'room') {
+      setZoomLevel(1.3);
+      setPanX(0);
+      setPanY(10);
     } else {
       setZoomLevel(1);
       setPanX(0);
@@ -175,6 +179,32 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
             transform: 'translate(-50%, -50%)'
           }}
         />
+      )}
+
+      {/* Room Delivery Instructions */}
+      {focusArea === 'room' && (
+        <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg p-4 shadow-lg max-w-sm">
+          <h3 className="text-sm font-semibold mb-2 text-gray-900">Room Delivery Instructions</h3>
+          <div className="space-y-2 text-xs text-gray-700">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+              <span>Enter hotel through main lobby</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+              <span>Take elevator to room floor</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+              <span>Follow room number signs</span>
+            </div>
+            {destination && (
+              <div className="mt-2 p-2 bg-blue-50 rounded text-sm font-medium text-blue-900">
+                Delivering to: {destination}
+              </div>
+            )}
+          </div>
+        </div>
       )}
 
       {/* Delivery Status */}

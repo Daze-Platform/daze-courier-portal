@@ -34,8 +34,17 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
   const { toast } = useToast();
 
   // Beach delivery detection - check both delivery type and destination
-  const isBeachDelivery = deliveryType?.toLowerCase() === 'beach service' || 
-                          destination.toLowerCase().includes('beach');
+  const isBeachDelivery = deliveryType?.toLowerCase() === 'beach service';
+  const isPoolDelivery = deliveryType?.toLowerCase() === 'poolside';
+  const isRoomDelivery = deliveryType?.toLowerCase() === 'room delivery';
+
+  // Determine which map to show based on delivery type
+  const getMapType = () => {
+    if (isBeachDelivery) return 'beach';
+    if (isPoolDelivery) return 'pool'; 
+    if (isRoomDelivery) return 'room';
+    return null;
+  };
 
   // Get destination position based on delivery location - positioned at actual umbrellas
   const getDestinationPosition = (dest: string): Position => {
@@ -259,14 +268,13 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
         />
       </div>
 
-      {/* Resort Map - Conditional rendering based on delivery type */}
-      {isBeachDelivery ? (
+      {/* Resort Map - Show based on delivery type */}
+      {(isBeachDelivery || isPoolDelivery || isRoomDelivery) ? (
         <div className="flex-1 overflow-hidden">
           <ResortImageView 
             destination={destination} 
             isDelivering={isNavigating}
-            focusArea={destination.toLowerCase().includes('beach') ? 'beach' : 
-                      destination.toLowerCase().includes('pool') ? 'pool' : null}
+            focusArea={getMapType()}
           />
         </div>
       ) : (
