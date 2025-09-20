@@ -8,11 +8,9 @@ const CourierHeader = () => {
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
             <Package className="h-6 w-6 text-primary-foreground" />
-            <span className="text-xl font-bold text-primary-foreground">PORTAL</span>
           </div>
-          <div className="h-6 w-px bg-primary-foreground/30" />
-          <span className="text-sm font-medium text-primary-foreground/90 tracking-wider">
-            COURIER DASHBOARD
+          <span className="text-xl font-bold text-primary-foreground/90 tracking-wider">
+            COURIER PORTAL
           </span>
         </div>
         <Button variant="ghost" size="icon">

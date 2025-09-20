@@ -55,10 +55,9 @@ const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
         <div className="bg-gradient-primary px-6 py-8 mb-6 relative">
           <div className="flex items-center gap-3 mb-1">
             <img src={dazeLogo} alt="Daze" className="h-6 w-6 object-contain" />
-            <span className="text-lg font-bold text-primary-foreground tracking-wide">PORTAL</span>
           </div>
-          <span className="text-xs font-medium text-primary-foreground/80 tracking-wider uppercase">
-            DRIVER PORTAL
+          <span className="text-lg font-bold text-primary-foreground/90 tracking-wider uppercase">
+            COURIER PORTAL
           </span>
         </div>
 
@@ -118,10 +117,9 @@ const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
         <div className="bg-gradient-primary p-6">
           <div className="flex items-center gap-2 mb-1">
             <Package className="h-6 w-6 text-primary-foreground" />
-            <span className="text-xl font-bold text-primary-foreground">PORTAL</span>
           </div>
-          <span className="text-sm font-medium text-primary-foreground/90 tracking-wider">
-            DRIVER PORTAL
+          <span className="text-xl font-bold text-primary-foreground/90 tracking-wider">
+            COURIER PORTAL
           </span>
         </div>
 
