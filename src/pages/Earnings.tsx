@@ -30,6 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import UnifiedHeader from "@/components/UnifiedHeader";
 import DesktopSidebar from "@/components/DesktopSidebar";
 import margaritaMamasLogo from '@/assets/margarita-mamas-logo.png';
@@ -72,6 +73,24 @@ const Earnings: React.FC = () => {
   const minimumWithdraw = 20.00;
   const availableBalance = 50.00;
   const changePercent = 4.07;
+
+  // Chart data for earnings overview
+  const chartData = [
+    { date: 'Jul 28', basePay: 3, tip: 2 },
+    { date: 'Jul 29', basePay: 5, tip: 3 },
+    { date: 'Jul 30', basePay: 8, tip: 6 },
+    { date: 'Aug 1', basePay: 12, tip: 8 },
+    { date: 'Aug 2', basePay: 15, tip: 12 },
+    { date: 'Aug 3', basePay: 16, tip: 13 },
+    { date: 'Aug 4', basePay: 17, tip: 14 },
+    { date: 'Aug 5', basePay: 16, tip: 13 },
+    { date: 'Aug 6', basePay: 14.5, tip: 11 },
+    { date: 'Aug 7', basePay: 13, tip: 10 },
+    { date: 'Aug 8', basePay: 11, tip: 8 },
+    { date: 'Aug 9', basePay: 12, tip: 9 },
+    { date: 'Aug 15', basePay: 8, tip: 6 },
+    { date: 'Aug 18', basePay: 4, tip: 3 }
+  ];
 
   const paymentMethods: PaymentMethod[] = [
     { id: '1', type: 'visa', label: 'Visa .... 1316', lastFour: '1316' },
@@ -299,15 +318,76 @@ const Earnings: React.FC = () => {
             </Card>
           </div>
 
-          {/* Earnings Overview Chart Placeholder */}
+          {/* Earnings Overview Chart */}
           <Card>
             <CardHeader>
               <CardTitle>Earnings Overview</CardTitle>
               <p className="text-sm text-muted-foreground">Including base pay & customer tips</p>
             </CardHeader>
             <CardContent>
-              <div className="h-64 bg-muted/20 rounded-lg flex items-center justify-center">
-                <p className="text-muted-foreground">Chart visualization would go here</p>
+              <div className="h-64 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart
+                    data={chartData}
+                    margin={{
+                      top: 5,
+                      right: 30,
+                      left: 20,
+                      bottom: 5,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <XAxis 
+                      dataKey="date" 
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fontSize: 12, fill: '#64748b' }}
+                    />
+                    <YAxis 
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fontSize: 12, fill: '#64748b' }}
+                      tickFormatter={(value) => `${value}$`}
+                    />
+                    <Tooltip 
+                      contentStyle={{
+                        backgroundColor: 'white',
+                        border: '1px solid #e2e8f0',
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
+                      }}
+                      formatter={(value: number, name: string) => [
+                        `$${value.toFixed(2)}`, 
+                        name === 'basePay' ? 'Base Pay' : 'Tip'
+                      ]}
+                      labelStyle={{ color: '#1e293b', fontWeight: 'medium' }}
+                    />
+                    <Legend 
+                      wrapperStyle={{ paddingTop: '20px' }}
+                      formatter={(value) => (
+                        <span style={{ color: '#64748b' }}>
+                          {value === 'basePay' ? 'Base Pay' : 'Tip'}
+                        </span>
+                      )}
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="basePay" 
+                      stroke="#ef4444" 
+                      strokeWidth={2}
+                      dot={{ fill: '#ef4444', strokeWidth: 2, r: 4 }}
+                      activeDot={{ r: 6, stroke: '#ef4444', strokeWidth: 2 }}
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="tip" 
+                      stroke="#8b5cf6" 
+                      strokeWidth={2}
+                      dot={{ fill: '#8b5cf6', strokeWidth: 2, r: 4 }}
+                      activeDot={{ r: 6, stroke: '#8b5cf6', strokeWidth: 2 }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
               </div>
             </CardContent>
           </Card>
