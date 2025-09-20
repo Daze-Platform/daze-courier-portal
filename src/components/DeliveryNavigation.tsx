@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { MapPin, Navigation, Clock, Play, Pause, Target, Zap, User, UtensilsCrossed, ChefHat, PersonStanding, Info, ChevronUp, ChevronDown } from "lucide-react";
+import { MapPin, Navigation, Clock, Play, Pause, Target, Zap, User, UtensilsCrossed, ChefHat, PersonStanding, Info, ChevronUp, ChevronDown, Phone, MessageCircle, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -351,31 +351,101 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
             </Button>
           </div>
 
-          {/* Order Details Panel - Sliding from bottom */}
-          {showOrderDetails && (
-            <div className="absolute bottom-0 left-0 right-0 bg-background border-t border-border shadow-lg z-40 max-h-[70vh] overflow-y-auto">
-              <div className="p-4 space-y-4">
-                {/* Order Items */}
+          {/* Order Details Panel - Slide Up Component */}
+          <div 
+            className={`absolute bottom-0 left-0 right-0 z-40 transition-transform duration-300 ease-out ${
+              showOrderDetails 
+                ? 'transform translate-y-0' 
+                : 'transform translate-y-full'
+            }`}
+          >
+            {/* Handle/Drag Indicator */}
+            <div className="bg-background border-t border-border rounded-t-xl shadow-lg">
+              <div className="flex justify-center py-3">
+                <div className="w-12 h-1 bg-muted-foreground/30 rounded-full"></div>
+              </div>
+              
+              {/* Header */}
+              <div className="px-6 pb-4">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-semibold text-foreground">Order Details</h2>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowOrderDetails(false)}
+                    className="h-8 w-8 p-0"
+                  >
+                    <ChevronDown className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Scrollable Content */}
+            <div className="bg-background max-h-[70vh] overflow-y-auto">
+              <div className="px-6 pb-6 space-y-4">
+                {/* Customer Info Card */}
                 {order && (
-                  <Card className="p-4">
-                    <h3 className="text-lg font-semibold mb-3 text-foreground">Order Items ({order.items.length})</h3>
-                    <div className="space-y-3 max-h-48 overflow-y-auto">
+                  <Card className="p-4 border border-border">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-lg font-semibold text-foreground">Delivery For</h3>
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="sm" className="h-8 w-8 p-0">
+                          <Phone className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          className="font-medium text-primary-foreground bg-primary hover:bg-primary/90 h-8 px-3"
+                          size="sm"
+                        >
+                          <MessageCircle className="h-4 w-4 mr-1" />
+                          Chat
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center">
+                        <User className="h-6 w-6 text-muted-foreground" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-foreground">{order.customer.name}</p>
+                        <p className="text-sm text-muted-foreground">{order.customer.phone}</p>
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <p className="text-sm font-medium text-foreground mb-1">Delivery Address:</p>
+                      <p className="text-muted-foreground">{destination}</p>
+                    </div>
+                  </Card>
+                )}
+
+                {/* Order Items Card */}
+                {order && (
+                  <Card className="p-4 border border-border">
+                    <h3 className="text-lg font-semibold mb-4 text-foreground">Items ({order.items.length})</h3>
+                    <div className="space-y-3">
                       {order.items.map((item, index) => (
-                        <div key={index} className="flex items-start gap-3 p-2 bg-accent/10 rounded-lg">
-                          <div className="flex-1">
-                            <div className="flex justify-between items-center">
-                              <p className="font-medium text-foreground">{item.name}</p>
-                              <p className="font-semibold text-foreground">${item.price}</p>
+                        <div key={index} className="flex items-start gap-3">
+                          <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0">
+                            <CheckCircle className="h-4 w-4 text-green-600" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex justify-between items-start gap-2">
+                              <div className="flex-1 min-w-0">
+                                <p className="font-medium text-foreground">{item.name}</p>
+                                {item.modifications && (
+                                  <p className="text-sm text-muted-foreground mt-0.5">{item.modifications}</p>
+                                )}
+                              </div>
+                              <p className="font-semibold text-foreground flex-shrink-0">${item.price}</p>
                             </div>
-                            {item.modifications && (
-                              <p className="text-sm text-muted-foreground">{item.modifications}</p>
-                            )}
                           </div>
                         </div>
                       ))}
                     </div>
                     
-                    <div className="border-t border-border mt-4 pt-3">
+                    <div className="border-t border-border mt-4 pt-4">
                       <div className="flex justify-between font-semibold text-lg">
                         <span className="text-foreground">Order Total</span>
                         <span className="text-foreground">${order.total}</span>
@@ -384,65 +454,54 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
                   </Card>
                 )}
 
-                {/* Special Instructions */}
+                {/* Special Instructions Card */}
                 {order?.specialNotes && (
-                  <Card className="p-4">
-                    <h3 className="text-lg font-semibold mb-3 text-foreground">Special Instructions</h3>
-                    <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
-                      <p className="text-foreground font-medium">{order.specialNotes}</p>
-                    </div>
-                  </Card>
-                )}
-
-                {/* Customer Info */}
-                {order && (
-                  <Card className="p-4">
-                    <h3 className="text-lg font-semibold mb-3 text-foreground">Customer Info</h3>
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <span className="text-muted-foreground">Name:</span>
-                        <span className="font-medium text-foreground">{order.customer.name}</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-muted-foreground">Phone:</span>
-                        <span className="font-medium text-foreground">{order.customer.phone}</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-muted-foreground">Location:</span>
-                        <span className="font-medium text-foreground">{destination}</span>
+                  <Card className="border-l-4 border-l-amber-400 bg-amber-50/50 border border-amber-200">
+                    <div className="p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-6 h-6 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
+                          <span className="text-amber-600 text-sm">💬</span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-medium text-amber-800 mb-2">Special Instructions</h4>
+                          <p className="text-amber-700 leading-relaxed">{order.specialNotes}</p>
+                        </div>
                       </div>
                     </div>
                   </Card>
                 )}
 
-                {/* Delivery Status */}
-                <Card className="p-4">
+                {/* Delivery Status Card */}
+                <Card className="p-4 border border-border">
                   <h3 className="text-lg font-semibold mb-3 text-foreground">Delivery Status</h3>
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">Type:</span>
-                      <Badge variant="outline">{deliveryType}</Badge>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">Progress:</span>
-                      <Badge variant={hasReachedDestination ? "default" : "secondary"}>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Progress</p>
+                      <p className="font-medium text-foreground">
                         {hasReachedDestination ? "Ready to Complete" : `${Math.round(progress)}%`}
-                      </Badge>
+                      </p>
                     </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">Distance:</span>
-                      <span className="font-medium text-foreground">{totalDistance}</span>
+                    <div>
+                      <p className="text-sm text-muted-foreground">ETA</p>
+                      <p className="font-medium text-foreground">{eta.toFixed(1)} min</p>
                     </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">ETA:</span>
-                      <span className="font-medium text-foreground">{eta.toFixed(1)} min</span>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Distance</p>
+                      <p className="font-medium text-foreground">{totalDistance}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-muted-foreground">Type</p>
+                      <Badge variant="outline" className="text-xs">{deliveryType}</Badge>
                     </div>
                   </div>
                 </Card>
 
                 {/* Navigation Tips */}
-                <div className="bg-accent/50 border border-accent rounded-lg p-4">
-                  <h4 className="font-medium text-foreground mb-2">💡 {isBeachDelivery ? 'Beach' : 'Pool'} Delivery Tips</h4>
+                <div className="bg-accent/30 border border-accent/50 rounded-lg p-4">
+                  <h4 className="font-medium text-foreground mb-2 flex items-center gap-2">
+                    <span>💡</span>
+                    {isBeachDelivery ? 'Beach' : 'Pool'} Delivery Tips
+                  </h4>
                   <ul className="text-sm text-muted-foreground space-y-1">
                     {isBeachDelivery ? (
                       <>
@@ -462,7 +521,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
                 </div>
               </div>
             </div>
-          )}
+          </div>
         </div>
       ) : isRoomDelivery ? (
         <div className="flex-1 overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
