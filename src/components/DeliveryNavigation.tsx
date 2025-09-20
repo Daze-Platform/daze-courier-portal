@@ -58,8 +58,80 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
   const [navigationStartTime, setNavigationStartTime] = useState<number>(0);
   const [totalEstimatedTime] = useState(8); // 8 seconds total navigation time
   const [showOrderDetails, setShowOrderDetails] = useState(false);
+  const [modalState, setModalState] = useState<'closed' | 'peek' | 'half' | 'full'>('closed');
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStartY, setDragStartY] = useState(0);
+  const [dragCurrentY, setDragCurrentY] = useState(0);
   const isMobile = useIsMobile();
   const { toast } = useToast();
+
+  // Modal snap point handlers
+  const getModalHeight = (state: 'closed' | 'peek' | 'half' | 'full') => {
+    switch (state) {
+      case 'closed': return '0%';
+      case 'peek': return '20%';
+      case 'half': return '50%';
+      case 'full': return '85%';
+      default: return '0%';
+    }
+  };
+
+  const getNextModalState = (currentState: 'closed' | 'peek' | 'half' | 'full', direction: 'up' | 'down') => {
+    if (direction === 'up') {
+      switch (currentState) {
+        case 'closed': return 'peek';
+        case 'peek': return 'half';
+        case 'half': return 'full';
+        case 'full': return 'full';
+        default: return 'peek';
+      }
+    } else {
+      switch (currentState) {
+        case 'full': return 'half';
+        case 'half': return 'peek';
+        case 'peek': return 'closed';
+        case 'closed': return 'closed';
+        default: return 'closed';
+      }
+    }
+  };
+
+  const handleModalToggle = () => {
+    if (modalState === 'closed') {
+      setModalState('peek');
+    } else {
+      setModalState('closed');
+    }
+  };
+
+  const handleDragStart = (e: React.TouchEvent | React.MouseEvent) => {
+    setIsDragging(true);
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    setDragStartY(clientY);
+    setDragCurrentY(clientY);
+  };
+
+  const handleDragMove = (e: React.TouchEvent | React.MouseEvent) => {
+    if (!isDragging) return;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    setDragCurrentY(clientY);
+  };
+
+  const handleDragEnd = () => {
+    if (!isDragging) return;
+    
+    const dragDistance = dragStartY - dragCurrentY;
+    const threshold = 50; // minimum drag distance to trigger state change
+    
+    if (Math.abs(dragDistance) > threshold) {
+      const direction = dragDistance > 0 ? 'up' : 'down';
+      setModalState(getNextModalState(modalState, direction));
+    }
+    
+    setIsDragging(false);
+    setDragStartY(0);
+    setDragCurrentY(0);
+  };
 
   // Delivery type detection - handle exact string matching
   const isBeachDelivery = deliveryType?.toLowerCase() === 'beach service';
@@ -341,7 +413,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
           {/* Order Details Button - Floating */}
           <div className="absolute bottom-4 right-4 z-50">
             <Button
-              onClick={() => setShowOrderDetails(!showOrderDetails)}
+              onClick={handleModalToggle}
               className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg h-10 w-10 p-0 flex items-center justify-center"
               size="sm"
             >
@@ -349,28 +421,43 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
             </Button>
           </div>
 
-          {/* Order Details Panel - Slide Up Component */}
+          {/* Order Details Panel - Multi-Snap Modal */}
           <div 
-            className={`absolute bottom-0 left-0 right-0 z-40 transition-transform duration-300 ease-out ${
-              showOrderDetails 
-                ? 'transform translate-y-0' 
-                : 'transform translate-y-full'
+            className={`absolute bottom-0 left-0 right-0 z-40 transition-all duration-500 ease-out ${
+              modalState === 'closed' 
+                ? 'transform translate-y-full' 
+                : 'transform translate-y-0'
             }`}
+            style={{
+              height: getModalHeight(modalState),
+              transform: isDragging 
+                ? `translateY(${Math.max(0, dragCurrentY - dragStartY)}px)` 
+                : undefined
+            }}
           >
-            {/* Handle/Drag Indicator */}
-            <div className="bg-background border-t border-border rounded-t-xl shadow-lg">
+            {/* Handle/Drag Indicator - Interactive */}
+            <div 
+              className="bg-background border-t border-border rounded-t-xl shadow-lg cursor-grab active:cursor-grabbing"
+              onTouchStart={handleDragStart}
+              onMouseDown={handleDragStart}
+              onTouchMove={handleDragMove}
+              onMouseMove={handleDragMove}
+              onTouchEnd={handleDragEnd}
+              onMouseUp={handleDragEnd}
+              onMouseLeave={handleDragEnd}
+            >
               <div className="flex justify-center py-3">
                 <div className="w-12 h-1 bg-muted-foreground/30 rounded-full"></div>
               </div>
               
-              {/* Header */}
+              {/* Header - Always visible */}
               <div className="px-6 pb-4">
                 <div className="flex items-center justify-between">
                   <h2 className="text-xl font-semibold text-foreground">Order Details</h2>
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => setShowOrderDetails(false)}
+                    onClick={() => setModalState('closed')}
                     className="h-8 w-8 p-0"
                   >
                     <ChevronDown className="h-4 w-4" />
@@ -379,146 +466,165 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
               </div>
             </div>
 
-            {/* Scrollable Content */}
-            <div className="bg-background max-h-[70vh] overflow-y-auto">
-              <div className="px-6 pb-6 space-y-4">
-                {/* Customer Info Card */}
-                {order && (
-                  <Card className="p-4 border border-border">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-lg font-semibold text-foreground">Delivery For</h3>
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="sm" className="h-8 w-8 p-0">
-                          <Phone className="h-4 w-4" />
-                        </Button>
-                        <Button 
-                          className="font-medium text-primary-foreground bg-primary hover:bg-primary/90 h-8 px-3"
-                          size="sm"
-                        >
-                          <MessageCircle className="h-4 w-4 mr-1" />
-                          Chat
-                        </Button>
+            {/* Scrollable Content - Only show for half/full states */}
+            {(modalState === 'half' || modalState === 'full') && (
+              <div className="bg-background flex-1 overflow-y-auto">
+                <div className="px-6 pb-6 space-y-4">
+                  {/* Customer Info Card */}
+                  {order && (
+                    <Card className="p-4 border border-border">
+                      <div className="flex items-center justify-between mb-4">
+                        <h3 className="text-lg font-semibold text-foreground">Delivery For</h3>
+                        <div className="flex gap-2">
+                          <Button variant="outline" size="sm" className="h-8 w-8 p-0">
+                            <Phone className="h-4 w-4" />
+                          </Button>
+                          <Button 
+                            className="font-medium text-primary-foreground bg-primary hover:bg-primary/90 h-8 px-3"
+                            size="sm"
+                          >
+                            <MessageCircle className="h-4 w-4 mr-1" />
+                            Chat
+                          </Button>
+                        </div>
                       </div>
-                    </div>
-                    
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center">
-                        <User className="h-6 w-6 text-muted-foreground" />
+                      
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center">
+                          <User className="h-6 w-6 text-muted-foreground" />
+                        </div>
+                        <div>
+                          <p className="font-semibold text-foreground">{order.customer.name}</p>
+                          <p className="text-sm text-muted-foreground">{order.customer.phone}</p>
+                        </div>
                       </div>
+                      
                       <div>
-                        <p className="font-semibold text-foreground">{order.customer.name}</p>
-                        <p className="text-sm text-muted-foreground">{order.customer.phone}</p>
+                        <p className="text-sm font-medium text-foreground mb-1">Delivery Address:</p>
+                        <p className="text-muted-foreground">{destination}</p>
                       </div>
-                    </div>
-                    
-                    <div>
-                      <p className="text-sm font-medium text-foreground mb-1">Delivery Address:</p>
-                      <p className="text-muted-foreground">{destination}</p>
-                    </div>
-                  </Card>
-                )}
+                    </Card>
+                  )}
 
-                {/* Order Items Card */}
-                {order && (
-                  <Card className="p-4 border border-border">
-                    <h3 className="text-lg font-semibold mb-4 text-foreground">Items ({order.items.length})</h3>
-                    <div className="space-y-3">
-                      {order.items.map((item, index) => (
-                        <div key={index} className="flex items-start gap-3">
-                          <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0">
-                            <CheckCircle className="h-4 w-4 text-green-600" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex justify-between items-start gap-2">
-                              <div className="flex-1 min-w-0">
-                                <p className="font-medium text-foreground">{item.name}</p>
-                                {item.modifications && (
-                                  <p className="text-sm text-muted-foreground mt-0.5">{item.modifications}</p>
-                                )}
+                  {/* Order Items Card */}
+                  {order && (
+                    <Card className="p-4 border border-border">
+                      <h3 className="text-lg font-semibold mb-4 text-foreground">Items ({order.items.length})</h3>
+                      <div className="space-y-3">
+                        {order.items.map((item, index) => (
+                          <div key={index} className="flex items-start gap-3">
+                            <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0">
+                              <CheckCircle className="h-4 w-4 text-green-600" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex justify-between items-start gap-2">
+                                <div className="flex-1 min-w-0">
+                                  <p className="font-medium text-foreground">{item.name}</p>
+                                  {item.modifications && (
+                                    <p className="text-sm text-muted-foreground mt-0.5">{item.modifications}</p>
+                                  )}
+                                </div>
+                                <p className="font-semibold text-foreground flex-shrink-0">${item.price}</p>
                               </div>
-                              <p className="font-semibold text-foreground flex-shrink-0">${item.price}</p>
                             </div>
                           </div>
+                        ))}
+                      </div>
+                      
+                      <div className="border-t border-border mt-4 pt-4">
+                        <div className="flex justify-between font-semibold text-lg">
+                          <span className="text-foreground">Order Total</span>
+                          <span className="text-foreground">${order.total}</span>
                         </div>
-                      ))}
-                    </div>
-                    
-                    <div className="border-t border-border mt-4 pt-4">
-                      <div className="flex justify-between font-semibold text-lg">
-                        <span className="text-foreground">Order Total</span>
-                        <span className="text-foreground">${order.total}</span>
+                      </div>
+                    </Card>
+                  )}
+
+                  {/* Special Instructions Card */}
+                  {order?.specialNotes && (
+                    <Card className="border-l-4 border-l-amber-400 bg-amber-50/50 border border-amber-200">
+                      <div className="p-4">
+                        <div className="flex items-start gap-3">
+                          <div className="w-6 h-6 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span className="text-amber-600 text-sm">💬</span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-medium text-amber-800 mb-2">Special Instructions</h4>
+                            <p className="text-amber-700 leading-relaxed">{order.specialNotes}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  )}
+
+                  {/* Delivery Status Card */}
+                  <Card className="p-4 border border-border">
+                    <h3 className="text-lg font-semibold mb-3 text-foreground">Delivery Status</h3>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <p className="text-sm text-muted-foreground">Progress</p>
+                        <p className="font-medium text-foreground">
+                          {hasReachedDestination ? "Ready to Complete" : `${Math.round(progress)}%`}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground">ETA</p>
+                        <p className="font-medium text-foreground">{eta.toFixed(1)} min</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground">Distance</p>
+                        <p className="font-medium text-foreground">{totalDistance}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground">Type</p>
+                        <Badge variant="outline" className="text-xs">{deliveryType}</Badge>
                       </div>
                     </div>
                   </Card>
-                )}
 
-                {/* Special Instructions Card */}
-                {order?.specialNotes && (
-                  <Card className="border-l-4 border-l-amber-400 bg-amber-50/50 border border-amber-200">
-                    <div className="p-4">
-                      <div className="flex items-start gap-3">
-                        <div className="w-6 h-6 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
-                          <span className="text-amber-600 text-sm">💬</span>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h4 className="font-medium text-amber-800 mb-2">Special Instructions</h4>
-                          <p className="text-amber-700 leading-relaxed">{order.specialNotes}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </Card>
-                )}
-
-                {/* Delivery Status Card */}
-                <Card className="p-4 border border-border">
-                  <h3 className="text-lg font-semibold mb-3 text-foreground">Delivery Status</h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-sm text-muted-foreground">Progress</p>
-                      <p className="font-medium text-foreground">
-                        {hasReachedDestination ? "Ready to Complete" : `${Math.round(progress)}%`}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">ETA</p>
-                      <p className="font-medium text-foreground">{eta.toFixed(1)} min</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Distance</p>
-                      <p className="font-medium text-foreground">{totalDistance}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Type</p>
-                      <Badge variant="outline" className="text-xs">{deliveryType}</Badge>
-                    </div>
+                  {/* Navigation Tips */}
+                  <div className="bg-accent/30 border border-accent/50 rounded-lg p-4">
+                    <h4 className="font-medium text-foreground mb-2 flex items-center gap-2">
+                      <span>💡</span>
+                      {isBeachDelivery ? 'Beach' : 'Pool'} Delivery Tips
+                    </h4>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      {isBeachDelivery ? (
+                        <>
+                          <li>• Look for beach umbrellas and lounge chairs</li>
+                          <li>• Customers may be in the water or walking on the beach</li>
+                          <li>• Call out the customer's name if needed</li>
+                        </>
+                      ) : (
+                        <>
+                          <li>• Check poolside cabanas and lounge areas</li>
+                          <li>• Look for the specific cabana number</li>
+                          <li>• Be careful around wet pool deck areas</li>
+                        </>
+                      )}
+                      <li>• Ask pool/beach staff for assistance if needed</li>
+                    </ul>
                   </div>
-                </Card>
-
-                {/* Navigation Tips */}
-                <div className="bg-accent/30 border border-accent/50 rounded-lg p-4">
-                  <h4 className="font-medium text-foreground mb-2 flex items-center gap-2">
-                    <span>💡</span>
-                    {isBeachDelivery ? 'Beach' : 'Pool'} Delivery Tips
-                  </h4>
-                  <ul className="text-sm text-muted-foreground space-y-1">
-                    {isBeachDelivery ? (
-                      <>
-                        <li>• Look for beach umbrellas and lounge chairs</li>
-                        <li>• Customers may be in the water or walking on the beach</li>
-                        <li>• Call out the customer's name if needed</li>
-                      </>
-                    ) : (
-                      <>
-                        <li>• Check poolside cabanas and lounge areas</li>
-                        <li>• Look for the specific cabana number</li>
-                        <li>• Be careful around wet pool deck areas</li>
-                      </>
-                    )}
-                    <li>• Ask pool/beach staff for assistance if needed</li>
-                  </ul>
                 </div>
               </div>
-            </div>
+            )}
+
+            {/* Peek State Content - Show quick summary */}
+            {modalState === 'peek' && (
+              <div className="bg-background px-6 pb-4">
+                <div className="flex items-center justify-between py-2">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Order Total</p>
+                    <p className="font-semibold text-foreground">${order?.total || '0.00'}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-muted-foreground">Items</p>
+                    <p className="font-semibold text-foreground">{order?.items.length || 0}</p>
+                  </div>
+                  <ChevronUp className="h-4 w-4 text-muted-foreground animate-pulse" />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       ) : isRoomDelivery ? (
