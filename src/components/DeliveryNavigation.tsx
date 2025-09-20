@@ -973,33 +973,28 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
 
       {/* Bottom Navigation Controls */}
       <div className="bg-background border-t border-border p-4 flex-shrink-0">
-        {/* Debug info - remove after testing */}
-        <div className="text-xs text-muted-foreground mb-2">
-          Debug: isRoomDelivery={String(isRoomDelivery)}, hasStartedNavigation={String(hasStartedNavigation)}, isNavigating={String(isNavigating)}
-        </div>
-        
         <div className="flex gap-3">
-          {!hasStartedNavigation && !hasReachedDestination ? (
-            <Button onClick={startNavigation} className="flex-1 h-12 text-base" disabled={progress >= 95}>
+          {!hasReachedDestination ? (
+            <Button 
+              onClick={startNavigation} 
+              className="flex-1 h-12 text-base" 
+              disabled={progress >= 95 || isNavigating || (isRoomDelivery && hasStartedNavigation)}
+            >
               <Play className="h-5 w-5 mr-2" />
-              Start Delivery
+              {(isRoomDelivery && hasStartedNavigation) ? 'Delivery Started' : 'Start Delivery'}
             </Button>
-          ) : hasReachedDestination ? (
+          ) : (
             <Button onClick={completeDelivery} className="flex-1 h-12 text-base bg-success hover:bg-success/90 text-white">
               <Target className="h-5 w-5 mr-2" />
               Complete Delivery
             </Button>
-          ) : isNavigating ? (
-            <Button onClick={pauseNavigation} variant="outline" className="flex-1 h-12 text-base">
-              <Pause className="h-5 w-5 mr-2" />
-              Pause Navigation
+          )}
+          
+          {isNavigating && !hasReachedDestination && (
+            <Button onClick={pauseNavigation} variant="outline" className="h-12 px-6">
+              <Pause className="h-5 w-5" />
             </Button>
-          ) : hasStartedNavigation ? (
-            <div className="flex-1 h-12 flex items-center justify-center text-muted-foreground">
-              <Target className="h-5 w-5 mr-2" />
-              {isRoomDelivery ? 'Room delivery in progress...' : 'Delivery paused'}
-            </div>
-          ) : null}
+          )}
           
           <Button 
             onClick={resetPosition}
