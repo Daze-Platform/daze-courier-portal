@@ -130,14 +130,20 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
       <div 
         className="absolute inset-0 transition-all duration-1000 ease-out"
         style={{
-          transform: `scale(${zoomLevel}) translate(${panX}%, ${panY}%)`
+          transform: `scale(${zoomLevel}) translate(${panX + 2}%, ${panY + 3}%)`
         }}
       >
         <img 
           src={resortImage} 
           alt={`SpringHill Suites Panama City Beach Resort - ${focusArea === 'pool' ? 'Pool Area' : focusArea === 'beach' ? 'Beach Area' : 'Front Aerial View'}`}
           className="block w-full h-full object-cover object-center"
-          style={{ minWidth: '100%', minHeight: '100%', margin: 0, padding: 0 }}
+          style={{ 
+            minWidth: '102%', 
+            minHeight: '102%', 
+            margin: 0, 
+            padding: 0,
+            transform: 'translate(1%, 2%)'
+          }}
         />
       </div>
       
