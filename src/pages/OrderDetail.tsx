@@ -147,6 +147,51 @@ const OrderDetail = () => {
         additionalPay: 0.00,
         total: 24.80
       }
+    },
+    {
+      orderId: "#24681357",
+      restaurant: "Sal De Mar",
+      deliveryAddress: "Beach - Umbrella B7",
+      deliveryTime: "July 21, 1:20PM",
+      deliveryType: "Beach Service",
+      customer: {
+        name: "Emily Rodriguez",
+        avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop&crop=face",
+        phone: "+1 (555) 234-5678"
+      },
+      items: [
+        {
+          name: "1x Seafood Paella",
+          price: 32.00,
+          modifications: ""
+        },
+        {
+          name: "2x Coconut Shrimp",
+          price: 18.00,
+          modifications: ""
+        },
+        {
+          name: "1x Fresh Catch of the Day",
+          price: 28.45,
+          modifications: "Grilled, with lemon butter sauce"
+        },
+        {
+          name: "1x Mango Margarita",
+          price: 12.00,
+          modifications: "Extra lime"
+        }
+      ],
+      specialNotes: "Anniversary couple - please include extra lime wedges and cocktail napkins.",
+      subtotal: 90.45,
+      processingFee: 4.50,
+      deliveryTips: 8.00,
+      total: 58.45,
+      earnings: {
+        basePay: 14.30,
+        customerTip: 8.00,
+        additionalPay: 0.00,
+        total: 22.30
+      }
     }
   ];
 

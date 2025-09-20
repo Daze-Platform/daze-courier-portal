@@ -57,6 +57,19 @@ const Index = () => {
       orderTotal: 39.90,
       estimatedEarnings: 24.80,
       specialNotes: "We're the family with blue umbrellas. Please bring extra napkins and utensils for kids."
+    },
+    {
+      orderId: "#24681357",
+      restaurant: "Sal De Mar",
+      items: ["1x Seafood Paella", "2x Coconut Shrimp", "1x Fresh Catch of the Day", "1x Mango Margarita"],
+      deliveryAddress: "Beach - Umbrella B7",
+      deliveryTime: "July 21, 1:20PM",
+      itemCount: 4,
+      deliveryType: "Beach Service",
+      timeRemaining: 38,
+      orderTotal: 58.45,
+      estimatedEarnings: 22.30,
+      specialNotes: "Anniversary couple - please include extra lime wedges and cocktail napkins."
     }
   ];
 
