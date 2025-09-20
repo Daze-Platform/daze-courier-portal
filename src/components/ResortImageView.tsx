@@ -143,7 +143,7 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
             width: focusArea === 'beach' ? '125%' : '140%',
             height: focusArea === 'beach' ? '125%' : '110%',
             top: focusArea === 'beach' ? '-12%' : '-5%',
-            left: focusArea === 'beach' ? '3%' : '-3%',
+            left: focusArea === 'beach' ? '3%' : '-2%',
             objectFit: 'cover'
           }}
         />
