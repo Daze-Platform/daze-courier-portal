@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import springhillAerial3D from '@/assets/springhill-aerial-3d.jpg';
+import springhillFrontAerial from '@/assets/springhill-front-aerial.jpg';
 import { MapPin, Navigation, Coffee, Waves, Umbrella } from 'lucide-react';
 
 interface ResortImageViewProps {
   destination?: string;
   isDelivering?: boolean;
+  focusArea?: 'beach' | 'pool' | 'hotel' | null;
 }
 
 interface LocationPoint {
@@ -18,22 +19,26 @@ interface LocationPoint {
 
 const ResortImageView: React.FC<ResortImageViewProps> = ({ 
   destination, 
-  isDelivering = false 
+  isDelivering = false,
+  focusArea = null
 }) => {
   const [runnerProgress, setRunnerProgress] = useState(0);
+  const [zoomLevel, setZoomLevel] = useState(1);
+  const [panX, setPanX] = useState(0);
+  const [panY, setPanY] = useState(0);
 
-  // Define key locations on the resort
+  // Define key locations on the resort (updated for front aerial view)
   const locations: LocationPoint[] = [
     // Runner starting location (hotel entrance/lobby)
-    { id: 'start', x: 15, y: 40, type: 'runner-start', label: 'Delivery Station', icon: Navigation },
+    { id: 'start', x: 50, y: 15, type: 'runner-start', label: 'Delivery Station', icon: Navigation },
     
     // Points of interest
-    { id: 'pool-bar', x: 45, y: 55, type: 'pool-bar', label: 'Pool Bar', icon: Coffee },
-    { id: 'tiki-hut', x: 70, y: 65, type: 'tiki-hut', label: 'Tiki Hut', icon: Umbrella },
-    { id: 'beach-hut', x: 60, y: 85, type: 'beach-hut', label: 'Beach Hut', icon: Waves },
+    { id: 'pool-bar', x: 45, y: 40, type: 'pool-bar', label: 'Pool Bar', icon: Coffee },
+    { id: 'tiki-hut', x: 65, y: 55, type: 'tiki-hut', label: 'Tiki Hut', icon: Umbrella },
+    { id: 'beach-hut', x: 55, y: 80, type: 'beach-hut', label: 'Beach Hut', icon: Waves },
     
     // Customer location (dynamic based on destination)
-    { id: 'customer', x: 50, y: 75, type: 'customer', label: destination || 'Customer Location', icon: MapPin },
+    { id: 'customer', x: 60, y: 70, type: 'customer', label: destination || 'Customer Location', icon: MapPin },
   ];
 
   // Animation for runner movement
@@ -55,6 +60,23 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
     }
   }, [isDelivering]);
 
+  // Pan and zoom effect based on focus area
+  useEffect(() => {
+    if (focusArea === 'beach') {
+      setZoomLevel(1.5);
+      setPanX(-20);
+      setPanY(-30);
+    } else if (focusArea === 'pool') {
+      setZoomLevel(1.3);
+      setPanX(-10);
+      setPanY(-15);
+    } else {
+      setZoomLevel(1);
+      setPanX(0);
+      setPanY(0);
+    }
+  }, [focusArea]);
+
   const getLocationStyle = (type: string) => {
     switch (type) {
       case 'runner-start': return 'bg-green-500 border-green-600 text-white';
@@ -74,12 +96,19 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
 
   return (
     <div className="relative w-full h-full bg-gray-100 rounded-lg overflow-hidden">
-      {/* Resort Image */}
-      <img 
-        src={springhillAerial3D} 
-        alt="SpringHill Suites Panama City Beach Resort - Aerial 3D View"
-        className="w-full h-full object-cover"
-      />
+      {/* Resort Image with Pan/Zoom */}
+      <div 
+        className="w-full h-full transition-all duration-1000 ease-out"
+        style={{
+          transform: `scale(${zoomLevel}) translate(${panX}%, ${panY}%)`
+        }}
+      >
+        <img 
+          src={springhillFrontAerial} 
+          alt="SpringHill Suites Panama City Beach Resort - Front Aerial View"
+          className="w-full h-full object-cover"
+        />
+      </div>
       
       {/* Delivery Route Path */}
       {isDelivering && (
@@ -120,18 +149,32 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
         })}
       </div>
 
-      {/* Moving Runner Indicator */}
+      {/* Enhanced Moving Runner Indicator */}
       {isDelivering && runnerProgress > 0 && (
         <div
-          className="absolute w-6 h-6 bg-yellow-400 border-2 border-yellow-600 rounded-full flex items-center justify-center shadow-lg animate-bounce"
+          className="absolute w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 border-2 border-orange-600 rounded-full flex items-center justify-center shadow-xl animate-bounce transition-all duration-300"
           style={{
             left: `${runnerX}%`,
             top: `${runnerY}%`,
             transform: 'translate(-50%, -50%)'
           }}
         >
-          <Navigation size={12} className="text-yellow-800" />
+          <Navigation size={14} className="text-orange-900" />
+          {/* Runner trail effect */}
+          <div className="absolute inset-0 bg-yellow-300 rounded-full animate-ping opacity-30" />
         </div>
+      )}
+
+      {/* Customer highlight when focused */}
+      {focusArea === 'beach' && (
+        <div
+          className="absolute w-16 h-16 border-4 border-red-400 rounded-full animate-pulse"
+          style={{
+            left: `${customerLocation.x}%`,
+            top: `${customerLocation.y}%`,
+            transform: 'translate(-50%, -50%)'
+          }}
+        />
       )}
 
       {/* Delivery Status */}

@@ -262,7 +262,12 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
       {/* Resort Map - Conditional rendering based on delivery type */}
       {isBeachDelivery ? (
         <div className="flex-1 overflow-hidden">
-          <ResortImageView destination={destination} isDelivering={isNavigating} />
+          <ResortImageView 
+            destination={destination} 
+            isDelivering={isNavigating}
+            focusArea={destination.toLowerCase().includes('beach') ? 'beach' : 
+                      destination.toLowerCase().includes('pool') ? 'pool' : null}
+          />
         </div>
       ) : (
         <div className="flex-1 relative overflow-hidden bg-cover bg-center bg-no-repeat" 
