@@ -342,11 +342,10 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
           <div className="absolute bottom-4 right-4 z-50">
             <Button
               onClick={() => setShowOrderDetails(!showOrderDetails)}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg h-10 w-10 p-0"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg h-10 w-10 p-0 flex items-center justify-center"
               size="sm"
             >
               <Info className="h-4 w-4" />
-              {showOrderDetails ? <ChevronDown className="h-3 w-3 ml-1" /> : <ChevronUp className="h-3 w-3 ml-1" />}
             </Button>
           </div>
 
