@@ -24,41 +24,126 @@ const OrderDetail = () => {
   const [navigationStarted, setNavigationStarted] = useState(false);
 
   // Mock order data - in real app would fetch based on orderId
-  const order = {
-    orderId: "#23456789",
-    restaurant: "Margarita Mama's",
-    deliveryAddress: "Room N°12345",
-    deliveryTime: "July 21, 11:36AM",
-    deliveryType: "Room Delivery",
-    customer: {
-      name: "Gretche Bergson",
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=150&h=150&fit=crop&crop=face",
-      phone: "+1 (555) 123-4567"
-    },
-    items: [
-      {
-        name: "1x Fried Rice",
-        price: 13.90,
-        modifications: "Choice of Protein: Chicken ($2.00)"
+  const mockOrders = [
+    {
+      orderId: "#23456789",
+      restaurant: "Margarita Mama's",
+      deliveryAddress: "Room N°12345",
+      deliveryTime: "July 21, 11:36AM",
+      deliveryType: "Room Delivery",
+      customer: {
+        name: "Gretche Bergson",
+        avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=150&h=150&fit=crop&crop=face",
+        phone: "+1 (555) 123-4567"
       },
-      {
-        name: "2x Ham & Cheese Croissant", 
-        price: 22.00,
-        modifications: "Extra slices of cheese ($1.00)"
+      items: [
+        {
+          name: "1x Fried Rice with Chicken Protein (+$2.00)",
+          price: 13.90,
+          modifications: "Choice of Protein: Chicken ($2.00)"
+        },
+        {
+          name: "1x Spring Water", 
+          price: 2.00,
+          modifications: ""
+        }
+      ],
+      specialNotes: "Please knock softly - baby sleeping. Leave outside door if no answer.",
+      subtotal: 15.90,
+      processingFee: 0.00,
+      deliveryTips: 4.00,
+      total: 15.90,
+      earnings: {
+        basePay: 8.50,
+        customerTip: 4.00,
+        additionalPay: 0.00,
+        total: 12.50
       }
-    ],
-    specialNotes: "We're the family with blue umbrellas. Please bring extra napkins and utensils for kids.",
-    subtotal: 35.90,
-    processingFee: 4.00,
-    deliveryTips: 4.00,
-    total: 39.90,
-    earnings: {
-      basePay: 10.80,
-      customerTip: 24.80,
-      additionalPay: 1.50,
-      total: 39.90
+    },
+    {
+      orderId: "#23456790",
+      restaurant: "Sunset Grill",
+      deliveryAddress: "Pool Deck - Cabana 8",
+      deliveryTime: "July 21, 12:15PM",
+      deliveryType: "Poolside Service",
+      customer: {
+        name: "Sarah Johnson",
+        avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face",
+        phone: "+1 (555) 987-6543"
+      },
+      items: [
+        {
+          name: "2x Grilled Chicken Breast",
+          price: 24.00,
+          modifications: ""
+        },
+        {
+          name: "1x Caesar Salad (Extra Parmesan)",
+          price: 12.75,
+          modifications: "Extra Parmesan"
+        },
+        {
+          name: "1x Tropical Smoothie",
+          price: 8.00,
+          modifications: ""
+        },
+        {
+          name: "1x Garlic Bread",
+          price: 6.00,
+          modifications: ""
+        }
+      ],
+      specialNotes: "We're the family with blue umbrellas. Please bring extra napkins and utensils for kids.",
+      subtotal: 42.75,
+      processingFee: 2.00,
+      deliveryTips: 6.00,
+      total: 42.75,
+      earnings: {
+        basePay: 12.90,
+        customerTip: 6.00,
+        additionalPay: 0.00,
+        total: 18.90
+      }
+    },
+    {
+      orderId: "#867899",
+      restaurant: "Margarita Mama's",
+      deliveryAddress: "Beach - Umbrella A3",
+      deliveryTime: "July 21, 11:36AM",
+      deliveryType: "Beach Service",
+      customer: {
+        name: "Mike Thompson",
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+        phone: "+1 (555) 456-7890"
+      },
+      items: [
+        {
+          name: "1x Fried Rice",
+          price: 13.90,
+          modifications: ""
+        },
+        {
+          name: "2x Ham & Cheese Croissant",
+          price: 22.00,
+          modifications: ""
+        }
+      ],
+      specialNotes: "We're the family with blue umbrellas. Please bring extra napkins and utensils for kids.",
+      subtotal: 35.90,
+      processingFee: 4.00,
+      deliveryTips: 4.00,
+      total: 39.90,
+      earnings: {
+        basePay: 20.80,
+        customerTip: 4.00,
+        additionalPay: 0.00,
+        total: 24.80
+      }
     }
-  };
+  ];
+
+  // Find the order based on orderId parameter
+  const order = mockOrders.find(o => o.orderId === `#${orderId}`) || mockOrders[0];
 
   const handleStartDelivery = () => {
     console.log('Starting delivery with:', { 
