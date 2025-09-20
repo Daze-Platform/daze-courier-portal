@@ -11,13 +11,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 interface DateRangePickerProps {
   date?: DateRange;
@@ -35,7 +28,7 @@ const presets = [
     },
   },
   {
-    label: "Last 30 days",
+    label: "Last 30 days", 
     range: {
       from: subDays(new Date(), 29),
       to: new Date(),
@@ -72,10 +65,10 @@ export function DateRangePicker({
 }: DateRangePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handlePresetSelect = (preset: string) => {
-    const selectedPreset = presets.find(p => p.label === preset);
-    if (selectedPreset && onDateChange) {
-      onDateChange(selectedPreset.range);
+  const handlePresetSelect = (preset: typeof presets[0]) => {
+    if (onDateChange) {
+      onDateChange(preset.range);
+      setIsOpen(false);
     }
   };
 
@@ -85,7 +78,7 @@ export function DateRangePicker({
     }
 
     if (dateRange.to) {
-      return `${format(dateRange.from, "MMM dd, yyyy")} - ${format(
+      return `${format(dateRange.from, "MMM dd")} - ${format(
         dateRange.to,
         "MMM dd, yyyy"
       )}`;
@@ -95,85 +88,88 @@ export function DateRangePicker({
   };
 
   return (
-    <div className={cn("grid gap-2", className)}>
-      <Popover open={isOpen} onOpenChange={setIsOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            id="date"
-            variant="outline"
-            className={cn(
-              "justify-start text-left font-normal",
-              !date && "text-muted-foreground"
-            )}
-          >
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {formatDateRange(date)}
-            <ChevronDown className="ml-auto h-4 w-4 opacity-50" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <div className="flex">
-            {/* Preset Options */}
-            <div className="border-r">
-              <div className="p-3">
-                <h4 className="font-medium text-sm mb-2">Quick Select</h4>
-                <div className="space-y-1">
-                  {presets.map((preset) => (
-                    <Button
-                      key={preset.label}
-                      variant="ghost"
-                      className="w-full justify-start text-sm font-normal"
-                      onClick={() => {
-                        handlePresetSelect(preset.label);
-                        setIsOpen(false);
-                      }}
-                    >
-                      {preset.label}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            </div>
-            
-            {/* Calendar */}
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          size="sm"
+          className={cn(
+            "justify-start text-left font-normal h-9 px-3",
+            !date && "text-muted-foreground",
+            className
+          )}
+        >
+          <CalendarIcon className="mr-2 h-4 w-4" />
+          <span className="truncate">{formatDateRange(date)}</span>
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent 
+        className="w-auto p-0 bg-background border shadow-lg" 
+        align="end"
+        sideOffset={4}
+      >
+        <div className="flex flex-col sm:flex-row">
+          {/* Preset Options */}
+          <div className="border-b sm:border-b-0 sm:border-r border-border">
             <div className="p-3">
-              <Calendar
-                initialFocus
-                mode="range"
-                defaultMonth={date?.from}
-                selected={date}
-                onSelect={onDateChange}
-                numberOfMonths={2}
-                className={cn("p-0 pointer-events-auto")}
-              />
+              <h4 className="font-medium text-sm mb-2 text-foreground">Quick Select</h4>
+              <div className="space-y-1 min-w-[140px]">
+                {presets.map((preset) => (
+                  <Button
+                    key={preset.label}
+                    variant="ghost"
+                    size="sm"
+                    className="w-full justify-start text-xs font-normal h-8 px-2"
+                    onClick={() => handlePresetSelect(preset)}
+                  >
+                    {preset.label}
+                  </Button>
+                ))}
+              </div>
             </div>
           </div>
           
-          {/* Footer */}
-          <div className="border-t p-3">
-            <div className="flex justify-between">
-              <Button
-                variant="outline" 
-                size="sm"
-                onClick={() => {
-                  onDateChange?.(undefined);
+          {/* Calendar */}
+          <div className="p-3">
+            <Calendar
+              initialFocus
+              mode="range"
+              defaultMonth={date?.from}
+              selected={date}
+              onSelect={(newDate) => {
+                onDateChange?.(newDate);
+                if (newDate?.from && newDate?.to) {
                   setIsOpen(false);
-                }}
-              >
-                Clear
-              </Button>
-              <Button
-                size="sm"
-                onClick={() => setIsOpen(false)}
-                disabled={!date?.from}
-              >
-                Apply
-              </Button>
-            </div>
+                }
+              }}
+              numberOfMonths={1}
+              className={cn("p-0 pointer-events-auto")}
+            />
           </div>
-        </PopoverContent>
-      </Popover>
-    </div>
+        </div>
+        
+        {/* Footer */}
+        <div className="border-t border-border p-3 flex justify-between bg-muted/30">
+          <Button
+            variant="ghost" 
+            size="sm"
+            onClick={() => {
+              onDateChange?.(undefined);
+              setIsOpen(false);
+            }}
+          >
+            Clear
+          </Button>
+          <Button
+            size="sm"
+            onClick={() => setIsOpen(false)}
+            disabled={!date?.from}
+          >
+            Apply
+          </Button>
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 }
 
