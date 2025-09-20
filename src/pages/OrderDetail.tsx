@@ -25,11 +25,11 @@ const OrderDetail = () => {
 
   // Mock order data - in real app would fetch based on orderId
   const order = {
-    orderId: "#867899",
+    orderId: "#23456789",
     restaurant: "Margarita Mama's",
-    deliveryAddress: "Beach - Umbrella A3",
+    deliveryAddress: "Room N°12345",
     deliveryTime: "July 21, 11:36AM",
-    deliveryType: "Beach Service",
+    deliveryType: "Room Delivery",
     customer: {
       name: "Gretche Bergson",
       avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=150&h=150&fit=crop&crop=face",
@@ -171,40 +171,106 @@ const OrderDetail = () => {
                 </Button>
               </div>
 
-              {/* Customer Location Map */}
-              <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
-                <h3 className="text-lg font-semibold text-foreground mb-4">Customer Location</h3>
-                <div className="relative aspect-video bg-accent/5 rounded-lg border border-border overflow-hidden">
-                  <img 
-                    src={luxuryPoolDeckMap} 
-                    alt="Luxury pool deck area - Customer location preview" 
-                    className="w-full h-full object-cover"
-                  />
-                  {/* Pool Bar Marker */}
-                  <div 
-                    className="absolute transform -translate-x-1/2 -translate-y-1/2"
-                    style={{ top: "35%", left: "50%" }}
-                  >
-                    <div className="relative">
-                      <MapPin className="h-6 w-6 text-amber-500 fill-amber-500 drop-shadow-lg" />
-                      <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-amber-500 text-white px-2 py-1 rounded text-xs font-medium whitespace-nowrap">
-                        Pool Bar
+              {/* Customer Location Map - Only for Beach and Pool deliveries */}
+              {(order.deliveryType === "Beach Service" || order.deliveryType === "Poolside Service") && (
+                <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
+                  <h3 className="text-lg font-semibold text-foreground mb-4">Customer Location</h3>
+                  <div className="relative aspect-video bg-accent/5 rounded-lg border border-border overflow-hidden">
+                    <img 
+                      src={luxuryPoolDeckMap} 
+                      alt="Luxury pool deck area - Customer location preview" 
+                      className="w-full h-full object-cover"
+                    />
+                    {/* Pool Bar Marker */}
+                    <div 
+                      className="absolute transform -translate-x-1/2 -translate-y-1/2"
+                      style={{ top: "35%", left: "50%" }}
+                    >
+                      <div className="relative">
+                        <MapPin className="h-6 w-6 text-amber-500 fill-amber-500 drop-shadow-lg" />
+                        <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-amber-500 text-white px-2 py-1 rounded text-xs font-medium whitespace-nowrap">
+                          Pool Bar
+                        </div>
+                      </div>
+                    </div>
+                    {/* Location Pin - positioned at poolside umbrella */}
+                    <div className="absolute top-1/3 left-2/3 transform -translate-x-1/2 -translate-y-1/2">
+                      <div className="relative">
+                        <MapPin className="h-8 w-8 text-red-500 fill-red-500 drop-shadow-lg" />
+                        <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                      </div>
+                    </div>
+                    {/* Location Label */}
+                    <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-foreground shadow-lg">
+                      {order.deliveryAddress}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Room Delivery Instructions - Only for Room deliveries */}
+              {order.deliveryType === "Room Delivery" && (
+                <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
+                  <h3 className="text-lg font-semibold text-foreground mb-4">Room Delivery Instructions</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
+                      <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">1</div>
+                      <div>
+                        <p className="font-medium text-gray-900">Enter Main Lobby</p>
+                        <p className="text-sm text-gray-600">Use the main entrance and approach the front desk area</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
+                      <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">2</div>
+                      <div>
+                        <p className="font-medium text-gray-900">Take Elevator</p>
+                        <p className="text-sm text-gray-600">
+                          Go to Floor {Math.floor(parseInt(order.deliveryAddress.replace(/\D/g, '')) / 100) || 'X'}
+                          {order.deliveryAddress.includes('0') && ' (Ground Floor)'}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
+                      <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">3</div>
+                      <div>
+                        <p className="font-medium text-gray-900">Follow Room Numbers</p>
+                        <p className="text-sm text-gray-600">Look for room number signs in the hallway</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-4 p-4 bg-green-50 rounded-lg border-2 border-green-200">
+                      <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-lg">4</div>
+                      <div>
+                        <p className="font-medium text-gray-900">Knock & Deliver</p>
+                        <p className="text-sm text-gray-600">Announce "Room service delivery" and complete the order</p>
                       </div>
                     </div>
                   </div>
-                  {/* Location Pin - positioned at poolside umbrella */}
-                  <div className="absolute top-1/3 left-2/3 transform -translate-x-1/2 -translate-y-1/2">
-                    <div className="relative">
-                      <MapPin className="h-8 w-8 text-red-500 fill-red-500 drop-shadow-lg" />
-                      <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+
+                  {/* Room Number Highlight */}
+                  <div className="mt-6 text-center">
+                    <div className="inline-flex items-center justify-center w-20 h-20 bg-blue-500 rounded-full mb-3">
+                      <span className="text-2xl font-bold text-white">
+                        {order.deliveryAddress.replace(/\D/g, '') || '###'}
+                      </span>
                     </div>
+                    <h4 className="text-xl font-bold text-gray-900">Delivering to {order.deliveryAddress}</h4>
                   </div>
-                  {/* Location Label */}
-                  <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-foreground shadow-lg">
-                    {order.deliveryAddress}
+
+                  {/* Navigation Tips */}
+                  <div className="mt-6 bg-amber-50 border border-amber-200 rounded-lg p-4">
+                    <h5 className="font-medium text-amber-900 mb-2">💡 Navigation Tips</h5>
+                    <ul className="text-sm text-amber-800 space-y-1">
+                      <li>• Room numbers ending in 01-20 are usually on the left side</li>
+                      <li>• Room numbers ending in 21-40 are usually on the right side</li>
+                      <li>• Look for directional arrows near elevators</li>
+                      <li>• Ask front desk staff if you need assistance</li>
+                    </ul>
                   </div>
                 </div>
-              </div>
+              )}
 
             </div>
 
