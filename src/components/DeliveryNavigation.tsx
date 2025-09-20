@@ -22,7 +22,7 @@ interface Position {
 
 const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onComplete }: DeliveryNavigationProps) => {
   const [isNavigating, setIsNavigating] = useState(false);
-  const [courierPosition, setCourierPosition] = useState<Position>({ top: "35%", left: "50%" }); // Pool Bar starting position
+  const [courierPosition, setCourierPosition] = useState<Position>({ top: "85%", left: "25%" }); // Beach Bar starting position
   const [progress, setProgress] = useState(0);
   const [eta, setEta] = useState(8);
   const [totalDistance] = useState("0.7 mi");
@@ -63,7 +63,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
 
   // Generate realistic waypoints that follow concrete walkways around the pool (NEVER through water)
   const generateRouteWaypoints = (destination: Position): Position[] => {
-    const startPos = { top: "35%", left: "50%" }; // Pool Bar starting position
+    const startPos = { top: "85%", left: "25%" }; // Beach Bar starting position
     const waypoints = [startPos];
     
     // For pool/umbrella destinations, route around the pool on concrete walkways
@@ -149,7 +149,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
   };
 
   const resetPosition = () => {
-    setCourierPosition({ top: "35%", left: "50%" }); // Reset to Pool Bar
+    setCourierPosition({ top: "85%", left: "25%" }); // Reset to Beach Bar
     setEta(8);
     setProgress(0);
     setHasReachedDestination(false);
@@ -382,7 +382,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-amber-500 rounded-full"></div>
-                  <span className="text-xs font-medium">Pool Bar</span>
+                  <span className="text-xs font-medium">Beach Bar</span>
                 </div>
               </div>
             </div>
@@ -393,15 +393,15 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
                 {progress >= 100 ? 'Complete!' : `${Math.round(progress)}% Complete`}
               </div>
             </div>
-            {/* Pool Bar Marker */}
+            {/* Beach Bar Marker */}
             <div 
               className="absolute transform -translate-x-1/2 -translate-y-1/2 z-25"
-              style={{ top: "35%", left: "50%" }}
+              style={{ top: "85%", left: "25%" }}
             >
               <div className="relative">
                 <MapPin className="h-8 w-8 text-amber-500 fill-amber-500 drop-shadow-lg" />
                 <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-amber-500 text-white px-2 py-1 rounded text-xs font-medium whitespace-nowrap">
-                  Pool Bar
+                  Beach Bar
                 </div>
               </div>
             </div>
