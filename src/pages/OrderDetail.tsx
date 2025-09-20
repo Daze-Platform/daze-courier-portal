@@ -10,10 +10,10 @@ import UnifiedHeader from "@/components/UnifiedHeader";
 import DesktopSidebar from "@/components/DesktopSidebar";
 import DeliveryNavigation from "@/components/DeliveryNavigation";
 import OrderDetailsDrawer from "@/components/OrderDetailsDrawer";
+import ResortImageView from "@/components/ResortImageView";
 import margaritaMamasLogo from "@/assets/margarita-mamas-logo.png";
 import sunsetGrillLogo from "@/assets/sunset-grill-logo.png";
 import oceanBreezeLogo from "@/assets/ocean-breeze-logo.png";
-import luxuryPoolDeckMap from "@/assets/luxury-pool-deck-hd.jpg";
 
 const OrderDetail = () => {
   const { orderId } = useParams();
@@ -261,34 +261,11 @@ const OrderDetail = () => {
                 <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
                   <h3 className="text-lg font-semibold text-foreground mb-4">Customer Location</h3>
                   <div className="relative aspect-video bg-accent/5 rounded-lg border border-border overflow-hidden">
-                    <img 
-                      src={luxuryPoolDeckMap} 
-                      alt="Luxury pool deck area - Customer location preview" 
-                      className="w-full h-full object-cover"
+                    <ResortImageView 
+                      destination={order.deliveryAddress}
+                      isDelivering={false}
+                      focusArea={order.deliveryType === "Beach Service" ? 'beach' : 'pool'}
                     />
-                    {/* Pool Bar Marker */}
-                    <div 
-                      className="absolute transform -translate-x-1/2 -translate-y-1/2"
-                      style={{ top: "35%", left: "50%" }}
-                    >
-                      <div className="relative">
-                        <MapPin className="h-6 w-6 text-amber-500 fill-amber-500 drop-shadow-lg" />
-                        <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-amber-500 text-white px-2 py-1 rounded text-xs font-medium whitespace-nowrap">
-                          Pool Bar
-                        </div>
-                      </div>
-                    </div>
-                    {/* Location Pin - positioned at poolside umbrella */}
-                    <div className="absolute top-1/3 left-2/3 transform -translate-x-1/2 -translate-y-1/2">
-                      <div className="relative">
-                        <MapPin className="h-8 w-8 text-red-500 fill-red-500 drop-shadow-lg" />
-                        <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                      </div>
-                    </div>
-                    {/* Location Label */}
-                    <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-foreground shadow-lg">
-                      {order.deliveryAddress}
-                    </div>
                   </div>
                 </div>
               )}

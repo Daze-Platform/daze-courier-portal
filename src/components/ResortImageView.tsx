@@ -27,6 +27,17 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   const [panX, setPanX] = useState(0);
   const [panY, setPanY] = useState(0);
 
+  // Function to get customer position based on delivery address
+  const getCustomerPosition = (address: string) => {
+    if (address.toLowerCase().includes('beach')) {
+      return { x: 60, y: 70 };
+    } else if (address.toLowerCase().includes('pool') || address.toLowerCase().includes('cabana')) {
+      return { x: 70, y: 45 };
+    } else {
+      return { x: 60, y: 70 }; // default position
+    }
+  };
+
   // Define key locations on the resort (updated for front aerial view)
   const locations: LocationPoint[] = [
     // Runner starting location (hotel entrance/lobby)
@@ -38,7 +49,7 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
     { id: 'beach-hut', x: 55, y: 80, type: 'beach-hut', label: 'Beach Hut', icon: Waves },
     
     // Customer location (dynamic based on destination)
-    { id: 'customer', x: 60, y: 70, type: 'customer', label: destination || 'Customer Location', icon: MapPin },
+    { id: 'customer', x: getCustomerPosition(destination || '').x, y: getCustomerPosition(destination || '').y, type: 'customer', label: destination || 'Customer Location', icon: MapPin },
   ];
 
   // Animation for runner movement
