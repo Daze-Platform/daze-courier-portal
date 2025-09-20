@@ -79,7 +79,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
     switch (state) {
       case 'closed': return '0%';
       case 'half': return '50%';
-      case 'full': return '85%';
+      case 'full': return '100%';
       default: return '0%';
     }
   };
@@ -89,6 +89,22 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
     if (modalState === 'closed') {
       setModalState('half');
     } else {
+      setModalState('closed');
+    }
+  };
+
+  const handleScrollUp = () => {
+    console.log('Scroll up detected, current state:', modalState);
+    if (modalState === 'half') {
+      setModalState('full');
+    }
+  };
+
+  const handleScrollDown = () => {
+    console.log('Scroll down detected, current state:', modalState);
+    if (modalState === 'full') {
+      setModalState('half');
+    } else if (modalState === 'half') {
       setModalState('closed');
     }
   };
@@ -423,8 +439,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
                 {/* Quick Summary for half state */}
                 {modalState === 'half' && (
                   <div className="flex items-center justify-between text-sm text-muted-foreground mt-2">
-                    <span>Tap to see full details</span>
-                    <ChevronUp className="h-4 w-4 animate-pulse" />
+                    <span>Scroll up to see full details</span>
                   </div>
                 )}
               </div>
@@ -432,7 +447,25 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
 
             {/* Scrollable Content - Only show for half/full states */}
             {(modalState === 'half' || modalState === 'full') && (
-              <div className="bg-background flex-1 overflow-y-auto">
+              <div 
+                className="bg-background flex-1 overflow-y-auto"
+                onWheel={(e) => {
+                  console.log('Wheel event on content:', e.deltaY);
+                  const element = e.currentTarget;
+                  const isAtTop = element.scrollTop === 0;
+                  const isAtBottom = element.scrollTop + element.clientHeight >= element.scrollHeight - 5;
+                  
+                  if (e.deltaY < 0 && isAtTop && modalState === 'half') {
+                    // Scrolling up at top - expand to full
+                    e.preventDefault();
+                    handleScrollUp();
+                  } else if (e.deltaY > 0 && isAtTop && modalState === 'full') {
+                    // Scrolling down at top - collapse to half
+                    e.preventDefault();
+                    handleScrollDown();
+                  }
+                }}
+              >
                 <div className="px-6 pb-6 space-y-4">
                   {/* Customer Info Card */}
                   {order && (
