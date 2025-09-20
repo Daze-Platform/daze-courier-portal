@@ -1,4 +1,4 @@
-import { Package, FileText, Star, DollarSign, HelpCircle, Bell, ChevronDown } from "lucide-react";
+import { Package, Star, DollarSign, HelpCircle, Bell, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -20,12 +20,6 @@ const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
       label: "Active Orders",
       path: "/",
       active: location.pathname === "/"
-    },
-    {
-      icon: FileText,
-      label: "Order History", 
-      path: "/order-history",
-      active: location.pathname === "/order-history"
     },
     {
       icon: Star,
