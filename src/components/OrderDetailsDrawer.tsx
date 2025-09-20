@@ -65,7 +65,7 @@ const OrderDetailsDrawer = ({ order }: OrderDetailsDrawerProps) => {
           <DrawerTitle className="text-xl font-semibold">Order Details</DrawerTitle>
         </DrawerHeader>
         
-        <div className="px-6 pb-6 space-y-6 overflow-y-auto">
+        <div className="px-6 pb-32 space-y-6 overflow-y-auto">
           {/* Customer Info */}
           <div className="bg-card rounded-lg p-4 border border-border">
             <div className="flex items-center justify-between mb-4">
