@@ -59,9 +59,18 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
   const [totalEstimatedTime] = useState(8); // 8 seconds total navigation time
   const [showOrderDetails, setShowOrderDetails] = useState(false);
   const [modalState, setModalState] = useState<'closed' | 'half' | 'full'>('closed');
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragStartY, setDragStartY] = useState(0);
-  const [dragCurrentY, setDragCurrentY] = useState(0);
+
+  // Simple click-based state management
+  const handleModalAreaClick = () => {
+    console.log('Modal area clicked, current state:', modalState);
+    if (modalState === 'closed') {
+      setModalState('half');
+    } else if (modalState === 'half') {
+      setModalState('full');
+    } else {
+      setModalState('half');
+    }
+  };
   const isMobile = useIsMobile();
   const { toast } = useToast();
 
@@ -75,80 +84,13 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
     }
   };
 
-  const getNextModalState = (currentState: 'closed' | 'half' | 'full', direction: 'up' | 'down') => {
-    if (direction === 'up') {
-      switch (currentState) {
-        case 'closed': return 'half';
-        case 'half': return 'full';
-        case 'full': return 'full';
-        default: return 'half';
-      }
-    } else {
-      switch (currentState) {
-        case 'full': return 'half';
-        case 'half': return 'closed';
-        case 'closed': return 'closed';
-        default: return 'closed';
-      }
-    }
-  };
-
   const handleModalToggle = () => {
+    console.log('Modal toggle clicked, current state:', modalState);
     if (modalState === 'closed') {
       setModalState('half');
     } else {
       setModalState('closed');
     }
-  };
-
-  const handleDragStart = (e: React.TouchEvent | React.MouseEvent) => {
-    console.log('Drag start detected');
-    setIsDragging(true);
-    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-    setDragStartY(clientY);
-    setDragCurrentY(clientY);
-    e.preventDefault();
-  };
-
-  const handleDragMove = (e: React.TouchEvent | React.MouseEvent) => {
-    if (!isDragging) return;
-    console.log('Drag move detected');
-    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-    setDragCurrentY(clientY);
-    e.preventDefault();
-  };
-
-  const handleDragEnd = () => {
-    if (!isDragging) return;
-    console.log('Drag end detected');
-    
-    const dragDistance = dragStartY - dragCurrentY;
-    const threshold = 30; // reduced threshold for easier triggering
-    console.log('Drag distance:', dragDistance, 'Threshold:', threshold);
-    
-    if (Math.abs(dragDistance) > threshold) {
-      const direction = dragDistance > 0 ? 'up' : 'down';
-      console.log('Direction:', direction, 'Current state:', modalState);
-      const newState = getNextModalState(modalState, direction);
-      console.log('New state:', newState);
-      setModalState(newState);
-    }
-    
-    setIsDragging(false);
-    setDragStartY(0);
-    setDragCurrentY(0);
-  };
-
-  const handleWheel = (e: React.WheelEvent) => {
-    console.log('Wheel event detected:', e.deltaY);
-    if (e.deltaY < -10) { // scrolling up
-      console.log('Wheel scroll up detected');
-      setModalState(getNextModalState(modalState, 'up'));
-    } else if (e.deltaY > 10) { // scrolling down  
-      console.log('Wheel scroll down detected');
-      setModalState(getNextModalState(modalState, 'down'));
-    }
-    e.preventDefault();
   };
 
   // Delivery type detection - handle exact string matching
@@ -439,7 +381,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
             </Button>
           </div>
 
-          {/* Order Details Panel - Multi-Snap Modal */}
+          {/* Order Details Panel - Simplified Click Modal */}
           <div 
             className={`absolute bottom-0 left-0 right-0 z-40 transition-all duration-500 ease-out ${
               modalState === 'closed' 
@@ -447,23 +389,13 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
                 : 'transform translate-y-0'
             }`}
             style={{
-              height: getModalHeight(modalState),
-              transform: isDragging 
-                ? `translateY(${Math.max(0, dragCurrentY - dragStartY)}px)` 
-                : undefined
+              height: getModalHeight(modalState)
             }}
-            onTouchStart={handleDragStart}
-            onMouseDown={handleDragStart}
-            onTouchMove={handleDragMove}
-            onMouseMove={handleDragMove}
-            onTouchEnd={handleDragEnd}
-            onMouseUp={handleDragEnd}
-            onMouseLeave={handleDragEnd}
-            onWheel={handleWheel}
           >
-            {/* Handle/Drag Indicator - Interactive */}
+            {/* Header - Clickable to expand */}
             <div 
-              className="bg-background border-t border-border rounded-t-xl shadow-lg cursor-grab active:cursor-grabbing"
+              className="bg-background border-t border-border rounded-t-xl shadow-lg cursor-pointer hover:bg-muted/50 transition-colors"
+              onClick={handleModalAreaClick}
             >
               <div className="flex justify-center py-3">
                 <div className="w-12 h-1 bg-muted-foreground/30 rounded-full"></div>
@@ -473,15 +405,28 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
               <div className="px-6 pb-4">
                 <div className="flex items-center justify-between">
                   <h2 className="text-xl font-semibold text-foreground">Order Details</h2>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setModalState('closed')}
-                    className="h-8 w-8 p-0"
-                  >
-                    <ChevronDown className="h-4 w-4" />
-                  </Button>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setModalState('closed');
+                      }}
+                      className="h-8 w-8 p-0"
+                    >
+                      <ChevronDown className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
+                
+                {/* Quick Summary for half state */}
+                {modalState === 'half' && (
+                  <div className="flex items-center justify-between text-sm text-muted-foreground mt-2">
+                    <span>Tap to see full details</span>
+                    <ChevronUp className="h-4 w-4 animate-pulse" />
+                  </div>
+                )}
               </div>
             </div>
 
