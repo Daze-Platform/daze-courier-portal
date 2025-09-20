@@ -33,9 +33,9 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
   const isMobile = useIsMobile();
   const { toast } = useToast();
 
-  // Beach delivery detection - check both delivery type and destination
+  // Delivery type detection - handle exact string matching
   const isBeachDelivery = deliveryType?.toLowerCase() === 'beach service';
-  const isPoolDelivery = deliveryType?.toLowerCase() === 'poolside';
+  const isPoolDelivery = deliveryType?.toLowerCase() === 'poolside service';
   const isRoomDelivery = deliveryType?.toLowerCase() === 'room delivery';
 
   // Determine which map to show based on delivery type
