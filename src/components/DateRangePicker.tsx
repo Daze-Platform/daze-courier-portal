@@ -94,7 +94,7 @@ export function DateRangePicker({
           variant="outline"
           size="sm"
           className={cn(
-            "justify-start text-left font-normal h-9 px-3",
+            "justify-start text-left font-normal h-9 px-3 bg-background",
             !date && "text-muted-foreground",
             className
           )}
@@ -104,13 +104,13 @@ export function DateRangePicker({
         </Button>
       </PopoverTrigger>
       <PopoverContent 
-        className="w-auto p-0 bg-background border shadow-lg" 
+        className="w-auto p-0 bg-background border shadow-lg z-50" 
         align="end"
         sideOffset={4}
       >
         <div className="flex flex-col sm:flex-row">
           {/* Preset Options */}
-          <div className="border-b sm:border-b-0 sm:border-r border-border">
+          <div className="border-b sm:border-b-0 sm:border-r border-border bg-background">
             <div className="p-3">
               <h4 className="font-medium text-sm mb-2 text-foreground">Quick Select</h4>
               <div className="space-y-1 min-w-[140px]">
@@ -119,7 +119,7 @@ export function DateRangePicker({
                     key={preset.label}
                     variant="ghost"
                     size="sm"
-                    className="w-full justify-start text-xs font-normal h-8 px-2"
+                    className="w-full justify-start text-xs font-normal h-8 px-2 hover:bg-accent"
                     onClick={() => handlePresetSelect(preset)}
                   >
                     {preset.label}
@@ -130,7 +130,7 @@ export function DateRangePicker({
           </div>
           
           {/* Calendar */}
-          <div className="p-3">
+          <div className="p-3 bg-background">
             <Calendar
               initialFocus
               mode="range"
@@ -149,10 +149,11 @@ export function DateRangePicker({
         </div>
         
         {/* Footer */}
-        <div className="border-t border-border p-3 flex justify-between bg-muted/30">
+        <div className="border-t border-border p-3 flex justify-between bg-background">
           <Button
             variant="ghost" 
             size="sm"
+            className="hover:bg-accent"
             onClick={() => {
               onDateChange?.(undefined);
               setIsOpen(false);

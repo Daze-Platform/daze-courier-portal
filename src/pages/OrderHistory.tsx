@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Calendar, ChevronRight, Package, Clock, DollarSign } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { DateRange } from 'react-day-picker';
-import { isWithinInterval, parseISO } from 'date-fns';
+import { isWithinInterval, parseISO, startOfMonth } from 'date-fns';
 import UnifiedHeader from "@/components/UnifiedHeader";
 import DesktopSidebar from "@/components/DesktopSidebar";
 import DateRangePicker from "@/components/DateRangePicker";
@@ -30,8 +30,8 @@ interface Order {
 const OrderHistory: React.FC = () => {
   const navigate = useNavigate();
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
-    from: new Date(2021, 4, 8), // May 8, 2021
-    to: new Date(2021, 9, 8), // Oct 8, 2021
+    from: startOfMonth(new Date()),
+    to: new Date(),
   });
 
   // Sample order data with actual datetime objects for filtering
@@ -44,9 +44,9 @@ const OrderHistory: React.FC = () => {
       orderId: '1234646',
       customer: 'Johny Smith',
       deliveryFee: 12.50,
-      date: 'May 6, 2021',
+      date: 'Dec 6, 2024',
       time: '17:30 PM',
-      dateTime: new Date(2021, 4, 6, 17, 30)
+      dateTime: new Date(2024, 11, 6, 17, 30)
     },
     {
       id: '2',
@@ -56,9 +56,9 @@ const OrderHistory: React.FC = () => {
       orderId: '1234647',
       customer: 'Aaron Smith',
       deliveryFee: 9.10,
-      date: 'May 15, 2021',
+      date: 'Dec 15, 2024',
       time: '14:20 PM',
-      dateTime: new Date(2021, 4, 15, 14, 20)
+      dateTime: new Date(2024, 11, 15, 14, 20)
     },
     {
       id: '3',
@@ -68,9 +68,9 @@ const OrderHistory: React.FC = () => {
       orderId: '1234648',
       customer: 'Sarah Johnson',
       deliveryFee: 15.75,
-      date: 'Jun 3, 2021',
+      date: 'Dec 3, 2024',
       time: '19:45 PM',
-      dateTime: new Date(2021, 5, 3, 19, 45)
+      dateTime: new Date(2024, 11, 3, 19, 45)
     },
     {
       id: '4',
@@ -80,9 +80,9 @@ const OrderHistory: React.FC = () => {
       orderId: '1234649',
       customer: 'Mike Wilson',
       deliveryFee: 11.25,
-      date: 'Sep 22, 2021',
+      date: 'Dec 22, 2024',
       time: '12:15 PM',
-      dateTime: new Date(2021, 8, 22, 12, 15)
+      dateTime: new Date(2024, 11, 22, 12, 15)
     },
     {
       id: '5',
@@ -92,9 +92,9 @@ const OrderHistory: React.FC = () => {
       orderId: '1234650',
       customer: 'Emma Davis',
       deliveryFee: 13.00,
-      date: 'Oct 1, 2021',
+      date: 'Dec 18, 2024',
       time: '18:00 PM',
-      dateTime: new Date(2021, 9, 1, 18, 0)
+      dateTime: new Date(2024, 11, 18, 18, 0)
     }
   ];
 

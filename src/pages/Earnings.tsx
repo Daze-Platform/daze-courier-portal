@@ -32,7 +32,7 @@ import {
 } from '@/components/ui/select';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { DateRange } from 'react-day-picker';
-import { isWithinInterval, parseISO } from 'date-fns';
+import { isWithinInterval, parseISO, startOfMonth } from 'date-fns';
 import UnifiedHeader from "@/components/UnifiedHeader";
 import DesktopSidebar from "@/components/DesktopSidebar";
 import DateRangePicker from "@/components/DateRangePicker";
@@ -60,8 +60,8 @@ interface PaymentMethod {
 
 const Earnings: React.FC = () => {
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
-    from: new Date(2021, 4, 8), // May 8, 2021
-    to: new Date(2021, 9, 8), // Oct 8, 2021
+    from: startOfMonth(new Date()),
+    to: new Date(),
   });
   const [searchTerm, setSearchTerm] = useState('');
   const [showWithdrawModal, setShowWithdrawModal] = useState(false);
@@ -83,23 +83,22 @@ const Earnings: React.FC = () => {
 
   // Chart data for earnings overview with dates
   const allChartData = [
-    { date: 'Jul 28', basePay: 3, tip: 2, dateTime: new Date(2021, 6, 28) },
-    { date: 'Jul 29', basePay: 5, tip: 3, dateTime: new Date(2021, 6, 29) },
-    { date: 'Jul 30', basePay: 8, tip: 6, dateTime: new Date(2021, 6, 30) },
-    { date: 'Aug 1', basePay: 12, tip: 8, dateTime: new Date(2021, 7, 1) },
-    { date: 'Aug 2', basePay: 15, tip: 12, dateTime: new Date(2021, 7, 2) },
-    { date: 'Aug 3', basePay: 16, tip: 13, dateTime: new Date(2021, 7, 3) },
-    { date: 'Aug 4', basePay: 17, tip: 14, dateTime: new Date(2021, 7, 4) },
-    { date: 'Aug 5', basePay: 16, tip: 13, dateTime: new Date(2021, 7, 5) },
-    { date: 'Aug 6', basePay: 14.5, tip: 11, dateTime: new Date(2021, 7, 6) },
-    { date: 'Aug 7', basePay: 13, tip: 10, dateTime: new Date(2021, 7, 7) },
-    { date: 'Aug 8', basePay: 11, tip: 8, dateTime: new Date(2021, 7, 8) },
-    { date: 'Aug 9', basePay: 12, tip: 9, dateTime: new Date(2021, 7, 9) },
-    { date: 'Aug 15', basePay: 8, tip: 6, dateTime: new Date(2021, 7, 15) },
-    { date: 'Aug 18', basePay: 4, tip: 3, dateTime: new Date(2021, 7, 18) },
-    { date: 'Sep 12', basePay: 18, tip: 15, dateTime: new Date(2021, 8, 12) },
-    { date: 'Sep 25', basePay: 14, tip: 12, dateTime: new Date(2021, 8, 25) },
-    { date: 'Oct 5', basePay: 16, tip: 11, dateTime: new Date(2021, 9, 5) }
+    { date: 'Dec 1', basePay: 3, tip: 2, dateTime: new Date(2024, 11, 1) },
+    { date: 'Dec 2', basePay: 5, tip: 3, dateTime: new Date(2024, 11, 2) },
+    { date: 'Dec 3', basePay: 8, tip: 6, dateTime: new Date(2024, 11, 3) },
+    { date: 'Dec 4', basePay: 12, tip: 8, dateTime: new Date(2024, 11, 4) },
+    { date: 'Dec 5', basePay: 15, tip: 12, dateTime: new Date(2024, 11, 5) },
+    { date: 'Dec 6', basePay: 16, tip: 13, dateTime: new Date(2024, 11, 6) },
+    { date: 'Dec 7', basePay: 17, tip: 14, dateTime: new Date(2024, 11, 7) },
+    { date: 'Dec 8', basePay: 16, tip: 13, dateTime: new Date(2024, 11, 8) },
+    { date: 'Dec 9', basePay: 14.5, tip: 11, dateTime: new Date(2024, 11, 9) },
+    { date: 'Dec 10', basePay: 13, tip: 10, dateTime: new Date(2024, 11, 10) },
+    { date: 'Dec 11', basePay: 11, tip: 8, dateTime: new Date(2024, 11, 11) },
+    { date: 'Dec 12', basePay: 12, tip: 9, dateTime: new Date(2024, 11, 12) },
+    { date: 'Dec 15', basePay: 8, tip: 6, dateTime: new Date(2024, 11, 15) },
+    { date: 'Dec 18', basePay: 18, tip: 15, dateTime: new Date(2024, 11, 18) },
+    { date: 'Dec 20', basePay: 14, tip: 12, dateTime: new Date(2024, 11, 20) },
+    { date: 'Dec 22', basePay: 16, tip: 11, dateTime: new Date(2024, 11, 22) }
   ];
 
   // Filter chart data based on date range
@@ -129,8 +128,8 @@ const Earnings: React.FC = () => {
       orderId: '13456787',
       deliveryFee: 20.00,
       tips: 12.50,
-      deliveryDate: 'May 7, 2021 11:50AM',
-      dateTime: new Date(2021, 4, 7, 11, 50)
+      deliveryDate: 'Dec 7, 2024 11:50AM',
+      dateTime: new Date(2024, 11, 7, 11, 50)
     },
     {
       id: '2',
@@ -139,8 +138,8 @@ const Earnings: React.FC = () => {
       orderId: '13456788',
       deliveryFee: 18.00,
       tips: 8.75,
-      deliveryDate: 'Jun 15, 2021 2:30PM',
-      dateTime: new Date(2021, 5, 15, 14, 30)
+      deliveryDate: 'Dec 15, 2024 2:30PM',
+      dateTime: new Date(2024, 11, 15, 14, 30)
     },
     {
       id: '3',
@@ -149,8 +148,8 @@ const Earnings: React.FC = () => {
       orderId: '13456789',
       deliveryFee: 22.50,
       tips: 15.00,
-      deliveryDate: 'Jul 20, 2021 7:15PM',
-      dateTime: new Date(2021, 6, 20, 19, 15)
+      deliveryDate: 'Dec 20, 2024 7:15PM',
+      dateTime: new Date(2024, 11, 20, 19, 15)
     },
     {
       id: '4',
@@ -159,8 +158,8 @@ const Earnings: React.FC = () => {
       orderId: '13456790',
       deliveryFee: 16.25,
       tips: 9.50,
-      deliveryDate: 'Aug 10, 2021 12:45PM',
-      dateTime: new Date(2021, 7, 10, 12, 45)
+      deliveryDate: 'Dec 10, 2024 12:45PM',
+      dateTime: new Date(2024, 11, 10, 12, 45)
     },
     {
       id: '5',
@@ -169,8 +168,8 @@ const Earnings: React.FC = () => {
       orderId: '13456791',
       deliveryFee: 19.75,
       tips: 11.25,
-      deliveryDate: 'Sep 5, 2021 6:20PM',
-      dateTime: new Date(2021, 8, 5, 18, 20)
+      deliveryDate: 'Dec 5, 2024 6:20PM',
+      dateTime: new Date(2024, 11, 5, 18, 20)
     }
   ];
 
