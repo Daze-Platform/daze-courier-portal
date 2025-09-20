@@ -1,73 +1,76 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import springhillAerial3D from '@/assets/springhill-aerial-3d.jpg';
+import { MapPin, Navigation, Coffee, Waves, Umbrella } from 'lucide-react';
 
 interface ResortImageViewProps {
   destination?: string;
-  onUmbrellaSelect?: (umbrellaId: string) => void;
+  isDelivering?: boolean;
 }
 
-interface UmbrellaSpot {
+interface LocationPoint {
   id: string;
   x: number; // percentage from left
   y: number; // percentage from top
-  type: 'pool' | 'beach' | 'lawn';
+  type: 'runner-start' | 'customer' | 'pool-bar' | 'tiki-hut' | 'beach-hut';
   label: string;
+  icon: React.ComponentType<any>;
 }
 
 const ResortImageView: React.FC<ResortImageViewProps> = ({ 
   destination, 
-  onUmbrellaSelect 
+  isDelivering = false 
 }) => {
-  const [selectedUmbrella, setSelectedUmbrella] = useState<string | null>(null);
+  const [runnerProgress, setRunnerProgress] = useState(0);
 
-  // Define umbrella/delivery spots on the resort image
-  const umbrellaSpots: UmbrellaSpot[] = [
-    // Pool area spots (center of image)
-    { id: 'P1', x: 45, y: 55, type: 'pool', label: 'Pool Deck P1' },
-    { id: 'P2', x: 50, y: 58, type: 'pool', label: 'Pool Deck P2' },
-    { id: 'P3', x: 55, y: 55, type: 'pool', label: 'Pool Deck P3' },
-    { id: 'P4', x: 60, y: 60, type: 'pool', label: 'Pool Deck P4' },
-    { id: 'P5', x: 42, y: 62, type: 'pool', label: 'Pool Deck P5' },
-    { id: 'P6', x: 48, y: 65, type: 'pool', label: 'Pool Deck P6' },
-    { id: 'P7', x: 53, y: 62, type: 'pool', label: 'Pool Deck P7' },
-    { id: 'P8', x: 58, y: 68, type: 'pool', label: 'Pool Deck P8' },
+  // Define key locations on the resort
+  const locations: LocationPoint[] = [
+    // Runner starting location (hotel entrance/lobby)
+    { id: 'start', x: 15, y: 40, type: 'runner-start', label: 'Delivery Station', icon: Navigation },
     
-    // Beach area spots (bottom portion of image)
-    { id: 'B1', x: 25, y: 75, type: 'beach', label: 'Beach B1' },
-    { id: 'B2', x: 35, y: 78, type: 'beach', label: 'Beach B2' },
-    { id: 'B3', x: 45, y: 80, type: 'beach', label: 'Beach B3' },
-    { id: 'B4', x: 55, y: 78, type: 'beach', label: 'Beach B4' },
-    { id: 'B5', x: 65, y: 75, type: 'beach', label: 'Beach B5' },
-    { id: 'B6', x: 75, y: 78, type: 'beach', label: 'Beach B6' },
+    // Points of interest
+    { id: 'pool-bar', x: 45, y: 55, type: 'pool-bar', label: 'Pool Bar', icon: Coffee },
+    { id: 'tiki-hut', x: 70, y: 65, type: 'tiki-hut', label: 'Tiki Hut', icon: Umbrella },
+    { id: 'beach-hut', x: 60, y: 85, type: 'beach-hut', label: 'Beach Hut', icon: Waves },
     
-    // Second row of beach spots
-    { id: 'B7', x: 30, y: 85, type: 'beach', label: 'Beach B7' },
-    { id: 'B8', x: 40, y: 88, type: 'beach', label: 'Beach B8' },
-    { id: 'B9', x: 50, y: 87, type: 'beach', label: 'Beach B9' },
-    { id: 'B10', x: 60, y: 85, type: 'beach', label: 'Beach B10' },
-    { id: 'B11', x: 70, y: 88, type: 'beach', label: 'Beach B11' },
-    
-    // Lawn/deck area spots (right side)
-    { id: 'L1', x: 75, y: 45, type: 'lawn', label: 'Deck Area L1' },
-    { id: 'L2', x: 80, y: 50, type: 'lawn', label: 'Deck Area L2' },
-    { id: 'L3', x: 85, y: 55, type: 'lawn', label: 'Deck Area L3' },
+    // Customer location (dynamic based on destination)
+    { id: 'customer', x: 50, y: 75, type: 'customer', label: destination || 'Customer Location', icon: MapPin },
   ];
 
-  const handleUmbrellaClick = (umbrellaId: string) => {
-    setSelectedUmbrella(umbrellaId);
-    onUmbrellaSelect?.(umbrellaId);
-  };
+  // Animation for runner movement
+  useEffect(() => {
+    if (isDelivering) {
+      const interval = setInterval(() => {
+        setRunnerProgress(prev => {
+          if (prev >= 100) {
+            clearInterval(interval);
+            return 100;
+          }
+          return prev + 2;
+        });
+      }, 100);
 
-  const getSpotColor = (type: string, isSelected: boolean) => {
-    if (isSelected) return 'bg-yellow-400 border-yellow-600 shadow-lg shadow-yellow-400/50';
-    
+      return () => clearInterval(interval);
+    } else {
+      setRunnerProgress(0);
+    }
+  }, [isDelivering]);
+
+  const getLocationStyle = (type: string) => {
     switch (type) {
-      case 'pool': return 'bg-blue-500 border-blue-600 hover:bg-blue-400';
-      case 'beach': return 'bg-orange-500 border-orange-600 hover:bg-orange-400';
-      case 'lawn': return 'bg-green-500 border-green-600 hover:bg-green-400';
-      default: return 'bg-gray-500 border-gray-600 hover:bg-gray-400';
+      case 'runner-start': return 'bg-green-500 border-green-600 text-white';
+      case 'customer': return 'bg-red-500 border-red-600 text-white';
+      case 'pool-bar': return 'bg-blue-500 border-blue-600 text-white';
+      case 'tiki-hut': return 'bg-orange-500 border-orange-600 text-white';
+      case 'beach-hut': return 'bg-cyan-500 border-cyan-600 text-white';
+      default: return 'bg-gray-500 border-gray-600 text-white';
     }
   };
+
+  // Calculate runner position along path
+  const startLocation = locations.find(l => l.type === 'runner-start')!;
+  const customerLocation = locations.find(l => l.type === 'customer')!;
+  const runnerX = startLocation.x + (customerLocation.x - startLocation.x) * (runnerProgress / 100);
+  const runnerY = startLocation.y + (customerLocation.y - startLocation.y) * (runnerProgress / 100);
 
   return (
     <div className="relative w-full h-full bg-gray-100 rounded-lg overflow-hidden">
@@ -78,54 +81,100 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
         className="w-full h-full object-cover"
       />
       
-      {/* Umbrella/Delivery Spots Overlay */}
+      {/* Delivery Route Path */}
+      {isDelivering && (
+        <svg className="absolute inset-0 w-full h-full pointer-events-none">
+          <line
+            x1={`${startLocation.x}%`}
+            y1={`${startLocation.y}%`}
+            x2={`${customerLocation.x}%`}
+            y2={`${customerLocation.y}%`}
+            stroke="rgba(59, 130, 246, 0.6)"
+            strokeWidth="3"
+            strokeDasharray="10,5"
+            className="animate-pulse"
+          />
+        </svg>
+      )}
+
+      {/* Location Markers */}
       <div className="absolute inset-0">
-        {umbrellaSpots.map((spot) => (
-          <button
-            key={spot.id}
-            onClick={() => handleUmbrellaClick(spot.id)}
-            className={`absolute w-6 h-6 rounded-full border-2 transition-all duration-300 transform hover:scale-110 ${
-              getSpotColor(spot.type, selectedUmbrella === spot.id)
-            }`}
-            style={{
-              left: `${spot.x}%`,
-              top: `${spot.y}%`,
-              transform: 'translate(-50%, -50%)'
-            }}
-            title={spot.label}
-          >
-            <span className="sr-only">{spot.label}</span>
-          </button>
-        ))}
+        {locations.map((location) => {
+          const IconComponent = location.icon;
+          return (
+            <div
+              key={location.id}
+              className={`absolute w-8 h-8 rounded-full border-2 flex items-center justify-center shadow-lg ${
+                getLocationStyle(location.type)
+              }`}
+              style={{
+                left: `${location.x}%`,
+                top: `${location.y}%`,
+                transform: 'translate(-50%, -50%)'
+              }}
+              title={location.label}
+            >
+              <IconComponent size={16} />
+            </div>
+          );
+        })}
       </div>
 
-      {/* Selected Spot Info */}
-      {selectedUmbrella && (
+      {/* Moving Runner Indicator */}
+      {isDelivering && runnerProgress > 0 && (
+        <div
+          className="absolute w-6 h-6 bg-yellow-400 border-2 border-yellow-600 rounded-full flex items-center justify-center shadow-lg animate-bounce"
+          style={{
+            left: `${runnerX}%`,
+            top: `${runnerY}%`,
+            transform: 'translate(-50%, -50%)'
+          }}
+        >
+          <Navigation size={12} className="text-yellow-800" />
+        </div>
+      )}
+
+      {/* Delivery Status */}
+      {isDelivering && (
         <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg">
           <p className="text-sm font-medium text-gray-900">
-            Selected: {umbrellaSpots.find(s => s.id === selectedUmbrella)?.label}
+            {runnerProgress < 100 ? 'Delivering...' : 'Delivered!'}
           </p>
-          <p className="text-xs text-gray-600">
-            {destination && `Delivering to ${destination}`}
+          <div className="w-32 h-2 bg-gray-200 rounded-full mt-1">
+            <div 
+              className="h-full bg-green-500 rounded-full transition-all duration-300"
+              style={{ width: `${runnerProgress}%` }}
+            />
+          </div>
+          <p className="text-xs text-gray-600 mt-1">
+            {destination && `To: ${destination}`}
           </p>
         </div>
       )}
 
-      {/* Legend */}
+      {/* Location Legend */}
       <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg">
-        <h3 className="text-sm font-semibold mb-2">Delivery Areas</h3>
+        <h3 className="text-sm font-semibold mb-2">Resort Locations</h3>
         <div className="space-y-1">
           <div className="flex items-center gap-2 text-xs">
-            <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-            <span>Pool Deck</span>
+            <Navigation size={12} className="text-green-500" />
+            <span>Delivery Station</span>
           </div>
           <div className="flex items-center gap-2 text-xs">
-            <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-            <span>Beach</span>
+            <Coffee size={12} className="text-blue-500" />
+            <span>Pool Bar</span>
           </div>
           <div className="flex items-center gap-2 text-xs">
-            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-            <span>Lawn Area</span>
+            <Umbrella size={12} className="text-orange-500" />
+            <span>Tiki Hut</span>
+          </div>
+          <div className="flex items-center gap-2 text-xs">
+            <Waves size={12} className="text-cyan-500" />
+            <span>Beach Hut</span>
+          </div>
+          <div className="flex items-center gap-2 text-xs">
+            <MapPin size={12} className="text-red-500" />
+            <span>Customer</span>
           </div>
         </div>
       </div>
