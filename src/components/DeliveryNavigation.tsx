@@ -102,32 +102,53 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
   };
 
   const handleDragStart = (e: React.TouchEvent | React.MouseEvent) => {
+    console.log('Drag start detected');
     setIsDragging(true);
     const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
     setDragStartY(clientY);
     setDragCurrentY(clientY);
+    e.preventDefault();
   };
 
   const handleDragMove = (e: React.TouchEvent | React.MouseEvent) => {
     if (!isDragging) return;
+    console.log('Drag move detected');
     const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
     setDragCurrentY(clientY);
+    e.preventDefault();
   };
 
   const handleDragEnd = () => {
     if (!isDragging) return;
+    console.log('Drag end detected');
     
     const dragDistance = dragStartY - dragCurrentY;
-    const threshold = 50; // minimum drag distance to trigger state change
+    const threshold = 30; // reduced threshold for easier triggering
+    console.log('Drag distance:', dragDistance, 'Threshold:', threshold);
     
     if (Math.abs(dragDistance) > threshold) {
       const direction = dragDistance > 0 ? 'up' : 'down';
-      setModalState(getNextModalState(modalState, direction));
+      console.log('Direction:', direction, 'Current state:', modalState);
+      const newState = getNextModalState(modalState, direction);
+      console.log('New state:', newState);
+      setModalState(newState);
     }
     
     setIsDragging(false);
     setDragStartY(0);
     setDragCurrentY(0);
+  };
+
+  const handleWheel = (e: React.WheelEvent) => {
+    console.log('Wheel event detected:', e.deltaY);
+    if (e.deltaY < -10) { // scrolling up
+      console.log('Wheel scroll up detected');
+      setModalState(getNextModalState(modalState, 'up'));
+    } else if (e.deltaY > 10) { // scrolling down  
+      console.log('Wheel scroll down detected');
+      setModalState(getNextModalState(modalState, 'down'));
+    }
+    e.preventDefault();
   };
 
   // Delivery type detection - handle exact string matching
@@ -431,17 +452,18 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
                 ? `translateY(${Math.max(0, dragCurrentY - dragStartY)}px)` 
                 : undefined
             }}
+            onTouchStart={handleDragStart}
+            onMouseDown={handleDragStart}
+            onTouchMove={handleDragMove}
+            onMouseMove={handleDragMove}
+            onTouchEnd={handleDragEnd}
+            onMouseUp={handleDragEnd}
+            onMouseLeave={handleDragEnd}
+            onWheel={handleWheel}
           >
             {/* Handle/Drag Indicator - Interactive */}
             <div 
               className="bg-background border-t border-border rounded-t-xl shadow-lg cursor-grab active:cursor-grabbing"
-              onTouchStart={handleDragStart}
-              onMouseDown={handleDragStart}
-              onTouchMove={handleDragMove}
-              onMouseMove={handleDragMove}
-              onTouchEnd={handleDragEnd}
-              onMouseUp={handleDragEnd}
-              onMouseLeave={handleDragEnd}
             >
               <div className="flex justify-center py-3">
                 <div className="w-12 h-1 bg-muted-foreground/30 rounded-full"></div>
