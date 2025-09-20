@@ -331,7 +331,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
 
       {/* Resort Map - Show based on delivery type */}
       {isBeachDelivery || isPoolDelivery ? (
-        <div className="flex-1 relative overflow-hidden">
+        <div className="flex-1 relative overflow-hidden bg-black">
           <ResortImageView 
             destination={destination} 
             isDelivering={isNavigating}
