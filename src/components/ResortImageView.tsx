@@ -109,12 +109,12 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
 
   const getLocationStyle = (type: string) => {
     switch (type) {
-      case 'runner-start': return 'bg-green-500 border-green-600 text-white';
-      case 'customer': return 'bg-red-500 border-red-600 text-white';
-      case 'pool-bar': return 'bg-blue-500 border-blue-600 text-white';
-      case 'tiki-hut': return 'bg-orange-500 border-orange-600 text-white';
-      case 'beach-hut': return 'bg-cyan-500 border-cyan-600 text-white';
-      default: return 'bg-gray-500 border-gray-600 text-white';
+      case 'runner-start': return 'bg-gradient-to-br from-emerald-400 to-emerald-600 border-emerald-700 text-white shadow-lg';
+      case 'customer': return 'bg-gradient-to-br from-rose-500 to-red-600 border-red-700 text-white shadow-xl animate-pulse';
+      case 'pool-bar': return 'bg-gradient-to-br from-blue-400 to-blue-600 border-blue-700 text-white shadow-lg';
+      case 'tiki-hut': return 'bg-gradient-to-br from-orange-400 to-orange-600 border-orange-700 text-white shadow-lg';
+      case 'beach-hut': return 'bg-gradient-to-br from-cyan-400 to-cyan-600 border-cyan-700 text-white shadow-lg';
+      default: return 'bg-gradient-to-br from-gray-400 to-gray-600 border-gray-700 text-white shadow-lg';
     }
   };
 
@@ -125,7 +125,7 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   const runnerY = startLocation.y + (customerLocation.y - startLocation.y) * (runnerProgress / 100);
 
   return (
-    <div className="relative w-full h-full bg-gray-100 rounded-lg overflow-hidden">
+    <div className="relative w-full h-full rounded-lg overflow-hidden">
       {/* Resort Image with Pan/Zoom */}
       <div 
         className="w-full h-full transition-all duration-1000 ease-out"
@@ -160,20 +160,40 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
       <div className="absolute inset-0">
         {locations.map((location) => {
           const IconComponent = location.icon;
+          const isCustomer = location.type === 'customer';
           return (
-            <div
-              key={location.id}
-              className={`absolute w-8 h-8 rounded-full border-2 flex items-center justify-center shadow-lg ${
-                getLocationStyle(location.type)
-              }`}
-              style={{
-                left: `${location.x}%`,
-                top: `${location.y}%`,
-                transform: 'translate(-50%, -50%)'
-              }}
-              title={location.label}
-            >
-              <IconComponent size={16} />
+            <div key={location.id}>
+              {/* Enhanced marker with glow effect */}
+              <div
+                className={`absolute ${isCustomer ? 'w-10 h-10' : 'w-8 h-8'} rounded-full border-2 flex items-center justify-center ${
+                  getLocationStyle(location.type)
+                } transition-all duration-300 hover:scale-110`}
+                style={{
+                  left: `${location.x}%`,
+                  top: `${location.y}%`,
+                  transform: 'translate(-50%, -50%)'
+                }}
+                title={location.label}
+              >
+                <IconComponent size={isCustomer ? 20 : 16} />
+                {/* Glow effect for customer */}
+                {isCustomer && (
+                  <div className="absolute inset-0 bg-red-400 rounded-full animate-ping opacity-30" />
+                )}
+              </div>
+              {/* Location label for customer */}
+              {isCustomer && destination && (
+                <div 
+                  className="absolute bg-white/95 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-medium shadow-lg border"
+                  style={{
+                    left: `${location.x}%`,
+                    top: `${location.y + 8}%`,
+                    transform: 'translate(-50%, 0)'
+                  }}
+                >
+                  {destination}
+                </div>
+              )}
             </div>
           );
         })}
@@ -182,16 +202,23 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
       {/* Enhanced Moving Runner Indicator */}
       {isDelivering && runnerProgress > 0 && (
         <div
-          className="absolute w-8 h-8 bg-gradient-to-br from-yellow-400 to-orange-500 border-2 border-orange-600 rounded-full flex items-center justify-center shadow-xl animate-bounce transition-all duration-300"
+          className="absolute transition-all duration-500 ease-out"
           style={{
             left: `${runnerX}%`,
             top: `${runnerY}%`,
             transform: 'translate(-50%, -50%)'
           }}
         >
-          <Navigation size={14} className="text-orange-900" />
-          {/* Runner trail effect */}
-          <div className="absolute inset-0 bg-yellow-300 rounded-full animate-ping opacity-30" />
+          {/* Main runner icon */}
+          <div className="relative w-10 h-10 bg-gradient-to-br from-amber-400 via-yellow-500 to-orange-500 border-3 border-orange-600 rounded-full flex items-center justify-center shadow-2xl animate-bounce">
+            <Navigation size={18} className="text-orange-900 font-bold" />
+            {/* Outer pulse ring */}
+            <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-40" />
+            {/* Inner glow */}
+            <div className="absolute inset-1 bg-yellow-300 rounded-full animate-pulse opacity-60" />
+          </div>
+          {/* Movement trail */}
+          <div className="absolute -top-1 -left-1 w-12 h-12 border-2 border-yellow-400 rounded-full animate-spin opacity-30" />
         </div>
       )}
 
