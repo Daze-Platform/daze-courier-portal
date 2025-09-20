@@ -269,13 +269,101 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
       </div>
 
       {/* Resort Map - Show based on delivery type */}
-      {(isBeachDelivery || isPoolDelivery || isRoomDelivery) ? (
+      {isBeachDelivery || isPoolDelivery ? (
         <div className="flex-1 overflow-hidden">
           <ResortImageView 
             destination={destination} 
             isDelivering={isNavigating}
             focusArea={getMapType()}
           />
+        </div>
+      ) : isRoomDelivery ? (
+        <div className="flex-1 overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
+          <div className="max-w-2xl mx-auto space-y-6">
+            {/* Room Number Header */}
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-24 h-24 bg-blue-500 rounded-full mb-4">
+                <span className="text-3xl font-bold text-white">
+                  {destination.replace(/\D/g, '') || '###'}
+                </span>
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Room {destination}</h2>
+              <p className="text-gray-600">Follow the instructions below to complete your delivery</p>
+            </div>
+
+            {/* Delivery Instructions */}
+            <Card className="p-6">
+              <h3 className="text-lg font-semibold mb-4 text-gray-900">Delivery Instructions</h3>
+              <div className="space-y-4">
+                <div className="flex items-center gap-4 p-3 bg-blue-50 rounded-lg">
+                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">1</div>
+                  <div>
+                    <p className="font-medium text-gray-900">Enter Main Lobby</p>
+                    <p className="text-sm text-gray-600">Use the main entrance and approach the front desk area</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-4 p-3 bg-blue-50 rounded-lg">
+                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">2</div>
+                  <div>
+                    <p className="font-medium text-gray-900">Take Elevator</p>
+                    <p className="text-sm text-gray-600">
+                      Go to Floor {Math.floor(parseInt(destination.replace(/\D/g, '')) / 100) || 'X'}
+                      {destination.includes('0') && ' (Ground Floor)'}
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-4 p-3 bg-blue-50 rounded-lg">
+                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">3</div>
+                  <div>
+                    <p className="font-medium text-gray-900">Follow Room Numbers</p>
+                    <p className="text-sm text-gray-600">Look for room number signs in the hallway</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-4 p-3 bg-green-50 rounded-lg border-2 border-green-200">
+                  <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">4</div>
+                  <div>
+                    <p className="font-medium text-gray-900">Knock & Deliver</p>
+                    <p className="text-sm text-gray-600">Announce "Room service delivery" and complete the order</p>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            {/* Order Summary */}
+            <Card className="p-6">
+              <h3 className="text-lg font-semibold mb-4 text-gray-900">Order Summary</h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600">Delivery Type:</span>
+                  <Badge variant="outline">{deliveryType}</Badge>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600">Destination:</span>
+                  <span className="font-medium">{destination}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600">Status:</span>
+                  <Badge variant={hasReachedDestination ? "default" : "secondary"}>
+                    {hasReachedDestination ? "Ready to Complete" : "In Progress"}
+                  </Badge>
+                </div>
+              </div>
+            </Card>
+
+            {/* Navigation Tips */}
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+              <h4 className="font-medium text-amber-900 mb-2">💡 Navigation Tips</h4>
+              <ul className="text-sm text-amber-800 space-y-1">
+                <li>• Room numbers ending in 01-20 are usually on the left side</li>
+                <li>• Room numbers ending in 21-40 are usually on the right side</li>
+                <li>• Look for directional arrows near elevators</li>
+                <li>• Ask front desk staff if you need assistance</li>
+              </ul>
+            </div>
+          </div>
         </div>
       ) : (
         <div className="flex-1 relative overflow-hidden bg-cover bg-center bg-no-repeat" 
