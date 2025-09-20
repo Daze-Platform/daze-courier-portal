@@ -446,18 +446,22 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
                     🚶 You
                   </div>
                  
-                 {/* Direction indicator - arrow pointing to destination */}
-                {isNavigating && (
-                  <div 
-                    className="absolute top-1/2 left-1/2 w-6 h-0.5 bg-blue-500 origin-left transform -translate-y-1/2"
-                    style={{
-                      transform: `translate(-50%, -50%) rotate(${Math.atan2(
-                        parseFloat(destinationPos.top) - parseFloat(courierPosition.top),
-                        parseFloat(destinationPos.left) - parseFloat(courierPosition.left)
-                      ) * (180 / Math.PI)}deg)`,
-                    }}
-                  />
-                )}
+                  {/* GPS-style Navigation Arrow */}
+                 {isNavigating && (
+                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                     <div 
+                       className="w-6 h-6 bg-blue-500 rounded-sm flex items-center justify-center shadow-lg"
+                       style={{
+                         transform: `rotate(${Math.atan2(
+                           parseFloat(destinationPos.top) - parseFloat(courierPosition.top),
+                           parseFloat(destinationPos.left) - parseFloat(courierPosition.left)
+                         ) * (180 / Math.PI)}deg)`,
+                       }}
+                     >
+                       <div className="w-0 h-0 border-l-[3px] border-r-[3px] border-b-[4px] border-l-transparent border-r-transparent border-b-white"></div>
+                     </div>
+                   </div>
+                 )}
               </div>
             </div>
             

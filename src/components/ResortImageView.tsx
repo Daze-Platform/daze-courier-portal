@@ -157,7 +157,7 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
             stroke="rgba(59, 130, 246, 0.6)"
             strokeWidth="3"
             strokeDasharray="10,5"
-            className="animate-bounce"
+            className=""
           />
         </svg>
       )}
