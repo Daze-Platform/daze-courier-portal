@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import UnifiedHeader from "@/components/UnifiedHeader";
 import DesktopSidebar from "@/components/DesktopSidebar";
@@ -22,6 +22,11 @@ const OrderDetail = () => {
   const [showCompletionModal, setShowCompletionModal] = useState(false);
   const [showNavigationModal, setShowNavigationModal] = useState(false);
   const [navigationStarted, setNavigationStarted] = useState(false);
+
+  // Scroll to top when component mounts or orderId changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [orderId]);
 
   // Mock order data - in real app would fetch based on orderId
   const mockOrders = [
