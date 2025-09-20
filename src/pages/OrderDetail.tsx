@@ -11,6 +11,7 @@ import DesktopSidebar from "@/components/DesktopSidebar";
 import DeliveryNavigation from "@/components/DeliveryNavigation";
 import OrderDetailsDrawer from "@/components/OrderDetailsDrawer";
 import ResortImageView from "@/components/ResortImageView";
+import RoomDeliveryStatus from "@/components/RoomDeliveryStatus";
 import margaritaMamasLogo from "@/assets/margarita-mamas-logo.png";
 import sunsetGrillLogo from "@/assets/sunset-grill-logo.png";
 import oceanBreezeLogo from "@/assets/ocean-breeze-logo.png";
@@ -22,6 +23,7 @@ const OrderDetail = () => {
   const [showCompletionModal, setShowCompletionModal] = useState(false);
   const [showNavigationModal, setShowNavigationModal] = useState(false);
   const [navigationStarted, setNavigationStarted] = useState(false);
+  const [showRoomStatus, setShowRoomStatus] = useState(false);
 
   // Scroll to top when component mounts or orderId changes
   useEffect(() => {
@@ -156,7 +158,13 @@ const OrderDetail = () => {
       deliveryAddress: order.deliveryAddress 
     });
     setNavigationStarted(true);
-    setShowNavigationModal(true);
+    
+    // For room deliveries, show status bar instead of navigation modal
+    if (order.deliveryType === "Room Delivery") {
+      setShowRoomStatus(true);
+    } else {
+      setShowNavigationModal(true);
+    }
   };
 
   const handleNavigationComplete = () => {
@@ -165,6 +173,11 @@ const OrderDetail = () => {
   };
 
   const handleCompleteDelivery = () => {
+    setShowCompletionModal(true);
+  };
+
+  const handleRoomDeliveryComplete = () => {
+    setShowRoomStatus(false);
     setShowCompletionModal(true);
   };
 
@@ -489,6 +502,14 @@ const OrderDetail = () => {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Room Delivery Status Bar */}
+      {showRoomStatus && (
+        <RoomDeliveryStatus 
+          destination={order.deliveryAddress}
+          onComplete={handleRoomDeliveryComplete}
+        />
+      )}
     </>
   );
 };
