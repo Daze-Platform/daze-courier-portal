@@ -59,6 +59,8 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
   const [totalEstimatedTime] = useState(8); // 8 seconds total navigation time
   const [showOrderDetails, setShowOrderDetails] = useState(false);
   const [modalState, setModalState] = useState<'closed' | 'half' | 'full'>('closed');
+  const [touchStartY, setTouchStartY] = useState(0);
+  const [isScrollingModal, setIsScrollingModal] = useState(false);
 
   // Simple click-based state management
   const handleModalAreaClick = () => {
@@ -70,6 +72,41 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
     } else {
       setModalState('half');
     }
+  };
+
+  // Touch handlers for mobile scroll detection
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartY(e.touches[0].clientY);
+    setIsScrollingModal(false);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!touchStartY) return;
+    
+    const touchCurrentY = e.touches[0].clientY;
+    const touchDiff = touchStartY - touchCurrentY;
+    const element = e.currentTarget as HTMLElement;
+    const isAtTop = element.scrollTop <= 5;
+    
+    // Only handle modal state changes, not normal scrolling
+    if (Math.abs(touchDiff) > 50) { // Minimum swipe distance
+      if (touchDiff > 0 && isAtTop && modalState === 'half') {
+        // Swiping up at top - expand to full
+        e.preventDefault();
+        setModalState('full');
+        setIsScrollingModal(true);
+      } else if (touchDiff < 0 && isAtTop && modalState === 'full') {
+        // Swiping down at top - collapse to half  
+        e.preventDefault();
+        setModalState('half');
+        setIsScrollingModal(true);
+      }
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setTouchStartY(0);
+    setIsScrollingModal(false);
   };
   const isMobile = useIsMobile();
   const { toast } = useToast();
@@ -450,20 +487,31 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
               <div 
                 className="bg-background flex-1 overflow-y-auto"
                 onWheel={(e) => {
-                  console.log('Wheel event on content:', e.deltaY);
                   const element = e.currentTarget;
-                  const isAtTop = element.scrollTop === 0;
+                  const isAtTop = element.scrollTop <= 5;
                   const isAtBottom = element.scrollTop + element.clientHeight >= element.scrollHeight - 5;
                   
-                  if (e.deltaY < 0 && isAtTop && modalState === 'half') {
-                    // Scrolling up at top - expand to full
+                  // Only prevent default and change states at content boundaries
+                  if (e.deltaY < -30 && isAtTop && modalState === 'half') {
+                    // Strong scroll up at top - expand to full
                     e.preventDefault();
-                    handleScrollUp();
-                  } else if (e.deltaY > 0 && isAtTop && modalState === 'full') {
-                    // Scrolling down at top - collapse to half
+                    console.log('Expanding to full via wheel');
+                    setModalState('full');
+                  } else if (e.deltaY > 30 && isAtTop && modalState === 'full') {
+                    // Strong scroll down at top - collapse to half
                     e.preventDefault();
-                    handleScrollDown();
+                    console.log('Collapsing to half via wheel');
+                    setModalState('half');
                   }
+                  // Otherwise allow normal scrolling within content
+                }}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+                style={{
+                  maxHeight: modalState === 'full' ? 'calc(100vh - 120px)' : 'calc(50vh - 120px)',
+                  overflowY: 'auto',
+                  WebkitOverflowScrolling: 'touch' // iOS smooth scrolling
                 }}
               >
                 <div className="px-6 pb-6 space-y-4">
