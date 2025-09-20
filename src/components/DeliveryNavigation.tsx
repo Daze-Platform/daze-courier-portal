@@ -30,6 +30,8 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
   const [hasShownCloseNotification, setHasShownCloseNotification] = useState(false);
   const [currentWaypointIndex, setCurrentWaypointIndex] = useState(0);
   const [routeWaypoints, setRouteWaypoints] = useState<Position[]>([]);
+  const [navigationStartTime, setNavigationStartTime] = useState<number>(0);
+  const [totalEstimatedTime] = useState(8); // 8 seconds total navigation time
   const isMobile = useIsMobile();
   const { toast } = useToast();
 
@@ -102,44 +104,57 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
     setCurrentWaypointIndex(0);
   }, [destination]);
 
-  // Calculate progress based on waypoint progression
+  // Calculate progress based on waypoint progression - smooth and consistent
   const calculateProgress = () => {
     if (routeWaypoints.length === 0) return;
     
     const totalWaypoints = routeWaypoints.length - 1;
-    const waypointProgress = currentWaypointIndex / totalWaypoints;
+    if (totalWaypoints === 0) return;
     
-    // Add sub-progress within current waypoint segment
+    // Simple, smooth progress calculation
+    let baseProgress = (currentWaypointIndex / totalWaypoints) * 100;
+    
+    // Add smooth sub-progress for current segment
     if (currentWaypointIndex < routeWaypoints.length - 1) {
       const currentWaypoint = routeWaypoints[currentWaypointIndex];
       const nextWaypoint = routeWaypoints[currentWaypointIndex + 1];
       
-      const courierTop = parseFloat(courierPosition.top);
-      const courierLeft = parseFloat(courierPosition.left);
-      const currentTop = parseFloat(currentWaypoint.top);
-      const currentLeft = parseFloat(currentWaypoint.left);
-      const nextTop = parseFloat(nextWaypoint.top);
-      const nextLeft = parseFloat(nextWaypoint.left);
-      
-      const segmentDistance = Math.sqrt(
-        Math.pow(nextTop - currentTop, 2) + Math.pow(nextLeft - currentLeft, 2)
-      );
-      
-      const progressInSegment = Math.sqrt(
-        Math.pow(courierTop - currentTop, 2) + Math.pow(courierLeft - currentLeft, 2)
-      );
-      
-      const segmentProgress = Math.min(1, progressInSegment / segmentDistance);
-      const totalProgress = ((currentWaypointIndex + segmentProgress) / totalWaypoints) * 100;
-      
-      setProgress(hasReachedDestination ? 100 : Math.min(99, totalProgress));
-    } else {
-      setProgress(hasReachedDestination ? 100 : 95);
+      if (currentWaypoint && nextWaypoint) {
+        const courierTop = parseFloat(courierPosition.top);
+        const courierLeft = parseFloat(courierPosition.left);
+        const currentTop = parseFloat(currentWaypoint.top);
+        const currentLeft = parseFloat(currentWaypoint.left);
+        const nextTop = parseFloat(nextWaypoint.top);
+        const nextLeft = parseFloat(nextWaypoint.left);
+        
+        // Calculate distances
+        const totalSegmentDistance = Math.sqrt(
+          Math.pow(nextTop - currentTop, 2) + Math.pow(nextLeft - currentLeft, 2)
+        );
+        
+        const remainingDistance = Math.sqrt(
+          Math.pow(nextTop - courierTop, 2) + Math.pow(nextLeft - courierLeft, 2)
+        );
+        
+        // Calculate segment completion (0-1) - progress within current segment
+        const segmentCompletion = Math.max(0, Math.min(1, 
+          (totalSegmentDistance - remainingDistance) / totalSegmentDistance
+        ));
+        
+        // Add segment progress to base progress
+        const segmentProgressContribution = (segmentCompletion / totalWaypoints) * 100;
+        baseProgress += segmentProgressContribution;
+      }
     }
+    
+    // Ensure progress only increases and never exceeds limits
+    const newProgress = Math.max(progress, Math.min(hasReachedDestination ? 100 : 98, baseProgress));
+    setProgress(newProgress);
   };
 
   const startNavigation = () => {
     setIsNavigating(true);
+    setNavigationStartTime(Date.now());
   };
 
   const pauseNavigation = () => {
@@ -157,7 +172,23 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
     setHasReachedDestination(false);
     setHasShownCloseNotification(false);
     setCurrentWaypointIndex(0);
+    setNavigationStartTime(0);
   };
+
+  // Handle automatic completion based on time
+  useEffect(() => {
+    if (!isNavigating || navigationStartTime === 0) return;
+
+    const completionTimer = setTimeout(() => {
+      if (isNavigating && !hasReachedDestination) {
+        setIsNavigating(false);
+        setHasReachedDestination(true);
+        setProgress(100);
+      }
+    }, totalEstimatedTime * 1000);
+
+    return () => clearTimeout(completionTimer);
+  }, [isNavigating, navigationStartTime, hasReachedDestination, totalEstimatedTime]);
 
   // Auto-move courier when navigating using waypoints
   useEffect(() => {
@@ -192,11 +223,13 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
               Math.pow(parseFloat(destinationPos.left) - currentLeft, 2)
             );
             
-            // Show notification when within ~10ft of customer
-            if (finalDistance < 8 && !hasShownCloseNotification && !hasReachedDestination) {
+            // Check for 3-second notification (time-based)
+            const elapsedTime = (Date.now() - navigationStartTime) / 1000;
+            const timeRemaining = totalEstimatedTime - elapsedTime;
+            
+            if (timeRemaining <= 3 && timeRemaining > 2.8 && !hasShownCloseNotification && !hasReachedDestination) {
               setHasShownCloseNotification(true);
               toast({
-                variant: "warning",
                 title: "🎯 Almost there!",
                 description: "You're within 10ft of the customer. Get ready to complete delivery!",
                 duration: 4000,
