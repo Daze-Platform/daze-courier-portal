@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Calendar, ChevronRight, Package, Clock, DollarSign, User, Star, TrendingUp, MapPin, Phone, Mail, Edit } from 'lucide-react';
+import { Calendar, ChevronRight, Package, Clock, DollarSign } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import UnifiedHeader from "@/components/UnifiedHeader";
 import DesktopSidebar from "@/components/DesktopSidebar";
@@ -11,7 +10,6 @@ import margaritaMamasLogo from '@/assets/margarita-mamas-logo.png';
 import salDeMarLogo from '@/assets/sal-de-mar-logo.png';
 import oceanBreezeLogo from '@/assets/ocean-breeze-logo.png';
 import sunsetGrillLogo from '@/assets/sunset-grill-logo.png';
-import ferdinandProfile from '@/assets/ferdinand-profile.jpg';
 
 interface Order {
   id: string;
@@ -105,115 +103,16 @@ const OrderHistory: React.FC = () => {
       <div className="lg:ml-64 pt-4">
         <div className="container mx-auto px-4 py-6 space-y-6 lg:px-8 lg:py-8">
           <div>
-            <h1 className="text-2xl font-bold text-foreground mb-2 lg:text-3xl">My Profile</h1>
-            <p className="text-muted-foreground lg:text-lg">Manage your account and delivery history</p>
+            <h1 className="text-2xl font-bold text-foreground mb-2 lg:text-3xl">Order History</h1>
+            <p className="text-muted-foreground lg:text-lg">View your past delivery assignments</p>
           </div>
           
-          {/* Profile Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <User className="h-5 w-5" />
-                Profile Information
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                <Avatar className="h-20 w-20 lg:h-24 lg:w-24">
-                  <AvatarImage src={ferdinandProfile} alt="Ferdinand S." />
-                  <AvatarFallback>FS</AvatarFallback>
-                </Avatar>
-                <div className="flex-1">
-                  <h3 className="text-xl font-semibold">Ferdinand S.</h3>
-                  <p className="text-muted-foreground">Senior Courier</p>
-                  <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-1">
-                      <MapPin className="h-4 w-4" />
-                      <span>SpringHill Suites Resort</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      <span>4.9 Rating</span>
-                    </div>
-                  </div>
-                </div>
-                <Button variant="outline" size="sm">
-                  <Edit className="h-4 w-4 mr-2" />
-                  Edit Profile
-                </Button>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-muted-foreground">Email</label>
-                  <div className="flex items-center gap-2">
-                    <Mail className="h-4 w-4 text-muted-foreground" />
-                    <span>ferdinand.s@daze.com</span>
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-muted-foreground">Phone</label>
-                  <div className="flex items-center gap-2">
-                    <Phone className="h-4 w-4 text-muted-foreground" />
-                    <span>+1 (555) 123-4567</span>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-primary/10 rounded-full">
-                    <Package className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold">247</p>
-                    <p className="text-sm text-muted-foreground">Total Deliveries</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-green-100 rounded-full">
-                    <DollarSign className="h-6 w-6 text-green-600" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold">$3,247</p>
-                    <p className="text-sm text-muted-foreground">Total Earnings</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 bg-yellow-100 rounded-full">
-                    <Star className="h-6 w-6 text-yellow-600" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold">4.9</p>
-                    <p className="text-sm text-muted-foreground">Average Rating</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Recent Order History */}
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2">
                   <Clock className="h-5 w-5" />
-                  Recent Order History
+                  Order History
                 </CardTitle>
                 <Button variant="outline" size="sm">
                   <Calendar className="w-4 h-4 mr-2" />
