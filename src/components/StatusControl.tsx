@@ -11,9 +11,11 @@ import {
 interface StatusControlProps {
   isOnline: boolean;
   onStatusChange: (status: boolean) => void;
+  selectedDeliveryType?: string;
+  onDeliveryTypeChange?: (type: string) => void;
 }
 
-const StatusControl = ({ isOnline, onStatusChange }: StatusControlProps) => {
+const StatusControl = ({ isOnline, onStatusChange, selectedDeliveryType = "all", onDeliveryTypeChange }: StatusControlProps) => {
   return (
     <div className="bg-card rounded-lg p-4 shadow-soft border border-border lg:p-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
@@ -52,7 +54,7 @@ const StatusControl = ({ isOnline, onStatusChange }: StatusControlProps) => {
         {/* Delivery Type */}
         <div className="space-y-2 sm:col-span-2 lg:col-span-1">
           <label className="text-sm font-medium text-muted-foreground">Delivery type</label>
-          <Select defaultValue="room-delivery">
+          <Select value={selectedDeliveryType} onValueChange={onDeliveryTypeChange}>
             <SelectTrigger className="w-full">
               <div className="flex items-center gap-2">
                 <Truck className="h-4 w-4 text-accent" />
@@ -60,6 +62,7 @@ const StatusControl = ({ isOnline, onStatusChange }: StatusControlProps) => {
               </div>
             </SelectTrigger>
             <SelectContent className="bg-card border border-border shadow-lg z-50">
+              <SelectItem value="all">All Deliveries</SelectItem>
               <SelectItem value="room-delivery">Room Delivery</SelectItem>
               <SelectItem value="poolside">Poolside Service</SelectItem>
               <SelectItem value="beach-service">Beach Service</SelectItem>

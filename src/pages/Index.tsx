@@ -12,6 +12,8 @@ const Index = () => {
     const saved = localStorage.getItem('courier-status');
     return saved ? JSON.parse(saved) : false;
   });
+  
+  const [selectedDeliveryType, setSelectedDeliveryType] = useState("all");
 
   useEffect(() => {
     localStorage.setItem('courier-status', JSON.stringify(isOnline));
@@ -24,7 +26,7 @@ const Index = () => {
       deliveryAddress: "Room N°12345",
       deliveryTime: "July 21, 11:36AM",
       itemCount: 2,
-      deliveryType: "Room delivery",
+      deliveryType: "Room Delivery",
       timeRemaining: 32,
       orderTotal: 15.90,
       estimatedEarnings: 12.50,
@@ -37,7 +39,7 @@ const Index = () => {
       deliveryAddress: "Pool Deck - Cabana 8",
       deliveryTime: "July 21, 12:15PM",
       itemCount: 4,
-      deliveryType: "Poolside",
+      deliveryType: "Poolside Service",
       timeRemaining: 45,
       orderTotal: 42.75,
       estimatedEarnings: 18.90,
@@ -58,6 +60,14 @@ const Index = () => {
     }
   ];
 
+  // Filter orders based on selected delivery type
+  const filteredOrders = selectedDeliveryType === "all" 
+    ? mockOrders 
+    : mockOrders.filter(order => {
+        const orderType = order.deliveryType.toLowerCase().replace(/\s+/g, '-');
+        return orderType === selectedDeliveryType;
+      });
+
   return (
     <div className="min-h-screen bg-background">
       <UnifiedHeader />
@@ -71,7 +81,12 @@ const Index = () => {
             <p className="text-muted-foreground lg:text-lg">Manage your current delivery assignments</p>
           </div>
           
-          <StatusControl isOnline={isOnline} onStatusChange={setIsOnline} />
+          <StatusControl 
+            isOnline={isOnline} 
+            onStatusChange={setIsOnline}
+            selectedDeliveryType={selectedDeliveryType}
+            onDeliveryTypeChange={setSelectedDeliveryType}
+          />
           
           {!isOnline ? (
             <div className="text-center py-6 lg:py-10">
@@ -94,17 +109,24 @@ const Index = () => {
                 </Button>
               </div>
             </div>
-          ) : mockOrders.length > 0 ? (
+          ) : filteredOrders.length > 0 ? (
             <div className="space-y-4 lg:space-y-6">
-              {mockOrders.map((order) => (
+              {filteredOrders.map((order) => (
                 <OrderCard key={order.orderId} {...order} />
               ))}
             </div>
           ) : (
             <div className="text-center py-12 lg:py-20">
               <div className="text-muted-foreground">
-                <p className="text-lg font-medium mb-2 lg:text-xl">No active orders</p>
-                <p className="text-sm lg:text-base">New orders will appear here when available</p>
+                <p className="text-lg font-medium mb-2 lg:text-xl">
+                  {selectedDeliveryType === "all" ? "No active orders" : `No ${selectedDeliveryType.replace('-', ' ')} orders`}
+                </p>
+                <p className="text-sm lg:text-base">
+                  {selectedDeliveryType === "all" 
+                    ? "New orders will appear here when available" 
+                    : "Try selecting 'All Deliveries' to see other available orders"
+                  }
+                </p>
               </div>
             </div>
           )}
