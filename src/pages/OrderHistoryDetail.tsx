@@ -525,8 +525,18 @@ const OrderHistoryDetail: React.FC = () => {
                 <div className="flex-1">
                   <h3 className="font-semibold text-lg">Order from {orderDetail.restaurantName}</h3>
                   <div className="flex items-center space-x-2 mt-1">
-                    <Badge className="bg-orange-100 text-orange-800 hover:bg-orange-100">
-                      🏨 Room Delivery
+                    <Badge className={`${
+                      orderDetail.deliveryAddress.includes('Room') 
+                        ? 'bg-orange-100 text-orange-800 hover:bg-orange-100' 
+                        : orderDetail.deliveryAddress.includes('Pool')
+                        ? 'bg-blue-100 text-blue-800 hover:bg-blue-100'
+                        : 'bg-green-100 text-green-800 hover:bg-green-100'
+                    }`}>
+                      {orderDetail.deliveryAddress.includes('Room') 
+                        ? '🏨 Room Delivery' 
+                        : orderDetail.deliveryAddress.includes('Pool')
+                        ? '🏊 Pool Service'
+                        : '🏖️ Beach Service'}
                     </Badge>
                     {getStatusBadge(orderDetail.status)}
                   </div>
