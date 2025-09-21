@@ -30,8 +30,8 @@ interface Order {
 const OrderHistory: React.FC = () => {
   const navigate = useNavigate();
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
-    from: startOfMonth(new Date()),
-    to: new Date(),
+    from: new Date(2024, 8, 1), // September 1, 2024
+    to: new Date(2024, 8, 20), // September 20, 2024
   });
 
   // Sample order data with actual datetime objects for filtering
@@ -609,11 +609,17 @@ const OrderHistory: React.FC = () => {
   const filteredOrders = allOrders.filter((order) => {
     if (!dateRange?.from) return true;
     
+    // Debug logging
+    console.log('Date range:', { from: dateRange?.from, to: dateRange?.to });
+    console.log('Order date:', order.dateTime);
+    
     if (dateRange.to) {
-      return isWithinInterval(order.dateTime, {
+      const isWithin = isWithinInterval(order.dateTime, {
         start: dateRange.from,
         end: dateRange.to,
       });
+      console.log('Order within interval:', isWithin, order.orderId);
+      return isWithin;
     }
     
     return order.dateTime >= dateRange.from;
