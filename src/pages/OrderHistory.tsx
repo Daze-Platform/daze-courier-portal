@@ -801,7 +801,7 @@ const OrderHistory: React.FC = () => {
                     <div 
                       key={order.id} 
                       className="flex items-center justify-between p-4 border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors"
-                      onClick={() => handleOrderClick(order.id)}
+                      onClick={() => handleOrderClick(order.orderId)}
                     >
                       <div className="flex items-center space-x-4">
                         <div className="w-12 h-12 rounded-full overflow-hidden bg-muted flex items-center justify-center">
