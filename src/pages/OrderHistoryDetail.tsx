@@ -7,6 +7,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import UnifiedHeader from "@/components/UnifiedHeader";
 import DesktopSidebar from "@/components/DesktopSidebar";
 import margaritaMamasLogo from '@/assets/margarita-mamas-logo.png';
+import salDeMarLogo from '@/assets/sal-de-mar-logo.png';
+import oceanBreezeLogo from '@/assets/ocean-breeze-logo.png';
+import sunsetGrillLogo from '@/assets/sunset-grill-logo.png';
 
 interface OrderItem {
   id: string;
@@ -43,43 +46,313 @@ const OrderHistoryDetail: React.FC = () => {
   const navigate = useNavigate();
   const { orderId } = useParams();
 
-  // Sample order detail data based on Figma
-  const orderDetail: OrderDetail = {
-    id: orderId || '1',
-    orderNumber: '861959',
-    restaurantName: "Margarita Mama's",
-    restaurantLogo: margaritaMamasLogo,
-    status: 'delivered',
-    deliveryAddress: 'Room Delivery',
-    roomNumber: 'Room N°12345',
-    deliveryTime: '11:36AM',
-    deliveryDate: 'Tuesday, July 21, 2021',
-    customer: {
-      name: 'Gretchen Bergson',
-      email: 'gretchenberg50@daze.com'
-    },
-    items: [
-      {
+  // Mock order details database - each order ID maps to specific details
+  const getOrderDetails = (orderNumber: string): OrderDetail => {
+    const orderDetailsMap: Record<string, OrderDetail> = {
+      // December orders
+      '1234646': {
         id: '1',
-        name: 'Fried Rice',
-        price: 13.90,
-        quantity: 1,
-        modifications: ['Choice of Protein: Chicken ($2.00)']
+        orderNumber: '1234646',
+        restaurantName: "Margarita Mama's",
+        restaurantLogo: margaritaMamasLogo,
+        status: 'delivered',
+        deliveryAddress: 'Room Delivery',
+        roomNumber: 'Room N°245',
+        deliveryTime: '5:30 PM',
+        deliveryDate: 'Thursday, December 6, 2024',
+        customer: {
+          name: 'Johny Smith',
+          email: 'johnysmith@email.com'
+        },
+        items: [
+          {
+            id: '1',
+            name: 'Chicken Burrito Bowl',
+            price: 14.50,
+            quantity: 1,
+            modifications: ['Extra guacamole (+$2.00)', 'No beans']
+          },
+          {
+            id: '2',
+            name: 'Chips & Salsa',
+            price: 4.50,
+            quantity: 1,
+            modifications: []
+          }
+        ],
+        subtotal: 19.00,
+        processingFee: 2.50,
+        deliveryTips: 3.50,
+        total: 25.00,
+        specialNotes: 'Please knock softly - baby sleeping in room.'
       },
-      {
+      '1234647': {
         id: '2',
-        name: 'Ham & Cheese Croissant',
-        price: 22.00,
-        quantity: 2,
-        modifications: ['Extra slices of cheese ($1.00)']
+        orderNumber: '1234647',
+        restaurantName: 'Souvla-NoPa',
+        restaurantLogo: salDeMarLogo,
+        status: 'cancelled',
+        deliveryAddress: 'Room Delivery',
+        roomNumber: 'Room N°156',
+        deliveryTime: '2:20 PM',
+        deliveryDate: 'Sunday, December 15, 2024',
+        customer: {
+          name: 'Aaron Smith',
+          email: 'aaron.smith@gmail.com'
+        },
+        items: [
+          {
+            id: '1',
+            name: 'Greek Salad',
+            price: 12.90,
+            quantity: 1,
+            modifications: ['Add grilled chicken (+$4.00)']
+          }
+        ],
+        subtotal: 16.90,
+        processingFee: 1.50,
+        deliveryTips: 2.00,
+        total: 20.40,
+        specialNotes: 'Order was cancelled by customer due to dietary restrictions.'
+      },
+      '1234648': {
+        id: '3',
+        orderNumber: '1234648',
+        restaurantName: 'Cheese Kitchen',
+        restaurantLogo: oceanBreezeLogo,
+        status: 'delivered',
+        deliveryAddress: 'Room Delivery',
+        roomNumber: 'Room N°789',
+        deliveryTime: '7:45 PM',
+        deliveryDate: 'Tuesday, December 3, 2024',
+        customer: {
+          name: 'Sarah Johnson',
+          email: 'sarah.j@outlook.com'
+        },
+        items: [
+          {
+            id: '1',
+            name: 'Truffle Mac & Cheese',
+            price: 18.75,
+            quantity: 1,
+            modifications: ['Extra truffle (+$3.00)']
+          },
+          {
+            id: '2',
+            name: 'Caesar Salad',
+            price: 11.50,
+            quantity: 1,
+            modifications: ['No croutons', 'Dressing on side']
+          },
+          {
+            id: '3',
+            name: 'Chocolate Lava Cake',
+            price: 9.25,
+            quantity: 1,
+            modifications: []
+          }
+        ],
+        subtotal: 42.50,
+        processingFee: 3.25,
+        deliveryTips: 8.50,
+        total: 54.25,
+        specialNotes: 'Anniversary dinner - please include complimentary dessert if available.'
+      },
+      // September orders
+      '2340001': {
+        id: '8',
+        orderNumber: '2340001',
+        restaurantName: "Margarita Mama's",
+        restaurantLogo: margaritaMamasLogo,
+        status: 'delivered',
+        deliveryAddress: 'Pool Deck',
+        roomNumber: 'Cabana #12',
+        deliveryTime: '11:30 AM',
+        deliveryDate: 'Sunday, September 1, 2025',
+        customer: {
+          name: 'Alex Rodriguez',
+          email: 'alex.rodriguez@yahoo.com'
+        },
+        items: [
+          {
+            id: '1',
+            name: 'Fish Tacos',
+            price: 16.90,
+            quantity: 3,
+            modifications: ['Corn tortillas', 'Extra lime']
+          },
+          {
+            id: '2',
+            name: 'Frozen Margarita',
+            price: 12.00,
+            quantity: 2,
+            modifications: ['Salt rim', 'On the rocks']
+          }
+        ],
+        subtotal: 74.70,
+        processingFee: 4.50,
+        deliveryTips: 12.00,
+        total: 91.20,
+        specialNotes: 'Pool party order - please bring extra napkins and ice.'
+      },
+      '2340002': {
+        id: '9',
+        orderNumber: '2340002',
+        restaurantName: 'Sunset Grill',
+        restaurantLogo: sunsetGrillLogo,
+        status: 'delivered',
+        deliveryAddress: 'Beach Service',
+        roomNumber: 'Umbrella B-15',
+        deliveryTime: '6:45 PM',
+        deliveryDate: 'Sunday, September 1, 2025',
+        customer: {
+          name: 'Maria Garcia',
+          email: 'maria.garcia@email.com'
+        },
+        items: [
+          {
+            id: '1',
+            name: 'Grilled Salmon',
+            price: 28.50,
+            quantity: 1,
+            modifications: ['Medium doneness', 'Lemon butter sauce']
+          },
+          {
+            id: '2',
+            name: 'Roasted Vegetables',
+            price: 14.25,
+            quantity: 1,
+            modifications: ['No bell peppers']
+          },
+          {
+            id: '3',
+            name: 'White Wine',
+            price: 15.00,
+            quantity: 1,
+            modifications: ['Chilled', 'Sauvignon Blanc']
+          }
+        ],
+        subtotal: 57.75,
+        processingFee: 4.25,
+        deliveryTips: 11.50,
+        total: 73.50,
+        specialNotes: 'Sunset dinner by the beach - please deliver before 7 PM.'
+      },
+      '2340003': {
+        id: '10',
+        orderNumber: '2340003',
+        restaurantName: 'Ocean Breeze',
+        restaurantLogo: oceanBreezeLogo,
+        status: 'delivered',
+        deliveryAddress: 'Room Delivery',
+        roomNumber: 'Room N°1024',
+        deliveryTime: '12:15 PM',
+        deliveryDate: 'Monday, September 2, 2025',
+        customer: {
+          name: 'David Thompson',
+          email: 'david.t@protonmail.com'
+        },
+        items: [
+          {
+            id: '1',
+            name: 'Seafood Chowder',
+            price: 16.75,
+            quantity: 1,
+            modifications: ['Extra bread roll']
+          },
+          {
+            id: '2',
+            name: 'Club Sandwich',
+            price: 13.50,
+            quantity: 1,
+            modifications: ['Whole wheat bread', 'No mayo']
+          },
+          {
+            id: '3',
+            name: 'Fresh Fruit Bowl',
+            price: 8.90,
+            quantity: 1,
+            modifications: []
+          }
+        ],
+        subtotal: 39.15,
+        processingFee: 3.00,
+        deliveryTips: 6.25,
+        total: 48.40,
+        specialNotes: 'Lunch meeting - please deliver quietly.'
+      },
+      '2340004': {
+        id: '11',
+        orderNumber: '2340004',
+        restaurantName: 'Sal de Mar',
+        restaurantLogo: salDeMarLogo,
+        status: 'cancelled',
+        deliveryAddress: 'Room Delivery',
+        roomNumber: 'Room N°567',
+        deliveryTime: '7:20 PM',
+        deliveryDate: 'Monday, September 2, 2025',
+        customer: {
+          name: 'Jennifer Lee',
+          email: 'jlee@company.com'
+        },
+        items: [
+          {
+            id: '1',
+            name: 'Paella Valenciana',
+            price: 32.00,
+            quantity: 1,
+            modifications: ['No seafood', 'Extra saffron']
+          }
+        ],
+        subtotal: 32.00,
+        processingFee: 2.50,
+        deliveryTips: 5.00,
+        total: 39.50,
+        specialNotes: 'Order cancelled - customer had to leave hotel unexpectedly.'
+      },
+      '2340005': {
+        id: '12',
+        orderNumber: '2340005',
+        restaurantName: "Margarita Mama's",
+        restaurantLogo: margaritaMamasLogo,
+        status: 'delivered',
+        deliveryAddress: 'Room Delivery',
+        roomNumber: 'Room N°890',
+        deliveryTime: '1:30 PM',
+        deliveryDate: 'Tuesday, September 3, 2025',
+        customer: {
+          name: 'Robert Brown',
+          email: 'rob.brown@webmail.com'
+        },
+        items: [
+          {
+            id: '1',
+            name: 'Carnitas Quesadilla',
+            price: 15.90,
+            quantity: 2,
+            modifications: ['Extra cheese', 'Sour cream on side']
+          },
+          {
+            id: '2',
+            name: 'Mexican Beer',
+            price: 6.50,
+            quantity: 3,
+            modifications: ['Corona', 'With lime']
+          }
+        ],
+        subtotal: 51.30,
+        processingFee: 3.75,
+        deliveryTips: 8.00,
+        total: 63.05,
+        specialNotes: 'Watching the game - please deliver during halftime if possible.'
       }
-    ],
-    subtotal: 35.90,
-    processingFee: 4.00,
-    deliveryTips: 4.00,
-    total: 39.90,
-    specialNotes: 'Make sure to include free samples on every Order.'
+    };
+
+    // Return specific order details or fallback to first order
+    return orderDetailsMap[orderNumber] || orderDetailsMap['1234646'];
   };
+
+  const orderDetail = getOrderDetails(orderId || '1');
 
   const getStatusBadge = (status: string) => {
     switch (status) {
