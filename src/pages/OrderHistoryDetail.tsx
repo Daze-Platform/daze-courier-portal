@@ -165,8 +165,8 @@ const OrderHistoryDetail: React.FC = () => {
         restaurantName: "Margarita Mama's",
         restaurantLogo: margaritaMamasLogo,
         status: 'delivered',
-        deliveryAddress: 'Pool Deck',
-        roomNumber: 'Cabana #12',
+        deliveryAddress: 'Pool Service',
+        roomNumber: 'Pool Deck - Cabana 12',
         deliveryTime: '11:30 AM',
         deliveryDate: 'Sunday, September 1, 2025',
         customer: {
@@ -202,7 +202,7 @@ const OrderHistoryDetail: React.FC = () => {
         restaurantLogo: sunsetGrillLogo,
         status: 'delivered',
         deliveryAddress: 'Beach Service',
-        roomNumber: 'Umbrella B-15',
+        roomNumber: 'Beach - Umbrella B15',
         deliveryTime: '6:45 PM',
         deliveryDate: 'Sunday, September 1, 2025',
         customer: {

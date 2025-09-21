@@ -25,6 +25,8 @@ interface Order {
   date: string;
   time: string;
   dateTime: Date; // Add datetime for filtering
+  deliveryAddress: string;
+  deliveryType: 'Room Delivery' | 'Pool Service' | 'Beach Service';
 }
 
 const OrderHistory: React.FC = () => {
@@ -47,7 +49,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 12.50,
       date: 'Dec 6, 2024',
       time: '17:30 PM',
-      dateTime: new Date(2024, 11, 6, 17, 30)
+      dateTime: new Date(2024, 11, 6, 17, 30),
+      deliveryAddress: 'Room N°245',
+      deliveryType: 'Room Delivery'
     },
     {
       id: '2',
@@ -59,7 +63,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 9.10,
       date: 'Dec 15, 2024',
       time: '14:20 PM',
-      dateTime: new Date(2024, 11, 15, 14, 20)
+      dateTime: new Date(2024, 11, 15, 14, 20),
+      deliveryAddress: 'Room N°156',
+      deliveryType: 'Room Delivery'
     },
     {
       id: '3',
@@ -71,7 +77,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 15.75,
       date: 'Dec 3, 2024',
       time: '19:45 PM',
-      dateTime: new Date(2024, 11, 3, 19, 45)
+      dateTime: new Date(2024, 11, 3, 19, 45),
+      deliveryAddress: 'Room N°789',
+      deliveryType: 'Room Delivery'
     },
     {
       id: '4',
@@ -83,7 +91,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 11.25,
       date: 'Dec 22, 2024',
       time: '12:15 PM',
-      dateTime: new Date(2024, 11, 22, 12, 15)
+      dateTime: new Date(2024, 11, 22, 12, 15),
+      deliveryAddress: 'Pool Deck - Cabana 3',
+      deliveryType: 'Pool Service'
     },
     {
       id: '5',
@@ -95,7 +105,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 13.00,
       date: 'Dec 18, 2024',
       time: '18:00 PM',
-      dateTime: new Date(2024, 11, 18, 18, 0)
+      dateTime: new Date(2024, 11, 18, 18, 0),
+      deliveryAddress: 'Beach - Umbrella A5',
+      deliveryType: 'Beach Service'
     },
     {
       id: '6',
@@ -107,7 +119,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 14.25,
       date: 'Dec 20, 2024',
       time: '16:30 PM',
-      dateTime: new Date(2024, 11, 20, 16, 30)
+      dateTime: new Date(2024, 11, 20, 16, 30),
+      deliveryAddress: 'Pool Deck - Cabana 7',
+      deliveryType: 'Pool Service'
     },
     {
       id: '7',
@@ -119,7 +133,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 10.75,
       date: 'Dec 21, 2024',
       time: '13:45 PM',
-      dateTime: new Date(2024, 11, 21, 13, 45)
+      dateTime: new Date(2024, 11, 21, 13, 45),
+      deliveryAddress: 'Beach - Umbrella C2',
+      deliveryType: 'Beach Service'
     },
     
     // September orders (Sep 1-20, 2025)
@@ -133,7 +149,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 14.50,
       date: 'Sep 1, 2025',
       time: '11:30 AM',
-      dateTime: new Date(2025, 8, 1, 11, 30)
+      dateTime: new Date(2025, 8, 1, 11, 30),
+      deliveryAddress: 'Pool Deck - Cabana 12',
+      deliveryType: 'Pool Service'
     },
     {
       id: '9',
@@ -145,7 +163,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 16.75,
       date: 'Sep 1, 2025',
       time: '18:45 PM',
-      dateTime: new Date(2025, 8, 1, 18, 45)
+      dateTime: new Date(2025, 8, 1, 18, 45),
+      deliveryAddress: 'Beach - Umbrella B15',
+      deliveryType: 'Beach Service'
     },
     {
       id: '10',
@@ -157,7 +177,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 12.25,
       date: 'Sep 2, 2025',
       time: '12:15 PM',
-      dateTime: new Date(2025, 8, 2, 12, 15)
+      dateTime: new Date(2025, 8, 2, 12, 15),
+      deliveryAddress: 'Room N°1024',
+      deliveryType: 'Room Delivery'
     },
     {
       id: '11',
@@ -169,7 +191,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 9.50,
       date: 'Sep 2, 2025',
       time: '19:20 PM',
-      dateTime: new Date(2025, 8, 2, 19, 20)
+      dateTime: new Date(2025, 8, 2, 19, 20),
+      deliveryAddress: 'Room N°567',
+      deliveryType: 'Room Delivery'
     },
     {
       id: '12',
@@ -181,7 +205,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 13.75,
       date: 'Sep 3, 2025',
       time: '13:30 PM',
-      dateTime: new Date(2025, 8, 3, 13, 30)
+      dateTime: new Date(2025, 8, 3, 13, 30),
+      deliveryAddress: 'Room N°890',
+      deliveryType: 'Room Delivery'
     },
     {
       id: '13',
@@ -193,7 +219,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 15.00,
       date: 'Sep 3, 2025',
       time: '20:10 PM',
-      dateTime: new Date(2025, 8, 3, 20, 10)
+      dateTime: new Date(2025, 8, 3, 20, 10),
+      deliveryAddress: 'Beach - Umbrella D8',
+      deliveryType: 'Beach Service'
     },
     {
       id: '14',
@@ -205,7 +233,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 11.25,
       date: 'Sep 4, 2025',
       time: '14:45 PM',
-      dateTime: new Date(2025, 8, 4, 14, 45)
+      dateTime: new Date(2025, 8, 4, 14, 45),
+      deliveryAddress: 'Pool Deck - Cabana 9',
+      deliveryType: 'Pool Service'
     },
     {
       id: '15',
@@ -217,7 +247,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 17.25,
       date: 'Sep 4, 2025',
       time: '19:55 PM',
-      dateTime: new Date(2025, 8, 4, 19, 55)
+      dateTime: new Date(2025, 8, 4, 19, 55),
+      deliveryAddress: 'Beach - Umbrella A12',
+      deliveryType: 'Beach Service'
     },
     {
       id: '16',
@@ -229,7 +261,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 10.50,
       date: 'Sep 5, 2025',
       time: '12:00 PM',
-      dateTime: new Date(2025, 8, 5, 12, 0)
+      dateTime: new Date(2025, 8, 5, 12, 0),
+      deliveryAddress: 'Room N°334',
+      deliveryType: 'Room Delivery'
     },
     {
       id: '17',
@@ -241,7 +275,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 14.75,
       date: 'Sep 5, 2025',
       time: '18:30 PM',
-      dateTime: new Date(2025, 8, 5, 18, 30)
+      dateTime: new Date(2025, 8, 5, 18, 30),
+      deliveryAddress: 'Beach - Umbrella C9',
+      deliveryType: 'Beach Service'
     },
     {
       id: '18',
@@ -253,7 +289,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 8.75,
       date: 'Sep 6, 2025',
       time: '11:45 AM',
-      dateTime: new Date(2025, 8, 6, 11, 45)
+      dateTime: new Date(2025, 8, 6, 11, 45),
+      deliveryAddress: 'Pool Deck - Cabana 15',
+      deliveryType: 'Pool Service'
     },
     {
       id: '19',
@@ -265,7 +303,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 16.50,
       date: 'Sep 6, 2025',
       time: '19:15 PM',
-      dateTime: new Date(2025, 8, 6, 19, 15)
+      dateTime: new Date(2025, 8, 6, 19, 15),
+      deliveryAddress: 'Beach - Umbrella B7',
+      deliveryType: 'Beach Service'
     },
     {
       id: '20',
@@ -277,7 +317,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 12.00,
       date: 'Sep 7, 2025',
       time: '13:20 PM',
-      dateTime: new Date(2025, 8, 7, 13, 20)
+      dateTime: new Date(2025, 8, 7, 13, 20),
+      deliveryAddress: 'Pool Deck - Cabana 4',
+      deliveryType: 'Pool Service'
     },
     {
       id: '21',
@@ -289,7 +331,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 13.25,
       date: 'Sep 7, 2025',
       time: '20:00 PM',
-      dateTime: new Date(2025, 8, 7, 20, 0)
+      dateTime: new Date(2025, 8, 7, 20, 0),
+      deliveryAddress: 'Beach - Umbrella E3',
+      deliveryType: 'Beach Service'
     },
     {
       id: '22',
@@ -301,7 +345,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 15.75,
       date: 'Sep 8, 2025',
       time: '12:30 PM',
-      dateTime: new Date(2025, 8, 8, 12, 30)
+      dateTime: new Date(2025, 8, 8, 12, 30),
+      deliveryAddress: 'Room N°445',
+      deliveryType: 'Room Delivery'
     },
     {
       id: '23',
@@ -313,7 +359,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 11.75,
       date: 'Sep 8, 2025',
       time: '18:45 PM',
-      dateTime: new Date(2025, 8, 8, 18, 45)
+      dateTime: new Date(2025, 8, 8, 18, 45),
+      deliveryAddress: 'Beach - Umbrella F11',
+      deliveryType: 'Beach Service'
     },
     {
       id: '24',
@@ -325,7 +373,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 14.00,
       date: 'Sep 9, 2025',
       time: '11:15 AM',
-      dateTime: new Date(2025, 8, 9, 11, 15)
+      dateTime: new Date(2025, 8, 9, 11, 15),
+      deliveryAddress: 'Pool Deck - Cabana 18',
+      deliveryType: 'Pool Service'
     },
     {
       id: '25',
@@ -337,7 +387,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 9.25,
       date: 'Sep 9, 2025',
       time: '19:30 PM',
-      dateTime: new Date(2025, 8, 9, 19, 30)
+      dateTime: new Date(2025, 8, 9, 19, 30),
+      deliveryAddress: 'Beach - Umbrella A8',
+      deliveryType: 'Beach Service'
     },
     {
       id: '26',
@@ -349,7 +401,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 16.25,
       date: 'Sep 10, 2025',
       time: '14:00 PM',
-      dateTime: new Date(2025, 8, 10, 14, 0)
+      dateTime: new Date(2025, 8, 10, 14, 0),
+      deliveryAddress: 'Room N°678',
+      deliveryType: 'Room Delivery'
     },
     {
       id: '27',
@@ -361,7 +415,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 12.75,
       date: 'Sep 10, 2025',
       time: '20:15 PM',
-      dateTime: new Date(2025, 8, 10, 20, 15)
+      dateTime: new Date(2025, 8, 10, 20, 15),
+      deliveryAddress: 'Beach - Umbrella D5',
+      deliveryType: 'Beach Service'
     },
     {
       id: '28',
@@ -373,7 +429,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 13.50,
       date: 'Sep 11, 2025',
       time: '12:45 PM',
-      dateTime: new Date(2025, 8, 11, 12, 45)
+      dateTime: new Date(2025, 8, 11, 12, 45),
+      deliveryAddress: 'Pool Deck - Cabana 22',
+      deliveryType: 'Pool Service'
     },
     {
       id: '29',
@@ -385,7 +443,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 15.50,
       date: 'Sep 11, 2025',
       time: '18:20 PM',
-      dateTime: new Date(2025, 8, 11, 18, 20)
+      dateTime: new Date(2025, 8, 11, 18, 20),
+      deliveryAddress: 'Beach - Umbrella C14',
+      deliveryType: 'Beach Service'
     },
     {
       id: '30',
@@ -397,7 +457,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 10.25,
       date: 'Sep 12, 2025',
       time: '11:00 AM',
-      dateTime: new Date(2025, 8, 12, 11, 0)
+      dateTime: new Date(2025, 8, 12, 11, 0),
+      deliveryAddress: 'Room N°823',
+      deliveryType: 'Room Delivery'
     },
     {
       id: '31',
@@ -409,7 +471,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 17.75,
       date: 'Sep 12, 2025',
       time: '19:45 PM',
-      dateTime: new Date(2025, 8, 12, 19, 45)
+      dateTime: new Date(2025, 8, 12, 19, 45),
+      deliveryAddress: 'Beach - Umbrella B9',
+      deliveryType: 'Beach Service'
     },
     {
       id: '32',
@@ -421,7 +485,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 11.50,
       date: 'Sep 13, 2025',
       time: '13:10 PM',
-      dateTime: new Date(2025, 8, 13, 13, 10)
+      dateTime: new Date(2025, 8, 13, 13, 10),
+      deliveryAddress: 'Pool Deck - Cabana 11',
+      deliveryType: 'Pool Service'
     },
     {
       id: '33',
@@ -433,7 +499,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 14.25,
       date: 'Sep 13, 2025',
       time: '20:30 PM',
-      dateTime: new Date(2025, 8, 13, 20, 30)
+      dateTime: new Date(2025, 8, 13, 20, 30),
+      deliveryAddress: 'Beach - Umbrella F6',
+      deliveryType: 'Beach Service'
     },
     {
       id: '34',
@@ -445,7 +513,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 7.75,
       date: 'Sep 14, 2025',
       time: '12:20 PM',
-      dateTime: new Date(2025, 8, 14, 12, 20)
+      dateTime: new Date(2025, 8, 14, 12, 20),
+      deliveryAddress: 'Room N°912',
+      deliveryType: 'Room Delivery'
     },
     {
       id: '35',
@@ -457,7 +527,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 16.00,
       date: 'Sep 14, 2025',
       time: '18:55 PM',
-      dateTime: new Date(2025, 8, 14, 18, 55)
+      dateTime: new Date(2025, 8, 14, 18, 55),
+      deliveryAddress: 'Beach - Umbrella A16',
+      deliveryType: 'Beach Service'
     },
     {
       id: '36',
@@ -469,7 +541,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 12.25,
       date: 'Sep 15, 2025',
       time: '11:40 AM',
-      dateTime: new Date(2025, 8, 15, 11, 40)
+      dateTime: new Date(2025, 8, 15, 11, 40),
+      deliveryAddress: 'Pool Deck - Cabana 6',
+      deliveryType: 'Pool Service'
     },
     {
       id: '37',
@@ -481,7 +555,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 15.25,
       date: 'Sep 15, 2025',
       time: '19:10 PM',
-      dateTime: new Date(2025, 8, 15, 19, 10)
+      dateTime: new Date(2025, 8, 15, 19, 10),
+      deliveryAddress: 'Beach - Umbrella E12',
+      deliveryType: 'Beach Service'
     },
     {
       id: '38',
@@ -493,7 +569,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 13.75,
       date: 'Sep 16, 2025',
       time: '14:25 PM',
-      dateTime: new Date(2025, 8, 16, 14, 25)
+      dateTime: new Date(2025, 8, 16, 14, 25),
+      deliveryAddress: 'Room N°567',
+      deliveryType: 'Room Delivery'
     },
     {
       id: '39',
@@ -505,7 +583,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 11.00,
       date: 'Sep 16, 2025',
       time: '20:40 PM',
-      dateTime: new Date(2025, 8, 16, 20, 40)
+      dateTime: new Date(2025, 8, 16, 20, 40),
+      deliveryAddress: 'Beach - Umbrella C18',
+      deliveryType: 'Beach Service'
     },
     {
       id: '40',
@@ -517,7 +597,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 14.75,
       date: 'Sep 17, 2025',
       time: '12:55 PM',
-      dateTime: new Date(2025, 8, 17, 12, 55)
+      dateTime: new Date(2025, 8, 17, 12, 55),
+      deliveryAddress: 'Pool Deck - Cabana 25',
+      deliveryType: 'Pool Service'
     },
     {
       id: '41',
@@ -529,7 +611,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 16.75,
       date: 'Sep 17, 2025',
       time: '18:05 PM',
-      dateTime: new Date(2025, 8, 17, 18, 5)
+      dateTime: new Date(2025, 8, 17, 18, 5),
+      deliveryAddress: 'Beach - Umbrella D12',
+      deliveryType: 'Beach Service'
     },
     {
       id: '42',
@@ -541,7 +625,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 9.75,
       date: 'Sep 18, 2025',
       time: '11:25 AM',
-      dateTime: new Date(2025, 8, 18, 11, 25)
+      dateTime: new Date(2025, 8, 18, 11, 25),
+      deliveryAddress: 'Room N°734',
+      deliveryType: 'Room Delivery'
     },
     {
       id: '43',
@@ -553,7 +639,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 8.50,
       date: 'Sep 18, 2025',
       time: '19:35 PM',
-      dateTime: new Date(2025, 8, 18, 19, 35)
+      dateTime: new Date(2025, 8, 18, 19, 35),
+      deliveryAddress: 'Beach - Umbrella F4',
+      deliveryType: 'Beach Service'
     },
     {
       id: '44',
@@ -565,7 +653,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 13.00,
       date: 'Sep 19, 2025',
       time: '13:50 PM',
-      dateTime: new Date(2025, 8, 19, 13, 50)
+      dateTime: new Date(2025, 8, 19, 13, 50),
+      deliveryAddress: 'Pool Deck - Cabana 8',
+      deliveryType: 'Pool Service'
     },
     {
       id: '45',
@@ -577,7 +667,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 15.75,
       date: 'Sep 19, 2025',
       time: '20:25 PM',
-      dateTime: new Date(2025, 8, 19, 20, 25)
+      dateTime: new Date(2025, 8, 19, 20, 25),
+      deliveryAddress: 'Beach - Umbrella A21',
+      deliveryType: 'Beach Service'
     },
     {
       id: '46',
@@ -589,7 +681,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 12.50,
       date: 'Sep 20, 2025',
       time: '12:10 PM',
-      dateTime: new Date(2025, 8, 20, 12, 10)
+      dateTime: new Date(2025, 8, 20, 12, 10),
+      deliveryAddress: 'Room N°456',
+      deliveryType: 'Room Delivery'
     },
     {
       id: '47',
@@ -601,7 +695,9 @@ const OrderHistory: React.FC = () => {
       deliveryFee: 17.00,
       date: 'Sep 20, 2025',
       time: '18:40 PM',
-      dateTime: new Date(2025, 8, 20, 18, 40)
+      dateTime: new Date(2025, 8, 20, 18, 40),
+      deliveryAddress: 'Beach - Umbrella E9',
+      deliveryType: 'Beach Service'
     }
   ];
 
@@ -626,6 +722,19 @@ const OrderHistory: React.FC = () => {
   });
 
   const orders = filteredOrders;
+
+  const getDeliveryTypeBadge = (deliveryType: string) => {
+    switch (deliveryType) {
+      case 'Room Delivery':
+        return <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">🏨 Room</Badge>;
+      case 'Pool Service':
+        return <Badge className="bg-cyan-100 text-cyan-800 hover:bg-cyan-100">🏊 Pool</Badge>;
+      case 'Beach Service':
+        return <Badge className="bg-orange-100 text-orange-800 hover:bg-orange-100">🏖️ Beach</Badge>;
+      default:
+        return null;
+    }
+  };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -707,6 +816,7 @@ const OrderHistory: React.FC = () => {
                           <div className="flex items-center space-x-2 mb-1">
                             <h4 className="font-medium">{order.restaurantName}</h4>
                             {getStatusBadge(order.status)}
+                            {getDeliveryTypeBadge(order.deliveryType)}
                           </div>
                           
                           <div className="flex items-center gap-4 text-sm text-muted-foreground">
@@ -714,6 +824,10 @@ const OrderHistory: React.FC = () => {
                             <span>{order.customer}</span>
                             <span>${order.deliveryFee.toFixed(2)}</span>
                             <span>{order.date}</span>
+                          </div>
+                          
+                          <div className="text-sm text-muted-foreground mt-1">
+                            📍 {order.deliveryAddress}
                           </div>
                         </div>
                       </div>
