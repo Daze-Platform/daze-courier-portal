@@ -13,7 +13,7 @@ import dazeLogo from "@/assets/daze-logo.png";
 
 const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
   const location = useLocation();
-
+  
   const menuItems = [
     {
       icon: Package,
@@ -53,6 +53,9 @@ const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
     }
   ];
 
+  // Debug log to check menuItems
+  console.log("Sidebar menuItems:", menuItems.map(item => item.label));
+
   // Mobile Sidebar (for Sheet)
   if (isMobile) {
     return (
@@ -69,21 +72,89 @@ const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
 
         {/* Navigation Menu */}
         <nav className="flex-1 px-6 py-4 space-y-2">
-          {menuItems.map((item) => (
-            <Link key={item.path} to={item.path}>
-              <Button
-                variant={item.active ? "secondary" : "ghost"}
-                className={`w-full justify-start gap-3 h-12 ${
-                  item.active 
-                    ? "bg-primary/10 text-primary hover:bg-primary/15" 
-                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                }`}
-              >
-                <item.icon className="h-5 w-5" />
-                {item.label}
-              </Button>
-            </Link>
-          ))}
+          <Link to="/">
+            <Button
+              variant={location.pathname === "/" ? "secondary" : "ghost"}
+              className={`w-full justify-start gap-3 h-12 ${
+                location.pathname === "/" 
+                  ? "bg-primary/10 text-primary hover:bg-primary/15" 
+                  : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+              }`}
+            >
+              <Package className="h-5 w-5" />
+              Active Orders
+            </Button>
+          </Link>
+          
+          <Link to="/order-history">
+            <Button
+              variant={location.pathname === "/order-history" ? "secondary" : "ghost"}
+              className={`w-full justify-start gap-3 h-12 ${
+                location.pathname === "/order-history" 
+                  ? "bg-primary/10 text-primary hover:bg-primary/15" 
+                  : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+              }`}
+            >
+              <FileText className="h-5 w-5" />
+              Order History
+            </Button>
+          </Link>
+          
+          <Link to="/ratings">
+            <Button
+              variant={location.pathname === "/ratings" ? "secondary" : "ghost"}
+              className={`w-full justify-start gap-3 h-12 ${
+                location.pathname === "/ratings" 
+                  ? "bg-primary/10 text-primary hover:bg-primary/15" 
+                  : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+              }`}
+            >
+              <Star className="h-5 w-5" />
+              Ratings
+            </Button>
+          </Link>
+          
+          <Link to="/earnings">
+            <Button
+              variant={location.pathname === "/earnings" ? "secondary" : "ghost"}
+              className={`w-full justify-start gap-3 h-12 ${
+                location.pathname === "/earnings" 
+                  ? "bg-primary/10 text-primary hover:bg-primary/15" 
+                  : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+              }`}
+            >
+              <DollarSign className="h-5 w-5" />
+              Earnings
+            </Button>
+          </Link>
+          
+          <Link to="/payouts">
+            <Button
+              variant={location.pathname === "/payouts" ? "secondary" : "ghost"}
+              className={`w-full justify-start gap-3 h-12 ${
+                location.pathname === "/payouts" 
+                  ? "bg-primary/10 text-primary hover:bg-primary/15" 
+                  : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+              }`}
+            >
+              <CreditCard className="h-5 w-5" />
+              Payouts
+            </Button>
+          </Link>
+          
+          <Link to="/help">
+            <Button
+              variant={location.pathname === "/help" ? "secondary" : "ghost"}
+              className={`w-full justify-start gap-3 h-12 ${
+                location.pathname === "/help" 
+                  ? "bg-primary/10 text-primary hover:bg-primary/15" 
+                  : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+              }`}
+            >
+              <HelpCircle className="h-5 w-5" />
+              Get Help
+            </Button>
+          </Link>
         </nav>
 
         {/* User Profile */}
