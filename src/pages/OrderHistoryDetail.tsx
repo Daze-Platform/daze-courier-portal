@@ -345,6 +345,128 @@ const OrderHistoryDetail: React.FC = () => {
         deliveryTips: 8.00,
         total: 63.05,
         specialNotes: 'Watching the game - please deliver during halftime if possible.'
+      },
+      '2340006': {
+        id: '13',
+        orderNumber: '2340006',
+        restaurantName: 'Sunset Grill',
+        restaurantLogo: sunsetGrillLogo,
+        status: 'delivered',
+        deliveryAddress: 'Beach Service',
+        roomNumber: 'Beach - Umbrella D8',
+        deliveryTime: '8:10 PM',
+        deliveryDate: 'Tuesday, September 3, 2025',
+        customer: {
+          name: 'Lisa Wilson',
+          email: 'lisa.wilson@email.com'
+        },
+        items: [
+          {
+            id: '1',
+            name: 'Grilled Mahi-Mahi',
+            price: 26.50,
+            quantity: 1,
+            modifications: ['Grilled, not fried', 'Extra lemon']
+          },
+          {
+            id: '2',
+            name: 'Tropical Salad',
+            price: 14.75,
+            quantity: 1,
+            modifications: ['No onions', 'Mango dressing']
+          },
+          {
+            id: '3',
+            name: 'Coconut Water',
+            price: 4.50,
+            quantity: 2,
+            modifications: []
+          }
+        ],
+        subtotal: 50.25,
+        processingFee: 3.75,
+        deliveryTips: 10.00,
+        total: 64.00,
+        specialNotes: 'Beach sunset dinner - please deliver before dark.'
+      },
+      '2340007': {
+        id: '14',
+        orderNumber: '2340007',
+        restaurantName: 'Ocean Breeze',
+        restaurantLogo: oceanBreezeLogo,
+        status: 'delivered',
+        deliveryAddress: 'Pool Service',
+        roomNumber: 'Pool Deck - Cabana 9',
+        deliveryTime: '2:45 PM',
+        deliveryDate: 'Wednesday, September 4, 2025',
+        customer: {
+          name: 'Michael Johnson',
+          email: 'mjohnson@company.com'
+        },
+        items: [
+          {
+            id: '1',
+            name: 'Pool Burger',
+            price: 18.90,
+            quantity: 1,
+            modifications: ['Medium rare', 'No pickles']
+          },
+          {
+            id: '2',
+            name: 'Sweet Potato Fries',
+            price: 8.50,
+            quantity: 1,
+            modifications: ['Extra crispy']
+          },
+          {
+            id: '3',
+            name: 'Ice Cold Beer',
+            price: 6.75,
+            quantity: 2,
+            modifications: ['IPA', 'Extra cold']
+          }
+        ],
+        subtotal: 41.40,
+        processingFee: 3.25,
+        deliveryTips: 7.50,
+        total: 52.15,
+        specialNotes: 'Pool party - please bring extra napkins.'
+      },
+      '2340008': {
+        id: '15',
+        orderNumber: '2340008',
+        restaurantName: 'Sal de Mar',
+        restaurantLogo: salDeMarLogo,
+        status: 'delivered',
+        deliveryAddress: 'Beach Service',
+        roomNumber: 'Beach - Umbrella A12',
+        deliveryTime: '7:55 PM',
+        deliveryDate: 'Wednesday, September 4, 2025',
+        customer: {
+          name: 'Ashley Davis',
+          email: 'ashley.davis@email.com'
+        },
+        items: [
+          {
+            id: '1',
+            name: 'Seafood Paella',
+            price: 34.00,
+            quantity: 1,
+            modifications: ['Extra saffron', 'No mussels']
+          },
+          {
+            id: '2',
+            name: 'Sangria Pitcher',
+            price: 28.50,
+            quantity: 1,
+            modifications: ['Red sangria', 'Extra fruit']
+          }
+        ],
+        subtotal: 62.50,
+        processingFee: 4.75,
+        deliveryTips: 12.50,
+        total: 79.75,
+        specialNotes: 'Romantic beach dinner - please include candles if available.'
       }
     };
 
