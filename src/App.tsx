@@ -10,6 +10,7 @@ import OrderHistory from "./pages/OrderHistory";
 import OrderHistoryDetail from "./pages/OrderHistoryDetail";
 import Ratings from "./pages/Ratings";
 import Earnings from "./pages/Earnings";
+import Payouts from "./pages/Payouts";
 import Help from "./pages/Help";
 import ProfileSettings from "./pages/ProfileSettings";
 import NotFound from "./pages/NotFound";
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/order-details/:orderId" element={<OrderHistoryDetail />} />
           <Route path="/ratings" element={<Ratings />} />
           <Route path="/earnings" element={<Earnings />} />
+          <Route path="/payouts" element={<Payouts />} />
           <Route path="/help" element={<Help />} />
           <Route path="/profile-settings" element={<ProfileSettings />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

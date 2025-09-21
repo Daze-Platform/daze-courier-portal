@@ -1,4 +1,4 @@
-import { Package, FileText, Star, DollarSign, HelpCircle } from "lucide-react";
+import { Package, FileText, Star, DollarSign, CreditCard, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocation, Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -30,6 +30,12 @@ const DesktopSidebar = () => {
       label: "Earnings",
       path: "/earnings",
       active: location.pathname === "/earnings"
+    },
+    {
+      icon: CreditCard,
+      label: "Payouts",
+      path: "/payouts",
+      active: location.pathname === "/payouts"
     },
     {
       icon: HelpCircle,
