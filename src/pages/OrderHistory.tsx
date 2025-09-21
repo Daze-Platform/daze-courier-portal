@@ -95,6 +95,30 @@ const OrderHistory: React.FC = () => {
       date: 'Dec 18, 2024',
       time: '18:00 PM',
       dateTime: new Date(2024, 11, 18, 18, 0)
+    },
+    {
+      id: '6',
+      restaurantName: 'Ocean Breeze',
+      restaurantLogo: oceanBreezeLogo,
+      status: 'delivered',
+      orderId: '1234651',
+      customer: 'John Doe',
+      deliveryFee: 14.25,
+      date: 'Dec 20, 2024',
+      time: '16:30 PM',
+      dateTime: new Date(2024, 11, 20, 16, 30)
+    },
+    {
+      id: '7',
+      restaurantName: 'Sal de Mar',
+      restaurantLogo: salDeMarLogo,
+      status: 'delivered',
+      orderId: '1234652',
+      customer: 'Jane Smith',
+      deliveryFee: 10.75,
+      date: 'Dec 21, 2024',
+      time: '13:45 PM',
+      dateTime: new Date(2024, 11, 21, 13, 45)
     }
   ];
 
