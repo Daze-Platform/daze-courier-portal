@@ -124,7 +124,7 @@ const OrderHistoryDetail: React.FC = () => {
                   <img 
                     src={orderDetail.restaurantLogo} 
                     alt={orderDetail.restaurantName}
-                    className="w-10 h-10 object-contain"
+                    className="h-full w-full object-cover rounded-full"
                   />
                 </div>
                 <div className="flex-1">

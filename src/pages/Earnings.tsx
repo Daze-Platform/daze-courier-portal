@@ -484,11 +484,11 @@ const Earnings: React.FC = () => {
                 {filteredDetails.map((detail) => (
                   <div key={detail.id} className="flex items-center gap-4 p-4 border rounded-lg">
                     <div className="w-12 h-12 rounded-full overflow-hidden bg-muted flex items-center justify-center">
-                      <img 
-                        src={detail.restaurantLogo} 
-                        alt={detail.restaurantName}
-                        className="w-10 h-10 object-contain"
-                      />
+                        <img 
+                          src={detail.restaurantLogo} 
+                          alt={detail.restaurantName}
+                          className="h-full w-full object-cover rounded-full"
+                        />
                     </div>
                     
                     <div className="flex-1 space-y-2">

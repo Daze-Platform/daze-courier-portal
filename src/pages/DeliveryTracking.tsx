@@ -131,7 +131,7 @@ const DeliveryTracking = () => {
               <div className="flex items-center gap-3 mb-4">
                 <div className="h-12 w-12 rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm">
                   {restaurantLogo ? (
-                    <img src={restaurantLogo} alt={`${order.restaurant} logo`} className="h-12 w-12 object-cover rounded-full" />
+                    <img src={restaurantLogo} alt={`${order.restaurant} logo`} className="h-full w-full object-cover rounded-full" />
                   ) : (
                     <Package className="h-6 w-6 text-accent" />
                   )}
