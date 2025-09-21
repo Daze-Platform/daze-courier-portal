@@ -67,7 +67,7 @@ const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
           </span>
         </div>
 
-        {/* Navigation */}
+        {/* Navigation Menu */}
         <nav className="flex-1 px-6 py-4 space-y-2">
           {menuItems.map((item) => (
             <Link key={item.path} to={item.path}>
