@@ -83,22 +83,21 @@ const Earnings: React.FC = () => {
 
   // Chart data for earnings overview with dates
   const allChartData = [
-    { date: 'Dec 1', basePay: 3, tip: 2, dateTime: new Date(2024, 11, 1) },
-    { date: 'Dec 2', basePay: 5, tip: 3, dateTime: new Date(2024, 11, 2) },
-    { date: 'Dec 3', basePay: 8, tip: 6, dateTime: new Date(2024, 11, 3) },
-    { date: 'Dec 4', basePay: 12, tip: 8, dateTime: new Date(2024, 11, 4) },
-    { date: 'Dec 5', basePay: 15, tip: 12, dateTime: new Date(2024, 11, 5) },
-    { date: 'Dec 6', basePay: 16, tip: 13, dateTime: new Date(2024, 11, 6) },
-    { date: 'Dec 7', basePay: 17, tip: 14, dateTime: new Date(2024, 11, 7) },
-    { date: 'Dec 8', basePay: 16, tip: 13, dateTime: new Date(2024, 11, 8) },
-    { date: 'Dec 9', basePay: 14.5, tip: 11, dateTime: new Date(2024, 11, 9) },
-    { date: 'Dec 10', basePay: 13, tip: 10, dateTime: new Date(2024, 11, 10) },
-    { date: 'Dec 11', basePay: 11, tip: 8, dateTime: new Date(2024, 11, 11) },
-    { date: 'Dec 12', basePay: 12, tip: 9, dateTime: new Date(2024, 11, 12) },
-    { date: 'Dec 15', basePay: 8, tip: 6, dateTime: new Date(2024, 11, 15) },
-    { date: 'Dec 18', basePay: 18, tip: 15, dateTime: new Date(2024, 11, 18) },
-    { date: 'Dec 20', basePay: 14, tip: 12, dateTime: new Date(2024, 11, 20) },
-    { date: 'Dec 22', basePay: 16, tip: 11, dateTime: new Date(2024, 11, 22) }
+    { date: 'Sep 1', basePay: 3, tip: 2, dateTime: new Date(2025, 8, 1) },
+    { date: 'Sep 2', basePay: 5, tip: 3, dateTime: new Date(2025, 8, 2) },
+    { date: 'Sep 3', basePay: 8, tip: 6, dateTime: new Date(2025, 8, 3) },
+    { date: 'Sep 4', basePay: 12, tip: 8, dateTime: new Date(2025, 8, 4) },
+    { date: 'Sep 5', basePay: 15, tip: 12, dateTime: new Date(2025, 8, 5) },
+    { date: 'Sep 6', basePay: 16, tip: 13, dateTime: new Date(2025, 8, 6) },
+    { date: 'Sep 7', basePay: 17, tip: 14, dateTime: new Date(2025, 8, 7) },
+    { date: 'Sep 8', basePay: 16, tip: 13, dateTime: new Date(2025, 8, 8) },
+    { date: 'Sep 9', basePay: 14.5, tip: 11, dateTime: new Date(2025, 8, 9) },
+    { date: 'Sep 10', basePay: 13, tip: 10, dateTime: new Date(2025, 8, 10) },
+    { date: 'Sep 11', basePay: 11, tip: 8, dateTime: new Date(2025, 8, 11) },
+    { date: 'Sep 12', basePay: 12, tip: 9, dateTime: new Date(2025, 8, 12) },
+    { date: 'Sep 15', basePay: 8, tip: 6, dateTime: new Date(2025, 8, 15) },
+    { date: 'Sep 18', basePay: 18, tip: 15, dateTime: new Date(2025, 8, 18) },
+    { date: 'Sep 20', basePay: 14, tip: 12, dateTime: new Date(2025, 8, 20) }
   ];
 
   // Filter chart data based on date range
@@ -128,8 +127,8 @@ const Earnings: React.FC = () => {
       orderId: '13456787',
       deliveryFee: 20.00,
       tips: 12.50,
-      deliveryDate: 'Dec 7, 2024 11:50AM',
-      dateTime: new Date(2024, 11, 7, 11, 50)
+      deliveryDate: 'Sep 7, 2025 11:50AM',
+      dateTime: new Date(2025, 8, 7, 11, 50)
     },
     {
       id: '2',
@@ -138,8 +137,8 @@ const Earnings: React.FC = () => {
       orderId: '13456788',
       deliveryFee: 18.00,
       tips: 8.75,
-      deliveryDate: 'Dec 15, 2024 2:30PM',
-      dateTime: new Date(2024, 11, 15, 14, 30)
+      deliveryDate: 'Sep 15, 2025 2:30PM',
+      dateTime: new Date(2025, 8, 15, 14, 30)
     },
     {
       id: '3',
@@ -148,8 +147,8 @@ const Earnings: React.FC = () => {
       orderId: '13456789',
       deliveryFee: 22.50,
       tips: 15.00,
-      deliveryDate: 'Dec 20, 2024 7:15PM',
-      dateTime: new Date(2024, 11, 20, 19, 15)
+      deliveryDate: 'Sep 20, 2025 7:15PM',
+      dateTime: new Date(2025, 8, 20, 19, 15)
     },
     {
       id: '4',
@@ -158,8 +157,8 @@ const Earnings: React.FC = () => {
       orderId: '13456790',
       deliveryFee: 16.25,
       tips: 9.50,
-      deliveryDate: 'Dec 10, 2024 12:45PM',
-      dateTime: new Date(2024, 11, 10, 12, 45)
+      deliveryDate: 'Sep 10, 2025 12:45PM',
+      dateTime: new Date(2025, 8, 10, 12, 45)
     },
     {
       id: '5',
@@ -168,8 +167,8 @@ const Earnings: React.FC = () => {
       orderId: '13456791',
       deliveryFee: 19.75,
       tips: 11.25,
-      deliveryDate: 'Dec 5, 2024 6:20PM',
-      dateTime: new Date(2024, 11, 5, 18, 20)
+      deliveryDate: 'Sep 5, 2025 6:20PM',
+      dateTime: new Date(2025, 8, 5, 18, 20)
     }
   ];
 
