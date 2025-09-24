@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import springhillFrontAerial from '@/assets/springhill-front-aerial.jpg';
-import luxuryPoolDeckHD from '@/assets/luxury-pool-deck-hd.jpg';
-import luxuryBeachAerial4K from '@/assets/luxury-beach-aerial-4k.jpg';
+import luxuryPoolServiceMap from '@/assets/luxury-pool-service-map.jpg';
+import luxuryBeachServiceMap from '@/assets/luxury-beach-service-map.jpg';
 import { MapPin, Navigation, Coffee, Waves, Umbrella, PersonStanding, UtensilsCrossed } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -133,9 +133,9 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   // Get the appropriate image based on focus area
   const getResortImage = () => {
     if (focusArea === 'pool') {
-      return luxuryPoolDeckHD;
+      return luxuryPoolServiceMap;
     } else if (focusArea === 'beach') {
-      return luxuryBeachAerial4K;
+      return luxuryBeachServiceMap;
     } else {
       return springhillFrontAerial;
     }
