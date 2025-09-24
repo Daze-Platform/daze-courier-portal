@@ -289,12 +289,12 @@ const OrderDetail = () => {
     });
     setNavigationStarted(true);
     
-    // For room deliveries, show status bar instead of navigation modal
-    if (order.deliveryType === "Room Delivery" || order.deliveryAddress?.toLowerCase().includes('room')) {
+    // For room deliveries only, show status bar instead of navigation modal
+    if (order.deliveryType === "Room Delivery") {
       console.log('Room delivery detected - showing status bar');
       setShowRoomStatus(true);
     } else {
-      console.log('Non-room delivery - showing navigation modal');
+      console.log('Non-room delivery (Beach/Poolside) - showing navigation modal');
       setShowNavigationModal(true);
     }
   };
