@@ -126,9 +126,9 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
       setPanX(-10);
       setPanY(-15);
     } else if (focusArea === 'pool') {
-      setZoomLevel(1.05);
-      setPanX(-2);
-      setPanY(-5);
+      setZoomLevel(1);
+      setPanX(0);
+      setPanY(0);
     } else if (focusArea === 'room') {
       setZoomLevel(1.3);
       setPanX(0);
