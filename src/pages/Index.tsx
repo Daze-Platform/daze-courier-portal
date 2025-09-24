@@ -83,6 +83,32 @@ const Index = () => {
       orderTotal: 58.45,
       estimatedEarnings: 22.30,
       specialNotes: "Anniversary couple - please include extra lime wedges and cocktail napkins."
+    },
+    {
+      orderId: "#98765432",
+      restaurant: "Ocean Breeze Café",
+      items: ["2x Fish Tacos", "1x Poolside Nachos", "2x Frozen Margaritas"],
+      deliveryAddress: "Pool Deck - Umbrella P12",
+      deliveryTime: "Dec 21, 2:45PM",
+      itemCount: 3,
+      deliveryType: "Poolside Service",
+      timeRemaining: 20,
+      orderTotal: 34.50,
+      estimatedEarnings: 16.75,
+      specialNotes: "Pool umbrella near the shallow end. We have two kids with us."
+    },
+    {
+      orderId: "#11223344",
+      restaurant: "Sunset Grill",
+      items: ["1x Grilled Salmon", "1x Tropical Fruit Bowl", "1x Coconut Water"],
+      deliveryAddress: "Pool Deck - Umbrella P8",
+      deliveryTime: "Dec 21, 3:10PM",
+      itemCount: 3,
+      deliveryType: "Poolside Service",
+      timeRemaining: 35,
+      orderTotal: 29.75,
+      estimatedEarnings: 14.25,
+      specialNotes: "Large blue umbrella by the pool bar. Customer wearing red swim hat."
     }
   ];
 
