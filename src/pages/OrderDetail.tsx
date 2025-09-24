@@ -347,7 +347,7 @@ const OrderDetail = () => {
 
       {/* Main Content */}
       <div className="min-h-screen bg-background lg:ml-64 pt-4 pb-safe-area-inset-bottom">
-        <div className={`container mx-auto px-4 py-6 space-y-6 lg:px-8 lg:py-8 pb-24 sm:pb-8 ${showRoomStatus ? 'pb-32 sm:pb-24' : ''}`}>
+        <div className={`container mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6 lg:px-8 lg:py-8 pb-32 sm:pb-24 lg:pb-8 ${showRoomStatus ? 'pb-40 sm:pb-32 lg:pb-24' : ''}`}>
           {/* Header */}
           <div className="flex items-center gap-4">
             <Button
@@ -369,17 +369,17 @@ const OrderDetail = () => {
             {/* Main Order Info */}
             <div className="lg:col-span-2 space-y-6">
               {/* Restaurant Info */}
-              <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
+              <div className="bg-card rounded-lg p-4 sm:p-6 shadow-soft border border-border">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="h-12 w-12 rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm flex-shrink-0">
+                  <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm flex-shrink-0">
                     {restaurantLogo ? (
                       <img src={restaurantLogo} alt={`${order.restaurant} logo`} className="h-full w-full object-cover rounded-full" />
                     ) : (
-                      <Package className="h-6 w-6 text-accent" />
+                      <Package className="h-5 w-5 sm:h-6 sm:w-6 text-accent" />
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h2 className="text-lg font-semibold text-foreground lg:text-xl truncate">Order from {order.restaurant}</h2>
+                    <h2 className="text-base sm:text-lg font-semibold text-foreground lg:text-xl truncate">Order from {order.restaurant}</h2>
                     <div className="mt-1">
                       <Badge className="bg-accent text-white font-medium border-0 text-xs sm:text-sm">
                         {order.deliveryType}
@@ -388,7 +388,7 @@ const OrderDetail = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 gap-3 mb-6">
+                <div className="grid grid-cols-1 gap-2 sm:gap-3 mb-4 sm:mb-6">
                   <div className="flex items-center gap-2">
                     <MapPin className="h-4 w-4 text-accent flex-shrink-0" />
                     <span className="font-medium text-foreground text-sm sm:text-base truncate">{order.deliveryAddress}</span>
@@ -400,7 +400,7 @@ const OrderDetail = () => {
                 </div>
 
                 <Button 
-                  className="w-full font-medium text-white"
+                  className="w-full font-medium text-white h-12 sm:h-10 text-base sm:text-sm"
                   style={{ 
                     backgroundColor: navigationStarted && order.deliveryType === "Room Delivery" ? '#94a3b8' : '#29b6f6',
                     cursor: navigationStarted && order.deliveryType === "Room Delivery" ? 'not-allowed' : 'pointer'
@@ -428,10 +428,10 @@ const OrderDetail = () => {
               {/* Customer Location Map - Only for Beach and Pool deliveries */}
               {(order.deliveryType === "Beach Service" || order.deliveryType === "Poolside Service") && (
                 <div className="bg-card shadow-soft border border-border overflow-hidden">
-                  <div className="p-6 pb-0">
-                    <h3 className="text-lg font-semibold text-foreground mb-4">Customer Location</h3>
+                  <div className="p-4 sm:p-6 pb-0">
+                    <h3 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4">Customer Location</h3>
                   </div>
-                  <div className="relative aspect-video">
+                  <div className="relative aspect-[4/3] sm:aspect-video max-h-[250px] sm:max-h-none">
                     <ResortImageView 
                       destination={order.deliveryAddress}
                       isDelivering={false}
