@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
-import { Upload, Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { Upload, Eye, EyeOff, ArrowLeft, HelpCircle, ChevronRight } from "lucide-react";
 import UnifiedHeader from "@/components/UnifiedHeader";
 import ferdinandProfile from "@/assets/ferdinand-profile.jpg";
 
@@ -283,6 +283,31 @@ const ProfileSettings = () => {
                   </Button>
                 </div>
               </form>
+            </CardContent>
+          </Card>
+
+          {/* Support Section */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl">Support</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Button
+                variant="ghost"
+                className="w-full justify-between p-4 h-auto"
+                onClick={() => navigate('/help')}
+              >
+                <div className="flex items-center gap-3">
+                  <HelpCircle className="h-5 w-5 text-muted-foreground" />
+                  <div className="text-left">
+                    <p className="font-medium">Get Help</p>
+                    <p className="text-sm text-muted-foreground">
+                      Find answers, contact support, and access resources
+                    </p>
+                  </div>
+                </div>
+                <ChevronRight className="h-5 w-5 text-muted-foreground" />
+              </Button>
             </CardContent>
           </Card>
 
