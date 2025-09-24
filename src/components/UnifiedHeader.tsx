@@ -72,8 +72,8 @@ const UnifiedHeader = () => {
               <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent/10 focus:bg-accent/20">
                 <Link to="/profile-settings">Profile Settings</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer hover:bg-accent/10 focus:bg-accent/20">
-                Support
+              <DropdownMenuItem asChild className="cursor-pointer hover:bg-accent/10 focus:bg-accent/20">
+                <Link to="/help">Support</Link>
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer hover:bg-accent/10 focus:bg-accent/20 text-destructive">
                 Sign Out
