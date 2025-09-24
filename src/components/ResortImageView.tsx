@@ -268,7 +268,7 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
                 <div 
                   className="absolute bg-orange-500/95 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-medium shadow-lg border text-white"
                   style={{
-                    left: `${isMobile ? location.x - 3 : location.x}%`,
+                    left: `${isMobile ? location.x - 5 : location.x}%`,
                     top: `${location.y - 8}%`,
                     transform: 'translate(-50%, 0)'
                   }}
