@@ -28,8 +28,8 @@ const Help = () => {
     },
     {
       icon: MapPin,
-      title: 'Deliveries & Orders',
-      description: 'Delivery guidance, order issues, and customer interactions',
+      title: 'Room Service & Orders',
+      description: 'Service guidance, order issues, and guest interactions',
       articles: 15,
       color: 'bg-orange-50 text-orange-600'
     },
@@ -101,8 +101,8 @@ const Help = () => {
       answer: 'Yes, you have full control over which orders you accept. You can see the pickup and delivery locations, estimated earnings, and distance before accepting any order.'
     },
     {
-      question: 'What if my car breaks down during a delivery?',
-      answer: 'Contact support immediately through the app\'s emergency contact feature. If you have an active order, we\'ll reassign it to another courier and ensure the customer is notified.'
+      question: 'What if I\'m unable to complete a service during my shift?',
+      answer: 'Contact support immediately through the app\'s emergency contact feature. If you have an active order, we\'ll reassign it to another food runner and ensure the guest is notified.'
     },
     {
       question: 'How do I update my tax information?',
@@ -111,8 +111,8 @@ const Help = () => {
   ];
 
   const quickLinks = [
-    { title: 'Courier Requirements', icon: FileText },
-    { title: 'Vehicle Guidelines', icon: MapPin },
+    { title: 'Food Runner Requirements', icon: FileText },
+    { title: 'Resort Service Guidelines', icon: MapPin },
     { title: 'Safety Training', icon: Shield },
     { title: 'Community Guidelines', icon: Users },
     { title: 'Earnings Calculator', icon: DollarSign },
