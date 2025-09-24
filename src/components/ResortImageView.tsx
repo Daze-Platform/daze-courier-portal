@@ -73,7 +73,9 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
 
   // Get runner start position - responsive for mobile
   const getRunnerStartPosition = () => {
-    if (isMobile) {
+    if (focusArea === 'beach') {
+      return { x: 28, y: 85 }; // Beachfront Bar location for beach view
+    } else if (isMobile) {
       return { x: 22, y: 78 }; // Slightly adjusted for mobile
     }
     return { x: 25, y: 75 }; // Desktop position
@@ -259,6 +261,19 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
                   }}
                 >
                   {destination}
+                </div>
+              )}
+              {/* Beachfront Bar label for runner start in beach view */}
+              {isRunner && focusArea === 'beach' && (
+                <div 
+                  className="absolute bg-orange-500/95 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-medium shadow-lg border text-white"
+                  style={{
+                    left: `${location.x}%`,
+                    top: `${location.y + 8}%`,
+                    transform: 'translate(-50%, 0)'
+                  }}
+                >
+                  Beachfront Bar
                 </div>
               )}
             </div>
