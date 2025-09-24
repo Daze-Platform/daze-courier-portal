@@ -74,7 +74,7 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   // Get runner start position - responsive for mobile
   const getRunnerStartPosition = () => {
     if (focusArea === 'beach') {
-      return { x: 28, y: 85 }; // Beachfront Bar location for beach view
+      return { x: 23, y: 90 }; // Beachfront Bar location on brown building structure
     } else if (isMobile) {
       return { x: 22, y: 78 }; // Slightly adjusted for mobile
     }
