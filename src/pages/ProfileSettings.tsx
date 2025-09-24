@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
-import { Upload, Eye, EyeOff } from "lucide-react";
+import { Upload, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import UnifiedHeader from "@/components/UnifiedHeader";
 import ferdinandProfile from "@/assets/ferdinand-profile.jpg";
 
@@ -26,6 +27,7 @@ interface PasswordFormData {
 
 const ProfileSettings = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [profileImage, setProfileImage] = useState(ferdinandProfile);
   
@@ -105,7 +107,15 @@ const ProfileSettings = () => {
       
       <main className="container mx-auto px-4 py-6 max-w-2xl">
         <div className="space-y-6">
-          <div>
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate(-1)}
+              className="h-8 w-8"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
             <h1 className="text-3xl font-bold tracking-tight">Account Settings</h1>
           </div>
 
