@@ -74,7 +74,7 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   // Get runner start position - responsive for mobile
   const getRunnerStartPosition = () => {
     if (focusArea === 'beach') {
-      return { x: 23, y: 90 }; // Beachfront Bar location on brown building structure
+      return { x: 23, y: 87 }; // Beachfront Bar location on brown building structure
     } else if (isMobile) {
       return { x: 22, y: 78 }; // Slightly adjusted for mobile
     }
@@ -269,7 +269,7 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
                   className="absolute bg-orange-500/95 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-medium shadow-lg border text-white"
                   style={{
                     left: `${location.x}%`,
-                    top: `${location.y + 8}%`,
+                    top: `${location.y - 8}%`,
                     transform: 'translate(-50%, 0)'
                   }}
                 >
