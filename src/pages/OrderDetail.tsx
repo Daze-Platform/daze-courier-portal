@@ -195,8 +195,11 @@ const OrderDetail = () => {
     }
   ];
 
-  // Find the order based on orderId parameter
-  const order = mockOrders.find(o => o.orderId === `#${orderId}`) || mockOrders[0];
+  // Filter out cabana deliveries and find the order based on orderId parameter
+  const availableOrders = mockOrders.filter(order => 
+    !order.deliveryAddress.toLowerCase().includes('cabana')
+  );
+  const order = availableOrders.find(o => o.orderId === `#${orderId}`) || availableOrders[0];
 
   const handleStartDelivery = () => {
     console.log('Starting delivery with:', { 

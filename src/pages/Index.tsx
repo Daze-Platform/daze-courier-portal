@@ -86,10 +86,14 @@ const Index = () => {
     }
   ];
 
-  // Filter orders based on selected delivery type
+  // Filter orders based on selected delivery type and exclude cabana deliveries
+  const availableOrders = mockOrders.filter(order => 
+    !order.deliveryAddress.toLowerCase().includes('cabana')
+  );
+  
   const filteredOrders = selectedDeliveryType === "all" 
-    ? mockOrders 
-    : mockOrders.filter(order => {
+    ? availableOrders 
+    : availableOrders.filter(order => {
         const orderType = order.deliveryType.toLowerCase().replace(/\s+/g, '-');
         return orderType === selectedDeliveryType;
       });
