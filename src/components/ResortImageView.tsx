@@ -43,7 +43,7 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   // Define key locations on the resort (updated for front aerial view)
   const locations: LocationPoint[] = [
     // Runner starting location (inside hotel/resort area)
-    { id: 'start', x: 45, y: 35, type: 'runner-start', label: 'Delivery Station', icon: Navigation },
+    { id: 'start', x: 25, y: 75, type: 'runner-start', label: 'Delivery Station', icon: Navigation },
     
     // Points of interest (keeping for positioning but won't show labels)
     { id: 'pool-bar', x: 45, y: 40, type: 'pool-bar', label: 'Pool Bar', icon: Coffee },
