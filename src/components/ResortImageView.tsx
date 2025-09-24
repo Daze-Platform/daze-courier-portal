@@ -29,7 +29,40 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   const [zoomLevel, setZoomLevel] = useState(1);
   const [panX, setPanX] = useState(0);
   const [panY, setPanY] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [initialPan, setInitialPan] = useState({ x: 0, y: 0 });
   const isMobile = useIsMobile();
+
+  // Pan constraints (5% movement range)
+  const getPanConstraints = () => ({
+    minX: -5,
+    maxX: 5,
+    minY: 0, // No vertical panning needed
+    maxY: 0
+  });
+
+  // Mouse/touch event handlers for panning
+  const handlePointerDown = (e: React.PointerEvent) => {
+    setIsDragging(true);
+    setDragStart({ x: e.clientX, y: e.clientY });
+    setInitialPan({ x: panX, y: panY });
+  };
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (!isDragging) return;
+
+    const deltaX = (e.clientX - dragStart.x) * 0.1; // Sensitivity adjustment
+    const constraints = getPanConstraints();
+    
+    const newPanX = Math.max(constraints.minX, Math.min(constraints.maxX, initialPan.x + deltaX));
+    
+    setPanX(newPanX);
+  };
+
+  const handlePointerUp = () => {
+    setIsDragging(false);
+  };
 
   // Function to get customer position based on delivery address
   const getCustomerPosition = (address: string) => {
@@ -135,7 +168,14 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   const runnerY = startLocation.y + (customerLocation.y - startLocation.y) * (runnerProgress / 100);
 
   return (
-    <div className="absolute inset-0 w-full h-full overflow-hidden">
+    <div 
+      className="absolute inset-0 w-full h-full overflow-hidden cursor-grab select-none"
+      style={{ touchAction: isDragging ? 'none' : 'auto' }}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerLeave={handlePointerUp}
+    >
       {/* Resort Image with Pan/Zoom */}
       <div 
         className="absolute inset-0 w-full h-full transition-all duration-1000 ease-out"
