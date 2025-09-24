@@ -65,7 +65,7 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
     if (address.toLowerCase().includes('beach')) {
       return { x: 88, y: 38 }; // Moved up to the umbrella in the blue circle (top area)
     } else if (address.toLowerCase().includes('pool') || address.toLowerCase().includes('cabana')) {
-      return { x: 70, y: 45 };
+      return { x: 85, y: 25 }; // Moved to umbrella on upper right deck area
     } else {
       return { x: 88, y: 38 }; // default position moved to blue circled umbrella
     }
