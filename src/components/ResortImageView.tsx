@@ -29,7 +29,24 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   const [zoomLevel, setZoomLevel] = useState(1);
   const [panX, setPanX] = useState(0);
   const [panY, setPanY] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const isMobile = useIsMobile();
+
+  // Calculate pan constraints to prevent showing image edges
+  const getPanConstraints = () => {
+    const maxPanX = Math.max(0, (zoomLevel - 1) * 50);
+    const maxPanY = Math.max(0, (zoomLevel - 1) * 50);
+    return { maxPanX, maxPanY };
+  };
+
+  // Constrain pan values within image boundaries
+  const constrainPan = (x: number, y: number) => {
+    const { maxPanX, maxPanY } = getPanConstraints();
+    const constrainedX = Math.max(-maxPanX, Math.min(maxPanX, x));
+    const constrainedY = Math.max(-maxPanY, Math.min(maxPanY, y));
+    return { x: constrainedX, y: constrainedY };
+  };
 
   // Function to get customer position based on delivery address
   const getCustomerPosition = (address: string) => {
@@ -85,23 +102,32 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
 
   // Pan and zoom effect based on focus area
   useEffect(() => {
+    let newZoomLevel = 1;
+    let newPanX = 0;
+    let newPanY = 0;
+
     if (focusArea === 'beach') {
-      setZoomLevel(1.2);
-      setPanX(-10);
-      setPanY(-15);
+      newZoomLevel = 1.2;
+      newPanX = -10;
+      newPanY = -15;
     } else if (focusArea === 'pool') {
-      setZoomLevel(1.15);
-      setPanX(-5);
-      setPanY(-10);
+      newZoomLevel = 1.15;
+      newPanX = -5;
+      newPanY = -10;
     } else if (focusArea === 'room') {
-      setZoomLevel(1.3);
-      setPanX(0);
-      setPanY(10);
+      newZoomLevel = 1.3;
+      newPanX = 0;
+      newPanY = 10;
     } else {
-      setZoomLevel(1);
-      setPanX(0);
-      setPanY(0);
+      newZoomLevel = 1;
+      newPanX = 0;
+      newPanY = 0;
     }
+
+    setZoomLevel(newZoomLevel);
+    const constrained = constrainPan(newPanX, newPanY);
+    setPanX(constrained.x);
+    setPanY(constrained.y);
   }, [focusArea]);
 
   // Get the appropriate image based on focus area
@@ -134,28 +160,54 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   const runnerX = startLocation.x + (customerLocation.x - startLocation.x) * (runnerProgress / 100);
   const runnerY = startLocation.y + (customerLocation.y - startLocation.y) * (runnerProgress / 100);
 
+  // Mouse/Touch handlers for panning
+  const handlePointerDown = (e: React.PointerEvent) => {
+    setIsDragging(true);
+    setDragStart({ x: e.clientX - panX, y: e.clientY - panY });
+  };
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (!isDragging) return;
+    
+    const newX = e.clientX - dragStart.x;
+    const newY = e.clientY - dragStart.y;
+    const constrained = constrainPan(newX * 0.5, newY * 0.5); // Scale down movement
+    
+    setPanX(constrained.x);
+    setPanY(constrained.y);
+  };
+
+  const handlePointerUp = () => {
+    setIsDragging(false);
+  };
+
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden">
       {/* Resort Image with Pan/Zoom */}
       <div 
-        className="absolute inset-0 w-full h-full transition-all duration-1000 ease-out"
+        className="absolute inset-0 w-full h-full transition-all duration-300 ease-out cursor-grab active:cursor-grabbing"
         style={{
           transform: `scale(${zoomLevel}) translate(${panX}%, ${panY}%)`
         }}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerLeave={handlePointerUp}
       >
         <img 
           src={resortImage} 
           alt={`SpringHill Suites Panama City Beach Resort - ${focusArea === 'pool' ? 'Pool Area' : focusArea === 'beach' ? 'Beach Area' : 'Front Aerial View'}`}
-          className="absolute inset-0 w-full h-full object-cover object-center block"
+          className="absolute inset-0 w-full h-full object-cover object-center block select-none"
           style={{ 
             margin: 0,
             padding: 0,
-            width: focusArea === 'beach' ? '125%' : '140%',
-            height: focusArea === 'beach' ? '125%' : '110%',
-            top: focusArea === 'beach' ? '-12%' : '-5%',
-            left: focusArea === 'beach' ? '3%' : '0%',
+            width: '150%',
+            height: '150%',
+            top: '-25%',
+            left: '-25%',
             objectFit: 'cover'
           }}
+          draggable={false}
         />
       </div>
       
