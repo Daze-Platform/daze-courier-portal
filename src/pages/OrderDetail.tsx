@@ -346,8 +346,8 @@ const OrderDetail = () => {
       <DesktopSidebar />
 
       {/* Main Content */}
-      <div className="min-h-screen bg-background lg:ml-64 pt-4">
-        <div className={`container mx-auto px-4 py-6 space-y-6 lg:px-8 lg:py-8 ${showRoomStatus ? 'pb-32' : ''}`}>
+      <div className="min-h-screen bg-background lg:ml-64 pt-4 pb-safe-area-inset-bottom">
+        <div className={`container mx-auto px-4 py-6 space-y-6 lg:px-8 lg:py-8 pb-24 sm:pb-8 ${showRoomStatus ? 'pb-32 sm:pb-24' : ''}`}>
           {/* Header */}
           <div className="flex items-center gap-4">
             <Button
@@ -358,9 +358,9 @@ const OrderDetail = () => {
             >
               <ArrowLeft className="h-6 w-6" />
             </Button>
-            <div>
-              <h1 className="text-2xl font-bold text-foreground lg:text-3xl">Order {order.orderId}</h1>
-              <p className="text-muted-foreground lg:text-lg">Delivery details and customer information</p>
+            <div className="min-w-0 flex-1">
+              <h1 className="text-xl sm:text-2xl font-bold text-foreground lg:text-3xl truncate">Order {order.orderId}</h1>
+              <p className="text-muted-foreground text-sm sm:text-base lg:text-lg">Delivery details and customer information</p>
             </div>
           </div>
 
@@ -371,29 +371,31 @@ const OrderDetail = () => {
               {/* Restaurant Info */}
               <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="h-12 w-12 rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm">
+                  <div className="h-12 w-12 rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm flex-shrink-0">
                     {restaurantLogo ? (
                       <img src={restaurantLogo} alt={`${order.restaurant} logo`} className="h-full w-full object-cover rounded-full" />
                     ) : (
                       <Package className="h-6 w-6 text-accent" />
                     )}
                   </div>
-                  <div className="flex-1">
-                    <h2 className="text-lg font-semibold text-foreground lg:text-xl">Order from {order.restaurant}</h2>
-                    <Badge className="bg-accent text-white font-medium mt-1 border-0">
-                      {order.deliveryType}
-                    </Badge>
+                  <div className="flex-1 min-w-0">
+                    <h2 className="text-lg font-semibold text-foreground lg:text-xl truncate">Order from {order.restaurant}</h2>
+                    <div className="mt-1">
+                      <Badge className="bg-accent text-white font-medium border-0 text-xs sm:text-sm">
+                        {order.deliveryType}
+                      </Badge>
+                    </div>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div className="grid grid-cols-1 gap-3 mb-6">
                   <div className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-accent" />
-                    <span className="font-medium text-foreground">{order.deliveryAddress}</span>
+                    <MapPin className="h-4 w-4 text-accent flex-shrink-0" />
+                    <span className="font-medium text-foreground text-sm sm:text-base truncate">{order.deliveryAddress}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-accent" />
-                    <span className="text-foreground">{order.deliveryTime}</span>
+                    <Clock className="h-4 w-4 text-accent flex-shrink-0" />
+                    <span className="text-foreground text-sm sm:text-base">{order.deliveryTime}</span>
                   </div>
                 </div>
 

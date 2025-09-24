@@ -796,45 +796,52 @@ const OrderHistory: React.FC = () => {
               {orders.length === 0 ? (
                 <EmptyState />
               ) : (
-                <div className="space-y-4">
-                  {orders.map((order) => (
-                    <div 
-                      key={order.id} 
-                      className="flex items-center justify-between p-4 border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors"
-                      onClick={() => handleOrderClick(order.orderId)}
-                    >
-                      <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 rounded-full overflow-hidden bg-muted flex items-center justify-center">
-                          <img 
-                            src={order.restaurantLogo} 
-                            alt={order.restaurantName}
-                            className="h-full w-full object-cover rounded-full"
-                          />
+                  <div className="space-y-4">
+                    {orders.map((order) => (
+                      <div 
+                        key={order.id} 
+                        className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors gap-4"
+                        onClick={() => handleOrderClick(order.orderId)}
+                      >
+                        <div className="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 min-w-0 flex-1">
+                          <div className="w-12 h-12 rounded-full overflow-hidden bg-muted flex items-center justify-center flex-shrink-0">
+                            <img 
+                              src={order.restaurantLogo} 
+                              alt={order.restaurantName}
+                              className="h-full w-full object-cover rounded-full"
+                            />
+                          </div>
+                          
+                          <div className="flex-1 min-w-0">
+                            {/* Restaurant name and badges row */}
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
+                              <h4 className="font-medium text-foreground truncate">{order.restaurantName}</h4>
+                              <div className="flex flex-wrap gap-2">
+                                {getStatusBadge(order.status)}
+                                {getDeliveryTypeBadge(order.deliveryType)}
+                              </div>
+                            </div>
+                            
+                            {/* Order details */}
+                            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+                              <span className="font-mono">#{order.orderId}</span>
+                              <span className="truncate max-w-[120px] sm:max-w-none">{order.customer}</span>
+                              <span className="font-medium text-green-600">${order.deliveryFee.toFixed(2)}</span>
+                              <span className="whitespace-nowrap">{order.date}</span>
+                            </div>
+                            
+                            {/* Delivery address */}
+                            <div className="text-sm text-muted-foreground mt-2 truncate">
+                              <span className="inline-flex items-center gap-1">
+                                📍 <span className="truncate">{order.deliveryAddress}</span>
+                              </span>
+                            </div>
+                          </div>
                         </div>
                         
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-2 mb-1">
-                            <h4 className="font-medium">{order.restaurantName}</h4>
-                            {getStatusBadge(order.status)}
-                            {getDeliveryTypeBadge(order.deliveryType)}
-                          </div>
-                          
-                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                            <span>#{order.orderId}</span>
-                            <span>{order.customer}</span>
-                            <span>${order.deliveryFee.toFixed(2)}</span>
-                            <span>{order.date}</span>
-                          </div>
-                          
-                          <div className="text-sm text-muted-foreground mt-1">
-                            📍 {order.deliveryAddress}
-                          </div>
-                        </div>
+                        <ChevronRight className="w-5 h-5 text-muted-foreground flex-shrink-0 self-center sm:self-auto" />
                       </div>
-                      
-                      <ChevronRight className="w-5 h-5 text-muted-foreground" />
-                    </div>
-                  ))}
+                    ))}
                 </div>
               )}
             </CardContent>
