@@ -36,10 +36,8 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   // Calculate pan constraints to prevent showing image edges
   const getPanConstraints = () => {
     // Image is 150% size with -25% offset, so we can pan 25% in each direction
-    const imageOverflow = 25; // 25% overflow on each side
-    const maxPanX = imageOverflow * zoomLevel;
-    const maxPanY = imageOverflow * zoomLevel;
-    return { maxPanX, maxPanY };
+    const imageOverflow = 25; // 25% overflow on each side available for panning
+    return { maxPanX: imageOverflow, maxPanY: imageOverflow };
   };
 
   // Constrain pan values within image boundaries
@@ -171,9 +169,9 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   const handlePointerMove = (e: React.PointerEvent) => {
     if (!isDragging) return;
     
-    const newX = e.clientX - dragStart.x;
-    const newY = e.clientY - dragStart.y;
-    const constrained = constrainPan(newX * 0.5, newY * 0.5); // Scale down movement
+    const newX = (e.clientX - dragStart.x) * 0.1; // Adjust sensitivity
+    const newY = (e.clientY - dragStart.y) * 0.1; // Adjust sensitivity
+    const constrained = constrainPan(newX, newY);
     
     setPanX(constrained.x);
     setPanY(constrained.y);
