@@ -48,8 +48,8 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   const handlePointerMove = (e: React.PointerEvent) => {
     if (!isDragging || (focusArea !== 'pool' && focusArea !== 'beach')) return;
 
-    const deltaX = (e.clientX - dragStart.x) * 0.05; // Increased sensitivity for better mobile access
-    const maxPan = isMobile ? 15 : 10; // Larger panning range on mobile
+    const deltaX = (e.clientX - dragStart.x) * 0.03; // 3% sensitivity as requested
+    const maxPan = 3; // 3% range as requested
     const newPanX = Math.max(-maxPan, Math.min(maxPan, initialPan.x + deltaX));
     
     setManualPanX(newPanX);
