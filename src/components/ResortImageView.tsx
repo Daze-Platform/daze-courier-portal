@@ -48,8 +48,9 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   const handlePointerMove = (e: React.PointerEvent) => {
     if (!isDragging || (focusArea !== 'pool' && focusArea !== 'beach')) return;
 
-    const deltaX = (e.clientX - dragStart.x) * 0.03; // 3% sensitivity
-    const newPanX = Math.max(-3, Math.min(3, initialPan.x + deltaX));
+    const deltaX = (e.clientX - dragStart.x) * 0.05; // Increased sensitivity for better mobile access
+    const maxPan = isMobile ? 15 : 10; // Larger panning range on mobile
+    const newPanX = Math.max(-maxPan, Math.min(maxPan, initialPan.x + deltaX));
     
     setManualPanX(newPanX);
     e.preventDefault();
@@ -192,10 +193,10 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
           style={{ 
             margin: 0,
             padding: 0,
-            width: focusArea === 'beach' ? '125%' : '140%',
-            height: focusArea === 'beach' ? '125%' : '110%',
-            top: focusArea === 'beach' ? '-12%' : '-5%',
-            left: focusArea === 'beach' ? '3%' : '0%',
+            width: focusArea === 'beach' ? '150%' : focusArea === 'pool' ? '150%' : '140%',
+            height: focusArea === 'beach' ? '150%' : focusArea === 'pool' ? '140%' : '110%',
+            top: focusArea === 'beach' ? '-25%' : focusArea === 'pool' ? '-20%' : '-5%',
+            left: focusArea === 'beach' ? '-25%' : focusArea === 'pool' ? '-25%' : '0%',
             objectFit: 'cover'
           }}
         />
