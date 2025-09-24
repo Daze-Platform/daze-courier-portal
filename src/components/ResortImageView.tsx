@@ -76,7 +76,7 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
     if (focusArea === 'beach') {
       return { x: 23, y: 87 }; // Beachfront Bar location on brown building structure
     } else if (focusArea === 'pool') {
-      return { x: 18, y: 18 }; // Pool deck delivery station location
+      return { x: 35, y: 15 }; // Pool deck delivery station location at blue X
     } else if (isMobile) {
       return { x: 22, y: 78 }; // Slightly adjusted for mobile
     }
