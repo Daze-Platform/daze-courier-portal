@@ -29,35 +29,30 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   const [zoomLevel, setZoomLevel] = useState(1);
   const [panX, setPanX] = useState(0);
   const [panY, setPanY] = useState(0);
+  const [manualPanX, setManualPanX] = useState(0); // Manual panning separate from focus area panning
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [initialPan, setInitialPan] = useState({ x: 0, y: 0 });
   const isMobile = useIsMobile();
 
-  // Pan constraints (5% movement range)
-  const getPanConstraints = () => ({
-    minX: -5,
-    maxX: 5,
-    minY: 0, // No vertical panning needed
-    maxY: 0
-  });
-
-  // Mouse/touch event handlers for panning
+  // Mouse/touch event handlers for panning (only for pool and beach areas)
   const handlePointerDown = (e: React.PointerEvent) => {
+    if (focusArea !== 'pool' && focusArea !== 'beach') return;
+    
     setIsDragging(true);
     setDragStart({ x: e.clientX, y: e.clientY });
-    setInitialPan({ x: panX, y: panY });
+    setInitialPan({ x: manualPanX, y: 0 });
+    e.preventDefault();
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
-    if (!isDragging) return;
+    if (!isDragging || (focusArea !== 'pool' && focusArea !== 'beach')) return;
 
-    const deltaX = (e.clientX - dragStart.x) * 0.1; // Sensitivity adjustment
-    const constraints = getPanConstraints();
+    const deltaX = (e.clientX - dragStart.x) * 0.05; // 5% sensitivity
+    const newPanX = Math.max(-5, Math.min(5, initialPan.x + deltaX));
     
-    const newPanX = Math.max(constraints.minX, Math.min(constraints.maxX, initialPan.x + deltaX));
-    
-    setPanX(newPanX);
+    setManualPanX(newPanX);
+    e.preventDefault();
   };
 
   const handlePointerUp = () => {
@@ -118,6 +113,9 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
 
   // Pan and zoom effect based on focus area
   useEffect(() => {
+    // Reset manual panning when focus area changes
+    setManualPanX(0);
+    
     if (focusArea === 'beach') {
       setZoomLevel(1.2);
       setPanX(-10);
@@ -169,18 +167,22 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
 
   return (
     <div 
-      className="absolute inset-0 w-full h-full overflow-hidden cursor-grab select-none"
+      className={`absolute inset-0 w-full h-full overflow-hidden select-none ${
+        (focusArea === 'pool' || focusArea === 'beach') 
+          ? (isDragging ? 'cursor-grabbing' : 'cursor-grab')
+          : 'cursor-default'
+      }`}
       style={{ touchAction: isDragging ? 'none' : 'auto' }}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerLeave={handlePointerUp}
     >
-      {/* Resort Image with Pan/Zoom */}
+      {/* Resort Image with Pan/Zoom */}  
       <div 
         className="absolute inset-0 w-full h-full transition-all duration-1000 ease-out"
         style={{
-          transform: `scale(${zoomLevel}) translate(${panX}%, ${panY}%)`
+          transform: `scale(${zoomLevel}) translate(${panX + manualPanX}%, ${panY}%)`
         }}
       >
         <img 
