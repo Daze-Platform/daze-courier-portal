@@ -63,11 +63,11 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   // Function to get customer position based on delivery address
   const getCustomerPosition = (address: string) => {
     if (address.toLowerCase().includes('beach')) {
-      return { x: 85, y: 75 }; // Moved to the exact umbrella in the blue circle
+      return { x: 92, y: 48 }; // Moved to the umbrella in the blue circle (top-right area)
     } else if (address.toLowerCase().includes('pool') || address.toLowerCase().includes('cabana')) {
       return { x: 70, y: 45 };
     } else {
-      return { x: 85, y: 75 }; // default position moved to circled umbrella
+      return { x: 92, y: 48 }; // default position moved to blue circled umbrella
     }
   };
 
