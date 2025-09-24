@@ -192,6 +192,86 @@ const OrderDetail = () => {
         additionalPay: 0.00,
         total: 22.30
       }
+    },
+    {
+      orderId: "#98765432",
+      restaurant: "Ocean Breeze Café",
+      deliveryAddress: "Pool Deck - Umbrella P12",
+      deliveryTime: "July 21, 2:45PM",
+      deliveryType: "Poolside Service",
+      customer: {
+        name: "David Martinez",
+        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+        phone: "+1 (555) 345-6789"
+      },
+      items: [
+        {
+          name: "2x Fish Tacos",
+          price: 18.00,
+          modifications: ""
+        },
+        {
+          name: "1x Poolside Nachos",
+          price: 12.50,
+          modifications: ""
+        },
+        {
+          name: "2x Frozen Margaritas",
+          price: 16.00,
+          modifications: ""
+        }
+      ],
+      specialNotes: "Pool umbrella near the shallow end. We have two kids with us.",
+      subtotal: 46.50,
+      processingFee: 2.25,
+      deliveryTips: 5.25,
+      total: 34.50,
+      earnings: {
+        basePay: 11.50,
+        customerTip: 5.25,
+        additionalPay: 0.00,
+        total: 16.75
+      }
+    },
+    {
+      orderId: "#11223344",
+      restaurant: "Sunset Grill",
+      deliveryAddress: "Pool Deck - Umbrella P8",
+      deliveryTime: "July 21, 3:10PM",
+      deliveryType: "Poolside Service",
+      customer: {
+        name: "Lisa Chen",
+        avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+        phone: "+1 (555) 567-8901"
+      },
+      items: [
+        {
+          name: "1x Grilled Salmon",
+          price: 22.75,
+          modifications: "Extra lemon"
+        },
+        {
+          name: "1x Tropical Fruit Bowl",
+          price: 8.00,
+          modifications: ""
+        },
+        {
+          name: "1x Coconut Water",
+          price: 4.00,
+          modifications: ""
+        }
+      ],
+      specialNotes: "Large blue umbrella by the pool bar. Customer wearing red swim hat.",
+      subtotal: 34.75,
+      processingFee: 1.75,
+      deliveryTips: 4.25,
+      total: 29.75,
+      earnings: {
+        basePay: 10.00,
+        customerTip: 4.25,
+        additionalPay: 0.00,
+        total: 14.25
+      }
     }
   ];
 
