@@ -3,6 +3,7 @@ import springhillFrontAerial from '@/assets/springhill-front-aerial.jpg';
 import luxuryPoolDeckHD from '@/assets/luxury-pool-deck-hd.jpg';
 import luxuryBeachAerial4K from '@/assets/luxury-beach-aerial-4k.jpg';
 import { MapPin, Navigation, Coffee, Waves, Umbrella, PersonStanding, UtensilsCrossed } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ResortImageViewProps {
   destination?: string;
@@ -28,6 +29,7 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   const [zoomLevel, setZoomLevel] = useState(1);
   const [panX, setPanX] = useState(0);
   const [panY, setPanY] = useState(0);
+  const isMobile = useIsMobile();
 
   // Function to get customer position based on delivery address
   const getCustomerPosition = (address: string) => {
@@ -40,10 +42,18 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
     }
   };
 
+  // Get runner start position - responsive for mobile
+  const getRunnerStartPosition = () => {
+    if (isMobile) {
+      return { x: 22, y: 78 }; // Slightly adjusted for mobile
+    }
+    return { x: 25, y: 75 }; // Desktop position
+  };
+
   // Define key locations on the resort (updated for front aerial view)
   const locations: LocationPoint[] = [
     // Runner starting location (inside hotel/resort area)
-    { id: 'start', x: 25, y: 75, type: 'runner-start', label: 'Delivery Station', icon: Navigation },
+    { id: 'start', x: getRunnerStartPosition().x, y: getRunnerStartPosition().y, type: 'runner-start', label: 'Delivery Station', icon: Navigation },
     
     // Points of interest (keeping for positioning but won't show labels)
     { id: 'pool-bar', x: 45, y: 40, type: 'pool-bar', label: 'Pool Bar', icon: Coffee },
