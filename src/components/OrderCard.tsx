@@ -1,4 +1,4 @@
-import { Clock, MapPin, Package, Timer, Truck, ChevronDown, ChevronUp } from "lucide-react";
+import { Clock, MapPin, Package, Timer, User, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
@@ -138,7 +138,7 @@ const OrderCard = ({
             )}
           </div>
           <Badge className="bg-accent text-white font-medium text-xs border-0">
-            <Truck className="h-3 w-3 mr-1" />
+            <User className="h-3 w-3 mr-1" />
             {deliveryType}
           </Badge>
         </div>

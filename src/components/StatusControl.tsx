@@ -1,5 +1,5 @@
 import { Switch } from "@/components/ui/switch";
-import { MapPin, Truck } from "lucide-react";
+import { MapPin, User } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -51,19 +51,19 @@ const StatusControl = ({ isOnline, onStatusChange, selectedDeliveryType = "all",
           </Select>
         </div>
 
-        {/* Delivery Type */}
+        {/* Service Type */}
         <div className="space-y-2 sm:col-span-2 lg:col-span-1">
-          <label className="text-sm font-medium text-muted-foreground">Delivery type</label>
+          <label className="text-sm font-medium text-muted-foreground">Service type</label>
           <Select value={selectedDeliveryType} onValueChange={onDeliveryTypeChange}>
             <SelectTrigger className="w-full">
               <div className="flex items-center gap-2">
-                <Truck className="h-4 w-4 text-accent" />
+                <User className="h-4 w-4 text-accent" />
                 <SelectValue />
               </div>
             </SelectTrigger>
             <SelectContent className="bg-card border border-border shadow-lg z-50">
-              <SelectItem value="all">All Deliveries</SelectItem>
-              <SelectItem value="room-delivery">Room Delivery</SelectItem>
+              <SelectItem value="all">All Services</SelectItem>
+              <SelectItem value="room-delivery">Room Service</SelectItem>
               <SelectItem value="poolside">Poolside Service</SelectItem>
               <SelectItem value="beach-service">Beach Service</SelectItem>
             </SelectContent>
