@@ -132,7 +132,7 @@ const Earnings: React.FC = () => {
     },
     {
       id: '2',
-      restaurantName: 'Cheese Kitchen',
+      restaurantName: 'Sal De Mar',
       restaurantLogo: salDeMarLogo,
       orderId: '13456788',
       deliveryFee: 18.00,
@@ -152,7 +152,7 @@ const Earnings: React.FC = () => {
     },
     {
       id: '4',
-      restaurantName: 'Cheese Kitchen',
+      restaurantName: 'Sal De Mar',
       restaurantLogo: salDeMarLogo,
       orderId: '13456790',
       deliveryFee: 16.25,

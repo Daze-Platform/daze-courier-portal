@@ -69,7 +69,7 @@ const OrderHistory: React.FC = () => {
     },
     {
       id: '3',
-      restaurantName: 'Cheese Kitchen',
+      restaurantName: 'Sal De Mar',
       restaurantLogo: oceanBreezeLogo,
       status: 'delivered',
       orderId: '1234648',
