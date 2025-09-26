@@ -26,9 +26,33 @@ const OrderDetail = () => {
   const [navigationStarted, setNavigationStarted] = useState(false);
   const [showRoomStatus, setShowRoomStatus] = useState(false);
 
-  // Scroll to top when component mounts or orderId changes
+  // Scroll to top when component mounts or orderId changes - enhanced for all devices
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // Multiple scroll methods to ensure compatibility across all devices
+    const scrollToTop = () => {
+      // Method 1: Standard window.scrollTo with instant behavior
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      
+      // Method 2: Direct property assignment as fallback
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      
+      // Method 3: For any scrollable containers
+      const scrollContainers = document.querySelectorAll('[data-scroll-container]');
+      scrollContainers.forEach(container => {
+        container.scrollTop = 0;
+        container.scrollLeft = 0;
+      });
+    };
+
+    // Execute immediately
+    scrollToTop();
+    
+    // Execute again after a brief delay to handle any async rendering
+    const timeoutId = setTimeout(scrollToTop, 100);
+    
+    return () => clearTimeout(timeoutId);
   }, [orderId]);
 
   // Mock order data - in real app would fetch based on orderId
@@ -346,8 +370,8 @@ const OrderDetail = () => {
       <DesktopSidebar />
 
       {/* Main Content */}
-      <div className="min-h-screen bg-background lg:ml-64 pt-4 overflow-x-hidden">
-        <div className={`container mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6 lg:px-8 lg:py-8 ${navigationStarted ? 'pb-[30rem] sm:pb-80 md:pb-64' : 'pb-40 sm:pb-32'} ${showRoomStatus ? 'pb-[30rem] sm:pb-80 md:pb-64' : ''} lg:pb-8`} style={{ minHeight: 'calc(100vh - 5rem)' }}>
+      <div className="min-h-screen bg-background lg:ml-64 pt-4 overflow-x-hidden" data-scroll-container>
+        <div className={`container mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6 lg:px-8 lg:py-8 ${navigationStarted ? 'pb-[35rem] sm:pb-[30rem] md:pb-80' : 'pb-48 sm:pb-40'} ${showRoomStatus ? 'pb-[35rem] sm:pb-[30rem] md:pb-80' : ''} lg:pb-8`} style={{ minHeight: 'calc(100vh - 5rem)' }}>
           {/* Header */}
           <div className="flex items-center gap-4">
             <Button
@@ -400,12 +424,13 @@ const OrderDetail = () => {
                 </div>
 
                 <Button 
-                  className="w-full font-medium text-white h-14 sm:h-12 text-base sm:text-sm shadow-lg"
+                  className="w-full font-medium text-white h-16 sm:h-14 text-lg sm:text-base shadow-lg border-0"
                   style={{ 
                     backgroundColor: navigationStarted && order.deliveryType === "Room Delivery" ? '#94a3b8' : '#29b6f6',
                     cursor: navigationStarted && order.deliveryType === "Room Delivery" ? 'not-allowed' : 'pointer',
                     position: 'relative',
-                    zIndex: 10
+                    zIndex: 10,
+                    minHeight: '64px'
                   }}
                   onMouseEnter={(e) => {
                     if (!(navigationStarted && order.deliveryType === "Room Delivery")) {

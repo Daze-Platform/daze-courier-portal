@@ -58,8 +58,14 @@ const OrderCard = ({
   }, [countdown]);
 
   const handleAcceptOrder = () => {
-    // Navigate to order detail page
-    navigate(`/order/${orderId.replace('#', '')}`);
+    // Scroll to top before navigation to ensure clean state
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    
+    // Small delay to ensure scroll completes before navigation
+    setTimeout(() => {
+      // Navigate to order detail page
+      navigate(`/order/${orderId.replace('#', '')}`);
+    }, 50);
   };
 
   const getRestaurantLogo = (restaurantName: string) => {
