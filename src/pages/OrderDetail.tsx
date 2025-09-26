@@ -246,7 +246,7 @@ const OrderDetail = () => {
                   <div className="space-y-4">
                     <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
                       <div className="relative">
-                        <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg border-4 border-white ring-2 ring-orange-400">1</div>
+                        <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg border-4 border-white">1</div>
                       </div>
                       <div>
                         <p className="font-medium text-gray-900">Enter Main Lobby</p>
@@ -256,7 +256,7 @@ const OrderDetail = () => {
                     
                     <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
                       <div className="relative">
-                        <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg border-4 border-white ring-2 ring-orange-400">2</div>
+                        <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg border-4 border-white">2</div>
                       </div>
                       <div>
                         <p className="font-medium text-gray-900">Take Elevator</p>
@@ -268,7 +268,7 @@ const OrderDetail = () => {
                     
                     <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
                       <div className="relative">
-                        <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg border-4 border-white ring-2 ring-orange-400">3</div>
+                        <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg border-4 border-white">3</div>
                       </div>
                       <div>
                         <p className="font-medium text-gray-900">Follow Room Numbers</p>
@@ -278,7 +278,7 @@ const OrderDetail = () => {
                     
                     <div className="flex items-center gap-4 p-4 bg-green-50 rounded-lg border-2 border-green-200">
                       <div className="relative">
-                        <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg border-4 border-white ring-2 ring-orange-400">4</div>
+                        <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg border-4 border-white">4</div>
                       </div>
                       <div>
                         <p className="font-medium text-gray-900">Knock & Deliver</p>

@@ -162,29 +162,26 @@ const OrderCard = ({
         </div>
 
         {/* Enhanced Summary Row */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3 text-sm">
-            <span className="text-foreground font-medium">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 text-sm flex-wrap">
+            <span className="text-foreground font-semibold">
               {itemCount} item{itemCount > 1 ? 's' : ''}
             </span>
             {orderTotal > 0 && (
               <>
                 <div className="h-1 w-1 bg-muted-foreground rounded-full" />
-                <span className="text-foreground font-semibold">
+                <span className="text-foreground font-bold text-success">
                   ${orderTotal.toFixed(2)}
                 </span>
               </>
             )}
             {specialNotes && specialNotes.trim() && (
-              <>
-                <div className="h-1 w-1 bg-muted-foreground rounded-full" />
-                <Badge variant="outline" className="text-xs bg-warning/10 text-warning border-warning/30 ml-1 whitespace-nowrap">
-                  💬 Special Notes
-                </Badge>
-              </>
+              <Badge variant="outline" className="text-xs bg-warning/10 text-warning border-warning/30 whitespace-nowrap">
+                💬 Notes
+              </Badge>
             )}
           </div>
-          <Badge className="bg-accent text-white font-medium text-xs border-0 ml-2">
+          <Badge className="bg-accent text-white font-medium text-xs border-0 flex-shrink-0">
             <User className="h-3 w-3 mr-1" />
             {getShortDeliveryType(deliveryType)}
           </Badge>
