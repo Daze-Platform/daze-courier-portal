@@ -123,3 +123,33 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* iPhone Pro Safari Compatibility */
+@layer utilities {
+  .mobile-safe {
+    padding-bottom: max(env(safe-area-inset-bottom, 0px), 24px);
+  }
+  
+  .mobile-viewport {
+    height: 100vh;
+    height: 100dvh;
+    max-height: -webkit-fill-available;
+  }
+  
+  .mobile-scrollable {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+  
+  .mobile-button-safe {
+    margin-bottom: max(env(safe-area-inset-bottom, 0px), 20px);
+  }
+  
+  @supports (-webkit-touch-callout: none) {
+    .ios-scroll-fix {
+      -webkit-overflow-scrolling: touch;
+      transform: translateZ(0);
+    }
+  }
+}

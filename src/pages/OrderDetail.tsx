@@ -353,10 +353,10 @@ const OrderDetail = () => {
       <DesktopSidebar />
 
       {/* Main Content */}
-      <div className="bg-background lg:ml-64 pt-4 overflow-x-hidden mobile-full-height" data-scroll-container>
-        <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6 lg:px-8 pb-4" style={{ minHeight: 'calc(var(--vh, 1vh) * 100 - 5rem)' }}>
+      <div className="bg-background lg:ml-64 mobile-viewport mobile-scrollable ios-scroll-fix" data-scroll-container>
+        <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6 lg:px-8 mobile-safe">
           {/* Header */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 sticky top-0 z-30 bg-background/95 backdrop-blur-sm py-2 -mx-3 px-3 sm:-mx-4 sm:px-4 lg:-mx-8 lg:px-8">
             <Button
               variant="ghost"
               size="icon"
@@ -375,8 +375,8 @@ const OrderDetail = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
             {/* Main Order Info */}
             <div className="lg:col-span-2 space-y-6">
-              {/* Restaurant Info */}
-              <div className="bg-card rounded-lg p-4 sm:p-6 shadow-soft border border-border">
+              {/* Restaurant Info Card - iPhone Optimized */}
+              <div className="bg-card rounded-lg p-4 sm:p-6 shadow-soft border border-border space-y-4">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm flex-shrink-0">
                     {restaurantLogo ? (
@@ -395,7 +395,7 @@ const OrderDetail = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 gap-2 sm:gap-3 mb-4 sm:mb-6">
+                <div className="grid grid-cols-1 gap-2 sm:gap-3 mb-6">
                   <div className="flex items-center gap-2">
                     <MapPin className="h-4 w-4 text-accent flex-shrink-0" />
                     <span className="font-medium text-foreground text-sm sm:text-base truncate">{order.deliveryAddress}</span>
@@ -406,30 +406,36 @@ const OrderDetail = () => {
                   </div>
                 </div>
 
-                <Button 
-                  className="w-full font-medium text-white h-12 text-base shadow-lg border-0 relative z-20"
-                  style={{ 
-                    backgroundColor: navigationStarted && order.deliveryType === "Room Delivery" ? '#94a3b8' : '#29b6f6',
-                    cursor: navigationStarted && order.deliveryType === "Room Delivery" ? 'not-allowed' : 'pointer'
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!(navigationStarted && order.deliveryType === "Room Delivery")) {
-                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#1e88e5';
+                {/* Start Delivery Button - iPhone Safe */}
+                <div className="mobile-button-safe">
+                  <Button 
+                    className="w-full font-medium text-white h-14 text-lg shadow-lg border-0 relative z-20 touch-manipulation"
+                    style={{ 
+                      backgroundColor: navigationStarted && order.deliveryType === "Room Delivery" ? '#94a3b8' : '#29b6f6',
+                      cursor: navigationStarted && order.deliveryType === "Room Delivery" ? 'not-allowed' : 'pointer',
+                      WebkitTouchCallout: 'none',
+                      WebkitUserSelect: 'none',
+                      userSelect: 'none'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!(navigationStarted && order.deliveryType === "Room Delivery")) {
+                        (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#1e88e5';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!(navigationStarted && order.deliveryType === "Room Delivery")) {
+                        (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#29b6f6';
+                      }
+                    }}
+                    onClick={handleStartDelivery}
+                    disabled={navigationStarted && order.deliveryType === "Room Delivery"}
+                  >
+                    {navigationStarted && order.deliveryType === "Room Delivery" 
+                      ? 'Delivery In Progress...' 
+                      : 'Start Delivery'
                     }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!(navigationStarted && order.deliveryType === "Room Delivery")) {
-                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#29b6f6';
-                    }
-                  }}
-                  onClick={handleStartDelivery}
-                  disabled={navigationStarted && order.deliveryType === "Room Delivery"}
-                >
-                  {navigationStarted && order.deliveryType === "Room Delivery" 
-                    ? 'Delivery In Progress...' 
-                    : 'Start Delivery'
-                  }
-                </Button>
+                  </Button>
+                </div>
               </div>
 
               {/* Customer Location Map - Only for Beach and Pool deliveries */}
