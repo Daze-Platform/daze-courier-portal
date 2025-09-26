@@ -431,12 +431,14 @@ const OrderDetail = () => {
                   <div className="p-4 sm:p-6 pb-0">
                     <h3 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4">Customer Location</h3>
                   </div>
-                  <div className="relative aspect-[4/3] sm:aspect-video max-h-[250px] sm:max-h-none">
-                    <ResortImageView 
-                      destination={order.deliveryAddress}
-                      isDelivering={false}
-                      focusArea={order.deliveryType === "Beach Service" ? 'beach' : 'pool'}
-                    />
+                  <div className="relative aspect-[4/3] sm:aspect-video max-h-[250px] sm:max-h-none w-full overflow-hidden">
+                    <div className="absolute inset-0 w-full h-full">
+                      <ResortImageView 
+                        destination={order.deliveryAddress}
+                        isDelivering={false}
+                        focusArea={order.deliveryType === "Beach Service" ? 'beach' : 'pool'}
+                      />
+                    </div>
                   </div>
                 </div>
               )}
