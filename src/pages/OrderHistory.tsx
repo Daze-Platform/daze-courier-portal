@@ -796,15 +796,15 @@ const OrderHistory: React.FC = () => {
               {orders.length === 0 ? (
                 <EmptyState />
               ) : (
-                  <div className="space-y-4">
+                  <div className="space-y-2 sm:space-y-4">
                     {orders.map((order) => (
                       <div 
                         key={order.id} 
-                        className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors gap-4"
+                        className="flex items-center justify-between p-3 sm:p-4 border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors gap-3 sm:gap-4"
                         onClick={() => handleOrderClick(order.orderId)}
                       >
-                        <div className="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 min-w-0 flex-1">
-                          <div className="w-12 h-12 rounded-full overflow-hidden bg-muted flex items-center justify-center flex-shrink-0">
+                        <div className="flex items-center space-x-3 sm:space-x-4 min-w-0 flex-1">
+                          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden bg-muted flex items-center justify-center flex-shrink-0">
                             <img 
                               src={order.restaurantLogo} 
                               alt={order.restaurantName}
@@ -814,24 +814,24 @@ const OrderHistory: React.FC = () => {
                           
                           <div className="flex-1 min-w-0">
                             {/* Restaurant name and badges row */}
-                            <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
-                              <h4 className="font-medium text-foreground truncate">{order.restaurantName}</h4>
-                              <div className="flex flex-wrap gap-2">
+                            <div className="flex items-center gap-2 mb-1">
+                              <h4 className="font-medium text-foreground truncate text-sm sm:text-base">{order.restaurantName}</h4>
+                              <div className="flex gap-1 sm:gap-2">
                                 {getStatusBadge(order.status)}
                                 {getDeliveryTypeBadge(order.deliveryType)}
                               </div>
                             </div>
                             
                             {/* Order details */}
-                            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+                            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs sm:text-sm text-muted-foreground">
                               <span className="font-mono">#{order.orderId}</span>
-                              <span className="truncate max-w-[120px] sm:max-w-none">{order.customer}</span>
+                              <span className="truncate max-w-[100px] sm:max-w-none">{order.customer}</span>
                               <span className="font-medium text-green-600">${order.deliveryFee.toFixed(2)}</span>
                               <span className="whitespace-nowrap">{order.date}</span>
                             </div>
                             
-                            {/* Delivery address */}
-                            <div className="text-sm text-muted-foreground mt-2 truncate">
+                            {/* Delivery address - more compact on mobile */}
+                            <div className="text-xs sm:text-sm text-muted-foreground mt-1 truncate">
                               <span className="inline-flex items-center gap-1">
                                 📍 <span className="truncate">{order.deliveryAddress}</span>
                               </span>
@@ -839,7 +839,7 @@ const OrderHistory: React.FC = () => {
                           </div>
                         </div>
                         
-                        <ChevronRight className="w-5 h-5 text-muted-foreground flex-shrink-0 self-center sm:self-auto" />
+                        <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground flex-shrink-0" />
                       </div>
                     ))}
                 </div>
