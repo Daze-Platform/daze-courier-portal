@@ -38,7 +38,20 @@ const OrderHistory: React.FC = () => {
 
   // Scroll to top when component mounts
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // Use setTimeout to ensure component is fully rendered
+    const scrollToTop = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+    
+    // Immediate scroll
+    scrollToTop();
+    
+    // Delayed scroll to ensure layout is complete
+    const timeoutId = setTimeout(scrollToTop, 100);
+    
+    return () => clearTimeout(timeoutId);
   }, []);
 
   // Sample order data with actual datetime objects for filtering
