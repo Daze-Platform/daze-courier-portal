@@ -451,7 +451,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
 
           {/* Order Details Panel - Simplified Click Modal */}
           <div 
-            className={`absolute bottom-0 left-0 right-0 z-40 transition-all duration-500 ease-out ${
+            className={`absolute bottom-20 left-0 right-0 z-20 transition-all duration-500 ease-out ${
               modalState === 'closed' 
                 ? 'transform translate-y-full' 
                 : 'transform translate-y-0'
@@ -963,7 +963,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
       )}
 
       {/* Bottom Navigation Controls - Fixed positioning for all screen sizes */}
-      <div className="bg-background border-t border-border p-4 mb-safe fixed bottom-0 left-0 right-0 z-30">
+      <div className="bg-background border-t border-border p-4 mb-safe fixed bottom-0 left-0 right-0 z-50">
         <div className="flex gap-3 items-center">
           {!hasReachedDestination ? (
             <Button 
