@@ -39,7 +39,7 @@ const StatusControl = ({ isOnline, onStatusChange, selectedDeliveryType = "all",
             <SelectTrigger className="w-full">
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4 text-accent" />
-                <SelectValue className="font-bold" />
+                <SelectValue className="font-bold text-foreground" placeholder="Select location" />
               </div>
             </SelectTrigger>
             <SelectContent className="bg-card border border-border shadow-lg z-50">
