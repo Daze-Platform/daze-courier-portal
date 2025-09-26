@@ -35,14 +35,14 @@ interface OrderDetailsDrawerProps {
 }
 
 const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) => {
-  const [activeSnapPoint, setActiveSnapPoint] = useState<number | string | null>(null);
+  const [activeSnapPoint, setActiveSnapPoint] = useState<number | string | null>(customTrigger ? 0.5 : null);
 
   return (
     <Drawer.Root 
-      snapPoints={["148px", "355px", 1]}
+      snapPoints={[0.5, 1]}
       activeSnapPoint={activeSnapPoint}
       setActiveSnapPoint={setActiveSnapPoint}
-      dismissible={false}
+      dismissible={true}
       modal={false}
     >
       <Drawer.Trigger asChild>
@@ -74,18 +74,18 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
       
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40 z-40" />
-        <Drawer.Content className="bg-white flex flex-col rounded-t-[10px] h-full mt-24 fixed bottom-0 left-0 right-0 z-50">
-          <div className="p-4 bg-white rounded-t-[10px] flex-shrink-0">
-            <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-gray-300 mb-4" />
+        <Drawer.Content className="bg-background flex flex-col rounded-t-[10px] h-full fixed bottom-0 left-0 right-0 z-50 max-h-[95vh]">
+          <div className="p-4 bg-background rounded-t-[10px] flex-shrink-0 border-b border-border">
+            <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-muted mb-4" />
             <div className="max-w-md mx-auto">
-              <Drawer.Title className="text-xl font-semibold mb-2">Order Details</Drawer.Title>
-              <p className="text-gray-600 mb-4 text-sm">
-                {activeSnapPoint === "148px" ? "Scroll up to see full details" : ""}
+              <Drawer.Title className="text-xl font-semibold mb-2 text-foreground">Order Details</Drawer.Title>
+              <p className="text-muted-foreground mb-4 text-sm">
+                {activeSnapPoint === 0.5 ? "Swipe up for full details" : activeSnapPoint === 1 ? "Full order details" : ""}
               </p>
             </div>
           </div>
           
-          <div className="flex-1 overflow-y-auto px-4 pb-8">
+          <div className="flex-1 overflow-y-auto px-4 pb-8 scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent">
             {/* Customer Info */}
             <div className="bg-card rounded-lg p-4 border border-border mb-6">
               <div className="flex items-center justify-between mb-4">
