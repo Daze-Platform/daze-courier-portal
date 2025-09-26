@@ -101,7 +101,7 @@ const RoomDeliveryStatus = ({ destination, onComplete }: RoomDeliveryStatusProps
             {status === 'arrived' && (
               <Button 
                 onClick={onComplete}
-                className="bg-green-500 hover:bg-green-600 text-white"
+                className="bg-green-500 hover:bg-green-600 text-white mr-2 sm:mr-0"
               >
                 <CheckCircle className="h-4 w-4 mr-2" />
                 Complete Delivery
