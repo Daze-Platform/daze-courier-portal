@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { MapPin, Navigation, Clock, Play, Pause, Target, Zap, User, UtensilsCrossed, ChefHat, PersonStanding, ChevronUp, ChevronDown, Phone, MessageCircle, CheckCircle } from "lucide-react";
+import { MapPin, Navigation, Clock, Play, Pause, Target, Zap, User, UtensilsCrossed, ChefHat, PersonStanding, ChevronUp, ChevronDown, Phone, MessageCircle, CheckCircle, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -409,7 +409,15 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
           </div>
           
           <div className="flex items-center gap-2 text-sm font-medium">
-            {/* Space for close icon */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => window.history.back()}
+              className="h-8 w-8 p-0"
+              title="Exit Navigation"
+            >
+              <X className="h-4 w-4" />
+            </Button>
           </div>
         </div>
 
