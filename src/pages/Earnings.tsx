@@ -76,7 +76,7 @@ const Earnings: React.FC = () => {
   const totalEarnings = 620.50;
   const totalDeliveries = 56;
   const totalHours = 72;
-  const currentBalance = 18.07;
+  const currentBalance = 48.12;
   const minimumWithdraw = 20.00;
   const availableBalance = 50.00;
   const changePercent = 4.07;
