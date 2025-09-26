@@ -82,8 +82,10 @@ const OrderCard = ({
       case "room delivery":
         return "Room";
       case "beach delivery":
+      case "beach service":
         return "Beach";
       case "pool delivery":
+      case "poolside service":
         return "Pool";
       default:
         return type;
