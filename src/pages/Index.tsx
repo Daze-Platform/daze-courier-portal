@@ -151,6 +151,8 @@ const Index = () => {
                   src={resortDeliveryIllustration} 
                   alt="Start delivering illustration" 
                   className="w-full h-48 object-cover rounded-lg mb-6"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <h2 className="text-2xl font-bold text-foreground mb-3">Ready to Start Delivering?</h2>
                 <p className="text-muted-foreground mb-6">

@@ -4,6 +4,7 @@ import luxuryPoolDeckHD from '@/assets/luxury-pool-deck-hd.jpg';
 import luxuryBeachAerial4K from '@/assets/luxury-beach-aerial-4k.jpg';
 import { MapPin, Navigation, Coffee, Waves, Umbrella, PersonStanding, UtensilsCrossed } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useImagePreload, preloadImages } from '@/hooks/use-image-preload';
 
 interface ResortImageViewProps {
   destination?: string;
@@ -152,6 +153,12 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
   };
 
   const resortImage = getResortImage();
+  const { isLoading: imageLoading } = useImagePreload(resortImage);
+
+  // Preload all resort images on component mount for faster switching
+  useEffect(() => {
+    preloadImages([springhillFrontAerial, luxuryPoolDeckHD, luxuryBeachAerial4K]);
+  }, []);
 
   const getLocationStyle = (type: string) => {
     switch (type) {
@@ -190,10 +197,17 @@ const ResortImageView: React.FC<ResortImageViewProps> = ({
           transform: `scale(${zoomLevel}) translate(${panX + manualPanX}%, ${panY}%)`
         }}
       >
+        {imageLoading && (
+          <div className="absolute inset-0 w-full h-full bg-muted/20 animate-pulse" />
+        )}
         <img 
           src={resortImage} 
           alt={`SpringHill Suites Panama City Beach Resort - ${focusArea === 'pool' ? 'Pool Area' : focusArea === 'beach' ? 'Beach Area' : 'Front Aerial View'}`}
-          className="absolute inset-0 w-full h-full object-cover object-center block"
+          className={`absolute inset-0 w-full h-full object-cover object-center block transition-opacity duration-300 ${
+            imageLoading ? 'opacity-0' : 'opacity-100'
+          }`}
+          loading="lazy"
+          decoding="async"
           style={{ 
             margin: 0,
             padding: 0,

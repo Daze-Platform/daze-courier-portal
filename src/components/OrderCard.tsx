@@ -102,7 +102,7 @@ const OrderCard = ({
         <div className="flex items-center gap-3">
           <div className="h-12 w-12 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden bg-white shadow-sm">
             {currentRestaurantLogo ? (
-              <img src={currentRestaurantLogo} alt={`${restaurant} logo`} className="h-full w-full object-cover rounded-full" />
+              <img src={currentRestaurantLogo} alt={`${restaurant} logo`} className="h-full w-full object-cover rounded-full" loading="lazy" decoding="async" />
             ) : (
               <Package className="h-6 w-6 text-accent" />
             )}
