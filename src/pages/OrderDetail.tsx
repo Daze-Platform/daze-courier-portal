@@ -353,8 +353,8 @@ const OrderDetail = () => {
       <DesktopSidebar />
 
       {/* Main Content */}
-      <div className="min-h-screen bg-background lg:ml-64 pt-4 overflow-x-hidden" data-scroll-container>
-        <div className={`container mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6 lg:px-8 lg:py-8 ${navigationStarted ? 'pb-[35rem] sm:pb-[30rem] md:pb-80' : 'pb-48 sm:pb-40'} ${showRoomStatus ? 'pb-[35rem] sm:pb-[30rem] md:pb-80' : ''} lg:pb-8`} style={{ minHeight: 'calc(100vh - 5rem)' }}>
+      <div className="bg-background lg:ml-64 pt-4 overflow-x-hidden mobile-full-height" data-scroll-container>
+        <div className={`container mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6 lg:px-8 lg:py-8 mobile-safe-bottom ${navigationStarted ? 'pb-[40rem] sm:pb-[35rem] md:pb-96' : 'pb-56 sm:pb-48'} ${showRoomStatus ? 'pb-[40rem] sm:pb-[35rem] md:pb-96' : ''} lg:pb-8`} style={{ minHeight: 'calc(var(--vh, 1vh) * 100 - 5rem)' }}>
           {/* Header */}
           <div className="flex items-center gap-4">
             <Button
@@ -407,13 +407,12 @@ const OrderDetail = () => {
                 </div>
 
                 <Button 
-                  className="w-full font-medium text-white h-16 sm:h-14 text-lg sm:text-base shadow-lg border-0"
+                  className="w-full font-medium text-white h-16 sm:h-14 text-lg sm:text-base shadow-lg border-0 relative z-20"
                   style={{ 
                     backgroundColor: navigationStarted && order.deliveryType === "Room Delivery" ? '#94a3b8' : '#29b6f6',
                     cursor: navigationStarted && order.deliveryType === "Room Delivery" ? 'not-allowed' : 'pointer',
-                    position: 'relative',
-                    zIndex: 10,
-                    minHeight: '64px'
+                    minHeight: '64px',
+                    marginBottom: '2rem'
                   }}
                   onMouseEnter={(e) => {
                     if (!(navigationStarted && order.deliveryType === "Room Delivery")) {
@@ -441,7 +440,7 @@ const OrderDetail = () => {
                   <div className="p-4 sm:p-6 pb-0">
                     <h3 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4">Customer Location</h3>
                   </div>
-                  <div className="relative aspect-[4/3] sm:aspect-video max-h-[200px] sm:max-h-[250px] md:max-h-none w-full overflow-hidden">
+                  <div className="relative aspect-[4/3] sm:aspect-video max-h-[160px] sm:max-h-[200px] md:max-h-none w-full overflow-hidden">
                     <div className="absolute inset-0 w-full h-full">
                       <ResortImageView 
                         destination={order.deliveryAddress}

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no, maximum-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -21,12 +21,20 @@
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
     
     <style>
-      /* Comprehensive mobile viewport and scrolling fixes */
+      /* Enhanced mobile viewport and Safari handling */
+      :root {
+        --vh: 1vh;
+      }
+      
       html {
         height: 100%;
         height: 100vh;
         height: 100dvh;
         overflow-x: hidden;
+        /* Enable momentum scrolling */
+        -webkit-overflow-scrolling: touch;
+        /* Prevent bounce scroll in Safari */
+        overscroll-behavior: none;
       }
       
       body {
@@ -37,32 +45,55 @@
         position: relative;
         -webkit-text-size-adjust: 100%;
         -webkit-tap-highlight-color: transparent;
+        /* Enable momentum scrolling */
+        -webkit-overflow-scrolling: touch;
+        /* Allow natural scrolling behavior to hide Safari chrome */
+        overscroll-behavior-y: auto;
       }
       
       #root {
         min-height: 100vh;
         min-height: 100dvh;
         overflow-x: hidden;
+        /* Enable momentum scrolling */
+        -webkit-overflow-scrolling: touch;
       }
       
-      /* iOS Safari specific fixes */
+      /* iOS Safari specific enhancements */
       @supports (-webkit-touch-callout: none) {
-        body {
-          /* Prevent Safari bounce scrolling */
-          position: fixed;
-          width: 100%;
-          height: 100vh;
-          height: 100dvh;
-          overflow: hidden;
+        :root {
+          --vh: 1vh;
         }
         
-        #root {
+        html {
+          /* Allow natural scroll behavior for Safari chrome to hide */
+          position: relative;
+          overflow-y: auto;
           height: 100vh;
           height: 100dvh;
+        }
+        
+        body {
+          /* Remove fixed positioning to allow natural scrolling */
+          position: relative;
+          width: 100%;
+          height: auto;
+          min-height: 100vh;
+          min-height: 100dvh;
           overflow-y: auto;
           overflow-x: hidden;
           -webkit-overflow-scrolling: touch;
-          overscroll-behavior: contain;
+          /* Enable Safari chrome hiding on scroll */
+          overscroll-behavior-y: auto;
+        }
+        
+        #root {
+          height: auto;
+          min-height: 100vh;
+          min-height: 100dvh;
+          overflow-y: auto;
+          overflow-x: hidden;
+          -webkit-overflow-scrolling: touch;
         }
       }
       
@@ -75,7 +106,36 @@
       html {
         scroll-behavior: smooth;
       }
+      
+      /* Dynamic viewport height calculation for Safari */
+      @media screen and (max-width: 768px) {
+        .mobile-full-height {
+          height: 100vh;
+          height: 100dvh;
+          min-height: 100vh;
+          min-height: 100dvh;
+        }
+        
+        .mobile-safe-bottom {
+          padding-bottom: max(2rem, env(safe-area-inset-bottom, 2rem));
+        }
+      }
     </style>
+    
+    <script>
+      // Dynamic viewport height calculation for Safari
+      function setVH() {
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+      }
+      
+      // Set on load and resize
+      window.addEventListener('load', setVH);
+      window.addEventListener('resize', setVH);
+      window.addEventListener('orientationchange', () => {
+        setTimeout(setVH, 100);
+      });
+    </script>
   </head>
 
   <body>
