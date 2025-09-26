@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -35,6 +35,11 @@ const OrderHistory: React.FC = () => {
     from: new Date(2025, 8, 1), // September 1, 2025
     to: new Date(2025, 8, 20), // September 20, 2025
   });
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   // Sample order data with actual datetime objects for filtering
   const allOrders: Order[] = [
