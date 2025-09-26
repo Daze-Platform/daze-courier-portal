@@ -46,19 +46,20 @@ const OrderDetail = () => {
     {
       orderId: "12345678",
       restaurant: "Margarita Mama's",
-      items: [
-        { name: "Fish Tacos", modifications: ["Extra lime", "No cilantro"], quantity: 2 },
-        { name: "Frozen Margarita", modifications: ["Extra salt rim"], quantity: 1 },
-      ],
-      specialNotes: "Please knock loudly - customer is poolside and may not hear doorbell.",
       deliveryAddress: "Beach - Umbrella B7",
       deliveryTime: "2:45 PM",
       deliveryType: "Beach Service",
       customer: {
         name: "Grace Bennett",
-        avatar: "/api/placeholder/40/40"
+        avatar: "/api/placeholder/40/40",
+        phone: "+1 (555) 123-4567"
       },
-      orderTotal: 28.50,
+      items: [
+        { name: "Fish Tacos (2x)", price: 18.50, modifications: "Extra lime, No cilantro" },
+        { name: "Frozen Margarita", price: 10.00, modifications: "Extra salt rim" },
+      ],
+      specialNotes: "Please knock loudly - customer is poolside and may not hear doorbell.",
+      total: 28.50,
       earnings: {
         basePay: 8.50,
         customerTip: 5.75,
