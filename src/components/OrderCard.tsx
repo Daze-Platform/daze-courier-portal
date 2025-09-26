@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { executeScrollToTop } from "@/utils/scrollToTop";
 import margaritaMamasLogo from "@/assets/margarita-mamas-logo.png";
 import sunsetGrillLogo from "@/assets/sunset-grill-logo.png";
 import oceanBreezeLogo from "@/assets/ocean-breeze-logo.png";
@@ -58,14 +59,13 @@ const OrderCard = ({
   }, [countdown]);
 
   const handleAcceptOrder = () => {
-    // Scroll to top before navigation to ensure clean state
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    // Use the comprehensive scroll utility  
+    executeScrollToTop();
     
-    // Small delay to ensure scroll completes before navigation
+    // Navigate with a small delay to ensure scroll completes
     setTimeout(() => {
-      // Navigate to order detail page
       navigate(`/order/${orderId.replace('#', '')}`);
-    }, 50);
+    }, 20);
   };
 
   const getRestaurantLogo = (restaurantName: string) => {

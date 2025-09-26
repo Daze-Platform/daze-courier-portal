@@ -1,10 +1,10 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft, MessageCircle, MapPin, Clock, CheckCircle, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import UnifiedHeader from "@/components/UnifiedHeader";
 import DesktopSidebar from "@/components/DesktopSidebar";
@@ -12,6 +12,7 @@ import DeliveryNavigation from "@/components/DeliveryNavigation";
 import OrderDetailsDrawer from "@/components/OrderDetailsDrawer";
 import ResortImageView from "@/components/ResortImageView";
 import RoomDeliveryStatus from "@/components/RoomDeliveryStatus";
+import { forceScrollToTop, executeScrollToTop } from "@/utils/scrollToTop";
 import margaritaMamasLogo from "@/assets/margarita-mamas-logo.png";
 import sunsetGrillLogo from "@/assets/sunset-grill-logo.png";
 import oceanBreezeLogo from "@/assets/ocean-breeze-logo.png";
@@ -20,40 +21,22 @@ import salDeMarLogo from "@/assets/sal-de-mar-logo.png";
 const OrderDetail = () => {
   const { orderId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   const [showCompletionModal, setShowCompletionModal] = useState(false);
   const [showNavigationModal, setShowNavigationModal] = useState(false);
   const [navigationStarted, setNavigationStarted] = useState(false);
   const [showRoomStatus, setShowRoomStatus] = useState(false);
 
-  // Scroll to top when component mounts or orderId changes - enhanced for all devices
-  useEffect(() => {
-    // Multiple scroll methods to ensure compatibility across all devices
-    const scrollToTop = () => {
-      // Method 1: Standard window.scrollTo with instant behavior
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-      
-      // Method 2: Direct property assignment as fallback
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-      
-      // Method 3: For any scrollable containers
-      const scrollContainers = document.querySelectorAll('[data-scroll-container]');
-      scrollContainers.forEach(container => {
-        container.scrollTop = 0;
-        container.scrollLeft = 0;
-      });
-    };
+  // Immediate scroll to top using useLayoutEffect (runs before paint)
+  useLayoutEffect(() => {
+    executeScrollToTop();
+  }, [location.pathname, orderId]);
 
-    // Execute immediately
-    scrollToTop();
-    
-    // Execute again after a brief delay to handle any async rendering
-    const timeoutId = setTimeout(scrollToTop, 100);
-    
-    return () => clearTimeout(timeoutId);
-  }, [orderId]);
+  // Additional scroll to top with standard useEffect as backup
+  useEffect(() => {
+    executeScrollToTop();
+  }, [orderId, location.key]);
 
   // Mock order data - in real app would fetch based on orderId
   const mockOrders = [
