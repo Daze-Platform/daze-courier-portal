@@ -209,10 +209,14 @@ const OrderCard = ({
             Accept
           </Button>
           
-          <div className={`flex items-center justify-center h-12 w-12 border-2 rounded-full flex-shrink-0 ${
-            countdown === 0 ? 'border-red-500' : 'border-orange-500'
+          <div className={`flex items-center justify-center h-12 w-12 rounded-full flex-shrink-0 ${
+            countdown === 0 
+              ? 'bg-red-500 border-2 border-red-500' 
+              : 'border-2 border-orange-500'
           }`}>
-            <span className={`text-lg font-bold ${countdown === 0 ? 'text-red-500' : 'text-orange-500'}`}>
+            <span className={`text-lg font-bold ${
+              countdown === 0 ? 'text-white' : 'text-orange-500'
+            }`}>
               {countdown}
             </span>
           </div>
