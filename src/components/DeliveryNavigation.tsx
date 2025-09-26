@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { MapPin, Navigation, Clock, Play, Pause, Target, Zap, User, UtensilsCrossed, ChefHat, PersonStanding, ChevronUp, ChevronDown, Phone, MessageCircle, CheckCircle, X } from "lucide-react";
+import { MapPin, Navigation, Clock, Play, Pause, Target, Info, User, UtensilsCrossed, ChefHat, PersonStanding, ChevronUp, ChevronDown, Phone, MessageCircle, CheckCircle, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
 import luxuryPoolDeckMap from "@/assets/luxury-pool-deck-hd.jpg";
 import ResortImageView from "@/components/ResortImageView";
+import OrderDetailsDrawer from "@/components/OrderDetailsDrawer";
 
 interface DeliveryNavigationProps {
   destination: string;
@@ -990,17 +991,20 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
               <Pause className="h-5 w-5" />
             </Button>
           )}
-          
-          <Button 
-            onClick={resetPosition}
-            variant="outline"
-            disabled={isNavigating || (isRoomDelivery && hasStartedNavigation)}
-            className="h-12 px-6"
-            title={isRoomDelivery && hasStartedNavigation ? "Cannot reset room delivery once started" : "Reset position"}
-          >
-            <Zap className="h-5 w-5" />
-          </Button>
-
+          {order && (
+            <OrderDetailsDrawer 
+              order={order}
+              customTrigger={
+                <Button 
+                  variant="outline"
+                  className="h-12 px-6"
+                  title="View order details"
+                >
+                  <Info className="h-5 w-5" />
+                </Button>
+              }
+            />
+          )}
         </div>
         
         <div className="mt-3 text-center">

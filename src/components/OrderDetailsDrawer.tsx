@@ -31,9 +31,10 @@ interface OrderDetailsDrawerProps {
       total: number;
     };
   };
+  customTrigger?: React.ReactNode;
 }
 
-const OrderDetailsDrawer = ({ order }: OrderDetailsDrawerProps) => {
+const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) => {
   const [activeSnapPoint, setActiveSnapPoint] = useState<number | string | null>(null);
 
   return (
@@ -45,28 +46,30 @@ const OrderDetailsDrawer = ({ order }: OrderDetailsDrawerProps) => {
       modal={false}
     >
       <Drawer.Trigger asChild>
-        <div className="fixed bottom-0 left-0 right-0 z-60 cursor-pointer">
-          <div className="bg-white/95 backdrop-blur-sm border-t border-border p-4 shadow-xl">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Avatar className="h-10 w-10">
-                  <AvatarImage src={order.customer.avatar} />
-                  <AvatarFallback>GB</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="font-semibold text-foreground">{order.customer.name}</p>
-                  <p className="text-sm text-muted-foreground">{order.deliveryAddress}</p>
+        {customTrigger || (
+          <div className="fixed bottom-0 left-0 right-0 z-60 cursor-pointer">
+            <div className="bg-white/95 backdrop-blur-sm border-t border-border p-4 shadow-xl">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Avatar className="h-10 w-10">
+                    <AvatarImage src={order.customer.avatar} />
+                    <AvatarFallback>GB</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="font-semibold text-foreground">{order.customer.name}</p>
+                    <p className="text-sm text-muted-foreground">{order.deliveryAddress}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <Badge className="bg-primary text-white">
-                  ${order.earnings.total}
-                </Badge>
-                <ChevronUp className="h-5 w-5 text-muted-foreground" />
+                <div className="flex items-center gap-2">
+                  <Badge className="bg-primary text-white">
+                    ${order.earnings.total}
+                  </Badge>
+                  <ChevronUp className="h-5 w-5 text-muted-foreground" />
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </Drawer.Trigger>
       
       <Drawer.Portal>
