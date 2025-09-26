@@ -354,7 +354,7 @@ const OrderDetail = () => {
 
       {/* Main Content */}
       <div className="bg-background lg:ml-64 pt-4 overflow-x-hidden mobile-full-height" data-scroll-container>
-        <div className={`container mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6 lg:px-8 lg:py-8 mobile-safe-bottom ${navigationStarted ? 'pb-[40rem] sm:pb-[35rem] md:pb-96' : 'pb-56 sm:pb-48'} ${showRoomStatus ? 'pb-[40rem] sm:pb-[35rem] md:pb-96' : ''} lg:pb-8`} style={{ minHeight: 'calc(var(--vh, 1vh) * 100 - 5rem)' }}>
+        <div className={`container mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6 lg:px-8 lg:py-8 ${navigationStarted ? 'mobile-extra-bottom' : 'mobile-extra-bottom'} ${showRoomStatus ? 'mobile-extra-bottom' : ''} lg:pb-8`} style={{ minHeight: 'calc(var(--vh, 1vh) * 100 - 5rem)' }}>
           {/* Header */}
           <div className="flex items-center gap-4">
             <Button
@@ -407,12 +407,12 @@ const OrderDetail = () => {
                 </div>
 
                 <Button 
-                  className="w-full font-medium text-white h-16 sm:h-14 text-lg sm:text-base shadow-lg border-0 relative z-20"
+                  className="w-full font-medium text-white h-16 sm:h-14 text-lg sm:text-base shadow-lg border-0 relative z-20 mobile-safe-button"
                   style={{ 
                     backgroundColor: navigationStarted && order.deliveryType === "Room Delivery" ? '#94a3b8' : '#29b6f6',
                     cursor: navigationStarted && order.deliveryType === "Room Delivery" ? 'not-allowed' : 'pointer',
                     minHeight: '64px',
-                    marginBottom: '2rem'
+                    marginBottom: 'var(--mobile-bottom-safe)'
                   }}
                   onMouseEnter={(e) => {
                     if (!(navigationStarted && order.deliveryType === "Room Delivery")) {

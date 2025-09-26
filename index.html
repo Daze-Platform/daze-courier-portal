@@ -21,9 +21,10 @@
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
     
     <style>
-      /* Enhanced mobile viewport and Safari handling */
+      /* Enhanced mobile viewport and Safari handling - iPhone focused */
       :root {
         --vh: 1vh;
+        --mobile-bottom-safe: max(2rem, env(safe-area-inset-bottom, 2rem));
       }
       
       html {
@@ -31,10 +32,11 @@
         height: 100vh;
         height: 100dvh;
         overflow-x: hidden;
-        /* Enable momentum scrolling */
+        /* Critical: Enable momentum scrolling to allow Safari chrome hiding */
         -webkit-overflow-scrolling: touch;
-        /* Prevent bounce scroll in Safari */
-        overscroll-behavior: none;
+        /* Prevent bounce scroll but allow natural scroll behavior */
+        overscroll-behavior-y: auto;
+        overscroll-behavior-x: none;
       }
       
       body {
@@ -47,8 +49,10 @@
         -webkit-tap-highlight-color: transparent;
         /* Enable momentum scrolling */
         -webkit-overflow-scrolling: touch;
-        /* Allow natural scrolling behavior to hide Safari chrome */
+        /* CRITICAL: Allow natural scrolling behavior to hide Safari chrome */
         overscroll-behavior-y: auto;
+        /* Ensure body can scroll naturally */
+        overflow-y: auto;
       }
       
       #root {
@@ -57,24 +61,30 @@
         overflow-x: hidden;
         /* Enable momentum scrolling */
         -webkit-overflow-scrolling: touch;
+        /* Allow natural scrolling */
+        overflow-y: auto;
       }
       
-      /* iOS Safari specific enhancements */
+      /* iPhone Safari specific optimizations */
       @supports (-webkit-touch-callout: none) {
         :root {
           --vh: 1vh;
+          --mobile-bottom-safe: max(6rem, env(safe-area-inset-bottom, 6rem));
         }
         
         html {
-          /* Allow natural scroll behavior for Safari chrome to hide */
+          /* Critical: Remove fixed positioning to allow Safari chrome to hide */
           position: relative;
           overflow-y: auto;
-          height: 100vh;
-          height: 100dvh;
+          height: auto;
+          min-height: 100vh;
+          min-height: 100dvh;
+          /* Enable Safari's natural scroll behavior */
+          -webkit-overflow-scrolling: touch;
         }
         
         body {
-          /* Remove fixed positioning to allow natural scrolling */
+          /* CRITICAL: Remove fixed positioning completely */
           position: relative;
           width: 100%;
           height: auto;
@@ -95,6 +105,13 @@
           overflow-x: hidden;
           -webkit-overflow-scrolling: touch;
         }
+        
+        /* Ensure buttons are accessible on iPhone */
+        .mobile-safe-button {
+          margin-bottom: var(--mobile-bottom-safe) !important;
+          position: relative !important;
+          z-index: 9999 !important;
+        }
       }
       
       /* Prevent zoom on input focus */
@@ -110,23 +127,46 @@
       /* Dynamic viewport height calculation for Safari */
       @media screen and (max-width: 768px) {
         .mobile-full-height {
-          height: 100vh;
-          height: 100dvh;
+          height: auto;
           min-height: 100vh;
           min-height: 100dvh;
         }
         
         .mobile-safe-bottom {
-          padding-bottom: max(2rem, env(safe-area-inset-bottom, 2rem));
+          padding-bottom: var(--mobile-bottom-safe);
+        }
+        
+        .mobile-extra-bottom {
+          padding-bottom: calc(var(--mobile-bottom-safe) + 20rem);
+        }
+      }
+      
+      /* Force Safari to respect scrolling */
+      @media screen and (max-width: 768px) and (-webkit-min-device-pixel-ratio: 0) {
+        body {
+          height: auto !important;
+          position: static !important;
+          overflow-y: scroll !important;
+        }
+        
+        #root {
+          overflow-y: scroll !important;
+          height: auto !important;
         }
       }
     </style>
     
     <script>
-      // Dynamic viewport height calculation for Safari
+      // Enhanced dynamic viewport height calculation for Safari
       function setVH() {
         let vh = window.innerHeight * 0.01;
         document.documentElement.style.setProperty('--vh', `${vh}px`);
+        
+        // Additional mobile bottom safe area calculation
+        if (window.innerWidth <= 768) {
+          let safeBottom = Math.max(96, window.innerHeight * 0.15); // At least 96px or 15% of screen
+          document.documentElement.style.setProperty('--mobile-bottom-safe', `${safeBottom}px`);
+        }
       }
       
       // Set on load and resize
@@ -134,7 +174,16 @@
       window.addEventListener('resize', setVH);
       window.addEventListener('orientationchange', () => {
         setTimeout(setVH, 100);
+        setTimeout(setVH, 500); // Double check after orientation change
       });
+      
+      // Force scroll behavior on iOS
+      if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        document.addEventListener('DOMContentLoaded', function() {
+          document.body.style.overflow = 'auto';
+          document.body.style.webkitOverflowScrolling = 'touch';
+        });
+      }
     </script>
   </head>
 
