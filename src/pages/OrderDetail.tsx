@@ -245,7 +245,9 @@ const OrderDetail = () => {
                   <h3 className="text-lg font-semibold text-foreground mb-4">Room Delivery Instructions</h3>
                   <div className="space-y-4">
                     <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
-                      <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">1</div>
+                      <div className="relative">
+                        <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg border-4 border-white ring-2 ring-orange-400">1</div>
+                      </div>
                       <div>
                         <p className="font-medium text-gray-900">Enter Main Lobby</p>
                         <p className="text-sm text-gray-600">Use the main entrance and approach the front desk area</p>
@@ -253,7 +255,9 @@ const OrderDetail = () => {
                     </div>
                     
                     <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
-                      <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">2</div>
+                      <div className="relative">
+                        <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg border-4 border-white ring-2 ring-orange-400">2</div>
+                      </div>
                       <div>
                         <p className="font-medium text-gray-900">Take Elevator</p>
                          <p className="text-sm text-gray-600">
@@ -263,7 +267,9 @@ const OrderDetail = () => {
                     </div>
                     
                     <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
-                      <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">3</div>
+                      <div className="relative">
+                        <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg border-4 border-white ring-2 ring-orange-400">3</div>
+                      </div>
                       <div>
                         <p className="font-medium text-gray-900">Follow Room Numbers</p>
                         <p className="text-sm text-gray-600">Look for room number signs in the hallway</p>
@@ -271,7 +277,9 @@ const OrderDetail = () => {
                     </div>
                     
                     <div className="flex items-center gap-4 p-4 bg-green-50 rounded-lg border-2 border-green-200">
-                      <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-lg">4</div>
+                      <div className="relative">
+                        <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg border-4 border-white ring-2 ring-orange-400">4</div>
+                      </div>
                       <div>
                         <p className="font-medium text-gray-900">Knock & Deliver</p>
                         <p className="text-sm text-gray-600">Announce "Room service delivery" and complete the order</p>

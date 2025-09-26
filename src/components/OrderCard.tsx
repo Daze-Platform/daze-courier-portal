@@ -178,7 +178,7 @@ const OrderCard = ({
             {specialNotes && specialNotes.trim() && (
               <>
                 <div className="h-1 w-1 bg-muted-foreground rounded-full" />
-                <Badge variant="outline" className="text-xs bg-warning/10 text-warning border-warning/30 ml-1">
+                <Badge variant="outline" className="text-xs bg-warning/10 text-warning border-warning/30 ml-1 whitespace-nowrap">
                   💬 Special Notes
                 </Badge>
               </>
