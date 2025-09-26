@@ -639,37 +639,13 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
                         <Badge variant="outline" className="text-xs">{deliveryType}</Badge>
                       </div>
                     </div>
-                  </Card>
-
-                  {/* Navigation Tips */}
-                  <div className="bg-accent/30 border border-accent/50 rounded-lg p-4">
-                    <h4 className="font-medium text-foreground mb-2 flex items-center gap-2">
-                      <span>💡</span>
-                      {isBeachDelivery ? 'Beach' : 'Pool'} Delivery Tips
-                    </h4>
-                    <ul className="text-sm text-muted-foreground space-y-1">
-                      {isBeachDelivery ? (
-                        <>
-                          <li>• Look for beach umbrellas and lounge chairs</li>
-                          <li>• Customers may be in the water or walking on the beach</li>
-                          <li>• Call out the customer's name if needed</li>
-                        </>
-                      ) : (
-                        <>
-                          <li>• Check poolside cabanas and lounge areas</li>
-                          <li>• Look for the specific cabana number</li>
-                          <li>• Be careful around wet pool deck areas</li>
-                        </>
-                      )}
-                      <li>• Ask pool/beach staff for assistance if needed</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      ) : isRoomDelivery ? (
+                   </Card>
+                 </div>
+               </div>
+             )}
+           </div>
+         </div>
+       ) : isRoomDelivery ? (
         <div className="flex-1 overflow-auto bg-gradient-to-br from-blue-50 to-indigo-50 p-6" style={{ WebkitOverflowScrolling: 'touch' }}>
           <div className="max-w-2xl mx-auto space-y-6">
             {/* Room Number Header */}
