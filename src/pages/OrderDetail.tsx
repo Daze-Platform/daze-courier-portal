@@ -346,8 +346,8 @@ const OrderDetail = () => {
       <DesktopSidebar />
 
       {/* Main Content */}
-      <div className="min-h-screen bg-background lg:ml-64 pt-4 pb-safe-area-inset-bottom">
-        <div className={`container mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6 lg:px-8 lg:py-8 pb-32 sm:pb-24 lg:pb-8 ${showRoomStatus ? 'pb-40 sm:pb-32 lg:pb-24' : ''}`}>
+      <div className="min-h-screen bg-background lg:ml-64 pt-4 overflow-x-hidden">
+        <div className={`container mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6 lg:px-8 lg:py-8 ${navigationStarted ? 'pb-96 sm:pb-80 md:pb-64' : 'pb-32 sm:pb-24'} ${showRoomStatus ? 'pb-96 sm:pb-80 md:pb-64' : ''} lg:pb-8`}>
           {/* Header */}
           <div className="flex items-center gap-4">
             <Button
@@ -431,7 +431,7 @@ const OrderDetail = () => {
                   <div className="p-4 sm:p-6 pb-0">
                     <h3 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4">Customer Location</h3>
                   </div>
-                  <div className="relative aspect-[4/3] sm:aspect-video max-h-[250px] sm:max-h-none w-full overflow-hidden">
+                  <div className="relative aspect-[4/3] sm:aspect-video max-h-[200px] sm:max-h-[250px] md:max-h-none w-full overflow-hidden">
                     <div className="absolute inset-0 w-full h-full">
                       <ResortImageView 
                         destination={order.deliveryAddress}
@@ -439,6 +439,72 @@ const OrderDetail = () => {
                         focusArea={order.deliveryType === "Beach Service" ? 'beach' : 'pool'}
                       />
                     </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Pool/Beach Delivery Instructions - Only for Pool/Beach deliveries */}
+              {(order.deliveryType === "Poolside Service" || order.deliveryType === "Beach Service") && (
+                <div className="bg-card rounded-lg p-4 sm:p-6 shadow-soft border border-border">
+                  <h3 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4">
+                    {order.deliveryType === "Poolside Service" ? "Pool" : "Beach"} Delivery Tips
+                  </h3>
+                  <div className="space-y-3 sm:space-y-4">
+                    <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-blue-50 rounded-lg">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-lg flex-shrink-0">1</div>
+                      <div>
+                        <p className="font-medium text-gray-900 text-sm sm:text-base">Look for the {order.deliveryType === "Poolside Service" ? "umbrella number" : "beach umbrella"}</p>
+                        <p className="text-xs sm:text-sm text-gray-600">Customer will be near {order.deliveryAddress}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-blue-50 rounded-lg">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-lg flex-shrink-0">2</div>
+                      <div>
+                        <p className="font-medium text-gray-900 text-sm sm:text-base">Announce yourself clearly</p>
+                        <p className="text-xs sm:text-sm text-gray-600">Say "Delivery from {order.restaurant}" when approaching</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-green-50 rounded-lg border-2 border-green-200">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-lg flex-shrink-0">3</div>
+                      <div>
+                        <p className="font-medium text-gray-900 text-sm sm:text-base">Complete delivery</p>
+                        <p className="text-xs sm:text-sm text-gray-600">Hand over the order and confirm completion in app</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Location Highlight */}
+                  <div className="mt-4 sm:mt-6 text-center">
+                    <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-blue-500 rounded-full mb-2 sm:mb-3">
+                      <span className="text-lg sm:text-2xl font-bold text-white">
+                        {order.deliveryAddress.split(' - ')[1] || order.deliveryAddress}
+                      </span>
+                    </div>
+                    <h4 className="text-lg sm:text-xl font-bold text-gray-900">Delivering to {order.deliveryAddress}</h4>
+                  </div>
+
+                  {/* Navigation Tips */}
+                  <div className="mt-4 sm:mt-6 bg-amber-50 border border-amber-200 rounded-lg p-3 sm:p-4">
+                    <h5 className="font-medium text-amber-900 mb-2 text-sm sm:text-base">💡 {order.deliveryType === "Poolside Service" ? "Pool" : "Beach"} Tips</h5>
+                    <ul className="text-xs sm:text-sm text-amber-800 space-y-1">
+                      {order.deliveryType === "Poolside Service" ? (
+                        <>
+                          <li>• Pool umbrellas are numbered around the pool deck</li>
+                          <li>• Ask pool staff if you need help locating the customer</li>
+                          <li>• Be mindful of wet surfaces and pool rules</li>
+                          <li>• Keep food covered until delivery</li>
+                        </>
+                      ) : (
+                        <>
+                          <li>• Beach umbrellas are arranged in rows with letter-number combinations</li>
+                          <li>• Look for resort staff who can help locate customers</li>
+                          <li>• Watch for sand and wind when handling food</li>
+                          <li>• Customer may be in beach chairs or under umbrella</li>
+                        </>
+                      )}
+                    </ul>
                   </div>
                 </div>
               )}
