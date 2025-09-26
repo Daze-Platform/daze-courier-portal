@@ -84,12 +84,13 @@
         }
         
         body {
-          /* CRITICAL: Remove fixed positioning completely */
+          /* CRITICAL: Use webkit-fill-available for proper iOS viewport */
           position: relative;
           width: 100%;
           height: auto;
           min-height: 100vh;
           min-height: 100dvh;
+          min-height: -webkit-fill-available;
           overflow-y: auto;
           overflow-x: hidden;
           -webkit-overflow-scrolling: touch;
@@ -101,6 +102,7 @@
           height: auto;
           min-height: 100vh;
           min-height: 100dvh;
+          min-height: -webkit-fill-available;
           overflow-y: auto;
           overflow-x: hidden;
           -webkit-overflow-scrolling: touch;
