@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { MapPin, Navigation, Clock, Play, Pause, Target, Zap, User, UtensilsCrossed, ChefHat, PersonStanding, Info, ChevronUp, ChevronDown, Phone, MessageCircle, CheckCircle } from "lucide-react";
+import { MapPin, Navigation, Clock, Play, Pause, Target, Zap, User, UtensilsCrossed, ChefHat, PersonStanding, ChevronUp, ChevronDown, Phone, MessageCircle, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -438,16 +438,6 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
             />
           </div>
           
-          {/* Order Details Button - Floating with animation */}
-          <div className="absolute bottom-4 right-4 z-50">
-            <Button
-              onClick={handleModalToggle}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg h-12 w-12 p-0 flex items-center justify-center hover-scale animate-fade-in"
-              size="sm"
-            >
-              <Info className="h-5 w-5" />
-            </Button>
-          </div>
 
           {/* Order Details Panel - Smooth Bottom Sheet */}
           <div 
@@ -1003,15 +993,6 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
             <Zap className="h-5 w-5" />
           </Button>
 
-          {/* Info Icon - Bottom Right for Order Details */}
-          <Button 
-            onClick={() => setModalState(modalState === 'closed' ? 'half' : 'closed')}
-            variant="outline" 
-            className="h-12 w-12 rounded-full"
-            title="Order Details"
-          >
-            <Info className="h-5 w-5" />
-          </Button>
         </div>
         
         <div className="mt-3 text-center">
