@@ -245,7 +245,7 @@ const OrderHistoryDetail: React.FC = () => {
         restaurantLogo: oceanBreezeLogo,
         status: 'delivered',
         deliveryAddress: 'Room Delivery',
-        roomNumber: 'Room N°1024',
+        roomNumber: 'Room N°102',
         deliveryTime: '12:15 PM',
         deliveryDate: 'Monday, September 2, 2025',
         customer: {

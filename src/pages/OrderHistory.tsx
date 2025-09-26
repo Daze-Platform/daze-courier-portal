@@ -196,7 +196,7 @@ const OrderHistory: React.FC = () => {
       date: 'Sep 2, 2025',
       time: '12:15 PM',
       dateTime: new Date(2025, 8, 2, 12, 15),
-      deliveryAddress: 'Room N°1024',
+      deliveryAddress: 'Room N°102',
       deliveryType: 'Room Delivery'
     },
     {

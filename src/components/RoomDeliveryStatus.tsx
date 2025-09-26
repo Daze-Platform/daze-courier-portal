@@ -70,7 +70,7 @@ const RoomDeliveryStatus = ({ destination, onComplete }: RoomDeliveryStatusProps
     }
   };
 
-  const roomNumber = destination.replace(/\D/g, '') || '###';
+  const roomNumber = (destination.replace(/\D/g, '') || '000').slice(-3).padStart(3, '0');
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border shadow-lg z-40 lg:left-64">
