@@ -77,6 +77,19 @@ const OrderCard = ({
     }
   };
 
+  const getShortDeliveryType = (type: string) => {
+    switch (type.toLowerCase()) {
+      case "room delivery":
+        return "Room";
+      case "beach delivery":
+        return "Beach";
+      case "pool delivery":
+        return "Pool";
+      default:
+        return type;
+    }
+  };
+
   const currentRestaurantLogo = getRestaurantLogo(restaurant);
 
   return (
@@ -116,7 +129,7 @@ const OrderCard = ({
 
         {/* Enhanced Summary Row */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm">
+          <div className="flex items-center gap-3 text-sm">
             <span className="text-foreground font-medium">
               {itemCount} item{itemCount > 1 ? 's' : ''}
             </span>
@@ -128,18 +141,18 @@ const OrderCard = ({
                 </span>
               </>
             )}
-            {specialNotes && (
+            {specialNotes && specialNotes.trim() && (
               <>
                 <div className="h-1 w-1 bg-muted-foreground rounded-full" />
-                <Badge variant="outline" className="text-xs bg-warning/10 text-warning border-warning/30">
+                <Badge variant="outline" className="text-xs bg-warning/10 text-warning border-warning/30 ml-1">
                   💬 Special Notes
                 </Badge>
               </>
             )}
           </div>
-          <Badge className="bg-accent text-white font-medium text-xs border-0">
+          <Badge className="bg-accent text-white font-medium text-xs border-0 ml-2">
             <User className="h-3 w-3 mr-1" />
-            {deliveryType}
+            {getShortDeliveryType(deliveryType)}
           </Badge>
         </div>
         
