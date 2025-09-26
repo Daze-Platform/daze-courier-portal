@@ -66,248 +66,8 @@ const OrderDetail = () => {
         additionalPay: 2.25,
         total: 16.50
       }
-    },
-    {
-      orderId: "#23456789",
-      restaurant: "Margarita Mama's",
-      deliveryAddress: "Room #1234",
-      deliveryTime: "July 21, 11:36AM",
-      deliveryType: "Room Delivery",
-      customer: {
-        name: "Gretche Bergson",
-        avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=150&h=150&fit=crop&crop=face",
-        phone: "+1 (555) 123-4567"
-      },
-      items: [
-        {
-          name: "1x Fried Rice with Chicken Protein (+$2.00)",
-          price: 13.90,
-          modifications: "Choice of Protein: Chicken ($2.00)"
-        },
-        {
-          name: "1x Spring Water", 
-          price: 2.00,
-          modifications: ""
-        }
-      ],
-      specialNotes: "Please knock softly - baby sleeping. Leave outside door if no answer.",
-      subtotal: 15.90,
-      processingFee: 0.00,
-      deliveryTips: 4.00,
-      total: 15.90,
-      earnings: {
-        basePay: 8.50,
-        customerTip: 4.00,
-        additionalPay: 0.00,
-        total: 12.50
-      }
-    },
-    {
-      orderId: "#23456790",
-      restaurant: "Sunset Grill",
-      deliveryAddress: "Pool Deck - Cabana 8",
-      deliveryTime: "July 21, 12:15PM",
-      deliveryType: "Poolside Service",
-      customer: {
-        name: "Sarah Johnson",
-        avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face",
-        phone: "+1 (555) 987-6543"
-      },
-      items: [
-        {
-          name: "2x Grilled Chicken Breast",
-          price: 24.00,
-          modifications: ""
-        },
-        {
-          name: "1x Caesar Salad (Extra Parmesan)",
-          price: 12.75,
-          modifications: "Extra Parmesan"
-        },
-        {
-          name: "1x Tropical Smoothie",
-          price: 8.00,
-          modifications: ""
-        },
-        {
-          name: "1x Garlic Bread",
-          price: 6.00,
-          modifications: ""
-        }
-      ],
-      specialNotes: "We're the family with blue umbrellas. Please bring extra napkins and utensils for kids.",
-      subtotal: 42.75,
-      processingFee: 2.00,
-      deliveryTips: 6.00,
-      total: 42.75,
-      earnings: {
-        basePay: 12.90,
-        customerTip: 6.00,
-        additionalPay: 0.00,
-        total: 18.90
-      }
-    },
-    {
-      orderId: "#867899",
-      restaurant: "Margarita Mama's",
-      deliveryAddress: "Beach - Umbrella A3",
-      deliveryTime: "July 21, 11:36AM",
-      deliveryType: "Beach Service",
-      customer: {
-        name: "Mike Thompson",
-        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
-        phone: "+1 (555) 456-7890"
-      },
-      items: [
-        {
-          name: "1x Fried Rice",
-          price: 13.90,
-          modifications: ""
-        },
-        {
-          name: "2x Ham & Cheese Croissant",
-          price: 22.00,
-          modifications: ""
-        }
-      ],
-      specialNotes: "We're the family with blue umbrellas. Please bring extra napkins and utensils for kids.",
-      subtotal: 35.90,
-      processingFee: 4.00,
-      deliveryTips: 4.00,
-      total: 39.90,
-      earnings: {
-        basePay: 20.80,
-        customerTip: 4.00,
-        additionalPay: 0.00,
-        total: 24.80
-      }
-    },
-    {
-      orderId: "#24681357",
-      restaurant: "Sal De Mar",
-      deliveryAddress: "Beach - Umbrella B7",
-      deliveryTime: "July 21, 1:20PM",
-      deliveryType: "Beach Service",
-      customer: {
-        name: "Emily Rodriguez",
-        avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop&crop=face",
-        phone: "+1 (555) 234-5678"
-      },
-      items: [
-        {
-          name: "1x Seafood Paella",
-          price: 32.00,
-          modifications: ""
-        },
-        {
-          name: "2x Coconut Shrimp",
-          price: 18.00,
-          modifications: ""
-        },
-        {
-          name: "1x Fresh Catch of the Day",
-          price: 28.45,
-          modifications: "Grilled, with lemon butter sauce"
-        },
-        {
-          name: "1x Mango Margarita",
-          price: 12.00,
-          modifications: "Extra lime"
-        }
-      ],
-      specialNotes: "Anniversary couple - please include extra lime wedges and cocktail napkins.",
-      subtotal: 90.45,
-      processingFee: 4.50,
-      deliveryTips: 8.00,
-      total: 58.45,
-      earnings: {
-        basePay: 14.30,
-        customerTip: 8.00,
-        additionalPay: 0.00,
-        total: 22.30
-      }
-    },
-    {
-      orderId: "#98765432",
-      restaurant: "Ocean Breeze Café",
-      deliveryAddress: "Pool Deck - Umbrella P12",
-      deliveryTime: "July 21, 2:45PM",
-      deliveryType: "Poolside Service",
-      customer: {
-        name: "David Martinez",
-        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-        phone: "+1 (555) 345-6789"
-      },
-      items: [
-        {
-          name: "2x Fish Tacos",
-          price: 18.00,
-          modifications: ""
-        },
-        {
-          name: "1x Poolside Nachos",
-          price: 12.50,
-          modifications: ""
-        },
-        {
-          name: "2x Frozen Margaritas",
-          price: 16.00,
-          modifications: ""
-        }
-      ],
-      specialNotes: "Pool umbrella near the shallow end. We have two kids with us.",
-      subtotal: 46.50,
-      processingFee: 2.25,
-      deliveryTips: 5.25,
-      total: 34.50,
-      earnings: {
-        basePay: 11.50,
-        customerTip: 5.25,
-        additionalPay: 0.00,
-        total: 16.75
-      }
-    },
-    {
-      orderId: "#11223344",
-      restaurant: "Sunset Grill",
-      deliveryAddress: "Pool Deck - Umbrella P8",
-      deliveryTime: "July 21, 3:10PM",
-      deliveryType: "Poolside Service",
-      customer: {
-        name: "Lisa Chen",
-        avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
-        phone: "+1 (555) 567-8901"
-      },
-      items: [
-        {
-          name: "1x Grilled Salmon",
-          price: 22.75,
-          modifications: "Extra lemon"
-        },
-        {
-          name: "1x Tropical Fruit Bowl",
-          price: 8.00,
-          modifications: ""
-        },
-        {
-          name: "1x Coconut Water",
-          price: 4.00,
-          modifications: ""
-        }
-      ],
-      specialNotes: "Large blue umbrella by the pool bar. Customer wearing red swim hat.",
-      subtotal: 34.75,
-      processingFee: 1.75,
-      deliveryTips: 4.25,
-      total: 29.75,
-      earnings: {
-        basePay: 10.00,
-        customerTip: 4.25,
-        additionalPay: 0.00,
-        total: 14.25
-      }
     }
-  ].filter(order => order.deliveryType !== "Cabana Service");
+  ];
 
   const order = mockOrders.find(o => o.orderId === orderId) || mockOrders[0];
 
@@ -377,256 +137,243 @@ const OrderDetail = () => {
       <UnifiedHeader />
       <DesktopSidebar />
 
-      {/* Main Content - iOS Safari Fixed */}
-      <div className="bg-background lg:ml-64" style={{ minHeight: '-webkit-fill-available' }}>
-        <div className="h-full overflow-y-auto" style={{ 
-          maxHeight: '-webkit-fill-available',
-          WebkitOverflowScrolling: 'touch',
-          overscrollBehavior: 'contain'
-        }}>
-          <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-4 sm:space-y-6 lg:px-8 pb-20">
-            {/* Header */}
-            <div className="flex items-center gap-4 sticky top-0 z-30 bg-background/95 backdrop-blur-sm py-2 -mx-3 px-3 sm:-mx-4 sm:px-4 lg:-mx-8 lg:px-8">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => navigate("/")}
-                className="flex-shrink-0"
-              >
-                <ArrowLeft className="h-6 w-6" />
-              </Button>
-              <div className="min-w-0 flex-1">
-                <h1 className="text-xl sm:text-2xl font-bold text-foreground lg:text-3xl truncate">Order {order.orderId}</h1>
-                <p className="text-muted-foreground text-sm sm:text-base lg:text-lg">Delivery details and customer information</p>
+      {/* Main Content - Universal Browser Compatible */}
+      <div className="bg-background lg:ml-64 min-h-screen">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 pb-32">
+          {/* Header */}
+          <div className="flex items-center gap-4 mb-6">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate("/")}
+              className="flex-shrink-0"
+            >
+              <ArrowLeft className="h-6 w-6" />
+            </Button>
+            <div className="min-w-0 flex-1">
+              <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Order {order.orderId}</h1>
+              <p className="text-muted-foreground">Delivery details and customer information</p>
+            </div>
+          </div>
+
+          {/* Order Content - Responsive Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Main Order Info */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Restaurant Info Card */}
+              <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="h-12 w-12 rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm flex-shrink-0">
+                    {restaurantLogo ? (
+                      <img src={restaurantLogo} alt={`${order.restaurant} logo`} className="h-full w-full object-cover rounded-full" />
+                    ) : (
+                      <Package className="h-6 w-6 text-accent" />
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h2 className="text-xl font-semibold text-foreground">Order from {order.restaurant}</h2>
+                    <div className="mt-1">
+                      <Badge className="bg-accent text-white font-medium border-0">
+                        {order.deliveryType}
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-5 w-5 text-accent flex-shrink-0" />
+                    <span className="font-medium text-foreground">{order.deliveryAddress}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-5 w-5 text-accent flex-shrink-0" />
+                    <span className="text-foreground">{order.deliveryTime}</span>
+                  </div>
+                </div>
+
+                {/* Start Delivery Button - Universal Fix */}
+                <div className="pt-4">
+                  <Button 
+                    className="w-full font-medium text-white h-14 text-lg"
+                    style={{ 
+                      backgroundColor: navigationStarted && order.deliveryType === "Room Delivery" ? '#94a3b8' : '#29b6f6'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!(navigationStarted && order.deliveryType === "Room Delivery")) {
+                        (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#1e88e5';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!(navigationStarted && order.deliveryType === "Room Delivery")) {
+                        (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#29b6f6';
+                      }
+                    }}
+                    onClick={handleStartDelivery}
+                    disabled={navigationStarted && order.deliveryType === "Room Delivery"}
+                  >
+                    {navigationStarted && order.deliveryType === "Room Delivery" 
+                      ? 'Delivery In Progress...' 
+                      : 'Start Delivery'
+                    }
+                  </Button>
+                </div>
               </div>
+
+              {/* Customer Location Map - Only for Beach and Pool deliveries */}
+              {(order.deliveryType === "Beach Service" || order.deliveryType === "Poolside Service") && (
+                <div className="bg-card shadow-soft border border-border rounded-lg overflow-hidden">
+                  <div className="p-6 pb-0">
+                    <h3 className="text-lg font-semibold text-foreground mb-4">Customer Location</h3>
+                  </div>
+                  <div className="relative aspect-video max-h-[300px] w-full overflow-hidden">
+                    <ResortImageView 
+                      destination={order.deliveryAddress}
+                      isDelivering={false}
+                      focusArea={order.deliveryType === "Beach Service" ? 'beach' : 'pool'}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Room Delivery Instructions - Only for Room deliveries */}
+              {order.deliveryType === "Room Delivery" && (
+                <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
+                  <h3 className="text-lg font-semibold text-foreground mb-4">Room Delivery Instructions</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
+                      <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">1</div>
+                      <div>
+                        <p className="font-medium text-gray-900">Enter Main Lobby</p>
+                        <p className="text-sm text-gray-600">Use the main entrance and approach the front desk area</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
+                      <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">2</div>
+                      <div>
+                        <p className="font-medium text-gray-900">Take Elevator</p>
+                         <p className="text-sm text-gray-600">
+                           Go to Floor {Math.floor(parseInt(order.deliveryAddress.replace(/\D/g, '')) / 1000) || 1}
+                         </p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
+                      <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">3</div>
+                      <div>
+                        <p className="font-medium text-gray-900">Follow Room Numbers</p>
+                        <p className="text-sm text-gray-600">Look for room number signs in the hallway</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-4 p-4 bg-green-50 rounded-lg border-2 border-green-200">
+                      <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-lg">4</div>
+                      <div>
+                        <p className="font-medium text-gray-900">Knock & Deliver</p>
+                        <p className="text-sm text-gray-600">Announce "Room service delivery" and complete the order</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Room Number Highlight */}
+                  <div className="mt-6 text-center">
+                    <div className="inline-flex items-center justify-center w-20 h-20 bg-blue-500 rounded-full mb-3">
+                      <span className="text-2xl font-bold text-white">
+                        {order.deliveryAddress.replace(/\D/g, '') || '###'}
+                      </span>
+                    </div>
+                    <h4 className="text-xl font-bold text-gray-900">Delivering to {order.deliveryAddress}</h4>
+                  </div>
+
+                  {/* Navigation Tips */}
+                  <div className="mt-6 bg-amber-50 border border-amber-200 rounded-lg p-4">
+                    <h5 className="font-medium text-amber-900 mb-2">💡 Navigation Tips</h5>
+                    <ul className="text-sm text-amber-800 space-y-1">
+                      <li>• Room numbers ending in 01-20 are usually on the left side</li>
+                      <li>• Room numbers ending in 21-40 are usually on the right side</li>
+                      <li>• Look for directional arrows near elevators</li>
+                      <li>• Ask front desk staff if you need assistance</li>
+                    </ul>
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Order Content - Responsive Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-              {/* Main Order Info */}
-              <div className="lg:col-span-2 space-y-6">
-                {/* Restaurant Info Card - iPhone Optimized */}
-                <div className="bg-card rounded-lg p-4 sm:p-6 shadow-soft border border-border space-y-4">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm flex-shrink-0">
-                      {restaurantLogo ? (
-                        <img src={restaurantLogo} alt={`${order.restaurant} logo`} className="h-full w-full object-cover rounded-full" />
-                      ) : (
-                        <Package className="h-5 w-5 sm:h-6 sm:w-6 text-accent" />
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h2 className="text-base sm:text-lg font-semibold text-foreground lg:text-xl truncate">Order from {order.restaurant}</h2>
-                      <div className="mt-1">
-                        <Badge className="bg-accent text-white font-medium border-0 text-xs sm:text-sm">
-                          {order.deliveryType}
-                        </Badge>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 gap-2 sm:gap-3 mb-6">
-                    <div className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4 text-accent flex-shrink-0" />
-                      <span className="font-medium text-foreground text-sm sm:text-base truncate">{order.deliveryAddress}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-accent flex-shrink-0" />
-                      <span className="text-foreground text-sm sm:text-base">{order.deliveryTime}</span>
-                    </div>
-                  </div>
-
-                  {/* Start Delivery Button - iOS Safari Compatible */}
-                  <div className="mt-4 mb-8" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 20px)' }}>
-                    <Button 
-                      className="w-full font-medium text-white h-14 text-lg shadow-lg border-0 relative z-20 touch-manipulation"
-                      style={{ 
-                        backgroundColor: navigationStarted && order.deliveryType === "Room Delivery" ? '#94a3b8' : '#29b6f6',
-                        cursor: navigationStarted && order.deliveryType === "Room Delivery" ? 'not-allowed' : 'pointer',
-                        WebkitTouchCallout: 'none',
-                        WebkitUserSelect: 'none',
-                        userSelect: 'none'
-                      }}
-                      onMouseEnter={(e) => {
-                        if (!(navigationStarted && order.deliveryType === "Room Delivery")) {
-                          (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#1e88e5';
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        if (!(navigationStarted && order.deliveryType === "Room Delivery")) {
-                          (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#29b6f6';
-                        }
-                      }}
-                      onClick={handleStartDelivery}
-                      disabled={navigationStarted && order.deliveryType === "Room Delivery"}
-                    >
-                      {navigationStarted && order.deliveryType === "Room Delivery" 
-                        ? 'Delivery In Progress...' 
-                        : 'Start Delivery'
-                      }
-                    </Button>
-                  </div>
+            {/* Customer & Order Details Sidebar */}
+            <div className="space-y-6">
+              {/* Customer Info */}
+              <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-foreground">Delivery For</h3>
+                  <Button 
+                    className="font-medium text-white"
+                    style={{ backgroundColor: '#29b6f6' }}
+                    onMouseEnter={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#1e88e5'}
+                    onMouseLeave={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#29b6f6'}
+                  >
+                    <MessageCircle className="h-4 w-4 mr-2" />
+                    Chat
+                  </Button>
                 </div>
-
-                {/* Customer Location Map - Only for Beach and Pool deliveries */}
-                {(order.deliveryType === "Beach Service" || order.deliveryType === "Poolside Service") && (
-                  <div className="bg-card shadow-soft border border-border overflow-hidden">
-                    <div className="p-4 sm:p-6 pb-0">
-                      <h3 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4">Customer Location</h3>
-                    </div>
-                    <div className="relative aspect-[4/3] sm:aspect-video max-h-[160px] sm:max-h-[200px] md:max-h-none w-full overflow-hidden">
-                      <div className="absolute inset-0 w-full h-full">
-                        <ResortImageView 
-                          destination={order.deliveryAddress}
-                          isDelivering={false}
-                          focusArea={order.deliveryType === "Beach Service" ? 'beach' : 'pool'}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Room Delivery Instructions - Only for Room deliveries */}
-                {order.deliveryType === "Room Delivery" && (
-                  <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
-                    <h3 className="text-lg font-semibold text-foreground mb-4">Room Delivery Instructions</h3>
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
-                        <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">1</div>
-                        <div>
-                          <p className="font-medium text-gray-900">Enter Main Lobby</p>
-                          <p className="text-sm text-gray-600">Use the main entrance and approach the front desk area</p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
-                        <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">2</div>
-                        <div>
-                          <p className="font-medium text-gray-900">Take Elevator</p>
-                           <p className="text-sm text-gray-600">
-                             Go to Floor {Math.floor(parseInt(order.deliveryAddress.replace(/\D/g, '')) / 1000) || 1}
-                             {order.deliveryAddress.includes('0') && parseInt(order.deliveryAddress.replace(/\D/g, '')) < 1000 && ' (Ground Floor)'}
-                           </p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
-                        <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">3</div>
-                        <div>
-                          <p className="font-medium text-gray-900">Follow Room Numbers</p>
-                          <p className="text-sm text-gray-600">Look for room number signs in the hallway</p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center gap-4 p-4 bg-green-50 rounded-lg border-2 border-green-200">
-                        <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-lg">4</div>
-                        <div>
-                          <p className="font-medium text-gray-900">Knock & Deliver</p>
-                          <p className="text-sm text-gray-600">Announce "Room service delivery" and complete the order</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Room Number Highlight */}
-                    <div className="mt-6 text-center">
-                      <div className="inline-flex items-center justify-center w-20 h-20 bg-blue-500 rounded-full mb-3">
-                        <span className="text-2xl font-bold text-white">
-                          {order.deliveryAddress.replace(/\D/g, '') || '###'}
-                        </span>
-                      </div>
-                      <h4 className="text-xl font-bold text-gray-900">Delivering to {order.deliveryAddress}</h4>
-                    </div>
-
-                    {/* Navigation Tips */}
-                    <div className="mt-6 bg-amber-50 border border-amber-200 rounded-lg p-4">
-                      <h5 className="font-medium text-amber-900 mb-2">💡 Navigation Tips</h5>
-                      <ul className="text-sm text-amber-800 space-y-1">
-                        <li>• Room numbers ending in 01-20 are usually on the left side</li>
-                        <li>• Room numbers ending in 21-40 are usually on the right side</li>
-                        <li>• Look for directional arrows near elevators</li>
-                        <li>• Ask front desk staff if you need assistance</li>
-                      </ul>
-                    </div>
-                  </div>
-                )}
+                <div className="flex items-center gap-3">
+                  <Avatar className="h-12 w-12">
+                    <AvatarImage src={order.customer.avatar} />
+                    <AvatarFallback>GB</AvatarFallback>
+                  </Avatar>
+                  <span className="font-semibold text-foreground">{order.customer.name}</span>
+                </div>
               </div>
 
-              {/* Customer & Order Details Sidebar */}
-              <div className="space-y-6">
-                {/* Customer Info */}
-                <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-foreground">Delivery For</h3>
-                    <Button 
-                      className="font-medium text-white"
-                      style={{ backgroundColor: '#29b6f6' }}
-                      onMouseEnter={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#1e88e5'}
-                      onMouseLeave={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#29b6f6'}
-                    >
-                      <MessageCircle className="h-4 w-4 mr-2" />
-                      Chat
-                    </Button>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Avatar className="h-12 w-12">
-                      <AvatarImage src={order.customer.avatar} />
-                      <AvatarFallback>GB</AvatarFallback>
-                    </Avatar>
-                    <span className="font-semibold text-foreground">{order.customer.name}</span>
-                  </div>
+              {/* Order Details */}
+              <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
+                <h3 className="text-lg font-semibold text-foreground mb-4">Order Details</h3>
+                
+                <div className="space-y-4">
+                  {order.items.map((item, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <div className="flex-shrink-0 w-8 h-8 bg-accent/10 rounded-full flex items-center justify-center">
+                        <span className="text-xs font-bold text-accent">1</span>
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-medium text-foreground">{item.name}</h4>
+                        {item.modifications && (
+                          <div className="mt-1">
+                            <span className="inline-block text-xs text-muted-foreground bg-muted px-2 py-1 rounded">
+                              {item.modifications}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
                 </div>
 
-                {/* Order Details */}
-                <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
-                  <h3 className="text-lg font-semibold text-foreground mb-4">Order Details</h3>
-                  
-                  <div className="space-y-4">
-                    {order.items.map((item, index) => (
-                      <div key={index} className="flex items-start gap-3">
-                        <div className="flex-shrink-0 w-8 h-8 bg-accent/10 rounded-full flex items-center justify-center">
-                          <span className="text-xs font-bold text-accent">1</span>
-                        </div>
-                        <div className="flex-1">
-                          <h4 className="font-medium text-foreground">{item.name}</h4>
-                          {item.modifications && (
-                            <div className="mt-1">
-                              <span className="inline-block text-xs text-muted-foreground bg-muted px-2 py-1 rounded">
-                                {item.modifications}
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    ))}
+                {order.specialNotes && (
+                  <div className="mt-4 p-3 bg-amber-50 border-l-4 border-amber-400 rounded">
+                    <p className="text-sm font-medium text-amber-800 mb-1">Special Notes:</p>
+                    <p className="text-sm text-amber-700">{order.specialNotes}</p>
                   </div>
+                )}
 
-                  {order.specialNotes && (
-                    <div className="mt-4 p-3 bg-amber-50 border-l-4 border-amber-400 rounded">
-                      <p className="text-sm font-medium text-amber-800 mb-1">Special Notes:</p>
-                      <p className="text-sm text-amber-700">{order.specialNotes}</p>
-                    </div>
-                  )}
-
-                  {/* Order Summary */}
-                  <div className="mt-6 pt-4 border-t border-border space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Order Total</span>
-                      <span className="font-semibold text-foreground">${order.total.toFixed(2)}</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Estimated Earnings</span>
-                      <span className="font-semibold text-success">${order.earnings.total.toFixed(2)}</span>
-                    </div>
+                {/* Order Summary */}
+                <div className="mt-6 pt-4 border-t border-border space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Order Total</span>
+                    <span className="font-semibold text-foreground">${order.total.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Estimated Earnings</span>
+                    <span className="font-semibold text-success">${order.earnings.total.toFixed(2)}</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* Navigation started - Show drawer for order details */}
-          {navigationStarted && <OrderDetailsDrawer order={order} />}
         </div>
       </div>
+
+      {/* Navigation started - Show drawer for order details */}
+      {navigationStarted && <OrderDetailsDrawer order={order} />}
 
       {/* Full Screen Navigation Modal */}
       <Dialog open={showNavigationModal} onOpenChange={setShowNavigationModal}>
