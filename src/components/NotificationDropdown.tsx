@@ -57,9 +57,10 @@ const NotificationDropdown = ({ className }: NotificationDropdownProps) => {
       </DropdownMenuTrigger>
       
       <DropdownMenuContent 
-        align="end" 
-        className="w-80 p-0 bg-card border border-border shadow-lg z-50"
+        align="center" 
+        className="w-80 p-0 bg-card border border-border shadow-lg z-50 mx-4"
         sideOffset={8}
+        alignOffset={-40}
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b bg-card">
