@@ -116,8 +116,8 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
   const getModalHeight = (state: 'closed' | 'half' | 'full') => {
     switch (state) {
       case 'closed': return '0%';
-      case 'half': return '50%';
-      case 'full': return '100%';
+      case 'half': return '45%';
+      case 'full': return '90%';
       default: return '0%';
     }
   };
@@ -438,35 +438,36 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
             />
           </div>
           
-          {/* Order Details Button - Floating */}
+          {/* Order Details Button - Floating with animation */}
           <div className="absolute bottom-4 right-4 z-50">
             <Button
               onClick={handleModalToggle}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg h-10 w-10 p-0 flex items-center justify-center"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg h-12 w-12 p-0 flex items-center justify-center hover-scale animate-fade-in"
               size="sm"
             >
-              <Info className="h-4 w-4" />
+              <Info className="h-5 w-5" />
             </Button>
           </div>
 
-          {/* Order Details Panel - Simplified Click Modal */}
+          {/* Order Details Panel - Smooth Bottom Sheet */}
           <div 
-            className={`absolute bottom-20 left-0 right-0 z-20 transition-all duration-500 ease-out ${
+            className={`fixed bottom-0 left-0 right-0 z-20 bg-background rounded-t-xl shadow-2xl transition-all duration-700 ease-out ${
               modalState === 'closed' 
-                ? 'transform translate-y-full' 
-                : 'transform translate-y-0'
+                ? 'transform translate-y-full opacity-0' 
+                : 'transform translate-y-0 opacity-100'
             }`}
             style={{
-              height: getModalHeight(modalState)
+              height: modalState === 'closed' ? '0%' : getModalHeight(modalState),
+              maxHeight: '90vh'
             }}
           >
-            {/* Header - Clickable to expand */}
+            {/* Header - Clickable to expand with drag handle */}
             <div 
-              className="bg-background border-t border-border rounded-t-xl shadow-lg cursor-pointer hover:bg-muted/50 transition-colors"
+              className="bg-background rounded-t-xl shadow-lg cursor-pointer hover:bg-muted/50 transition-colors animate-fade-in"
               onClick={handleModalAreaClick}
             >
               <div className="flex justify-center py-3">
-                <div className="w-12 h-1 bg-muted-foreground/30 rounded-full"></div>
+                <div className="w-12 h-1 bg-muted-foreground/40 rounded-full hover:bg-muted-foreground/60 transition-colors" />
               </div>
               
               {/* Header - Always visible */}
@@ -474,6 +475,9 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
                 <div className="flex items-center justify-between">
                   <h2 className="text-xl font-semibold text-foreground">Order Details</h2>
                   <div className="flex items-center gap-2">
+                    {modalState === 'half' && (
+                      <ChevronUp className="h-5 w-5 text-muted-foreground animate-pulse" />
+                    )}
                     <Button
                       variant="ghost"
                       size="sm"
@@ -500,7 +504,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
             {/* Scrollable Content - Only show for half/full states */}
             {(modalState === 'half' || modalState === 'full') && (
               <div 
-                className="bg-background flex-1 overflow-y-auto"
+                className={`bg-background flex-1 overflow-y-auto ${modalState === 'half' ? 'animate-fade-in' : 'animate-scale-in'}`}
                 onWheel={(e) => {
                   const element = e.currentTarget;
                   const isAtTop = element.scrollTop <= 5;
@@ -526,7 +530,9 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
                 style={{
                   maxHeight: modalState === 'full' ? 'calc(100vh - 120px)' : 'calc(50vh - 120px)',
                   overflowY: 'auto',
-                  WebkitOverflowScrolling: 'touch' // iOS smooth scrolling
+                  WebkitOverflowScrolling: 'touch', // iOS smooth scrolling
+                  scrollBehavior: 'smooth',
+                  overscrollBehavior: 'contain'
                 }}
               >
                 <div className="px-6 pb-6 space-y-4">
