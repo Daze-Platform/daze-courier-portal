@@ -2,7 +2,39 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <style>
+      /* Ensure proper mobile viewport handling */
+      @media screen and (max-width: 768px) {
+        html, body { 
+          height: 100vh; 
+          height: 100dvh; /* Dynamic viewport height for Safari */
+          overflow-x: hidden;
+        }
+        #root {
+          min-height: 100vh;
+          min-height: 100dvh;
+        }
+        /* Prevent iOS Safari bounce scrolling */
+        body {
+          position: fixed;
+          width: 100%;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          overflow: hidden;
+        }
+        #root {
+          height: 100%;
+          overflow-y: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+      }
+    </style>
     <title>Courier Portal - Resort Delivery Management</title>
     <meta name="description" content="Professional courier portal for resort food delivery management. Manage orders, track deliveries, and coordinate with resort guests efficiently." />
     <meta name="author" content="Lovable" />

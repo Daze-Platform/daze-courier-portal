@@ -386,9 +386,9 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
   }, [courierPosition, destinationPos]);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen h-dvh overflow-hidden">
       {/* Compact Navigation Header */}
-      <div className="bg-background border-b border-border p-3 flex-shrink-0">
+      <div className="bg-background border-b border-border p-3 flex-shrink-0 safe-area-inset-top">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <div className="h-8 w-8 bg-primary/10 rounded-full flex items-center justify-center">
@@ -423,11 +423,19 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
       {/* Resort Map - Show based on delivery type */}
       {isBeachDelivery || isPoolDelivery ? (
         <div className="flex-1 relative overflow-hidden">
-          <ResortImageView 
-            destination={destination} 
-            isDelivering={isNavigating}
-            focusArea={getMapType()}
-          />
+          <div 
+            className="h-full w-full overflow-auto"
+            style={{
+              WebkitOverflowScrolling: 'touch',
+              overscrollBehavior: 'contain'
+            }}
+          >
+            <ResortImageView 
+              destination={destination} 
+              isDelivering={isNavigating}
+              focusArea={getMapType()}
+            />
+          </div>
           
           {/* Order Details Button - Floating */}
           <div className="absolute bottom-4 right-4 z-50">
@@ -662,7 +670,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
           </div>
         </div>
       ) : isRoomDelivery ? (
-        <div className="flex-1 overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
+        <div className="flex-1 overflow-auto bg-gradient-to-br from-blue-50 to-indigo-50 p-6" style={{ WebkitOverflowScrolling: 'touch' }}>
           <div className="max-w-2xl mx-auto space-y-6">
             {/* Room Number Header */}
             <div className="text-center">
