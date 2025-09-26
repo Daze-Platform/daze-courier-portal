@@ -35,7 +35,7 @@ const RoomDeliveryStatus = ({ destination, onComplete }: RoomDeliveryStatusProps
           toast({
             title: "🎯 Arrived!",
             description: `You've reached ${destination}. Complete the delivery!`,
-            className: "border-l-4 border-l-green-500",
+            variant: "success"
           });
         }
         

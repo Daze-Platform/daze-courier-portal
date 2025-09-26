@@ -87,7 +87,7 @@ const DeliveryTracking = () => {
     toast({
       title: "🎉 Delivery Complete!",
       description: "Order was successfully delivered. Great job!",
-      className: "border-l-4 border-l-green-500",
+      variant: "success"
     });
     navigate("/");
   };

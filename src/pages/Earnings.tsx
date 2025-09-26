@@ -240,6 +240,7 @@ const Earnings: React.FC = () => {
     toast({
       title: "Withdrawal Submitted",
       description: "Your withdrawal request has been submitted successfully.",
+      variant: "success"
     });
   };
 

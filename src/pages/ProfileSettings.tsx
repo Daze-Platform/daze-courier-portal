@@ -62,7 +62,8 @@ const ProfileSettings = () => {
       
       toast({
         title: "Image uploaded",
-        description: "Profile image updated successfully"
+        description: "Profile image updated successfully",
+        variant: "success"
       });
     }
   };
@@ -71,7 +72,8 @@ const ProfileSettings = () => {
     console.log("Profile data:", data);
     toast({
       title: "Profile updated",
-      description: "Your profile information has been saved"
+      description: "Your profile information has been saved",
+      variant: "success"
     });
   };
 
@@ -88,7 +90,8 @@ const ProfileSettings = () => {
     console.log("Password updated");
     toast({
       title: "Password updated",
-      description: "Your password has been changed successfully"
+      description: "Your password has been changed successfully",
+      variant: "success"
     });
     passwordForm.reset();
   };
