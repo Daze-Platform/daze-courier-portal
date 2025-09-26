@@ -386,7 +386,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
   }, [courierPosition, destinationPos]);
 
   return (
-    <div className="min-h-screen min-h-dvh flex flex-col">
+    <div className="min-h-screen min-h-dvh flex flex-col pb-24">
       {/* Compact Navigation Header */}
       <div className="bg-background border-b border-border p-3 flex-shrink-0 safe-area-inset-top sticky top-0 z-50">
         <div className="flex items-center justify-between mb-2">
@@ -962,9 +962,9 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
         </div>
       )}
 
-      {/* Bottom Navigation Controls - Now scrollable */}
-      <div className="bg-background border-t border-border p-4 mb-safe">
-        <div className="flex gap-3">
+      {/* Bottom Navigation Controls - Fixed positioning for all screen sizes */}
+      <div className="bg-background border-t border-border p-4 mb-safe fixed bottom-0 left-0 right-0 z-30">
+        <div className="flex gap-3 items-center">
           {!hasReachedDestination ? (
             <Button 
               onClick={startNavigation} 
@@ -995,6 +995,16 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
             title={isRoomDelivery && hasStartedNavigation ? "Cannot reset room delivery once started" : "Reset position"}
           >
             <Zap className="h-5 w-5" />
+          </Button>
+
+          {/* Info Icon - Bottom Right for Order Details */}
+          <Button 
+            onClick={() => setModalState(modalState === 'closed' ? 'half' : 'closed')}
+            variant="outline" 
+            className="h-12 w-12 rounded-full"
+            title="Order Details"
+          >
+            <Info className="h-5 w-5" />
           </Button>
         </div>
         

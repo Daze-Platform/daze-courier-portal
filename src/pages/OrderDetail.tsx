@@ -372,9 +372,6 @@ const OrderDetail = () => {
         </div>
       </div>
 
-      {/* Navigation started - Show drawer for order details */}
-      {navigationStarted && <OrderDetailsDrawer order={order} />}
-
       {/* Full Screen Navigation Modal */}
       <Dialog open={showNavigationModal} onOpenChange={setShowNavigationModal}>
         <DialogContent className="max-w-full max-h-full w-screen h-screen p-0 m-0 border-0">
