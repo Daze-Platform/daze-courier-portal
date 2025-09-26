@@ -386,9 +386,9 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
   }, [courierPosition, destinationPos]);
 
   return (
-    <div className="flex flex-col h-screen h-dvh overflow-hidden">
+    <div className="min-h-screen min-h-dvh flex flex-col">
       {/* Compact Navigation Header */}
-      <div className="bg-background border-b border-border p-3 flex-shrink-0 safe-area-inset-top">
+      <div className="bg-background border-b border-border p-3 flex-shrink-0 safe-area-inset-top sticky top-0 z-50">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <div className="h-8 w-8 bg-primary/10 rounded-full flex items-center justify-center">
@@ -422,12 +422,13 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
 
       {/* Resort Map - Show based on delivery type */}
       {isBeachDelivery || isPoolDelivery ? (
-        <div className="flex-1 relative overflow-hidden">
+        <div className="flex-1 min-h-0 relative">
           <div 
             className="h-full w-full overflow-auto"
             style={{
               WebkitOverflowScrolling: 'touch',
-              overscrollBehavior: 'contain'
+              overscrollBehavior: 'contain',
+              minHeight: '50vh'
             }}
           >
             <ResortImageView 
@@ -645,9 +646,10 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
              )}
            </div>
          </div>
-       ) : isRoomDelivery ? (
-        <div className="flex-1 overflow-auto bg-gradient-to-br from-blue-50 to-indigo-50 p-6" style={{ WebkitOverflowScrolling: 'touch' }}>
-          <div className="max-w-2xl mx-auto space-y-6">
+        ) : isRoomDelivery ? (
+        <div className="flex-1 min-h-0 overflow-auto bg-gradient-to-br from-blue-50 to-indigo-50 p-6" 
+             style={{ WebkitOverflowScrolling: 'touch', paddingBottom: 'env(safe-area-inset-bottom, 20px)' }}>
+          <div className="max-w-2xl mx-auto space-y-6 pb-6">
             {/* Room Number Header */}
             <div className="text-center">
               <div className="inline-flex items-center justify-center w-24 h-24 bg-blue-500 rounded-full mb-4">
@@ -734,8 +736,13 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
           </div>
         </div>
       ) : (
-        <div className="flex-1 relative overflow-hidden bg-cover bg-center bg-no-repeat" 
-             style={{ backgroundImage: `url(${luxuryPoolDeckMap})` }}>
+        <div className="flex-1 min-h-0 relative bg-cover bg-center bg-no-repeat overflow-auto" 
+             style={{ 
+               backgroundImage: `url(${luxuryPoolDeckMap})`,
+               WebkitOverflowScrolling: 'touch',
+               minHeight: '50vh',
+               paddingBottom: 'env(safe-area-inset-bottom, 20px)'
+             }}>
           <div className="absolute inset-0 bg-black/10"></div> {/* Slight overlay for better contrast */}
             {/* Map Legend - Top Right */}
             <div className="absolute top-4 right-4 z-40 bg-white/95 backdrop-blur-sm rounded-lg p-2 shadow-lg">
@@ -955,8 +962,8 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
         </div>
       )}
 
-      {/* Bottom Navigation Controls */}
-      <div className="bg-background border-t border-border p-4 flex-shrink-0">
+      {/* Bottom Navigation Controls - Now scrollable */}
+      <div className="bg-background border-t border-border p-4 mb-safe">
         <div className="flex gap-3">
           {!hasReachedDestination ? (
             <Button 
