@@ -64,7 +64,33 @@ const OrderCard = ({
     
     // Navigate with a small delay to ensure scroll completes
     setTimeout(() => {
-      navigate(`/order/${orderId.replace('#', '')}`);
+      navigate(`/order/${orderId.replace('#', '')}`, { 
+        state: { 
+          orderId: orderId.replace('#', ''), 
+          restaurant, 
+          deliveryAddress, 
+          deliveryTime, 
+          deliveryType, 
+          customer: {
+            name: "Customer", // Default customer info
+            avatar: "/api/placeholder/40/40",
+            phone: "+1 (555) 123-4567"
+          },
+          items: items.map((item, index) => ({
+            name: item,
+            price: orderTotal ? orderTotal / items.length : 0, // Distribute total across items
+            modifications: ""
+          })),
+          specialNotes: specialNotes || "",
+          total: orderTotal || 0,
+          earnings: {
+            basePay: estimatedEarnings ? estimatedEarnings * 0.6 : 0,
+            customerTip: estimatedEarnings ? estimatedEarnings * 0.3 : 0,
+            additionalPay: estimatedEarnings ? estimatedEarnings * 0.1 : 0,
+            total: estimatedEarnings || 0
+          }
+        } 
+      });
     }, 20);
   };
 

@@ -33,6 +33,9 @@ const OrderDetail = () => {
   const location = useLocation();
   const { toast } = useToast();
   
+  // Get order data from navigation state or use fallback
+  const orderFromState = location.state;
+  
   // Modal states
   const [showCompletionModal, setShowCompletionModal] = useState(false);
   const [showNavigationModal, setShowNavigationModal] = useState(false);
@@ -41,7 +44,7 @@ const OrderDetail = () => {
   // Navigation and delivery state
   const [navigationStarted, setNavigationStarted] = useState(false);
 
-  // Mock order data
+  // Mock order data as fallback
   const mockOrders = [
     {
       orderId: "12345678",
@@ -69,7 +72,8 @@ const OrderDetail = () => {
     }
   ];
 
-  const order = mockOrders.find(o => o.orderId === orderId) || mockOrders[0];
+  // Use order from state if available, otherwise use mock data
+  const order = orderFromState || mockOrders.find(o => o.orderId === orderId) || mockOrders[0];
 
   // Update document title
   useLayoutEffect(() => {
