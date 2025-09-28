@@ -35,11 +35,11 @@ interface OrderDetailsDrawerProps {
 }
 
 const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) => {
-  const [activeSnapPoint, setActiveSnapPoint] = useState<number | string | null>(customTrigger ? 0.5 : null);
+  const [activeSnapPoint, setActiveSnapPoint] = useState<number | string | null>(customTrigger ? 0.3 : null);
 
   return (
     <Drawer.Root 
-      snapPoints={[0.5, 1]}
+      snapPoints={[0.3, 0.7, 1]}
       activeSnapPoint={activeSnapPoint}
       setActiveSnapPoint={setActiveSnapPoint}
       dismissible={true}
@@ -74,13 +74,13 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
       
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40 z-40" />
-        <Drawer.Content className="bg-background flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 z-50 h-[95vh]">
+        <Drawer.Content className="bg-background flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 z-50 h-[100dvh] max-h-[100dvh]">
           <div className="flex-shrink-0 p-4 bg-background rounded-t-[10px] border-b border-border">
             <div className="mx-auto w-12 h-1.5 rounded-full bg-muted mb-4" />
             <div className="max-w-md mx-auto">
               <Drawer.Title className="text-xl font-semibold mb-2 text-foreground">Order Details</Drawer.Title>
               <p className="text-muted-foreground text-sm">
-                {activeSnapPoint === 0.5 ? "Swipe up for full details" : activeSnapPoint === 1 ? "Full order details" : ""}
+                {activeSnapPoint === 0.3 ? "Swipe up for more details" : activeSnapPoint === 0.7 ? "Swipe up for full details" : activeSnapPoint === 1 ? "Full order details" : ""}
               </p>
             </div>
           </div>
@@ -91,7 +91,7 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
             style={{
               WebkitOverflowScrolling: 'touch',
               touchAction: 'pan-y',
-              height: 'calc(95vh - 120px)'
+              height: 'calc(100dvh - 120px)'
             }}
           >
             {/* Customer Info */}
