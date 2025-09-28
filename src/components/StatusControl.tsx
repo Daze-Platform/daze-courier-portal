@@ -26,7 +26,7 @@ const StatusControl = ({ isOnline, onStatusChange, selectedDeliveryType = "all",
             <Switch 
               checked={isOnline}
               onCheckedChange={onStatusChange}
-              className="data-[state=checked]:bg-success data-[state=unchecked]:bg-input scale-[1.02]"
+              className="data-[state=checked]:bg-success data-[state=unchecked]:bg-input scale-[1.04] sm:scale-[1.02]"
             />
             <span className="text-sm font-medium text-foreground">{isOnline ? 'On' : 'Off'}</span>
           </div>
