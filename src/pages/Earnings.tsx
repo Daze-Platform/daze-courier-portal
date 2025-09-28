@@ -372,7 +372,10 @@ const Earnings: React.FC = () => {
                   </div>
                   
                   <div className="space-y-2">
-                    <Progress value={balanceProgress} className="h-2" />
+                    <Progress 
+                      value={balanceProgress} 
+                      className={`h-2 ${currentBalance >= minimumWithdraw ? '[&>div]:bg-green-500' : ''}`}
+                    />
                     <p className="text-sm text-muted-foreground">
                       You must have at least ${minimumWithdraw.toFixed(2)} to withdraw balance.
                     </p>
