@@ -15,6 +15,7 @@ import Earnings from "./pages/Earnings";
 import Payouts from "./pages/Payouts";
 import Help from "./pages/Help";
 import ProfileSettings from "./pages/ProfileSettings";
+import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => (
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="/order/:orderId" element={<OrderDetail />} />
           <Route path="/delivery/:orderId" element={<DeliveryTracking />} />
           <Route path="/order-history" element={<OrderHistory />} />
