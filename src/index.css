@@ -130,6 +130,10 @@
     padding-bottom: max(env(safe-area-inset-bottom, 0px), 24px);
   }
   
+  .pb-safe {
+    padding-bottom: max(env(safe-area-inset-bottom, 0px), 16px);
+  }
+  
   .mobile-viewport {
     height: 100vh;
     height: 100dvh;

@@ -87,28 +87,28 @@ const RoomDeliveryStatus = ({ destination, onComplete }: RoomDeliveryStatusProps
   const roomNumber = (destination.replace(/\D/g, '') || '000').slice(-3).padStart(3, '0');
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border shadow-lg z-40 lg:left-64">
-      <div className="container mx-auto px-4 py-4">
+    <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border shadow-lg z-40 lg:left-64 safe-area-inset-bottom">
+      <div className="container mx-auto px-4 sm:px-6 py-4 pb-safe">
         {/* Status Header */}
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-3">
-            <div className={`h-10 w-10 rounded-full flex items-center justify-center text-white ${getStatusColor()}`}>
+        <div className="flex items-center justify-between mb-3 gap-2">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <div className={`h-10 w-10 rounded-full flex items-center justify-center text-white ${getStatusColor()} flex-shrink-0`}>
               <span className="font-bold text-lg">{roomNumber}</span>
             </div>
-            <div>
-              <h3 className="font-semibold text-foreground">Room Delivery</h3>
-              <p className="text-sm text-muted-foreground">{getStatusMessage()}</p>
+            <div className="min-w-0 flex-1">
+              <h3 className="font-semibold text-foreground text-sm sm:text-base">Room Delivery</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground truncate">{getStatusMessage()}</p>
             </div>
           </div>
           
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 sm:gap-4 flex-shrink-0">
             <div className="text-right">
-              <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                <Clock className="h-4 w-4" />
-                <span>{Math.floor(timeElapsed / 60)}:{(timeElapsed % 60).toString().padStart(2, '0')}</span>
+              <div className="flex items-center gap-1 text-xs sm:text-sm text-muted-foreground">
+                <Clock className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span className="font-mono">{Math.floor(timeElapsed / 60)}:{(timeElapsed % 60).toString().padStart(2, '0')}</span>
               </div>
-              <Badge variant={isPaused ? 'outline' : status === 'arrived' ? 'default' : 'secondary'} className="mt-1">
-                {isPaused ? 'Paused' : status === 'walking' ? 'En Route' : status === 'approaching' ? 'Almost There' : 'Arrived'}
+              <Badge variant={isPaused ? 'outline' : status === 'arrived' ? 'default' : 'secondary'} className="mt-1 text-xs whitespace-nowrap">
+                {isPaused ? 'Paused' : status === 'walking' ? 'Active' : status === 'approaching' ? 'Close' : 'Arrived'}
               </Badge>
             </div>
             
@@ -118,20 +118,20 @@ const RoomDeliveryStatus = ({ destination, onComplete }: RoomDeliveryStatusProps
                   onClick={togglePause}
                   variant="outline"
                   size="sm"
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-2 sm:px-3"
                 >
-                  {isPaused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
-                  {isPaused ? 'Resume' : 'Pause'}
+                  {isPaused ? <Play className="h-3 w-3 sm:h-4 sm:w-4" /> : <Pause className="h-3 w-3 sm:h-4 sm:w-4" />}
+                  <span className="hidden xs:inline">{isPaused ? 'Resume' : 'Pause'}</span>
                 </Button>
               )}
               
               {status === 'arrived' && (
                 <Button 
                   onClick={onComplete}
-                  className="bg-green-500 hover:bg-green-600 text-white"
+                  className="bg-green-500 hover:bg-green-600 text-white text-xs sm:text-sm px-3 sm:px-4 py-2"
                 >
-                  <CheckCircle className="h-4 w-4 mr-2" />
-                  Complete Delivery
+                  <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                  <span className="whitespace-nowrap">Complete</span>
                 </Button>
               )}
             </div>
