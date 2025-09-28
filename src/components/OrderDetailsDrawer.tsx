@@ -91,7 +91,8 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
             style={{
               WebkitOverflowScrolling: 'touch',
               touchAction: 'pan-y',
-              height: 'calc(100dvh - 120px)'
+              height: activeSnapPoint === 1 ? 'calc(100dvh - 100px)' : 'calc(100dvh - 120px)',
+              maxHeight: activeSnapPoint === 1 ? 'calc(100dvh - 100px)' : 'calc(100dvh - 120px)'
             }}
           >
             {/* Customer Info */}
