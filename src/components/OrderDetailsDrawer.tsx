@@ -86,12 +86,13 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
           </div>
           
           <div 
-            className="flex-1 overflow-y-scroll px-4 pb-32 min-h-0" 
+            className="flex-1 overflow-y-auto px-4 pb-safe min-h-0" 
             style={{ 
-              maxHeight: 'calc(95vh - 120px)',
+              maxHeight: 'calc(95vh - 100px)',
               touchAction: 'pan-y',
               WebkitOverflowScrolling: 'touch',
-              overscrollBehavior: 'contain'
+              overscrollBehavior: 'auto',
+              scrollBehavior: 'smooth'
             }}
           >
             {/* Customer Info */}
@@ -209,8 +210,8 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
               </div>
             </div>
 
-            {/* Bottom Padding for Scroll */}
-            <div className="h-32"></div>
+            {/* Bottom Padding for Mobile Scroll */}
+            <div className="h-40 sm:h-32" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 40px)' }}></div>
           </div>
         </Drawer.Content>
       </Drawer.Portal>
