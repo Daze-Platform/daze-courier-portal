@@ -2,8 +2,10 @@ import { CheckCircle, Phone, MessageCircle, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Drawer } from "vaul";
 import { useState } from "react";
+import ChatInterface from "@/components/ChatInterface";
 
 interface OrderDetailsDrawerProps {
   order: {
@@ -36,8 +38,14 @@ interface OrderDetailsDrawerProps {
 
 const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) => {
   const [activeSnapPoint, setActiveSnapPoint] = useState<number | string | null>(customTrigger ? 0.3 : null);
+  const [showChatModal, setShowChatModal] = useState(false);
+
+  const handleOpenChat = () => {
+    setShowChatModal(true);
+  };
 
   return (
+    <>
     <Drawer.Root 
       snapPoints={[0.3, 0.7, 1]}
       activeSnapPoint={activeSnapPoint}
@@ -123,6 +131,7 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
                   <Button 
                     className="font-medium text-white bg-primary hover:bg-primary/90"
                     size="sm"
+                    onClick={handleOpenChat}
                   >
                     <MessageCircle className="h-4 w-4 mr-2" />
                     Chat
@@ -234,6 +243,18 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
         </Drawer.Content>
       </Drawer.Portal>
     </Drawer.Root>
+
+    {/* Chat Modal */}
+    <Dialog open={showChatModal} onOpenChange={setShowChatModal}>
+      <DialogContent className="max-w-2xl max-h-[90vh] p-0">
+        <ChatInterface
+          orderId={order.orderId}
+          customerName={order.customer.name}
+          onClose={() => setShowChatModal(false)}
+        />
+      </DialogContent>
+    </Dialog>
+    </>
   );
 };
 

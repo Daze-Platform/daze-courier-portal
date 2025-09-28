@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
 import luxuryPoolDeckMap from "@/assets/luxury-pool-deck-hd.jpg";
 import ResortImageView from "@/components/ResortImageView";
 import OrderDetailsDrawer from "@/components/OrderDetailsDrawer";
+import ChatInterface from "@/components/ChatInterface";
 
 interface DeliveryNavigationProps {
   destination: string;
@@ -63,6 +65,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
   const [touchStartY, setTouchStartY] = useState(0);
   const [isScrollingModal, setIsScrollingModal] = useState(false);
   const [hasStartedNavigation, setHasStartedNavigation] = useState(false);
+  const [showChatModal, setShowChatModal] = useState(false);
 
   // Simple click-based state management
   const handleModalAreaClick = () => {
@@ -558,6 +561,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
                           <Button 
                             className="font-medium text-primary-foreground bg-primary hover:bg-primary/90 h-8 px-3"
                             size="sm"
+                            onClick={() => setShowChatModal(true)}
                           >
                             <MessageCircle className="h-4 w-4 mr-1" />
                             Chat
@@ -1036,6 +1040,19 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
           </span>
         </div>
       </div>
+
+      {/* Chat Modal */}
+      {order && (
+        <Dialog open={showChatModal} onOpenChange={setShowChatModal}>
+          <DialogContent className="max-w-2xl max-h-[90vh] p-0">
+            <ChatInterface
+              orderId={order.orderId}
+              customerName={order.customer.name}
+              onClose={() => setShowChatModal(false)}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };

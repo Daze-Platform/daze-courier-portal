@@ -21,6 +21,7 @@ import DeliveryNavigation from '@/components/DeliveryNavigation';
 import OrderDetailsDrawer from '@/components/OrderDetailsDrawer';
 import ResortImageView from '@/components/ResortImageView';
 import RoomDeliveryStatus from '@/components/RoomDeliveryStatus';
+import ChatInterface from '@/components/ChatInterface';
 import margaritaMamasLogo from '@/assets/margarita-mamas-logo.png';
 import sunsetGrillLogo from '@/assets/sunset-grill-logo.png';
 import oceanBreezeLogo from '@/assets/ocean-breeze-logo.png';
@@ -40,6 +41,7 @@ const OrderDetail = () => {
   const [showCompletionModal, setShowCompletionModal] = useState(false);
   const [showNavigationModal, setShowNavigationModal] = useState(false);
   const [showRoomStatus, setShowRoomStatus] = useState(false);
+  const [showChatModal, setShowChatModal] = useState(false);
   
   // Navigation and delivery state
   const [navigationStarted, setNavigationStarted] = useState(false);
@@ -117,6 +119,10 @@ const OrderDetail = () => {
       variant: "success"
     });
     navigate("/");
+  };
+
+  const handleOpenChat = () => {
+    setShowChatModal(true);
   };
 
   const getRestaurantLogo = (restaurantName: string) => {
@@ -322,6 +328,7 @@ const OrderDetail = () => {
                     style={{ backgroundColor: '#29b6f6' }}
                     onMouseEnter={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#1e88e5'}
                     onMouseLeave={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#29b6f6'}
+                    onClick={handleOpenChat}
                   >
                     <MessageCircle className="h-4 w-4 mr-2" />
                     Chat
@@ -451,6 +458,17 @@ const OrderDetail = () => {
           onComplete={handleRoomDeliveryComplete}
         />
       )}
+
+      {/* Chat Modal */}
+      <Dialog open={showChatModal} onOpenChange={setShowChatModal}>
+        <DialogContent className="max-w-2xl max-h-[90vh] p-0">
+          <ChatInterface
+            orderId={order.orderId}
+            customerName={order.customer.name}
+            onClose={() => setShowChatModal(false)}
+          />
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
