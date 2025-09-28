@@ -307,7 +307,17 @@ const Payouts: React.FC = () => {
       <Dialog open={showAddMethodModal} onOpenChange={setShowAddMethodModal}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Add Payment Method</DialogTitle>
+            <div className="flex items-center justify-between">
+              <DialogTitle>Add Payment Method</DialogTitle>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowAddMethodModal(false)}
+                className="h-6 w-6 p-0"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
           </DialogHeader>
           
           <div className="space-y-4 pt-4">
