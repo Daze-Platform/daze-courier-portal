@@ -23,7 +23,7 @@ const RoomDeliveryStatus = ({ destination, onComplete }: RoomDeliveryStatusProps
     
     const interval = setInterval(() => {
       setProgress(prev => {
-        const newProgress = Math.min(100, prev + 2);
+        const newProgress = Math.min(100, prev + 5); // Changed from +2 to +5 for 20s total (100/5 = 20s)
         
         // Status transitions
         if (newProgress >= 80 && status === 'walking') {
