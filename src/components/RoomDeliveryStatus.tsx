@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { CheckCircle, Clock, MapPin } from "lucide-react";
+import { CheckCircle, Clock, MapPin, Pause, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
@@ -14,10 +14,13 @@ const RoomDeliveryStatus = ({ destination, onComplete }: RoomDeliveryStatusProps
   const [progress, setProgress] = useState(0);
   const [status, setStatus] = useState<'walking' | 'approaching' | 'arrived'>('walking');
   const [timeElapsed, setTimeElapsed] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const { toast } = useToast();
 
   // Auto-progress simulation for room delivery
   useEffect(() => {
+    if (isPaused || status === 'arrived') return;
+    
     const interval = setInterval(() => {
       setProgress(prev => {
         const newProgress = Math.min(100, prev + 2);
@@ -46,9 +49,20 @@ const RoomDeliveryStatus = ({ destination, onComplete }: RoomDeliveryStatusProps
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [status, destination, toast]);
+  }, [status, destination, toast, isPaused]);
+
+  const togglePause = () => {
+    setIsPaused(!isPaused);
+    toast({
+      title: isPaused ? "🚀 Delivery Resumed" : "⏸️ Delivery Paused",
+      description: isPaused ? "Continuing delivery..." : "Delivery is now paused",
+      className: `border-l-4 ${isPaused ? 'border-l-green-500' : 'border-l-orange-500'}`,
+    });
+  };
 
   const getStatusMessage = () => {
+    if (isPaused) return `Delivery paused at ${destination}`;
+    
     switch (status) {
       case 'walking':
         return `Walking to ${destination}...`;
@@ -93,20 +107,34 @@ const RoomDeliveryStatus = ({ destination, onComplete }: RoomDeliveryStatusProps
                 <Clock className="h-4 w-4" />
                 <span>{Math.floor(timeElapsed / 60)}:{(timeElapsed % 60).toString().padStart(2, '0')}</span>
               </div>
-              <Badge variant={status === 'arrived' ? 'default' : 'secondary'} className="mt-1">
-                {status === 'walking' ? 'En Route' : status === 'approaching' ? 'Almost There' : 'Arrived'}
+              <Badge variant={isPaused ? 'outline' : status === 'arrived' ? 'default' : 'secondary'} className="mt-1">
+                {isPaused ? 'Paused' : status === 'walking' ? 'En Route' : status === 'approaching' ? 'Almost There' : 'Arrived'}
               </Badge>
             </div>
             
-            {status === 'arrived' && (
-              <Button 
-                onClick={onComplete}
-                className="bg-green-500 hover:bg-green-600 text-white mr-2 sm:mr-0"
-              >
-                <CheckCircle className="h-4 w-4 mr-2" />
-                Complete Delivery
-              </Button>
-            )}
+            <div className="flex items-center gap-2">
+              {status !== 'arrived' && (
+                <Button 
+                  onClick={togglePause}
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center gap-2"
+                >
+                  {isPaused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
+                  {isPaused ? 'Resume' : 'Pause'}
+                </Button>
+              )}
+              
+              {status === 'arrived' && (
+                <Button 
+                  onClick={onComplete}
+                  className="bg-green-500 hover:bg-green-600 text-white"
+                >
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Complete Delivery
+                </Button>
+              )}
+            </div>
           </div>
         </div>
 
