@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import dazeLogoImage from "@/assets/daze-logo.png";
+import earningsPhoneImage from "@/assets/earnings-phone-mockup.png";
 
 // Validation schemas
 const signUpSchema = z.object({
@@ -268,37 +269,11 @@ const Auth = () => {
             <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-xl">
               <div className="mb-8">
                 <div className="w-80 h-80 mx-auto bg-gradient-to-br from-blue-100 to-orange-100 rounded-full flex items-center justify-center relative overflow-hidden">
-                  {/* Phone mockup placeholder */}
-                  <div className="w-48 h-96 bg-gray-900 rounded-[2.5rem] p-2 shadow-2xl">
-                    <div className="w-full h-full bg-white rounded-[2rem] flex flex-col">
-                      {/* Status bar */}
-                      <div className="h-8 bg-gray-100 rounded-t-[2rem] flex items-center justify-center">
-                        <div className="text-xs font-semibold">9:41 AM</div>
-                      </div>
-                      {/* App content */}
-                      <div className="flex-1 p-4 space-y-3">
-                        <div className="text-lg font-bold text-center">Earnings</div>
-                        <div className="bg-blue-50 rounded-lg p-3">
-                          <div className="text-2xl font-bold">$1580.60</div>
-                          <div className="text-green-600 text-sm">+4.8% Since last month</div>
-                        </div>
-                        <div className="space-y-2">
-                          <div className="flex justify-between text-sm">
-                            <span>Deliveries: 102</span>
-                            <span className="text-green-600">+8.1%</span>
-                          </div>
-                          <div className="flex justify-between text-sm">
-                            <span>Hours: 89</span>
-                            <span className="text-green-600">+12.3%</span>
-                          </div>
-                        </div>
-                        <div className="bg-gray-50 rounded-lg p-3 text-center">
-                          <div className="text-lg font-bold">$18.0.70</div>
-                          <div className="text-xs text-gray-600">Balance</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <img 
+                    src={earningsPhoneImage} 
+                    alt="Daze earnings app screenshot showing $1580.50 in earnings" 
+                    className="w-64 h-auto drop-shadow-2xl"
+                  />
                 </div>
               </div>
               
