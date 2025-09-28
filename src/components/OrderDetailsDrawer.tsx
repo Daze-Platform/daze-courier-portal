@@ -75,10 +75,9 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40 z-40" />
         <Drawer.Content className="bg-background flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 z-50 h-[100dvh] max-h-[100dvh]">
-          {/* Drawer Handle - Only this area should handle drawer gestures */}
+          {/* Drawer Handle - Only this handles drawer gestures */}
           <div 
-            className="flex-shrink-0 p-4 bg-background rounded-t-[10px] border-b border-border cursor-grab active:cursor-grabbing"
-            data-vaul-drag-region
+            className="flex-shrink-0 p-4 bg-background rounded-t-[10px] border-b border-border"
           >
             <div className="mx-auto w-12 h-1.5 rounded-full bg-muted mb-4" />
             <div className="max-w-md mx-auto">
@@ -89,18 +88,24 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
             </div>
           </div>
           
-          {/* CONTENT AREA - Disable drawer gestures here, enable normal scrolling */}
+          {/* ISOLATED SCROLL CONTAINER - Completely separate from vaul touch handling */}
           <div 
-            className="flex-1 overflow-y-auto px-4 py-4"
-            style={{
-              height: 'calc(100dvh - 120px)',
-              WebkitOverflowScrolling: 'touch',
-              touchAction: 'auto',
-              overscrollBehavior: 'auto',
-              pointerEvents: 'auto'
-            }}
-            data-vaul-no-drag
+            className="flex-1"
+            style={{ height: 'calc(100dvh - 120px)' }}
           >
+            <div 
+              className="w-full h-full overflow-y-scroll px-4 py-4"
+              style={{
+                WebkitOverflowScrolling: 'touch',
+                touchAction: 'manipulation',
+                overscrollBehavior: 'auto',
+                transform: 'translateZ(0)', // Force hardware acceleration
+                willChange: 'scroll-position'
+              }}
+              onTouchStart={(e) => e.stopPropagation()}
+              onTouchMove={(e) => e.stopPropagation()}
+              onTouchEnd={(e) => e.stopPropagation()}
+            >
             {/* Customer Info */}
             <div className="bg-card rounded-lg p-4 border border-border mb-6">
               <div className="flex items-center justify-between mb-4">
@@ -218,6 +223,7 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
 
             {/* Large bottom padding to ensure scrolling past earnings */}
             <div style={{ height: '200px', minHeight: '200px' }}></div>
+            </div>
           </div>
         </Drawer.Content>
       </Drawer.Portal>
