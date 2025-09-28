@@ -74,26 +74,26 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
       
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40 z-40" />
-        <Drawer.Content className="bg-background flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 z-50 h-[97vh] min-h-[50vh]">
-          <div className="p-4 bg-background rounded-t-[10px] flex-shrink-0 border-b border-border">
-            <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-muted mb-4" />
+        <Drawer.Content className="bg-background flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 z-50 h-[95vh]">
+          <div className="flex-shrink-0 p-4 bg-background rounded-t-[10px] border-b border-border">
+            <div className="mx-auto w-12 h-1.5 rounded-full bg-muted mb-4" />
             <div className="max-w-md mx-auto">
               <Drawer.Title className="text-xl font-semibold mb-2 text-foreground">Order Details</Drawer.Title>
-              <p className="text-muted-foreground mb-4 text-sm">
+              <p className="text-muted-foreground text-sm">
                 {activeSnapPoint === 0.5 ? "Swipe up for full details" : activeSnapPoint === 1 ? "Full order details" : ""}
               </p>
             </div>
           </div>
           
-          <div 
-            className="flex-1 px-4 mobile-scrollable"
-            style={{ 
-              overflow: 'auto',
-              WebkitOverflowScrolling: 'touch',
-              height: '100%',
-              paddingBottom: '120px'
-            }}
-          >
+          {/* Scrollable Content Area */}
+          <div className="flex-1 overflow-hidden">
+            <div 
+              className="h-full overflow-y-scroll px-4 py-4"
+              style={{
+                WebkitOverflowScrolling: 'touch',
+                overscrollBehavior: 'contain'
+              }}
+            >
             {/* Customer Info */}
             <div className="bg-card rounded-lg p-4 border border-border mb-6">
               <div className="flex items-center justify-between mb-4">
@@ -209,8 +209,9 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
               </div>
             </div>
 
-            {/* Ensure scrolling works to bottom */}
-            <div style={{ height: '150px', width: '100%' }}></div>
+              {/* Large bottom padding to ensure scrolling past content */}
+              <div className="pb-32"></div>
+            </div>
           </div>
         </Drawer.Content>
       </Drawer.Portal>
