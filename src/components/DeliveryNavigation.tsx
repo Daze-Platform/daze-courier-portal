@@ -390,7 +390,12 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
     <div className="min-h-screen min-h-dvh flex flex-col pb-24" style={{ 
       WebkitOverflowScrolling: 'touch',
       overflowY: 'auto',
-      overscrollBehavior: 'auto'
+      overscrollBehavior: 'auto',
+      // Enable browser UI fade on scroll
+      touchAction: 'manipulation',
+      position: 'relative',
+      // Ensure smooth scrolling that triggers browser UI hiding
+      scrollBehavior: 'smooth'
     }}>
       {/* Compact Navigation Header */}
       <div className="bg-background border-b border-border p-3 flex-shrink-0 safe-area-inset-top sticky top-0 z-50">
@@ -440,8 +445,10 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
             className="h-full w-full overflow-auto"
             style={{
               WebkitOverflowScrolling: 'touch',
-              overscrollBehavior: 'contain',
-              minHeight: '50vh'
+              overscrollBehavior: 'auto', // Changed from 'contain' to 'auto' to allow browser UI fade
+              minHeight: '50vh',
+              touchAction: 'pan-y', // Allow vertical scrolling for browser UI fade
+              position: 'relative'
             }}
           >
             <ResortImageView 
@@ -657,7 +664,12 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
          </div>
         ) : isRoomDelivery ? (
         <div className="flex-1 min-h-0 overflow-auto bg-gradient-to-br from-blue-50 to-indigo-50 p-6" 
-             style={{ WebkitOverflowScrolling: 'touch', paddingBottom: 'env(safe-area-inset-bottom, 20px)' }}>
+             style={{ 
+               WebkitOverflowScrolling: 'touch', 
+               paddingBottom: 'env(safe-area-inset-bottom, 20px)',
+               overscrollBehavior: 'auto', // Allow browser UI fade
+               touchAction: 'pan-y' // Enable vertical scrolling for browser UI
+             }}>
           <div className="max-w-2xl mx-auto space-y-6 pb-6">
             {/* Room Number Header */}
             <div className="text-center">
@@ -750,7 +762,9 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
                backgroundImage: `url(${luxuryPoolDeckMap})`,
                WebkitOverflowScrolling: 'touch',
                minHeight: '50vh',
-               paddingBottom: 'env(safe-area-inset-bottom, 20px)'
+               paddingBottom: 'env(safe-area-inset-bottom, 20px)',
+               overscrollBehavior: 'auto', // Allow browser UI fade
+               touchAction: 'pan-y' // Enable vertical scrolling for browser UI
              }}>
           <div className="absolute inset-0 bg-black/10"></div> {/* Slight overlay for better contrast */}
             {/* Map Legend - Top Right */}
