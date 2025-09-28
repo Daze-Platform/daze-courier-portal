@@ -75,6 +75,7 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40 z-40" />
         <Drawer.Content className="bg-background flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 z-50 h-[100dvh] max-h-[100dvh]">
+          {/* Drawer Handle */}
           <div className="flex-shrink-0 p-4 bg-background rounded-t-[10px] border-b border-border">
             <div className="mx-auto w-12 h-1.5 rounded-full bg-muted mb-4" />
             <div className="max-w-md mx-auto">
@@ -85,16 +86,22 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
             </div>
           </div>
           
-          {/* Mobile Scrollable Content Area */}
+          {/* SCROLLABLE CONTENT - CRITICAL: This must scroll independently */}
           <div 
-            className="flex-1 px-4 py-4 overflow-y-auto overscroll-contain"
+            className="flex-1 overflow-hidden"
             style={{
-              WebkitOverflowScrolling: 'touch',
-              touchAction: 'pan-y',
-              height: activeSnapPoint === 1 ? 'calc(100dvh - 100px)' : 'calc(100dvh - 120px)',
-              maxHeight: activeSnapPoint === 1 ? 'calc(100dvh - 100px)' : 'calc(100dvh - 120px)'
+              height: 'calc(100dvh - 120px)',
+              maxHeight: 'calc(100dvh - 120px)'
             }}
           >
+            <div
+              className="h-full px-4 py-4 overflow-y-scroll"
+              style={{
+                WebkitOverflowScrolling: 'touch',
+                touchAction: 'pan-y',
+                overscrollBehavior: 'contain'
+              }}
+            >
             {/* Customer Info */}
             <div className="bg-card rounded-lg p-4 border border-border mb-6">
               <div className="flex items-center justify-between mb-4">
@@ -212,6 +219,7 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
 
             {/* Large bottom padding to ensure scrolling past earnings */}
             <div style={{ height: '200px', minHeight: '200px' }}></div>
+            </div>
           </div>
         </Drawer.Content>
       </Drawer.Portal>
