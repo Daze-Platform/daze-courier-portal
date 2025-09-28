@@ -294,22 +294,26 @@ const ProfileSettings = () => {
             <CardHeader>
               <CardTitle className="text-xl">Support</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-0">
               <Button
                 variant="ghost"
-                className="w-full justify-between p-4 h-auto"
+                className="w-full justify-between items-center p-6 h-auto hover:bg-muted/50 rounded-none"
                 onClick={() => navigate('/help')}
               >
-                <div className="flex items-center gap-3">
-                  <HelpCircle className="h-5 w-5 text-muted-foreground" />
-                  <div className="text-left">
-                    <p className="font-medium">Get Help</p>
-                    <p className="text-sm text-muted-foreground">
+                <div className="flex items-center gap-4 flex-1">
+                  <div className="flex-shrink-0">
+                    <HelpCircle className="h-5 w-5 text-muted-foreground" />
+                  </div>
+                  <div className="text-left flex-1">
+                    <p className="font-medium text-foreground">Get Help</p>
+                    <p className="text-sm text-muted-foreground mt-0.5">
                       Find answers, contact support, and access resources
                     </p>
                   </div>
                 </div>
-                <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                <div className="flex-shrink-0 ml-4">
+                  <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                </div>
               </Button>
             </CardContent>
           </Card>
