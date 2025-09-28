@@ -75,8 +75,11 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40 z-40" />
         <Drawer.Content className="bg-background flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 z-50 h-[100dvh] max-h-[100dvh]">
-          {/* Drawer Handle */}
-          <div className="flex-shrink-0 p-4 bg-background rounded-t-[10px] border-b border-border">
+          {/* Drawer Handle - Only this area should handle drawer gestures */}
+          <div 
+            className="flex-shrink-0 p-4 bg-background rounded-t-[10px] border-b border-border cursor-grab active:cursor-grabbing"
+            data-vaul-drag-region
+          >
             <div className="mx-auto w-12 h-1.5 rounded-full bg-muted mb-4" />
             <div className="max-w-md mx-auto">
               <Drawer.Title className="text-xl font-semibold mb-2 text-foreground">Order Details</Drawer.Title>
@@ -86,15 +89,17 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
             </div>
           </div>
           
-          {/* SCROLLABLE CONTENT - CRITICAL: Must scroll independently of drawer */}
+          {/* CONTENT AREA - Disable drawer gestures here, enable normal scrolling */}
           <div 
             className="flex-1 overflow-y-auto px-4 py-4"
             style={{
               height: 'calc(100dvh - 120px)',
               WebkitOverflowScrolling: 'touch',
-              touchAction: 'pan-y pinch-zoom',
-              overscrollBehavior: 'contain'
+              touchAction: 'auto',
+              overscrollBehavior: 'auto',
+              pointerEvents: 'auto'
             }}
+            data-vaul-no-drag
           >
             {/* Customer Info */}
             <div className="bg-card rounded-lg p-4 border border-border mb-6">
