@@ -85,15 +85,15 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
             </div>
           </div>
           
-          {/* Scrollable Content Area */}
-          <div className="flex-1 overflow-hidden">
-            <div 
-              className="h-full overflow-y-scroll px-4 py-4"
-              style={{
-                WebkitOverflowScrolling: 'touch',
-                overscrollBehavior: 'contain'
-              }}
-            >
+          {/* Mobile Scrollable Content Area */}
+          <div 
+            className="flex-1 px-4 py-4 overflow-y-auto overscroll-contain"
+            style={{
+              WebkitOverflowScrolling: 'touch',
+              touchAction: 'pan-y',
+              height: 'calc(95vh - 120px)'
+            }}
+          >
             {/* Customer Info */}
             <div className="bg-card rounded-lg p-4 border border-border mb-6">
               <div className="flex items-center justify-between mb-4">
@@ -211,7 +211,6 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
 
             {/* Large bottom padding to ensure scrolling past earnings */}
             <div style={{ height: '200px', minHeight: '200px' }}></div>
-            </div>
           </div>
         </Drawer.Content>
       </Drawer.Portal>
