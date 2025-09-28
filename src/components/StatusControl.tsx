@@ -36,14 +36,14 @@ const StatusControl = ({ isOnline, onStatusChange, selectedDeliveryType = "all",
         <div className="space-y-2">
           <label className="text-sm font-medium text-muted-foreground">Location</label>
           <Select defaultValue="hilton-barbados">
-            <SelectTrigger className="w-full [&>span]:font-bold [&>span]:text-foreground">
+            <SelectTrigger className="w-full [&>span]:font-extrabold [&>span]:text-foreground">
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4 text-accent" />
                 <SelectValue placeholder="Select location" />
               </div>
             </SelectTrigger>
             <SelectContent className="bg-card border border-border shadow-lg z-50">
-              <SelectItem value="hilton-barbados" className="font-bold">Hilton Barbados</SelectItem>
+              <SelectItem value="hilton-barbados" className="font-extrabold">Hilton Barbados</SelectItem>
               <SelectItem value="sandals-royal" className="font-bold">Sandals Royal Caribbean</SelectItem>
               <SelectItem value="beaches-negril" className="font-bold">Beaches Negril</SelectItem>
               <SelectItem value="hyatt-zilara" className="font-bold">Hyatt Zilara Rose Hall</SelectItem>
