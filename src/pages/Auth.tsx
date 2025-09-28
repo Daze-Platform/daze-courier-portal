@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import dazeLogoImage from "@/assets/daze-logo.png";
+import dazeCloudLogoImage from "@/assets/daze-cloud-logo.png";
 import earningsPhoneImage from "@/assets/earnings-phone-mockup.png";
 
 // Validation schemas
@@ -140,11 +141,11 @@ const Auth = () => {
             <Card className="shadow-xl border-0 bg-white/95 backdrop-blur-sm">
               <CardHeader className="text-center pb-6">
                 <div className="flex items-center justify-center mb-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg">
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg">
                     <img 
-                      src={dazeLogoImage} 
-                      alt="Daze Logo" 
-                      className="h-8 w-auto filter brightness-0 invert"
+                      src={dazeCloudLogoImage} 
+                      alt="Daze Cloud Logo" 
+                      className="h-12 w-12"
                     />
                   </div>
                 </div>
