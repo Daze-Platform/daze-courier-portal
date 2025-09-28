@@ -1,4 +1,4 @@
-import { Package, FileText, Star, DollarSign, CreditCard, HelpCircle } from "lucide-react";
+import { Package, FileText, Star, DollarSign, CreditCard, HelpCircle, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocation, Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -18,6 +18,12 @@ const DesktopSidebar = () => {
       label: "Order History", 
       path: "/order-history",
       active: location.pathname === "/order-history"
+    },
+    {
+      icon: MessageCircle,
+      label: "Messages",
+      path: "/chat",
+      active: location.pathname === "/chat"
     },
     {
       icon: Star,

@@ -1,4 +1,4 @@
-import { Package, FileText, Star, DollarSign, CreditCard, HelpCircle, Bell, ChevronDown } from "lucide-react";
+import { Package, FileText, Star, DollarSign, CreditCard, HelpCircle, Bell, ChevronDown, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -26,6 +26,12 @@ const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
       label: "Order History", 
       path: "/order-history",
       active: location.pathname === "/order-history"
+    },
+    {
+      icon: MessageCircle,
+      label: "Messages",
+      path: "/chat",
+      active: location.pathname === "/chat"
     },
     {
       icon: Star,
@@ -97,6 +103,20 @@ const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
             >
               <FileText className="h-5 w-5" />
               Order History
+            </Button>
+          </Link>
+          
+          <Link to="/chat">
+            <Button
+              variant={location.pathname === "/chat" ? "secondary" : "ghost"}
+              className={`w-full justify-start gap-3 h-12 ${
+                location.pathname === "/chat" 
+                  ? "bg-primary/10 text-primary hover:bg-primary/15" 
+                  : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+              }`}
+            >
+              <MessageCircle className="h-5 w-5" />
+              Messages
             </Button>
           </Link>
           

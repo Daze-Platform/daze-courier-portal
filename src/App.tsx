@@ -16,6 +16,7 @@ import Payouts from "./pages/Payouts";
 import Help from "./pages/Help";
 import ProfileSettings from "./pages/ProfileSettings";
 import Auth from "./pages/Auth";
+import Chat from "./pages/Chat";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -50,6 +51,7 @@ const App = () => (
           <Route path="/earnings" element={<Earnings />} />
           <Route path="/payouts" element={<Payouts />} />
           <Route path="/help" element={<Help />} />
+          <Route path="/chat" element={<Chat />} />
           <Route path="/profile-settings" element={<ProfileSettings />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
