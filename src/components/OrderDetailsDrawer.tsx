@@ -86,10 +86,12 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
           </div>
           
           <div 
-            className="flex-1 overflow-y-auto px-4 pb-8 min-h-0 overscroll-contain" 
+            className="flex-1 overflow-y-scroll px-4 pb-32 min-h-0" 
             style={{ 
               maxHeight: 'calc(95vh - 120px)',
-              touchAction: 'pan-y'
+              touchAction: 'pan-y',
+              WebkitOverflowScrolling: 'touch',
+              overscrollBehavior: 'contain'
             }}
           >
             {/* Customer Info */}

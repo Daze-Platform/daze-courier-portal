@@ -387,7 +387,11 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
   }, [courierPosition, destinationPos]);
 
   return (
-    <div className="min-h-screen min-h-dvh flex flex-col pb-24">
+    <div className="min-h-screen min-h-dvh flex flex-col pb-24" style={{ 
+      WebkitOverflowScrolling: 'touch',
+      overflowY: 'auto',
+      overscrollBehavior: 'auto'
+    }}>
       {/* Compact Navigation Header */}
       <div className="bg-background border-b border-border p-3 flex-shrink-0 safe-area-inset-top sticky top-0 z-50">
         <div className="flex items-center justify-between mb-2">
