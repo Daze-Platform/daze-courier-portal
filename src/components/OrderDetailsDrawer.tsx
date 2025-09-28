@@ -209,8 +209,8 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
               </div>
             </div>
 
-              {/* Large bottom padding to ensure scrolling past content */}
-              <div className="pb-32"></div>
+            {/* Large bottom padding to ensure scrolling past earnings */}
+            <div style={{ height: '200px', minHeight: '200px' }}></div>
             </div>
           </div>
         </Drawer.Content>
