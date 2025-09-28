@@ -1,9 +1,11 @@
-import { Clock, MapPin, Package, Timer, User, ChevronDown, ChevronUp } from "lucide-react";
+import { Clock, MapPin, Package, Timer, User, ChevronDown, ChevronUp, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { executeScrollToTop } from "@/utils/scrollToTop";
+import ChatInterface from "@/components/ChatInterface";
 import margaritaMamasLogo from "@/assets/margarita-mamas-logo.png";
 import sunsetGrillLogo from "@/assets/sunset-grill-logo.png";
 import oceanBreezeLogo from "@/assets/ocean-breeze-logo.png";
@@ -22,6 +24,7 @@ interface OrderCardProps {
   orderTotal?: number;
   estimatedEarnings?: number;
   specialNotes?: string;
+  customerName?: string;
 }
 
 const OrderCard = ({
@@ -36,11 +39,13 @@ const OrderCard = ({
   timeRemaining = 32,
   orderTotal = 0,
   estimatedEarnings = 0,
-  specialNotes
+  specialNotes,
+  customerName = "Customer"
 }: OrderCardProps) => {
   const navigate = useNavigate();
   const [countdown, setCountdown] = useState(timeRemaining);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showChatModal, setShowChatModal] = useState(false);
 
   useEffect(() => {
     if (countdown <= 0) return;
@@ -72,7 +77,7 @@ const OrderCard = ({
           deliveryTime, 
           deliveryType, 
           customer: {
-            name: "Customer", // Default customer info
+            name: customerName,
             avatar: "/api/placeholder/40/40",
             phone: "+1 (555) 123-4567"
           },
@@ -92,6 +97,10 @@ const OrderCard = ({
         } 
       });
     }, 20);
+  };
+
+  const handleOpenChat = () => {
+    setShowChatModal(true);
   };
 
   const getRestaurantLogo = (restaurantName: string) => {
@@ -198,15 +207,25 @@ const OrderCard = ({
         )}
 
         {/* Action Row */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-3">
           <Button 
-            className="font-medium px-12 py-3 text-white flex-1 mr-4"
+            className="font-medium px-8 py-3 text-white flex-1"
             style={{ backgroundColor: '#29b6f6' }}
             onMouseEnter={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#1e88e5'}
             onMouseLeave={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#29b6f6'}
             onClick={handleAcceptOrder}
           >
             Accept
+          </Button>
+          
+          <Button
+            variant="outline" 
+            size="sm"
+            className="px-4 py-3 flex items-center gap-2"
+            onClick={handleOpenChat}
+          >
+            <MessageCircle className="h-4 w-4" />
+            Chat
           </Button>
           
           <div className={`flex items-center justify-center h-12 w-12 rounded-full flex-shrink-0 ${
@@ -306,6 +325,17 @@ const OrderCard = ({
           </div>
         </div>
       )}
+
+      {/* Chat Modal */}
+      <Dialog open={showChatModal} onOpenChange={(open) => !open && setShowChatModal(false)}>
+        <DialogContent className="max-w-2xl max-h-[90vh] p-0">
+          <ChatInterface
+            orderId={orderId}
+            customerName={customerName}
+            onClose={() => setShowChatModal(false)}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

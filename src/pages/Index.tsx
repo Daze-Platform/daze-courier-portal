@@ -30,7 +30,8 @@ const Index = () => {
       timeRemaining: 25,
       orderTotal: 28.75,
       estimatedEarnings: 15.50,
-      specialNotes: "Ready for pickup - please call upon arrival."
+      specialNotes: "Ready for pickup - please call upon arrival.",
+      customerName: "David Thompson"
     },
     {
       orderId: "#23456789",
@@ -43,7 +44,8 @@ const Index = () => {
       timeRemaining: 32,
       orderTotal: 15.90,
       estimatedEarnings: 12.50,
-      specialNotes: "Please knock softly - baby sleeping. Leave outside door if no answer."
+      specialNotes: "Please knock softly - baby sleeping. Leave outside door if no answer.",
+      customerName: "Maria Rodriguez"
     },
     {
       orderId: "#23456790",
@@ -56,7 +58,8 @@ const Index = () => {
       timeRemaining: 45,
       orderTotal: 42.75,
       estimatedEarnings: 18.90,
-      specialNotes: "We're the family with blue umbrellas. Please bring extra napkins and utensils for kids."
+      specialNotes: "We're the family with blue umbrellas. Please bring extra napkins and utensils for kids.",
+      customerName: "Sarah Johnson"
     },
     {
       orderId: "#867899",
@@ -69,7 +72,8 @@ const Index = () => {
       timeRemaining: 28,
       orderTotal: 39.90,
       estimatedEarnings: 24.80,
-      specialNotes: "We're the family with blue umbrellas. Please bring extra napkins and utensils for kids."
+      specialNotes: "We're the family with blue umbrellas. Please bring extra napkins and utensils for kids.",
+      customerName: "Mike Chen"
     },
     {
       orderId: "#24681357",
@@ -82,7 +86,8 @@ const Index = () => {
       timeRemaining: 38,
       orderTotal: 58.45,
       estimatedEarnings: 22.30,
-      specialNotes: "Anniversary couple - please include extra lime wedges and cocktail napkins."
+      specialNotes: "Anniversary couple - please include extra lime wedges and cocktail napkins.",
+      customerName: "Jennifer & Mark"
     },
     {
       orderId: "#98765432",
@@ -95,7 +100,8 @@ const Index = () => {
       timeRemaining: 20,
       orderTotal: 34.50,
       estimatedEarnings: 16.75,
-      specialNotes: "Pool umbrella near the shallow end. We have two kids with us."
+      specialNotes: "Pool umbrella near the shallow end. We have two kids with us.",
+      customerName: "The Johnson Family"
     },
     {
       orderId: "#11223344",
@@ -108,7 +114,8 @@ const Index = () => {
       timeRemaining: 35,
       orderTotal: 29.75,
       estimatedEarnings: 14.25,
-      specialNotes: "Large blue umbrella by the pool bar. Customer wearing red swim hat."
+      specialNotes: "Large blue umbrella by the pool bar. Customer wearing red swim hat.",
+      customerName: "Lisa Martinez"
     }
   ];
 

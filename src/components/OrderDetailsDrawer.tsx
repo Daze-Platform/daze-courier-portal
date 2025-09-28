@@ -245,7 +245,7 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
     </Drawer.Root>
 
     {/* Chat Modal */}
-    <Dialog open={showChatModal} onOpenChange={setShowChatModal}>
+    <Dialog open={showChatModal} onOpenChange={(open) => !open && setShowChatModal(false)}>
       <DialogContent className="max-w-2xl max-h-[90vh] p-0">
         <ChatInterface
           orderId={order.orderId}
