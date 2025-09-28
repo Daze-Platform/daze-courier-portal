@@ -86,22 +86,16 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
             </div>
           </div>
           
-          {/* SCROLLABLE CONTENT - CRITICAL: This must scroll independently */}
+          {/* SCROLLABLE CONTENT - CRITICAL: Must scroll independently of drawer */}
           <div 
-            className="flex-1 overflow-hidden"
+            className="flex-1 overflow-y-auto px-4 py-4"
             style={{
               height: 'calc(100dvh - 120px)',
-              maxHeight: 'calc(100dvh - 120px)'
+              WebkitOverflowScrolling: 'touch',
+              touchAction: 'pan-y pinch-zoom',
+              overscrollBehavior: 'contain'
             }}
           >
-            <div
-              className="h-full px-4 py-4 overflow-y-scroll"
-              style={{
-                WebkitOverflowScrolling: 'touch',
-                touchAction: 'pan-y',
-                overscrollBehavior: 'contain'
-              }}
-            >
             {/* Customer Info */}
             <div className="bg-card rounded-lg p-4 border border-border mb-6">
               <div className="flex items-center justify-between mb-4">
@@ -219,7 +213,6 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
 
             {/* Large bottom padding to ensure scrolling past earnings */}
             <div style={{ height: '200px', minHeight: '200px' }}></div>
-            </div>
           </div>
         </Drawer.Content>
       </Drawer.Portal>
