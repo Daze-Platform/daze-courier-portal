@@ -88,23 +88,29 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
             </div>
           </div>
           
-          {/* ISOLATED SCROLL CONTAINER - Completely separate from vaul touch handling */}
+          {/* COMPLETELY ISOLATED SCROLL AREA - Independent touch handling */}
           <div 
-            className="flex-1"
+            className="flex-1 relative"
             style={{ height: 'calc(100dvh - 120px)' }}
           >
             <div 
-              className="w-full h-full overflow-y-scroll px-4 py-4"
+              className="absolute inset-0 overflow-y-scroll px-4 py-4"
               style={{
                 WebkitOverflowScrolling: 'touch',
-                touchAction: 'manipulation',
-                overscrollBehavior: 'auto',
-                transform: 'translateZ(0)', // Force hardware acceleration
-                willChange: 'scroll-position'
+                touchAction: 'pan-y',
+                overscrollBehavior: 'contain',
+                transform: 'translate3d(0, 0, 0)', // Force GPU acceleration
+                backfaceVisibility: 'hidden',
+                perspective: '1000px'
               }}
+              onPointerDown={(e) => e.stopPropagation()}
+              onPointerMove={(e) => e.stopPropagation()}
+              onPointerUp={(e) => e.stopPropagation()}
               onTouchStart={(e) => e.stopPropagation()}
               onTouchMove={(e) => e.stopPropagation()}
               onTouchEnd={(e) => e.stopPropagation()}
+              onMouseDown={(e) => e.stopPropagation()}
+              onWheel={(e) => e.stopPropagation()}
             >
             {/* Customer Info */}
             <div className="bg-card rounded-lg p-4 border border-border mb-6">
