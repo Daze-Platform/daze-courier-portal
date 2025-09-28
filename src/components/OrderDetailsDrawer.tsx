@@ -74,7 +74,7 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
       
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40 z-40" />
-        <Drawer.Content className="bg-background flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 z-50 max-h-[95vh] min-h-[50vh]">
+        <Drawer.Content className="bg-background flex flex-col rounded-t-[10px] fixed bottom-0 left-0 right-0 z-50 max-h-[97vh] min-h-[50vh]">
           <div className="p-4 bg-background rounded-t-[10px] flex-shrink-0 border-b border-border">
             <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-muted mb-4" />
             <div className="max-w-md mx-auto">
@@ -86,13 +86,15 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
           </div>
           
           <div 
-            className="flex-1 overflow-y-auto px-4 pb-safe min-h-0" 
+            className="flex-1 overflow-y-auto px-4 min-h-0" 
             style={{ 
-              maxHeight: 'calc(95vh - 100px)',
+              height: 'calc(100vh - 160px)',
+              maxHeight: 'calc(100vh - 160px)',
               touchAction: 'pan-y',
               WebkitOverflowScrolling: 'touch',
-              overscrollBehavior: 'auto',
-              scrollBehavior: 'smooth'
+              overflowY: 'scroll',
+              scrollBehavior: 'smooth',
+              paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 80px)'
             }}
           >
             {/* Customer Info */}
@@ -210,8 +212,8 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
               </div>
             </div>
 
-            {/* Bottom Padding for Mobile Scroll */}
-            <div className="h-40 sm:h-32" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 40px)' }}></div>
+            {/* Extra Bottom Spacing for Mobile Scroll */}
+            <div className="h-24 w-full"></div>
           </div>
         </Drawer.Content>
       </Drawer.Portal>
