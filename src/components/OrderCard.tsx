@@ -1,11 +1,9 @@
-import { Clock, MapPin, Package, Timer, User, ChevronDown, ChevronUp, MessageCircle } from "lucide-react";
+import { Clock, MapPin, Package, Timer, User, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { executeScrollToTop } from "@/utils/scrollToTop";
-import ChatInterface from "@/components/ChatInterface";
 import margaritaMamasLogo from "@/assets/margarita-mamas-logo.png";
 import sunsetGrillLogo from "@/assets/sunset-grill-logo.png";
 import oceanBreezeLogo from "@/assets/ocean-breeze-logo.png";
@@ -45,7 +43,6 @@ const OrderCard = ({
   const navigate = useNavigate();
   const [countdown, setCountdown] = useState(timeRemaining);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [showChatModal, setShowChatModal] = useState(false);
 
   useEffect(() => {
     if (countdown <= 0) return;
@@ -99,9 +96,6 @@ const OrderCard = ({
     }, 20);
   };
 
-  const handleOpenChat = () => {
-    setShowChatModal(true);
-  };
 
   const getRestaurantLogo = (restaurantName: string) => {
     switch (restaurantName.toLowerCase()) {
@@ -218,16 +212,6 @@ const OrderCard = ({
             Accept
           </Button>
           
-          <Button
-            variant="outline" 
-            size="sm"
-            className="px-4 py-3 flex items-center gap-2"
-            onClick={handleOpenChat}
-          >
-            <MessageCircle className="h-4 w-4" />
-            Chat
-          </Button>
-          
           <div className={`flex items-center justify-center h-12 w-12 rounded-full flex-shrink-0 ${
             countdown === 0 
               ? 'bg-red-500 border-2 border-red-500' 
@@ -326,16 +310,6 @@ const OrderCard = ({
         </div>
       )}
 
-      {/* Chat Modal */}
-      <Dialog open={showChatModal} onOpenChange={(open) => !open && setShowChatModal(false)}>
-        <DialogContent className="max-w-2xl max-h-[90vh] p-0">
-          <ChatInterface
-            orderId={orderId}
-            customerName={customerName}
-            onClose={() => setShowChatModal(false)}
-          />
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
