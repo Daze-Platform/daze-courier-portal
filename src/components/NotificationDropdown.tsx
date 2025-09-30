@@ -19,14 +19,20 @@ interface NotificationDropdownProps {
 const getNotificationIcon = (type: Notification['type']) => {
   switch (type) {
     case 'order':
-      return <Package className="h-4 w-4 text-blue-500" />;
+      return <Package className="h-4 w-4 text-accent" />;
     case 'payment':
-      return <DollarSign className="h-4 w-4 text-green-500" />;
+    case 'payout':
+      return <DollarSign className="h-4 w-4 text-success" />;
+    case 'tip':
+    case 'bonus':
+      return <DollarSign className="h-4 w-4 text-warning" />;
+    case 'rating':
+      return <Bell className="h-4 w-4 text-primary" />;
     case 'system':
     case 'update':
-      return <Settings className="h-4 w-4 text-purple-500" />;
+      return <Settings className="h-4 w-4 text-muted-foreground" />;
     default:
-      return <Bell className="h-4 w-4 text-gray-500" />;
+      return <Bell className="h-4 w-4 text-muted-foreground" />;
   }
 };
 
@@ -113,12 +119,24 @@ const NotificationDropdown = ({ className }: NotificationDropdownProps) => {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-2">
                           <div className="flex-1">
-                            <p className={`text-sm font-medium ${!notification.read ? 'text-foreground' : 'text-muted-foreground'}`}>
-                              {notification.title}
-                            </p>
+                            <div className="flex items-center gap-2">
+                              <p className={`text-sm font-medium ${!notification.read ? 'text-foreground' : 'text-muted-foreground'}`}>
+                                {notification.title}
+                              </p>
+                              {notification.priority === 'high' && !notification.read && (
+                                <Badge variant="destructive" className="text-xs px-1.5 py-0 h-4">
+                                  New
+                                </Badge>
+                              )}
+                            </div>
                             <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
                               {notification.message}
                             </p>
+                            {notification.amount && (
+                              <p className="text-xs font-semibold text-success mt-1">
+                                +${notification.amount.toFixed(2)}
+                              </p>
+                            )}
                             <p className="text-xs text-muted-foreground mt-2">
                               {formatDistanceToNow(notification.timestamp, { addSuffix: true })}
                             </p>
