@@ -23,7 +23,7 @@ const ChatList = ({ onSelectChat }: ChatListProps) => {
     {
       orderId: "ORD-1234",
       customerName: "Sarah Johnson",
-      lastMessage: "Great! I'll call when I arrive.",
+      lastMessage: "I'm at the pool deck, blue umbrella on the left side",
       timestamp: new Date(Date.now() - 180000),
       unreadCount: 0,
       status: 'active'
@@ -31,7 +31,7 @@ const ChatList = ({ onSelectChat }: ChatListProps) => {
     {
       orderId: "ORD-1235", 
       customerName: "Mike Chen",
-      lastMessage: "Can you add extra sauce?",
+      lastMessage: "Room 305, please leave it outside the door",
       timestamp: new Date(Date.now() - 600000),
       unreadCount: 2,
       status: 'pending'
@@ -39,7 +39,7 @@ const ChatList = ({ onSelectChat }: ChatListProps) => {
     {
       orderId: "ORD-1236",
       customerName: "Emma Davis",
-      lastMessage: "Thank you for the delivery!",
+      lastMessage: "Perfect timing! Food was still hot 👍",
       timestamp: new Date(Date.now() - 1800000),
       unreadCount: 0,
       status: 'delivered'
@@ -47,10 +47,18 @@ const ChatList = ({ onSelectChat }: ChatListProps) => {
     {
       orderId: "ORD-1237",
       customerName: "Alex Rodriguez",
-      lastMessage: "I'm in room 505",
+      lastMessage: "I'm on the beach, white cabana near the water",
       timestamp: new Date(Date.now() - 3600000),
       unreadCount: 1,
       status: 'active'
+    },
+    {
+      orderId: "ORD-1238",
+      customerName: "Jessica Martinez",
+      lastMessage: "Can you bring extra napkins? Thanks!",
+      timestamp: new Date(Date.now() - 7200000),
+      unreadCount: 0,
+      status: 'delivered'
     }
   ]);
 

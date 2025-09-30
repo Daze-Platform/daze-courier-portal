@@ -22,29 +22,120 @@ interface ChatInterfaceProps {
 }
 
 const ChatInterface = ({ orderId, customerName, onClose }: ChatInterfaceProps) => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      text: 'Hi! I\'m on my way with your order. ETA: 15 minutes.',
-      sender: 'runner',
-      timestamp: new Date(Date.now() - 300000),
-      status: 'read'
-    },
-    {
-      id: '2', 
-      text: 'Perfect! I\'ll be waiting in the lobby.',
-      sender: 'customer',
-      timestamp: new Date(Date.now() - 240000),
-      status: 'read'
-    },
-    {
-      id: '3',
-      text: 'Great! I\'ll call when I arrive.',
-      sender: 'runner',
-      timestamp: new Date(Date.now() - 180000),
-      status: 'read'
+  // Generate realistic messages based on customer name
+  const getInitialMessages = (): Message[] => {
+    // Pool delivery scenario
+    if (customerName.includes('Sarah')) {
+      return [
+        {
+          id: '1',
+          text: 'Hi Sarah! I have your order from Ocean Breeze. Heading to the pool deck now.',
+          sender: 'runner',
+          timestamp: new Date(Date.now() - 420000),
+          status: 'read'
+        },
+        {
+          id: '2',
+          text: 'Great! I\'m at the pool deck, blue umbrella on the left side near the bar.',
+          sender: 'customer',
+          timestamp: new Date(Date.now() - 360000),
+          status: 'read'
+        },
+        {
+          id: '3',
+          text: 'Perfect! I see the blue umbrella. Be there in 2 minutes.',
+          sender: 'runner',
+          timestamp: new Date(Date.now() - 180000),
+          status: 'read'
+        }
+      ];
     }
-  ]);
+    // Room delivery scenario
+    if (customerName.includes('Mike')) {
+      return [
+        {
+          id: '1',
+          text: 'Hi Mike! On my way with your Margarita Mama\'s order. Should be there in 10 minutes.',
+          sender: 'runner',
+          timestamp: new Date(Date.now() - 600000),
+          status: 'read'
+        },
+        {
+          id: '2',
+          text: 'Room 305. Can you please leave it outside the door? Baby is sleeping.',
+          sender: 'customer',
+          timestamp: new Date(Date.now() - 540000),
+          status: 'read'
+        },
+        {
+          id: '3',
+          text: 'Absolutely! I\'ll place it gently by your door and text you when it\'s there.',
+          sender: 'runner',
+          timestamp: new Date(Date.now() - 480000),
+          status: 'read'
+        },
+        {
+          id: '4',
+          text: 'Also, could you add extra hot sauce packets?',
+          sender: 'customer',
+          timestamp: new Date(Date.now() - 420000),
+          status: 'read'
+        }
+      ];
+    }
+    // Beach delivery scenario
+    if (customerName.includes('Alex')) {
+      return [
+        {
+          id: '1',
+          text: 'Hey Alex! Got your Sunset Grill order. Making my way to the beach.',
+          sender: 'runner',
+          timestamp: new Date(Date.now() - 480000),
+          status: 'read'
+        },
+        {
+          id: '2',
+          text: 'Awesome! I\'m on the beach at the white cabana closest to the water. You\'ll see a red cooler.',
+          sender: 'customer',
+          timestamp: new Date(Date.now() - 420000),
+          status: 'read'
+        },
+        {
+          id: '3',
+          text: 'I see the white cabana! Walking over now.',
+          sender: 'runner',
+          timestamp: new Date(Date.now() - 240000),
+          status: 'read'
+        },
+        {
+          id: '4',
+          text: 'Perfect, I can see you!',
+          sender: 'customer',
+          timestamp: new Date(Date.now() - 180000),
+          status: 'read'
+        }
+      ];
+    }
+    // Default scenario
+    return [
+      {
+        id: '1',
+        text: 'Hi! I\'m on my way with your order. ETA: 15 minutes.',
+        sender: 'runner',
+        timestamp: new Date(Date.now() - 300000),
+        status: 'read'
+      },
+      {
+        id: '2',
+        text: 'Thanks for the update!',
+        sender: 'customer',
+        timestamp: new Date(Date.now() - 240000),
+        status: 'read'
+      }
+    ];
+  };
+
+  const [messages, setMessages] = useState<Message[]>(getInitialMessages());
   const [newMessage, setNewMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
