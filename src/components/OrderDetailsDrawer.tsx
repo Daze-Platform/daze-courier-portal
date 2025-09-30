@@ -70,7 +70,7 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge className="bg-primary text-white">
-                    ${order.earnings.total}
+                    ${order.earnings.total.toFixed(2)}
                   </Badge>
                   <ChevronUp className="h-5 w-5 text-muted-foreground" />
                 </div>
@@ -165,7 +165,7 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
                     <div className="flex-1">
                       <div className="flex justify-between items-center">
                         <p className="font-medium text-foreground">{item.name}</p>
-                        <p className="font-semibold text-foreground">${item.price}</p>
+                        <p className="font-semibold text-foreground">${item.price.toFixed(2)}</p>
                       </div>
                       <p className="text-sm text-muted-foreground">{item.modifications}</p>
                     </div>
@@ -192,25 +192,25 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
                 <div className="border-t border-border pt-4 space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Order Total</span>
-                    <span className="text-foreground">${order.total}</span>
+                    <span className="text-foreground">${order.total.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between font-semibold text-lg border-t border-border pt-2">
                     <span className="text-foreground">Your Earnings</span>
-                    <span className="text-success">+${order.earnings.total}</span>
+                    <span className="text-success">+${order.earnings.total.toFixed(2)}</span>
                   </div>
                   
                   <div className="space-y-1 text-sm mt-2">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Base Pay</span>
-                      <span className="text-foreground">${order.earnings.basePay}</span>
+                      <span className="text-foreground">${order.earnings.basePay.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Customer Tip</span>
-                      <span className="text-success font-medium">${order.earnings.customerTip}</span>
+                      <span className="text-success font-medium">${order.earnings.customerTip.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Additional Pay</span>
-                      <span className="text-foreground">${order.earnings.additionalPay}</span>
+                      <span className="text-foreground">${order.earnings.additionalPay.toFixed(2)}</span>
                     </div>
                   </div>
                 </div>
