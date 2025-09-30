@@ -109,20 +109,20 @@ const ChatList = ({ onSelectChat }: ChatListProps) => {
               <div
                 key={chat.orderId}
                 onClick={() => onSelectChat(chat.orderId, chat.customerName)}
-                className="flex items-center gap-3 p-3 rounded-lg border hover:bg-gray-50 cursor-pointer transition-colors"
+                className="flex items-start gap-3 p-3 rounded-lg border hover:bg-accent/50 cursor-pointer transition-colors"
               >
-                <div className="relative">
+                <div className="relative flex-shrink-0">
                   <Avatar className="h-12 w-12">
-                    <AvatarFallback className="bg-blue-100 text-blue-600">
+                    <AvatarFallback className="bg-primary/10 text-primary">
                       {chat.customerName.charAt(0).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
-                  <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full ${getStatusColor(chat.status)} border-2 border-white`} />
+                  <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full ${getStatusColor(chat.status)} border-2 border-background`} />
                 </div>
                 
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-2 mb-1">
-                    <h4 className="font-medium text-sm truncate flex-1">{chat.customerName}</h4>
+                <div className="flex-1 min-w-0 overflow-hidden">
+                  <div className="flex items-start justify-between gap-2 mb-1.5">
+                    <h4 className="font-medium text-sm truncate flex-1 min-w-0">{chat.customerName}</h4>
                     <div className="flex items-center gap-1.5 flex-shrink-0">
                       <Badge variant="secondary" className="text-xs whitespace-nowrap px-2 py-0.5">
                         {getStatusText(chat.status)}
@@ -135,13 +135,13 @@ const ChatList = ({ onSelectChat }: ChatListProps) => {
                     </div>
                   </div>
                   
-                  <p className="text-sm text-gray-600 truncate mb-1">
+                  <p className="text-sm text-muted-foreground truncate mb-1.5 max-w-full">
                     {chat.lastMessage}
                   </p>
                   
-                  <div className="flex items-center justify-between text-xs text-gray-500">
-                    <span>Order #{chat.orderId}</span>
-                    <div className="flex items-center gap-1">
+                  <div className="flex items-center justify-between text-xs text-muted-foreground gap-2">
+                    <span className="truncate">Order #{chat.orderId}</span>
+                    <div className="flex items-center gap-1 flex-shrink-0 whitespace-nowrap">
                       <Clock className="h-3 w-3" />
                       {formatTime(chat.timestamp)}
                     </div>
