@@ -3,6 +3,8 @@ import ChatList from "@/components/ChatList";
 import ChatInterface from "@/components/ChatInterface";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import UnifiedHeader from "@/components/UnifiedHeader";
+import DesktopSidebar from "@/components/DesktopSidebar";
 
 const Chat = () => {
   const [selectedChat, setSelectedChat] = useState<{ orderId: string; customerName: string } | null>(null);
@@ -16,11 +18,16 @@ const Chat = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Customer Messages</h1>
-        <p className="text-gray-600 mt-1">Communicate with customers about their deliveries</p>
-      </div>
+    <>
+      <UnifiedHeader />
+      <div className="flex min-h-screen w-full">
+        <DesktopSidebar />
+        <div className="flex-1">
+          <div className="container mx-auto px-4 py-8 max-w-4xl">
+            <div className="mb-6">
+              <h1 className="text-2xl font-bold text-gray-900">Customer Messages</h1>
+              <p className="text-gray-600 mt-1">Communicate with customers about their deliveries</p>
+            </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Mobile: Show either list or chat */}
@@ -54,7 +61,10 @@ const Chat = () => {
           )}
         </div>
       </div>
-    </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
