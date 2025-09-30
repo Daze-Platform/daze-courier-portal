@@ -121,10 +121,10 @@ const ChatList = ({ onSelectChat }: ChatListProps) => {
                 </div>
                 
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between mb-1">
-                    <h4 className="font-medium text-sm truncate">{chat.customerName}</h4>
-                    <div className="flex items-center gap-2">
-                      <Badge variant="secondary" className="text-xs">
+                  <div className="flex items-start justify-between gap-2 mb-1">
+                    <h4 className="font-medium text-sm truncate flex-1">{chat.customerName}</h4>
+                    <div className="flex items-center gap-1.5 flex-shrink-0">
+                      <Badge variant="secondary" className="text-xs whitespace-nowrap px-2 py-0.5">
                         {getStatusText(chat.status)}
                       </Badge>
                       {chat.unreadCount > 0 && (
@@ -135,17 +135,17 @@ const ChatList = ({ onSelectChat }: ChatListProps) => {
                     </div>
                   </div>
                   
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm text-gray-600 truncate pr-2">
-                      {chat.lastMessage}
-                    </p>
-                    <div className="flex items-center gap-1 text-xs text-gray-500">
+                  <p className="text-sm text-gray-600 truncate mb-1">
+                    {chat.lastMessage}
+                  </p>
+                  
+                  <div className="flex items-center justify-between text-xs text-gray-500">
+                    <span>Order #{chat.orderId}</span>
+                    <div className="flex items-center gap-1">
                       <Clock className="h-3 w-3" />
                       {formatTime(chat.timestamp)}
                     </div>
                   </div>
-                  
-                  <p className="text-xs text-gray-500 mt-1">Order #{chat.orderId}</p>
                 </div>
               </div>
             ))}
