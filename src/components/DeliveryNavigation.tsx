@@ -999,7 +999,11 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
               disabled={progress >= 95 || isNavigating || (isRoomDelivery && hasStartedNavigation)}
             >
               <Play className="h-5 w-5 mr-2" />
-              {(isRoomDelivery && hasStartedNavigation) ? 'Delivery Started' : 'Start Delivery'}
+              {(isRoomDelivery && hasStartedNavigation) 
+                ? 'Delivery Started' 
+                : ((isBeachDelivery || isPoolDelivery) && hasStartedNavigation && !isNavigating)
+                ? 'Resume Delivery'
+                : 'Start Delivery'}
             </Button>
           ) : (
             <Button onClick={completeDelivery} className="flex-1 h-12 text-base bg-success hover:bg-success/90 text-white">
