@@ -7,10 +7,15 @@ import UnifiedHeader from "@/components/UnifiedHeader";
 import DesktopSidebar from "@/components/DesktopSidebar";
 
 const Chat = () => {
-  const [selectedChat, setSelectedChat] = useState<{ orderId: string; customerName: string } | null>(null);
+  const [selectedChat, setSelectedChat] = useState<{ 
+    orderId: string; 
+    customerName: string; 
+    status: 'active' | 'pending' | 'delivered';
+    deliveryCompletedAt?: Date;
+  } | null>(null);
 
-  const handleSelectChat = (orderId: string, customerName: string) => {
-    setSelectedChat({ orderId, customerName });
+  const handleSelectChat = (orderId: string, customerName: string, status: 'active' | 'pending' | 'delivered', deliveryCompletedAt?: Date) => {
+    setSelectedChat({ orderId, customerName, status, deliveryCompletedAt });
   };
 
   const handleBackToList = () => {
@@ -48,6 +53,8 @@ const Chat = () => {
               <ChatInterface
                 orderId={selectedChat.orderId}
                 customerName={selectedChat.customerName}
+                deliveryStatus={selectedChat.status}
+                deliveryCompletedAt={selectedChat.deliveryCompletedAt}
                 onClose={() => setSelectedChat(null)}
               />
             </div>

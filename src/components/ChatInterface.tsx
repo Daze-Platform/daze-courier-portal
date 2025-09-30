@@ -19,9 +19,11 @@ interface ChatInterfaceProps {
   orderId: string;
   customerName: string;
   onClose?: () => void;
+  deliveryStatus: 'active' | 'pending' | 'delivered';
+  deliveryCompletedAt?: Date;
 }
 
-const ChatInterface = ({ orderId, customerName, onClose }: ChatInterfaceProps) => {
+const ChatInterface = ({ orderId, customerName, onClose, deliveryStatus, deliveryCompletedAt }: ChatInterfaceProps) => {
   // Generate realistic messages based on customer name
   const getInitialMessages = (): Message[] => {
     // Pool delivery scenario
@@ -138,6 +140,21 @@ const ChatInterface = ({ orderId, customerName, onClose }: ChatInterfaceProps) =
   const [messages, setMessages] = useState<Message[]>(getInitialMessages());
   const [newMessage, setNewMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+
+  // Check if messaging is allowed (active delivery or within 5 mins after completion)
+  const isMessagingAllowed = () => {
+    if (deliveryStatus === 'active' || deliveryStatus === 'pending') {
+      return true;
+    }
+    if (deliveryStatus === 'delivered' && deliveryCompletedAt) {
+      const fiveMinutesInMs = 5 * 60 * 1000;
+      const timeSinceCompletion = Date.now() - deliveryCompletedAt.getTime();
+      return timeSinceCompletion < fiveMinutesInMs;
+    }
+    return false;
+  };
+
+  const messagingAllowed = isMessagingAllowed();
 
   // Simulate typing indicator
   useEffect(() => {
@@ -283,15 +300,23 @@ const ChatInterface = ({ orderId, customerName, onClose }: ChatInterfaceProps) =
         </ScrollArea>
 
         <div className="border-t p-4">
+          {!messagingAllowed && (
+            <div className="mb-3 p-3 bg-muted rounded-lg">
+              <p className="text-sm text-muted-foreground text-center">
+                Messaging is disabled. You can only message customers during delivery or within 5 minutes after completion.
+              </p>
+            </div>
+          )}
           <div className="flex gap-2">
             <Input
-              placeholder="Type a message..."
+              placeholder={messagingAllowed ? "Type a message..." : "Messaging disabled"}
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               onKeyPress={handleKeyPress}
               className="flex-1"
+              disabled={!messagingAllowed}
             />
-            <Button onClick={sendMessage} disabled={!newMessage.trim()}>
+            <Button onClick={sendMessage} disabled={!newMessage.trim() || !messagingAllowed}>
               <Send className="h-4 w-4" />
             </Button>
           </div>

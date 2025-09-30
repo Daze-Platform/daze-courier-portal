@@ -250,6 +250,7 @@ const OrderDetailsDrawer = ({ order, customTrigger }: OrderDetailsDrawerProps) =
         <ChatInterface
           orderId={order.orderId}
           customerName={order.customer.name}
+          deliveryStatus="active"
           onClose={() => setShowChatModal(false)}
         />
       </DialogContent>

@@ -1048,6 +1048,7 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
             <ChatInterface
               orderId={order.orderId}
               customerName={order.customer.name}
+              deliveryStatus="active"
               onClose={() => setShowChatModal(false)}
             />
           </DialogContent>

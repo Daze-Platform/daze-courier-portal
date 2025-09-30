@@ -12,10 +12,11 @@ interface ChatPreview {
   timestamp: Date;
   unreadCount: number;
   status: 'active' | 'pending' | 'delivered';
+  deliveryCompletedAt?: Date;
 }
 
 interface ChatListProps {
-  onSelectChat: (orderId: string, customerName: string) => void;
+  onSelectChat: (orderId: string, customerName: string, status: 'active' | 'pending' | 'delivered', deliveryCompletedAt?: Date) => void;
 }
 
 const ChatList = ({ onSelectChat }: ChatListProps) => {
@@ -42,7 +43,8 @@ const ChatList = ({ onSelectChat }: ChatListProps) => {
       lastMessage: "Perfect timing! Food was still hot 👍",
       timestamp: new Date(Date.now() - 1800000),
       unreadCount: 0,
-      status: 'delivered'
+      status: 'delivered',
+      deliveryCompletedAt: new Date(Date.now() - 1800000)
     },
     {
       orderId: "ORD-1237",
@@ -58,7 +60,8 @@ const ChatList = ({ onSelectChat }: ChatListProps) => {
       lastMessage: "Can you bring extra napkins? Thanks!",
       timestamp: new Date(Date.now() - 7200000),
       unreadCount: 0,
-      status: 'delivered'
+      status: 'delivered',
+      deliveryCompletedAt: new Date(Date.now() - 7200000)
     }
   ]);
 
@@ -108,7 +111,7 @@ const ChatList = ({ onSelectChat }: ChatListProps) => {
             {chats.map((chat) => (
               <div
                 key={chat.orderId}
-                onClick={() => onSelectChat(chat.orderId, chat.customerName)}
+                onClick={() => onSelectChat(chat.orderId, chat.customerName, chat.status, chat.deliveryCompletedAt)}
                 className="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg border hover:bg-accent/50 cursor-pointer transition-colors"
               >
                 <div className="relative flex-shrink-0">
