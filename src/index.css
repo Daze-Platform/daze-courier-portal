@@ -128,7 +128,7 @@
 @layer utilities {
   /* Safe area handling for notched devices */
   .pt-safe {
-    padding-top: max(env(safe-area-inset-top, 0px), 44px);
+    padding-top: env(safe-area-inset-top, 0px);
   }
   
   .mobile-safe {
