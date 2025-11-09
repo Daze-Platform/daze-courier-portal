@@ -132,7 +132,7 @@ const Index = () => {
       });
 
   return (
-    <div className="min-h-screen bg-background pt-[56px]">
+    <div className="min-h-screen bg-background pt-[100px] lg:pt-[56px]">
       <UnifiedHeader />
       <DesktopSidebar />
       
