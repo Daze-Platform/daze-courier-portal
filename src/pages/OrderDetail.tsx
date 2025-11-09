@@ -148,7 +148,7 @@ const OrderDetail = () => {
       <DesktopSidebar />
 
       {/* Main Content - Universal Browser Compatible */}
-      <div className="bg-background lg:ml-64 min-h-screen pt-[100px] lg:pt-[72px]">
+      <div className="bg-background lg:ml-64 min-h-screen pt-[100px] lg:pt-[56px]">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 pb-32">
           {/* Header */}
           <div className="flex items-center gap-4 mb-6">
