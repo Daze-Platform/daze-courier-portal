@@ -2,10 +2,12 @@ import UnifiedHeader from "@/components/UnifiedHeader";
 import DesktopSidebar from "@/components/DesktopSidebar";
 import StatusControl from "@/components/StatusControl";
 import OrderCard from "@/components/OrderCard";
-import { Package, Truck } from "lucide-react";
+import { Package, Truck, RefreshCw } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import resortDeliveryIllustration from "@/assets/resort-delivery-with-logo.jpg";
+import { usePullToRefresh } from "@/hooks/use-pull-to-refresh";
+import { toast } from "sonner";
 
 const Index = () => {
   const [isOnline, setIsOnline] = useState(() => {
@@ -14,10 +16,24 @@ const Index = () => {
   });
   
   const [selectedDeliveryType, setSelectedDeliveryType] = useState("all");
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     localStorage.setItem('courier-status', JSON.stringify(isOnline));
   }, [isOnline]);
+
+  const handleRefresh = async () => {
+    // Simulate fetching new orders
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setRefreshKey(prev => prev + 1);
+    toast.success("Orders refreshed!");
+  };
+
+  const { isPulling, isRefreshing, pullDistance, progress } = usePullToRefresh({
+    onRefresh: handleRefresh,
+    threshold: 80,
+    resistance: 2.5,
+  });
   const mockOrders = [
     {
       orderId: "#290459",
@@ -135,6 +151,26 @@ const Index = () => {
     <div className="min-h-screen bg-background pt-[100px] lg:pt-[56px]">
       <UnifiedHeader />
       <DesktopSidebar />
+      
+      {/* Pull to Refresh Indicator */}
+      {(isPulling || isRefreshing) && (
+        <div 
+          className="fixed top-[100px] lg:top-[56px] left-0 right-0 lg:left-64 flex justify-center z-40 transition-all duration-300"
+          style={{
+            transform: `translateY(${isPulling && !isRefreshing ? pullDistance : isRefreshing ? 40 : 0}px)`,
+            opacity: isPulling || isRefreshing ? 1 : 0,
+          }}
+        >
+          <div className="bg-primary text-primary-foreground rounded-full p-3 shadow-lg">
+            <RefreshCw 
+              className={`h-5 w-5 ${isRefreshing ? 'animate-spin' : ''}`}
+              style={{
+                transform: !isRefreshing ? `rotate(${progress * 3.6}deg)` : undefined,
+              }}
+            />
+          </div>
+        </div>
+      )}
       
       {/* Main Content */}
       <div className="lg:ml-64 pt-4">
