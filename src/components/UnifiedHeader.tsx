@@ -10,7 +10,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import NotificationDropdown from "@/components/NotificationDropdown";
 import ferdinandProfile from "@/assets/ferdinand-profile.jpg";
-import dazeLogo from "@/assets/daze-logo.png";
+import dazeLogo from "@/assets/daze-logo-new.png";
 import Sidebar from "@/components/Sidebar";
 import { Link } from "react-router-dom";
 

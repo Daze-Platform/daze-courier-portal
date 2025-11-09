@@ -1,6 +1,6 @@
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import dazeLogo from "@/assets/daze-logo.png";
+import dazeLogo from "@/assets/daze-logo-new.png";
 
 const CourierHeader = () => {
   return (
