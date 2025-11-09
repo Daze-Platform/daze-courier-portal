@@ -25,23 +25,23 @@ const Chat = () => {
   return (
     <>
       <UnifiedHeader />
-      <div className="flex min-h-screen w-full pt-[100px] lg:pt-[56px] pb-safe">
+      <div className="flex min-h-screen w-full pt-[100px] lg:pt-[56px] pb-safe overflow-x-hidden">
         <DesktopSidebar />
-        <div className="flex-1 lg:ml-64">
-          <div className="container mx-auto px-4 py-4 lg:py-8 max-w-6xl">
-            <div className="mb-4 lg:mb-6">
+        <div className="flex-1 lg:ml-64 w-full">
+          <div className="w-full px-3 py-4 lg:px-4 lg:py-8 lg:max-w-6xl lg:mx-auto">
+            <div className="mb-3 lg:mb-6">
               <h1 className="text-xl lg:text-2xl font-bold text-foreground">Customer Messages</h1>
               <p className="text-sm lg:text-base text-muted-foreground mt-1">Communicate with customers about their deliveries</p>
             </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 w-full">
         {/* Mobile: Show either list or chat */}
-        <div className={`${selectedChat ? 'hidden lg:block' : 'block'}`}>
+        <div className={`${selectedChat ? 'hidden lg:block' : 'block'} w-full`}>
           <ChatList onSelectChat={handleSelectChat} />
         </div>
 
         {/* Chat Interface */}
-        <div className={`${selectedChat ? 'block' : 'hidden lg:block'}`}>
+        <div className={`${selectedChat ? 'block' : 'hidden lg:block'} w-full`}>
           {selectedChat ? (
             <div className="space-y-4">
               <div className="lg:hidden">

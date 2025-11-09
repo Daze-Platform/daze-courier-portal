@@ -225,33 +225,33 @@ const ChatInterface = ({ orderId, customerName, onClose, deliveryStatus, deliver
   };
 
   return (
-    <Card className="w-full h-auto lg:h-[600px] flex flex-col">
-      <CardHeader className="flex-row items-center justify-between space-y-0 pb-3 px-4">
-        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+    <Card className="w-full h-auto lg:h-[600px] flex flex-col overflow-hidden">
+      <CardHeader className="flex-row items-center justify-between space-y-0 pb-2 px-3 lg:px-4 flex-shrink-0">
+        <div className="flex items-center gap-2 min-w-0 flex-1">
           <Avatar className="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0">
             <AvatarFallback className="bg-blue-100 text-blue-600 text-sm">
               {customerName.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          <div className="min-w-0">
-            <CardTitle className="text-base sm:text-lg truncate">{customerName}</CardTitle>
-            <p className="text-xs sm:text-sm text-muted-foreground truncate">Order #{orderId}</p>
+          <div className="min-w-0 flex-1">
+            <CardTitle className="text-sm sm:text-base lg:text-lg truncate">{customerName}</CardTitle>
+            <p className="text-[10px] sm:text-xs lg:text-sm text-muted-foreground truncate">Order #{orderId}</p>
           </div>
         </div>
-        <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
-          <Button variant="outline" size="sm" className="h-8 w-8 sm:h-9 sm:w-9 p-0">
-            <Phone className="h-3 w-3 sm:h-4 sm:w-4" />
+        <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0 ml-2">
+          <Button variant="outline" size="sm" className="h-7 w-7 sm:h-8 sm:w-8 lg:h-9 lg:w-9 p-0">
+            <Phone className="h-3 w-3 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
           </Button>
           {onClose && (
-            <Button variant="ghost" size="sm" onClick={onClose} className="h-8 w-8 sm:h-9 sm:w-9 p-0 lg:hidden">
-              <X className="h-3 w-3 sm:h-4 sm:w-4" />
+            <Button variant="ghost" size="sm" onClick={onClose} className="h-7 w-7 sm:h-8 sm:w-8 p-0 lg:hidden">
+              <X className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
             </Button>
           )}
         </div>
       </CardHeader>
 
-      <CardContent className="flex-1 flex flex-col p-0 min-h-[400px] lg:min-h-0">
-        <ScrollArea className="flex-1 px-3 sm:px-4 pb-4 h-[calc(100vh-360px)] lg:h-auto">
+      <CardContent className="flex-1 flex flex-col p-0 min-h-[400px] lg:min-h-0 overflow-hidden">
+        <ScrollArea className="flex-1 px-3 sm:px-4 pb-3 sm:pb-4 h-[calc(100vh-340px)] lg:h-auto w-full">
           <div className="space-y-4">
             {messages.map((message) => (
               <div
