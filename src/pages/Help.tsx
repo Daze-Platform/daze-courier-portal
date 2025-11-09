@@ -120,7 +120,7 @@ const Help = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pt-[100px] lg:pt-[56px]">
       <UnifiedHeader />
       <DesktopSidebar />
       
