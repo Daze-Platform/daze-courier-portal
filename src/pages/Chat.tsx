@@ -28,7 +28,7 @@ const Chat = () => {
       <div className="flex min-h-screen w-full pt-[100px] lg:pt-[56px] pb-safe overflow-x-hidden">
         <DesktopSidebar />
         <div className="flex-1 lg:ml-64 w-full">
-          <div className="w-full px-3 py-4 lg:px-4 lg:py-8 lg:max-w-6xl lg:mx-auto">
+          <div className="w-full px-3 py-6 lg:px-4 lg:py-8 lg:max-w-6xl lg:mx-auto">
             <div className="mb-3 lg:mb-6">
               <h1 className="text-xl lg:text-2xl font-bold text-foreground">Customer Messages</h1>
               <p className="text-sm lg:text-base text-muted-foreground mt-1">Communicate with customers about their deliveries</p>
