@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import NotificationDropdown from "@/components/NotificationDropdown";
 import { useLocation, Link } from "react-router-dom";
-import dazeLogo from "@/assets/daze-logo-new.png";
+import dazeLogo from "@/assets/daze-logo.png";
 
 const Sidebar = ({ isMobile = false }: { isMobile?: boolean }) => {
   const location = useLocation();

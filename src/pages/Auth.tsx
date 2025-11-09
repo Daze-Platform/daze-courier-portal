@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useToast } from "@/hooks/use-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
-import dazeLogoImage from "@/assets/daze-logo-new.png";
+import dazeLogoImage from "@/assets/daze-logo.png";
 import dazeCloudLogoImage from "@/assets/daze-cloud-logo.png";
 import earningsPhoneImage from "@/assets/earnings-phone-mockup.png";
 

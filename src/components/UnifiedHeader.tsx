@@ -10,13 +10,13 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import NotificationDropdown from "@/components/NotificationDropdown";
 import ferdinandProfile from "@/assets/ferdinand-profile.jpg";
-import dazeLogo from "@/assets/daze-logo-new.png";
+import dazeLogo from "@/assets/daze-logo.png";
 import Sidebar from "@/components/Sidebar";
 import { Link } from "react-router-dom";
 
 const UnifiedHeader = () => {
   return (
-    <header className="bg-gradient-primary shadow-medium sticky top-0 z-50 w-full pt-safe">
+    <header className="bg-gradient-primary shadow-medium sticky top-0 z-50 w-full">
       <div className="flex items-center justify-between px-4 py-4 lg:px-8">
         {/* Left: Mobile Menu + Logo and Branding */}
         <div className="flex items-center gap-3">
