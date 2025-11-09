@@ -5,7 +5,7 @@ import dazeLogo from "@/assets/daze-logo-new.png";
 const CourierHeader = () => {
   return (
     <header className="bg-gradient-primary shadow-medium sticky top-0 z-50 pt-safe">
-      <div className="flex items-center justify-between px-4 py-4">
+      <div className="flex items-center justify-between px-4 py-2">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
             <img src={dazeLogo} alt="Daze Logo" className="h-8 w-8" />
