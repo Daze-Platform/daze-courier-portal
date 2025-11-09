@@ -124,8 +124,13 @@
   }
 }
 
-/* iPhone Pro Safari Compatibility */
+/* Native App Experience - PWA Utilities */
 @layer utilities {
+  /* Safe area handling for notched devices */
+  .pt-safe {
+    padding-top: max(env(safe-area-inset-top, 0px), 44px);
+  }
+  
   .mobile-safe {
     padding-bottom: max(env(safe-area-inset-bottom, 0px), 24px);
   }
@@ -134,6 +139,12 @@
     padding-bottom: max(env(safe-area-inset-bottom, 0px), 16px);
   }
   
+  .px-safe {
+    padding-left: max(env(safe-area-inset-left, 0px), 16px);
+    padding-right: max(env(safe-area-inset-right, 0px), 16px);
+  }
+  
+  /* Native viewport handling */
   .mobile-viewport {
     height: 100vh;
     height: 100dvh;
@@ -141,6 +152,7 @@
     max-height: -webkit-fill-available;
   }
   
+  /* Smooth native scrolling */
   .mobile-scrollable {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -151,6 +163,13 @@
     margin-bottom: max(env(safe-area-inset-bottom, 0px), 20px);
   }
   
+  /* Native touch interactions */
+  .native-tap {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  
+  /* iOS specific fixes */
   @supports (-webkit-touch-callout: none) {
     .ios-scroll-fix {
       -webkit-overflow-scrolling: touch;
