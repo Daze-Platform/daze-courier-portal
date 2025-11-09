@@ -225,33 +225,33 @@ const ChatInterface = ({ orderId, customerName, onClose, deliveryStatus, deliver
   };
 
   return (
-    <Card className="w-full h-[600px] flex flex-col">
-      <CardHeader className="flex-row items-center justify-between space-y-0 pb-4">
-        <div className="flex items-center gap-3">
-          <Avatar className="h-10 w-10">
-            <AvatarFallback className="bg-blue-100 text-blue-600">
+    <Card className="w-full h-auto lg:h-[600px] flex flex-col">
+      <CardHeader className="flex-row items-center justify-between space-y-0 pb-3 px-4">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <Avatar className="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0">
+            <AvatarFallback className="bg-blue-100 text-blue-600 text-sm">
               {customerName.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          <div>
-            <CardTitle className="text-lg">{customerName}</CardTitle>
-            <p className="text-sm text-muted-foreground">Order #{orderId}</p>
+          <div className="min-w-0">
+            <CardTitle className="text-base sm:text-lg truncate">{customerName}</CardTitle>
+            <p className="text-xs sm:text-sm text-muted-foreground truncate">Order #{orderId}</p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm">
-            <Phone className="h-4 w-4" />
+        <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+          <Button variant="outline" size="sm" className="h-8 w-8 sm:h-9 sm:w-9 p-0">
+            <Phone className="h-3 w-3 sm:h-4 sm:w-4" />
           </Button>
           {onClose && (
-            <Button variant="ghost" size="sm" onClick={onClose}>
-              <X className="h-4 w-4" />
+            <Button variant="ghost" size="sm" onClick={onClose} className="h-8 w-8 sm:h-9 sm:w-9 p-0 lg:hidden">
+              <X className="h-3 w-3 sm:h-4 sm:w-4" />
             </Button>
           )}
         </div>
       </CardHeader>
 
-      <CardContent className="flex-1 flex flex-col p-0">
-        <ScrollArea className="flex-1 px-4 pb-4">
+      <CardContent className="flex-1 flex flex-col p-0 min-h-[400px] lg:min-h-0">
+        <ScrollArea className="flex-1 px-3 sm:px-4 pb-4 h-[calc(100vh-360px)] lg:h-auto">
           <div className="space-y-4">
             {messages.map((message) => (
               <div
@@ -259,13 +259,13 @@ const ChatInterface = ({ orderId, customerName, onClose, deliveryStatus, deliver
                 className={`flex ${message.sender === 'runner' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[70%] rounded-lg p-3 ${
+                  className={`max-w-[85%] sm:max-w-[70%] rounded-lg p-2 sm:p-3 ${
                     message.sender === 'runner'
                       ? 'bg-blue-500 text-white'
                       : 'bg-gray-100 text-gray-900'
                   }`}
                 >
-                  <p className="text-sm">{message.text}</p>
+                  <p className="text-xs sm:text-sm break-words">{message.text}</p>
                   <div
                     className={`flex items-center justify-between mt-1 text-xs ${
                       message.sender === 'runner' ? 'text-blue-100' : 'text-gray-500'
@@ -299,10 +299,10 @@ const ChatInterface = ({ orderId, customerName, onClose, deliveryStatus, deliver
           </div>
         </ScrollArea>
 
-        <div className="border-t p-4">
+        <div className="border-t p-3 sm:p-4">
           {!messagingAllowed && (
-            <div className="mb-3 p-3 bg-muted rounded-lg">
-              <p className="text-sm text-muted-foreground text-center">
+            <div className="mb-2 sm:mb-3 p-2 sm:p-3 bg-muted rounded-lg">
+              <p className="text-xs sm:text-sm text-muted-foreground text-center">
                 Messaging is disabled. You can only message customers during delivery or within 5 minutes after completion.
               </p>
             </div>
@@ -313,10 +313,10 @@ const ChatInterface = ({ orderId, customerName, onClose, deliveryStatus, deliver
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               onKeyPress={handleKeyPress}
-              className="flex-1"
+              className="flex-1 text-sm"
               disabled={!messagingAllowed}
             />
-            <Button onClick={sendMessage} disabled={!newMessage.trim() || !messagingAllowed}>
+            <Button onClick={sendMessage} disabled={!newMessage.trim() || !messagingAllowed} size="sm" className="px-3">
               <Send className="h-4 w-4" />
             </Button>
           </div>

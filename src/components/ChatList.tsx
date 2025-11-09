@@ -98,15 +98,15 @@ const ChatList = ({ onSelectChat }: ChatListProps) => {
   };
 
   return (
-    <Card className="h-[600px]">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+    <Card className="h-auto lg:h-[600px]">
+      <CardHeader className="pb-3">
+        <CardTitle className="flex items-center gap-2 text-lg">
           <MessageCircle className="h-5 w-5" />
           Customer Messages
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <ScrollArea className="h-[500px]">
+        <ScrollArea className="h-[calc(100vh-280px)] lg:h-[500px]">
           <div className="space-y-2 p-4">
             {chats.map((chat) => (
               <div

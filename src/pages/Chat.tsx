@@ -25,13 +25,13 @@ const Chat = () => {
   return (
     <>
       <UnifiedHeader />
-      <div className="flex min-h-screen w-full">
+      <div className="flex min-h-screen w-full pt-[100px] lg:pt-[56px]">
         <DesktopSidebar />
-        <div className="flex-1">
-          <div className="container mx-auto px-4 py-8 max-w-4xl">
-            <div className="mb-6">
-              <h1 className="text-2xl font-bold text-gray-900">Customer Messages</h1>
-              <p className="text-gray-600 mt-1">Communicate with customers about their deliveries</p>
+        <div className="flex-1 lg:ml-64">
+          <div className="container mx-auto px-4 py-6 lg:py-8 max-w-4xl">
+            <div className="mb-4 lg:mb-6">
+              <h1 className="text-2xl font-bold text-foreground">Customer Messages</h1>
+              <p className="text-muted-foreground mt-1">Communicate with customers about their deliveries</p>
             </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
