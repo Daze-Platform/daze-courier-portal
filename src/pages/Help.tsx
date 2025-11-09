@@ -124,7 +124,7 @@ const Help = () => {
       <UnifiedHeader />
       <DesktopSidebar />
       
-      <main className="lg:ml-64 pt-16">
+      <main className="lg:ml-64 pt-[100px] lg:pt-[72px]">
         <div className="container mx-auto px-4 py-6 max-w-6xl">
           {/* Header Section */}
           <div className="text-center mb-8">

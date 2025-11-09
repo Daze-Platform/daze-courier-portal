@@ -99,7 +99,7 @@ const DeliveryTracking = () => {
       <UnifiedHeader />
       <DesktopSidebar />
 
-      <div className="min-h-screen bg-background lg:ml-64 pt-4">
+      <div className="min-h-screen bg-background lg:ml-64 pt-[100px] lg:pt-[72px]">
         <div className="container mx-auto px-4 py-6 space-y-6 lg:px-8 lg:py-8">
           {/* Header */}
           <div className="flex items-center gap-4">

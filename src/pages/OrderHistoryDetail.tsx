@@ -495,7 +495,7 @@ const OrderHistoryDetail: React.FC = () => {
       <DesktopSidebar />
       
       {/* Main Content */}
-      <div className="lg:ml-64 pt-4">
+      <div className="lg:ml-64 pt-[100px] lg:pt-[72px]">
         <div className="container mx-auto px-4 py-6 space-y-6 lg:px-8 lg:py-8">
           {/* Back Button and Header */}
           <div className="flex items-center gap-4">
