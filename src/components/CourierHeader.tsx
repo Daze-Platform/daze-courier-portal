@@ -1,10 +1,10 @@
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import dazeLogo from "@/assets/daze-logo-new.png";
+import dazeLogo from "@/assets/daze-logo.png";
 
 const CourierHeader = () => {
   return (
-    <header className="bg-gradient-primary shadow-medium sticky top-0 z-50 pt-safe">
+    <header className="bg-gradient-primary shadow-medium sticky top-0 z-50">
       <div className="flex items-center justify-between px-4 py-4">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
