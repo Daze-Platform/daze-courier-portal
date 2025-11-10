@@ -35,7 +35,7 @@ const StatusControl = ({ isOnline, onStatusChange, selectedDeliveryType = "all",
         {/* Location */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-muted-foreground">Location</label>
-          <Select defaultValue="hilton-barbados">
+          <Select defaultValue="daze-beach-resort">
             <SelectTrigger className="w-full [&>span]:font-bold [&>span]:text-foreground">
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4 text-accent" />
@@ -43,6 +43,7 @@ const StatusControl = ({ isOnline, onStatusChange, selectedDeliveryType = "all",
               </div>
             </SelectTrigger>
             <SelectContent className="bg-card border border-border shadow-lg z-50">
+              <SelectItem value="daze-beach-resort" className="font-bold">Daze Beach Resort</SelectItem>
               <SelectItem value="hilton-barbados" className="font-bold">Hilton Barbados</SelectItem>
               <SelectItem value="sandals-royal" className="font-bold">Sandals Royal Caribbean</SelectItem>
               <SelectItem value="beaches-negril" className="font-bold">Beaches Negril</SelectItem>
