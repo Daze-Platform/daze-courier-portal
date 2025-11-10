@@ -35,33 +35,49 @@ const Chat = () => {
             <p className="text-muted-foreground lg:text-lg">Communicate with customers about their deliveries</p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-            {/* Mobile: Show either list or chat */}
-            <div className={`${selectedChat ? 'hidden lg:block' : 'block'}`}>
+          {/* Mobile: Full screen chat or list */}
+          {selectedChat ? (
+            <div className="fixed inset-0 z-50 bg-background pt-[100px] lg:hidden">
+              <div className="h-full flex flex-col">
+                <div className="px-4 py-2 border-b border-border">
+                  <Button variant="ghost" size="sm" onClick={handleBackToList}>
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Back to Messages
+                  </Button>
+                </div>
+                <ChatInterface
+                  orderId={selectedChat.orderId}
+                  customerName={selectedChat.customerName}
+                  deliveryStatus={selectedChat.status}
+                  deliveryCompletedAt={selectedChat.deliveryCompletedAt}
+                  onClose={() => setSelectedChat(null)}
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="lg:hidden">
+              <ChatList onSelectChat={handleSelectChat} />
+            </div>
+          )}
+
+          {/* Desktop: Side by side */}
+          <div className="hidden lg:grid lg:grid-cols-2 gap-6">
+            <div>
               <ChatList onSelectChat={handleSelectChat} />
             </div>
 
-            {/* Chat Interface */}
-            <div className={`${selectedChat ? 'block' : 'hidden lg:block'}`}>
+            <div>
               {selectedChat ? (
-                <div className="space-y-4">
-                  <div className="lg:hidden">
-                    <Button variant="ghost" size="sm" onClick={handleBackToList}>
-                      <ArrowLeft className="h-4 w-4 mr-2" />
-                      Back to Messages
-                    </Button>
-                  </div>
-                  <ChatInterface
-                    orderId={selectedChat.orderId}
-                    customerName={selectedChat.customerName}
-                    deliveryStatus={selectedChat.status}
-                    deliveryCompletedAt={selectedChat.deliveryCompletedAt}
-                    onClose={() => setSelectedChat(null)}
-                  />
-                </div>
+                <ChatInterface
+                  orderId={selectedChat.orderId}
+                  customerName={selectedChat.customerName}
+                  deliveryStatus={selectedChat.status}
+                  deliveryCompletedAt={selectedChat.deliveryCompletedAt}
+                  onClose={() => setSelectedChat(null)}
+                />
               ) : (
-                <div className="hidden lg:flex items-center justify-center h-[600px] border-2 border-dashed border-gray-200 rounded-lg">
-                  <div className="text-center text-gray-500">
+                <div className="flex items-center justify-center h-[600px] border-2 border-dashed border-border rounded-lg">
+                  <div className="text-center text-muted-foreground">
                     <p className="text-lg font-medium">Select a conversation</p>
                     <p className="text-sm">Choose a customer to start messaging</p>
                   </div>

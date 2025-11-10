@@ -225,104 +225,109 @@ const ChatInterface = ({ orderId, customerName, onClose, deliveryStatus, deliver
   };
 
   return (
-    <Card className="w-full h-auto lg:h-[600px] flex flex-col overflow-hidden">
-      <CardHeader className="flex-row items-center justify-between space-y-0 pb-2 px-3 lg:px-4 flex-shrink-0">
-        <div className="flex items-center gap-2 min-w-0 flex-1">
-          <Avatar className="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0">
-            <AvatarFallback className="bg-blue-100 text-blue-600 text-sm">
+    <div className="flex flex-col h-[calc(100vh-200px)] lg:h-[600px] bg-background">
+      {/* Header - iOS style */}
+      <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-background">
+        <div className="flex items-center gap-3 min-w-0 flex-1">
+          <Avatar className="h-10 w-10 flex-shrink-0">
+            <AvatarFallback className="bg-primary/10 text-primary">
               {customerName.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
           <div className="min-w-0 flex-1">
-            <CardTitle className="text-sm sm:text-base lg:text-lg truncate">{customerName}</CardTitle>
-            <p className="text-[10px] sm:text-xs lg:text-sm text-muted-foreground truncate">Order #{orderId}</p>
+            <h3 className="font-semibold text-foreground truncate">{customerName}</h3>
+            <p className="text-xs text-muted-foreground truncate">Order #{orderId}</p>
           </div>
         </div>
-        <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0 ml-2">
-          <Button variant="outline" size="sm" className="h-7 w-7 sm:h-8 sm:w-8 lg:h-9 lg:w-9 p-0">
-            <Phone className="h-3 w-3 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <Button variant="ghost" size="sm" className="h-9 w-9 p-0">
+            <Phone className="h-4 w-4" />
           </Button>
           {onClose && (
-            <Button variant="ghost" size="sm" onClick={onClose} className="h-7 w-7 sm:h-8 sm:w-8 p-0 lg:hidden">
-              <X className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+            <Button variant="ghost" size="sm" onClick={onClose} className="h-9 w-9 p-0 lg:hidden">
+              <X className="h-4 w-4" />
             </Button>
           )}
         </div>
-      </CardHeader>
+      </div>
 
-      <CardContent className="flex-1 flex flex-col p-0 min-h-[400px] lg:min-h-0 overflow-hidden">
-        <ScrollArea className="flex-1 px-3 sm:px-4 pb-3 sm:pb-4 h-[calc(100vh-340px)] lg:h-auto w-full">
-          <div className="space-y-4">
-            {messages.map((message) => (
+      {/* Messages Area - iOS style */}
+      <ScrollArea className="flex-1 px-4 py-4">
+        <div className="space-y-4">
+          {messages.map((message) => (
+            <div
+              key={message.id}
+              className={`flex ${message.sender === 'runner' ? 'justify-end' : 'justify-start'}`}
+            >
               <div
-                key={message.id}
-                className={`flex ${message.sender === 'runner' ? 'justify-end' : 'justify-start'}`}
+                className={`max-w-[75%] rounded-[18px] px-4 py-2 ${
+                  message.sender === 'runner'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted text-foreground'
+                }`}
               >
+                <p className="text-sm break-words">{message.text}</p>
                 <div
-                  className={`max-w-[85%] sm:max-w-[70%] rounded-lg p-2 sm:p-3 ${
-                    message.sender === 'runner'
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-gray-100 text-gray-900'
+                  className={`flex items-center justify-between mt-1 text-[10px] ${
+                    message.sender === 'runner' ? 'text-primary-foreground/70' : 'text-muted-foreground'
                   }`}
                 >
-                  <p className="text-xs sm:text-sm break-words">{message.text}</p>
-                  <div
-                    className={`flex items-center justify-between mt-1 text-xs ${
-                      message.sender === 'runner' ? 'text-blue-100' : 'text-gray-500'
-                    }`}
-                  >
-                    <span>{formatTime(message.timestamp)}</span>
-                    {message.sender === 'runner' && (
-                      <span className={`ml-2 ${message.status === 'read' ? 'text-blue-200' : 'text-blue-300'}`}>
-                        {getMessageStatusIcon(message.status)}
-                      </span>
-                    )}
+                  <span>{formatTime(message.timestamp)}</span>
+                  {message.sender === 'runner' && (
+                    <span className="ml-2">
+                      {getMessageStatusIcon(message.status)}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+          
+          {isTyping && (
+            <div className="flex justify-start">
+              <div className="bg-muted rounded-[18px] px-4 py-3">
+                <div className="flex items-center gap-1">
+                  <div className="flex gap-1">
+                    <div className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <div className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <div className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                   </div>
                 </div>
               </div>
-            ))}
-            
-            {isTyping && (
-              <div className="flex justify-start">
-                <div className="bg-gray-100 rounded-lg p-3 max-w-[70%]">
-                  <div className="flex items-center gap-1">
-                    <div className="flex gap-1">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                    </div>
-                    <span className="text-xs text-gray-500 ml-2">{customerName} is typing...</span>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </ScrollArea>
-
-        <div className="border-t p-3 sm:p-4">
-          {!messagingAllowed && (
-            <div className="mb-2 sm:mb-3 p-2 sm:p-3 bg-muted rounded-lg">
-              <p className="text-xs sm:text-sm text-muted-foreground text-center">
-                Messaging is disabled. You can only message customers during delivery or within 5 minutes after completion.
-              </p>
             </div>
           )}
-          <div className="flex gap-2">
-            <Input
-              placeholder={messagingAllowed ? "Type a message..." : "Messaging disabled"}
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              onKeyPress={handleKeyPress}
-              className="flex-1 text-sm"
-              disabled={!messagingAllowed}
-            />
-            <Button onClick={sendMessage} disabled={!newMessage.trim() || !messagingAllowed} size="sm" className="px-3">
-              <Send className="h-4 w-4" />
-            </Button>
-          </div>
         </div>
-      </CardContent>
-    </Card>
+      </ScrollArea>
+
+      {/* Input Area - iOS style */}
+      <div className="border-t border-border px-4 py-3 bg-background">
+        {!messagingAllowed && (
+          <div className="mb-3 px-3 py-2 bg-muted/50 rounded-lg">
+            <p className="text-xs text-muted-foreground text-center">
+              Messaging is disabled. You can only message customers during delivery or within 5 minutes after completion.
+            </p>
+          </div>
+        )}
+        <div className="flex gap-2 items-end">
+          <Input
+            placeholder={messagingAllowed ? "iMessage" : "Messaging disabled"}
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            onKeyPress={handleKeyPress}
+            className="flex-1 rounded-full border-muted-foreground/20 bg-muted/50"
+            disabled={!messagingAllowed}
+          />
+          <Button 
+            onClick={sendMessage} 
+            disabled={!newMessage.trim() || !messagingAllowed} 
+            size="icon"
+            className="rounded-full h-9 w-9 flex-shrink-0"
+          >
+            <Send className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 };
 
