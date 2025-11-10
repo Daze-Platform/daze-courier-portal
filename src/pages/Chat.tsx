@@ -28,11 +28,11 @@ const Chat = () => {
       <DesktopSidebar />
       
       {/* Main Content */}
-      <div className="lg:ml-64 pt-4">
-        <div className="container mx-auto px-4 py-6 space-y-6 lg:px-8 lg:py-8">
+      <div className="lg:ml-64 lg:pt-4">
+        <div className="container mx-auto px-3 py-4 sm:px-4 sm:py-6 space-y-4 sm:space-y-6 lg:px-8 lg:py-8">
           <div>
-            <h1 className="text-2xl font-bold text-foreground mb-2 lg:text-3xl">Customer Messages</h1>
-            <p className="text-muted-foreground lg:text-lg">Communicate with customers about their deliveries</p>
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground mb-1 sm:mb-2 lg:text-3xl">Customer Messages</h1>
+            <p className="text-sm sm:text-base text-muted-foreground lg:text-lg">Communicate with customers about their deliveries</p>
           </div>
 
           {/* Mobile: Full screen chat or list */}
