@@ -42,7 +42,7 @@ const UnifiedHeader = () => {
           {/* Logo and Text */}
           <div className="flex items-center gap-2">
             <img src={dazeLogo} alt="Daze" className="h-8 w-8 object-contain" />
-            <span className="text-sm font-medium text-primary-foreground/90 tracking-wider">
+            <span className="text-xs sm:text-sm font-medium text-primary-foreground/90 tracking-wider whitespace-nowrap">
               COURIER PORTAL
             </span>
           </div>

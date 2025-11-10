@@ -112,7 +112,7 @@ const ChatList = ({ onSelectChat }: ChatListProps) => {
               <div
                 key={chat.orderId}
                 onClick={() => onSelectChat(chat.orderId, chat.customerName, chat.status, chat.deliveryCompletedAt)}
-                className="flex items-start gap-2 p-2 sm:p-3 rounded-lg border hover:bg-accent/50 cursor-pointer transition-colors w-full overflow-hidden"
+                className="flex items-start gap-2 p-2 sm:p-3 rounded-lg border hover:bg-accent/50 cursor-pointer transition-colors w-full"
               >
                 <div className="relative flex-shrink-0">
                   <Avatar className="h-10 w-10 sm:h-12 sm:w-12">
@@ -123,10 +123,10 @@ const ChatList = ({ onSelectChat }: ChatListProps) => {
                   <div className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 sm:w-4 sm:h-4 rounded-full ${getStatusColor(chat.status)} border-2 border-background`} />
                 </div>
                 
-                <div className="flex-1 min-w-0">
+                <div className="flex-1 min-w-0 overflow-hidden">
                   <div className="flex items-start justify-between gap-2 mb-0.5">
                     <h4 className="font-medium text-sm truncate flex-1 min-w-0">{chat.customerName}</h4>
-                    <div className="flex items-center gap-1 flex-shrink-0">
+                    <div className="flex items-center gap-1 flex-shrink-0 ml-2">
                       <Badge variant="secondary" className="text-[10px] sm:text-xs whitespace-nowrap px-1.5 py-0 leading-tight h-5">
                         {getStatusText(chat.status)}
                       </Badge>
@@ -138,13 +138,13 @@ const ChatList = ({ onSelectChat }: ChatListProps) => {
                     </div>
                   </div>
                   
-                  <p className="text-xs sm:text-sm text-muted-foreground truncate mb-0.5">
+                  <p className="text-xs sm:text-sm text-muted-foreground truncate mb-0.5 pr-2">
                     {chat.lastMessage}
                   </p>
                   
-                  <div className="flex items-center justify-between text-[10px] sm:text-xs text-muted-foreground gap-1">
+                  <div className="flex items-center justify-between text-[10px] sm:text-xs text-muted-foreground gap-2">
                     <span className="truncate flex-1 min-w-0">Order #{chat.orderId}</span>
-                    <div className="flex items-center gap-0.5 flex-shrink-0 whitespace-nowrap">
+                    <div className="flex items-center gap-0.5 flex-shrink-0 whitespace-nowrap ml-2">
                       <Clock className="h-3 w-3 flex-shrink-0" />
                       <span>{formatTime(chat.timestamp)}</span>
                     </div>
