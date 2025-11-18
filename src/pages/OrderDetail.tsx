@@ -27,12 +27,14 @@ import sunsetGrillLogo from '@/assets/sunset-grill-logo.png';
 import oceanBreezeLogo from '@/assets/ocean-breeze-logo.png';
 import salDeMarLogo from '@/assets/sal-de-mar-logo.png';
 import { useToast } from '@/hooks/use-toast';
+import { useIsPWA } from '@/hooks/use-is-pwa';
 
 const OrderDetail = () => {
-  const { orderId } = useParams<{ orderId: string }>();
+  const { orderId } = useParams<{ orderId: string}>();
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
+  const isPWA = useIsPWA();
   
   // Get order data from navigation state or use fallback
   const orderFromState = location.state;
@@ -146,6 +148,8 @@ const OrderDetail = () => {
     <>
       <UnifiedHeader />
       <DesktopSidebar />
+
+      <div className={`min-h-screen bg-primary lg:ml-64 ${isPWA ? 'pt-[120px] sm:pt-[115px] lg:pt-[72px]' : 'pt-[64px] sm:pt-[60px] lg:pt-[56px]'}`}>
 
       {/* Main Content - Universal Browser Compatible */}
       <div className="bg-background lg:ml-64 min-h-screen pt-[100px] sm:pt-[96px] lg:pt-[72px]">
@@ -470,6 +474,7 @@ const OrderDetail = () => {
           />
         </DialogContent>
       </Dialog>
+      </div>
     </>
   );
 };

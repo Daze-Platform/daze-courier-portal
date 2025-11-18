@@ -150,14 +150,14 @@ const Index = () => {
       });
 
   return (
-    <div className={`min-h-screen bg-primary ${isPWA ? 'pt-[160px] sm:pt-[150px] lg:pt-[80px]' : 'pt-[72px] sm:pt-[64px] lg:pt-[48px]'}`}>
+    <div className={`min-h-screen bg-primary ${isPWA ? 'pt-[120px] sm:pt-[115px] lg:pt-[72px]' : 'pt-[64px] sm:pt-[60px] lg:pt-[56px]'}`}>
       <UnifiedHeader />
       <DesktopSidebar />
       
       {/* Pull to Refresh Indicator */}
       {(isPulling || isRefreshing) && (
         <div 
-          className="fixed top-[140px] sm:top-[130px] lg:top-[72px] left-0 right-0 lg:left-64 flex justify-center z-40 transition-all duration-300"
+          className="fixed top-[100px] sm:top-[95px] lg:top-[68px] left-0 right-0 lg:left-64 flex justify-center z-40 transition-all duration-300"
           style={{
             transform: `translateY(${isPulling && !isRefreshing ? pullDistance : isRefreshing ? 40 : 0}px)`,
             opacity: isPulling || isRefreshing ? 1 : 0,
