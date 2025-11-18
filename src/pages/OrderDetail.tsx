@@ -153,9 +153,9 @@ const OrderDetail = () => {
 
       {/* Main Content - Universal Browser Compatible */}
       <div className="bg-background lg:ml-64 min-h-screen pt-[100px] sm:pt-[96px] lg:pt-[72px]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-4 py-4 sm:py-5 pb-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-4 py-2 sm:py-3 pb-32">
           {/* Header */}
-          <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-5">
+          <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
             <Button
               variant="ghost"
               size="icon"
