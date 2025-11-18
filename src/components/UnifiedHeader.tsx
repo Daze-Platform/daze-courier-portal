@@ -17,7 +17,7 @@ import { Link } from "react-router-dom";
 const UnifiedHeader = () => {
   return (
     <header className="bg-primary shadow-medium fixed top-0 left-0 right-0 z-[100] w-full pt-safe transition-all duration-300">
-      <div className="flex items-center justify-between px-4 py-3 sm:py-2 lg:px-8 min-h-[56px] sm:min-h-[64px]">
+      <div className="flex items-center justify-between gap-2 sm:gap-4 px-3 sm:px-4 py-3 sm:py-2 lg:px-8 min-h-[56px] sm:min-h-[64px]">
         {/* Left: Mobile Menu + Logo and Branding */}
         <div className="flex items-center gap-3">
           {/* Mobile Menu Button - Only visible on mobile */}
@@ -40,16 +40,16 @@ const UnifiedHeader = () => {
           </Sheet>
 
           {/* Logo and Text */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            <img src={dazeLogo} alt="Daze" className="h-7 w-7 sm:h-8 sm:w-8 object-contain" />
-            <span className="text-xs sm:text-sm font-bold text-primary-foreground/90 tracking-wider whitespace-nowrap">
+          <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0 mr-2 sm:mr-4">
+            <img src={dazeLogo} alt="Daze" className="h-7 w-7 sm:h-8 sm:w-8 object-contain flex-shrink-0" />
+            <span className="text-xs sm:text-sm font-bold text-primary-foreground/90 tracking-wider whitespace-nowrap overflow-hidden text-ellipsis">
               COURIER PORTAL
             </span>
           </div>
         </div>
         
         {/* Right: Notifications and User Profile */}
-        <div className="flex items-center gap-2 sm:gap-4">
+        <div className="flex items-center gap-1 sm:gap-2 md:gap-4 ml-2 sm:ml-4">
           <NotificationDropdown className="text-primary-foreground hover:bg-primary-foreground/10 min-h-[44px] min-w-[44px]" />
           
           <DropdownMenu>
