@@ -25,14 +25,14 @@ const Chat = () => {
   };
 
   return (
-    <div className={`min-h-screen bg-primary ${isPWA ? 'pt-[110px] lg:pt-[64px]' : 'pt-[64px] lg:pt-[48px]'}`}>
+    <div className={`min-h-screen bg-background ${isPWA ? 'pt-[110px] lg:pt-[64px]' : 'pt-[64px] lg:pt-[48px]'}`}>
       <UnifiedHeader />
       <DesktopSidebar />
       
       {/* Main Content */}
-      <div className="lg:ml-64 bg-background">
-        <div className={`container mx-auto px-3 sm:px-4 space-y-4 sm:space-y-6 lg:px-3 ${isPWA ? 'py-6 sm:py-6 lg:pt-6 lg:pb-4' : 'py-6 sm:py-6 lg:pt-6 lg:pb-4'}`}>
-          <div>
+      <div className="lg:ml-64">
+        <div className={`px-4 sm:px-5 space-y-4 sm:space-y-5 lg:px-6 ${isPWA ? 'py-6 lg:pt-6 lg:pb-4' : 'py-6 lg:pt-6 lg:pb-4'}`}>
+          <div className="px-1">
             <h1 className="text-xl sm:text-2xl font-bold text-foreground mb-1 sm:mb-2 lg:text-3xl">Customer Messages</h1>
             <p className="text-sm sm:text-base text-muted-foreground lg:text-lg">Communicate with customers about their deliveries</p>
           </div>
@@ -57,14 +57,14 @@ const Chat = () => {
               </div>
             </div>
           ) : (
-            <div className="lg:hidden border rounded-lg overflow-hidden bg-card">
+            <div className="lg:hidden -mx-4 sm:-mx-5 lg:-mx-6">
               <ChatList onSelectChat={handleSelectChat} />
             </div>
           )}
 
           {/* Desktop: Side by side */}
           <div className="hidden lg:grid lg:grid-cols-2 gap-6">
-            <div className="border rounded-lg overflow-hidden bg-card">
+            <div className="-mx-6 border-x bg-card">
               <ChatList onSelectChat={handleSelectChat} />
             </div>
 
