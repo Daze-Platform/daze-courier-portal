@@ -401,7 +401,10 @@ const DeliveryNavigation = ({ destination, deliveryType = "Room Delivery", onCom
       scrollBehavior: 'smooth'
     }}>
       {/* Compact Navigation Header */}
-      <div className="bg-background border-b border-border p-3 flex-shrink-0 safe-area-inset-top sticky top-0 z-50">
+      <div 
+        className="bg-background border-b border-border p-3 flex-shrink-0 sticky top-0 z-50"
+        style={{ paddingTop: 'calc(env(safe-area-inset-top) + 0.75rem)' }}
+      >
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <div className="h-8 w-8 bg-primary/10 rounded-full flex items-center justify-center">

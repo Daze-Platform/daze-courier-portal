@@ -209,8 +209,8 @@ const DeliveryTracking = () => {
 
       {/* Full Screen Navigation Modal */}
       <Dialog open={showNavigationModal} onOpenChange={setShowNavigationModal}>
-        <DialogContent className="max-w-full max-h-full w-screen h-screen p-0 m-0 border-0">
-          <DeliveryNavigation 
+        <DialogContent className="fixed inset-0 max-w-full max-h-full w-screen h-screen p-0 m-0 border-0 translate-x-0 translate-y-0 rounded-none">
+          <DeliveryNavigation
             destination={order.deliveryAddress}
             deliveryType={order.deliveryType}
             onComplete={handleNavigationComplete}
