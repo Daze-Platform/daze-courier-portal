@@ -25,12 +25,12 @@ const Chat = () => {
   };
 
   return (
-    <div className={`min-h-screen bg-background ${isPWA ? 'pt-[110px] lg:pt-[64px]' : 'pt-[90px] lg:pt-[48px]'}`}>
+    <div className={`min-h-screen bg-primary ${isPWA ? 'pt-[110px] lg:pt-[64px]' : 'pt-[90px] lg:pt-[48px]'}`}>
       <UnifiedHeader />
       <DesktopSidebar />
       
       {/* Main Content */}
-      <div className="lg:ml-64">
+      <div className="lg:ml-64 bg-background">
         <div className={`container mx-auto px-3 sm:px-4 space-y-4 sm:space-y-6 lg:px-3 ${isPWA ? 'py-4 sm:py-4 lg:pt-4 lg:pb-4' : 'py-2 sm:py-3 lg:pt-2 lg:pb-4'}`}>
           <div>
             <h1 className="text-xl sm:text-2xl font-bold text-foreground mb-1 sm:mb-2 lg:text-3xl">Customer Messages</h1>
