@@ -496,7 +496,7 @@ const OrderHistoryDetail: React.FC = () => {
       
       {/* Main Content */}
       <div className="lg:ml-64 pt-[100px] lg:pt-[56px]">
-        <div className="container mx-auto px-4 py-6 space-y-6 lg:px-2 lg:py-4">
+        <div className="container mx-auto px-4 py-6 space-y-6 lg:px-3 lg:py-4">
           {/* Back Button and Header */}
           <div className="flex items-center gap-4">
             <Button 
