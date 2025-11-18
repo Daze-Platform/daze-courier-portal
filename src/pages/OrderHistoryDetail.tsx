@@ -497,7 +497,7 @@ const OrderHistoryDetail: React.FC = () => {
       <DesktopSidebar />
       
       {/* Main Content */}
-      <div className={`lg:ml-64 bg-primary ${isPWA ? 'pt-[140px] lg:pt-[80px]' : 'pt-[80px] lg:pt-[64px]'}`}>
+      <div className={`lg:ml-64 bg-primary ${isPWA ? 'pt-[120px] sm:pt-[115px] lg:pt-[72px]' : 'pt-[64px] sm:pt-[60px] lg:pt-[56px]'}`}>
         <div className={`bg-background container mx-auto px-4 space-y-6 lg:px-3 ${isPWA ? 'py-6 lg:pt-6 lg:pb-4' : 'py-6 lg:pt-6 lg:pb-4'}`}>
           {/* Back Button and Header */}
           <div className="flex items-center gap-4">
