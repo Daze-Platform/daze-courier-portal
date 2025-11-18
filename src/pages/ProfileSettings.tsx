@@ -108,7 +108,7 @@ const ProfileSettings = () => {
     <div className="min-h-screen bg-background">
       <UnifiedHeader />
       
-      <main className="container mx-auto px-4 py-6 max-w-2xl pt-[100px] lg:pt-[56px] lg:px-4 lg:py-4">
+      <main className="container mx-auto px-4 py-6 max-w-2xl pt-[100px] lg:pt-[56px] lg:px-2 lg:py-4">
         <div className="space-y-6">
           <div className="flex items-center gap-4">
             <Button
