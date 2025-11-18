@@ -121,7 +121,7 @@ const Ratings: React.FC = () => {
       
       {/* Main Content */}
       <div className="lg:ml-64 pt-4">
-        <div className="container mx-auto px-4 py-6 space-y-6 lg:px-2 lg:py-4">
+        <div className="container mx-auto px-4 py-6 space-y-6 lg:px-3 lg:py-4">
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
