@@ -31,8 +31,8 @@ const Chat = () => {
       
       {/* Main Content */}
       <div className="lg:ml-64 min-h-screen">
-        <div className={`px-4 sm:px-5 lg:px-6 ${isPWA ? 'pt-6 pb-4' : 'pt-6 pb-4'}`}>
-          <div className="px-1 mb-5">
+        <div className={`${isPWA ? 'pt-6 pb-4' : 'pt-6 pb-4'}`}>
+          <div className="px-4 sm:px-5 lg:px-6 mb-5">
             <h1 className="text-xl sm:text-2xl font-bold text-foreground mb-1 sm:mb-2 lg:text-3xl">Customer Messages</h1>
             <p className="text-sm sm:text-base text-muted-foreground lg:text-lg">Communicate with customers about their deliveries</p>
           </div>
@@ -57,14 +57,14 @@ const Chat = () => {
               </div>
             </div>
           ) : (
-            <div className="lg:hidden -mx-4 sm:-mx-5 lg:-mx-6 bg-card">
+            <div className="lg:hidden bg-card border-y">
               <ChatList onSelectChat={handleSelectChat} />
             </div>
           )}
 
           {/* Desktop: Side by side */}
-          <div className="hidden lg:grid lg:grid-cols-2 gap-6">
-            <div className="-mx-6 border-x bg-card h-[calc(100vh-200px)]">
+          <div className="hidden lg:grid lg:grid-cols-2 gap-6 px-4 sm:px-5 lg:px-6">
+            <div className="border rounded-lg bg-card h-[calc(100vh-200px)] overflow-hidden">
               <ChatList onSelectChat={handleSelectChat} />
             </div>
 
