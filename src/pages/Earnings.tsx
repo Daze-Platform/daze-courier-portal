@@ -247,7 +247,7 @@ const Earnings: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pt-[100px] lg:pt-[56px]">
+    <div className={`min-h-screen bg-background ${isPWA ? 'pt-[110px] lg:pt-[64px]' : 'pt-[90px] lg:pt-[48px]'}`}>
       <UnifiedHeader />
       <DesktopSidebar />
       
