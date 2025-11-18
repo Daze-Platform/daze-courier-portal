@@ -746,11 +746,11 @@ const OrderHistory: React.FC = () => {
   const getDeliveryTypeBadge = (deliveryType: string) => {
     switch (deliveryType) {
       case 'Room Delivery':
-        return <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">🏨 Room</Badge>;
+        return <Badge variant="secondary" className="bg-blue-500/10 text-blue-700 dark:text-blue-400 hover:bg-blue-500/20 border-blue-500/20 font-medium">🏨 Room</Badge>;
       case 'Pool Service':
-        return <Badge className="bg-cyan-100 text-cyan-800 hover:bg-cyan-100">🏊 Pool</Badge>;
+        return <Badge variant="secondary" className="bg-cyan-500/10 text-cyan-700 dark:text-cyan-400 hover:bg-cyan-500/20 border-cyan-500/20 font-medium">🏊 Pool</Badge>;
       case 'Beach Service':
-        return <Badge className="bg-orange-100 text-orange-800 hover:bg-orange-100">🏖️ Beach</Badge>;
+        return <Badge variant="secondary" className="bg-orange-500/10 text-orange-700 dark:text-orange-400 hover:bg-orange-500/20 border-orange-500/20 font-medium">🏖️ Beach</Badge>;
       default:
         return null;
     }
@@ -759,11 +759,11 @@ const OrderHistory: React.FC = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'delivered':
-        return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">✓ Delivered</Badge>;
+        return <Badge variant="secondary" className="bg-success/10 text-success hover:bg-success/20 border-success/20 font-medium">✓ Delivered</Badge>;
       case 'cancelled':
-        return <Badge className="bg-red-100 text-red-800 hover:bg-red-100">✗ Cancelled</Badge>;
+        return <Badge variant="secondary" className="bg-destructive/10 text-destructive hover:bg-destructive/20 border-destructive/20 font-medium">✗ Cancelled</Badge>;
       case 'pending':
-        return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">⏳ Pending</Badge>;
+        return <Badge variant="secondary" className="bg-warning/10 text-warning hover:bg-warning/20 border-warning/20 font-medium">⏳ Pending</Badge>;
       default:
         return null;
     }
@@ -775,15 +775,17 @@ const OrderHistory: React.FC = () => {
 
   // Empty state component
   const EmptyState = () => (
-    <div className="flex flex-col items-center justify-center py-16 px-4">
-      <div className="w-32 h-32 mb-6 flex items-center justify-center">
-        <Package className="w-16 h-16 text-muted-foreground" />
-      </div>
-      <h3 className="text-xl font-semibold mb-2">No deliveries yet</h3>
-      <p className="text-muted-foreground text-center max-w-sm">
-        Go ahead, order some items from menu and enjoy.
-      </p>
-    </div>
+    <Card className="border-dashed border-2">
+      <CardContent className="flex flex-col items-center justify-center py-20 px-4">
+        <div className="w-24 h-24 mb-6 rounded-full bg-muted/50 flex items-center justify-center">
+          <Package className="w-12 h-12 text-muted-foreground" />
+        </div>
+        <h3 className="text-2xl font-semibold mb-3">No orders found</h3>
+        <p className="text-muted-foreground text-center max-w-sm text-lg">
+          No deliveries match your selected date range. Try adjusting your filters.
+        </p>
+      </CardContent>
+    </Card>
   );
 
   return (
@@ -793,79 +795,94 @@ const OrderHistory: React.FC = () => {
       
       {/* Main Content */}
       <div className="lg:ml-64 bg-background">
-        <div className={`container mx-auto px-4 space-y-6 lg:px-3 ${isPWA ? 'py-6 lg:pt-6 lg:pb-4' : 'py-6 lg:pt-6 lg:pb-4'}`}>
-          <div>
-            <h1 className="text-2xl font-bold text-foreground mb-2 lg:text-3xl">Order History</h1>
-            <p className="text-muted-foreground lg:text-lg">View your past delivery assignments</p>
+        <div className={`container mx-auto px-4 space-y-8 lg:px-6 ${isPWA ? 'py-8 lg:pt-8 lg:pb-6' : 'py-8 lg:pt-8 lg:pb-6'}`}>
+          {/* Header Section */}
+          <div className="space-y-3">
+            <h1 className="text-4xl font-bold tracking-tight">Order History</h1>
+            <p className="text-muted-foreground text-lg">
+              View and track all your completed deliveries
+            </p>
           </div>
-          
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2">
-                  <Clock className="h-5 w-5" />
-                </CardTitle>
-                <DateRangePicker
-                  date={dateRange}
-                  onDateChange={setDateRange}
-                  placeholder="Select date range"
-                />
-              </div>
+
+          {/* Filters Card */}
+          <Card className="border-border/50 shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-xl flex items-center gap-2">
+                <Calendar className="h-5 w-5 text-primary" />
+                Filter by Date Range
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              {orders.length === 0 ? (
-                <EmptyState />
-              ) : (
-                  <div className="space-y-2 sm:space-y-4">
-                    {orders.map((order) => (
-                      <div 
-                        key={order.id} 
-                        className="flex items-center justify-between p-3 sm:p-4 border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors gap-3 sm:gap-4"
-                        onClick={() => handleOrderClick(order.orderId)}
-                      >
-                        <div className="flex items-center space-x-3 sm:space-x-4 min-w-0 flex-1">
-                          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden bg-muted flex items-center justify-center flex-shrink-0">
-                            <img 
-                              src={order.restaurantLogo} 
-                              alt={order.restaurantName}
-                              className="h-full w-full object-cover rounded-full"
-                            />
-                          </div>
-                          
-                          <div className="flex-1 min-w-0">
-                            {/* Restaurant name and badges row */}
-                            <div className="flex items-center gap-2 mb-1">
-                              <h4 className="font-medium text-foreground truncate text-sm sm:text-base">{order.restaurantName}</h4>
-                              <div className="flex gap-1 sm:gap-2">
-                                {getStatusBadge(order.status)}
-                                {getDeliveryTypeBadge(order.deliveryType)}
-                              </div>
-                            </div>
-                            
-                            {/* Order details */}
-                            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs sm:text-sm text-muted-foreground">
-                              <span className="font-mono">#{order.orderId}</span>
-                              <span className="truncate max-w-[100px] sm:max-w-none">{order.customer}</span>
-                              <span className="font-medium text-green-600">${order.deliveryFee.toFixed(2)}</span>
-                              <span className="whitespace-nowrap">{order.date}</span>
-                            </div>
-                            
-                            {/* Delivery address - more compact on mobile */}
-                            <div className="text-xs sm:text-sm text-muted-foreground mt-1 truncate">
-                              <span className="inline-flex items-center gap-1">
-                                📍 <span className="truncate">{order.deliveryAddress}</span>
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground flex-shrink-0" />
-                      </div>
-                    ))}
-                </div>
-              )}
+              <DateRangePicker
+                date={dateRange}
+                onDateChange={setDateRange}
+                placeholder="Select date range"
+              />
             </CardContent>
           </Card>
+
+          {/* Orders List */}
+          {orders.length === 0 ? (
+            <EmptyState />
+          ) : (
+            <div className="space-y-4">
+              {orders.map((order) => (
+                <Card 
+                  key={order.id} 
+                  className="group cursor-pointer border-border/50 hover:border-primary/30 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                  onClick={() => handleOrderClick(order.orderId)}
+                >
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-5">
+                      {/* Restaurant Logo */}
+                      <div className="flex-shrink-0">
+                        <div className="w-20 h-20 rounded-xl overflow-hidden bg-muted/50 flex items-center justify-center ring-2 ring-border/50 group-hover:ring-primary/30 transition-all duration-300">
+                          <img 
+                            src={order.restaurantLogo} 
+                            alt={order.restaurantName}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Order Details */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <div className="space-y-2">
+                            <h3 className="font-semibold text-xl group-hover:text-primary transition-colors duration-300">{order.restaurantName}</h3>
+                            <div className="flex flex-wrap items-center gap-2">
+                              {getStatusBadge(order.status)}
+                              {getDeliveryTypeBadge(order.deliveryType)}
+                            </div>
+                          </div>
+                          <ChevronRight className="h-6 w-6 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300 flex-shrink-0" />
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 text-sm">
+                          <div className="flex items-center gap-2.5 text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+                            <Package className="h-4 w-4 flex-shrink-0" />
+                            <span>Order #{order.orderId}</span>
+                          </div>
+                          <div className="flex items-center gap-2.5 text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+                            <Clock className="h-4 w-4 flex-shrink-0" />
+                            <span>{order.date} at {order.time}</span>
+                          </div>
+                          <div className="flex items-center gap-2.5 text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+                            <DollarSign className="h-4 w-4 flex-shrink-0" />
+                            <span className="font-semibold">${order.deliveryFee.toFixed(2)}</span>
+                          </div>
+                          <div className="flex items-center gap-2.5 text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+                            <Package className="h-4 w-4 flex-shrink-0" />
+                            <span>{order.deliveryAddress}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
