@@ -126,15 +126,6 @@
   body {
     @apply bg-background text-foreground;
   }
-  
-  /* Pull-to-refresh background - match header color */
-  html {
-    background-color: hsl(215 85% 25%);
-  }
-  
-  body {
-    background-color: hsl(240 10% 98%);
-  }
 }
 
 /* Native App Experience - PWA Utilities */
