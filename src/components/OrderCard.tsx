@@ -8,6 +8,7 @@ import margaritaMamasLogo from "@/assets/margarita-mamas-logo.png";
 import sunsetGrillLogo from "@/assets/sunset-grill-logo.png";
 import oceanBreezeLogo from "@/assets/ocean-breeze-logo.png";
 import salDeMarLogo from "@/assets/sal-de-mar-logo.png";
+import { useHaptics } from "@/hooks/use-haptics";
 
 interface OrderCardProps {
   orderId: string;
@@ -41,6 +42,7 @@ const OrderCard = ({
   customerName = "Customer"
 }: OrderCardProps) => {
   const navigate = useNavigate();
+  const haptics = useHaptics();
   const [countdown, setCountdown] = useState(timeRemaining);
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -61,6 +63,9 @@ const OrderCard = ({
   }, [countdown]);
 
   const handleAcceptOrder = () => {
+    // Haptic feedback for accepting order
+    haptics.medium();
+    
     // Use the comprehensive scroll utility  
     executeScrollToTop();
     
