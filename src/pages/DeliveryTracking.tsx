@@ -101,7 +101,7 @@ const DeliveryTracking = () => {
       <UnifiedHeader />
       <DesktopSidebar />
 
-      <div className={`min-h-screen bg-primary lg:ml-64 ${isPWA ? 'pt-[110px] lg:pt-[64px]' : 'pt-[70px] lg:pt-[48px]'}`}>
+      <div className={`min-h-screen bg-primary lg:ml-64 ${isPWA ? 'pt-[110px] lg:pt-[64px]' : 'pt-[85px] lg:pt-[48px]'}`}>
         <div className={`bg-background container mx-auto px-4 space-y-6 lg:px-3 ${isPWA ? 'py-4 lg:pt-4 lg:pb-4' : 'py-2 lg:pt-2 lg:pb-4'}`}>
           {/* Header */}
           <div className="flex items-center gap-4">
