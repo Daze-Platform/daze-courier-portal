@@ -793,7 +793,7 @@ const OrderHistory: React.FC = () => {
       
       {/* Main Content */}
       <div className="lg:ml-64">
-        <div className={`container mx-auto px-4 space-y-6 lg:px-3 ${isPWA ? 'py-3 lg:pt-3 lg:pb-4' : 'py-3 lg:pt-3 lg:pb-4'}`}>
+        <div className={`container mx-auto px-4 space-y-6 lg:px-3 ${isPWA ? 'py-4 lg:pt-4 lg:pb-4' : 'py-2 lg:pt-2 lg:pb-4'}`}>
           <div>
             <h1 className="text-2xl font-bold text-foreground mb-2 lg:text-3xl">Order History</h1>
             <p className="text-muted-foreground lg:text-lg">View your past delivery assignments</p>
