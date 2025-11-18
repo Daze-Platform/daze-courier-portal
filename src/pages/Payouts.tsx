@@ -208,7 +208,7 @@ const Payouts: React.FC = () => {
       
       {/* Main Content */}
       <div className="lg:ml-64">
-        <div className="container mx-auto px-4 py-6 space-y-6 lg:px-3 lg:pt-3 lg:pb-4">
+        <div className="container mx-auto px-4 py-3 space-y-6 lg:px-3 lg:pt-3 lg:pb-4">
           <div>
             <h1 className="text-2xl font-bold text-foreground mb-2 lg:text-3xl">Payouts</h1>
             <p className="text-muted-foreground lg:text-lg">Manage your payment methods and payout history</p>
