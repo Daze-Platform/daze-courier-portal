@@ -4,8 +4,8 @@ import dazeLogo from "@/assets/daze-logo-new.png";
 
 const CourierHeader = () => {
   return (
-    <header className="bg-primary/95 backdrop-blur-md shadow-medium fixed top-0 left-0 right-0 z-[100] pt-safe transition-all duration-300">
-      <div className="flex items-center justify-between px-4 py-2 min-h-[56px]">
+    <header className="bg-primary/95 backdrop-blur-md shadow-medium fixed top-0 left-0 right-0 z-[100] transition-all duration-300">
+      <div className="flex items-center justify-between px-4 py-2 min-h-[56px]" style={{ paddingTop: 'max(env(safe-area-inset-top), 0.5rem)' }}>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
             <img src={dazeLogo} alt="Daze Logo" className="h-8 w-8" />
