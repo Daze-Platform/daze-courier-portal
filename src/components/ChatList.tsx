@@ -99,7 +99,7 @@ const ChatList = ({ onSelectChat }: ChatListProps) => {
 
   return (
     <div className="w-full h-full">
-      <ScrollArea className="h-[calc(100vh-220px)] lg:h-[600px] w-full">
+      <ScrollArea className="h-[calc(100vh-180px)] lg:h-[calc(100vh-180px)] w-full">
         <div className="w-full">
           {chats.map((chat, index) => (
             <div key={chat.orderId}>

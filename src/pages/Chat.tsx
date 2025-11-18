@@ -25,14 +25,14 @@ const Chat = () => {
   };
 
   return (
-    <div className={`min-h-screen bg-background ${isPWA ? 'pt-[110px] lg:pt-[64px]' : 'pt-[64px] lg:pt-[48px]'}`}>
+    <div className={`min-h-screen bg-background ${isPWA ? 'pt-[110px]' : 'pt-[64px]'}`}>
       <UnifiedHeader />
       <DesktopSidebar />
       
       {/* Main Content */}
-      <div className="lg:ml-64">
-        <div className={`px-4 sm:px-5 space-y-4 sm:space-y-5 lg:px-6 ${isPWA ? 'py-6 lg:pt-6 lg:pb-4' : 'py-6 lg:pt-6 lg:pb-4'}`}>
-          <div className="px-1">
+      <div className="lg:ml-64 min-h-screen">
+        <div className={`px-4 sm:px-5 lg:px-6 ${isPWA ? 'pt-6 pb-4' : 'pt-6 pb-4'}`}>
+          <div className="px-1 mb-5">
             <h1 className="text-xl sm:text-2xl font-bold text-foreground mb-1 sm:mb-2 lg:text-3xl">Customer Messages</h1>
             <p className="text-sm sm:text-base text-muted-foreground lg:text-lg">Communicate with customers about their deliveries</p>
           </div>
@@ -57,18 +57,18 @@ const Chat = () => {
               </div>
             </div>
           ) : (
-            <div className="lg:hidden -mx-4 sm:-mx-5 lg:-mx-6">
+            <div className="lg:hidden -mx-4 sm:-mx-5 lg:-mx-6 bg-card">
               <ChatList onSelectChat={handleSelectChat} />
             </div>
           )}
 
           {/* Desktop: Side by side */}
           <div className="hidden lg:grid lg:grid-cols-2 gap-6">
-            <div className="-mx-6 border-x bg-card">
+            <div className="-mx-6 border-x bg-card h-[calc(100vh-200px)]">
               <ChatList onSelectChat={handleSelectChat} />
             </div>
 
-            <div>
+            <div className="h-[calc(100vh-200px)]">
               {selectedChat ? (
                 <ChatInterface
                   orderId={selectedChat.orderId}
@@ -78,7 +78,7 @@ const Chat = () => {
                   onClose={() => setSelectedChat(null)}
                 />
               ) : (
-                <div className="flex items-center justify-center h-[600px] border-2 border-dashed border-border rounded-lg">
+                <div className="flex items-center justify-center h-full border-2 border-dashed border-border rounded-lg">
                   <div className="text-center text-muted-foreground">
                     <p className="text-lg font-medium">Select a conversation</p>
                     <p className="text-sm">Choose a customer to start messaging</p>
