@@ -25,7 +25,7 @@ const Chat = () => {
   };
 
   return (
-    <div className={`min-h-screen bg-primary ${isPWA ? 'pt-[110px] lg:pt-[64px]' : 'pt-[90px] lg:pt-[48px]'}`}>
+    <div className={`min-h-screen bg-primary ${isPWA ? 'pt-[110px] lg:pt-[64px]' : 'pt-[70px] lg:pt-[48px]'}`}>
       <UnifiedHeader />
       <DesktopSidebar />
       
