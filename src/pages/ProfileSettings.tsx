@@ -110,7 +110,7 @@ const ProfileSettings = () => {
     <div className="min-h-screen bg-primary">
       <UnifiedHeader />
       
-      <main className={`bg-background container mx-auto px-4 max-w-2xl lg:px-3 ${isPWA ? 'pt-[140px] lg:pt-[80px] py-6 lg:pb-4' : 'pt-[80px] lg:pt-[64px] py-6 lg:pb-4'}`}>
+      <main className={`bg-background container mx-auto px-4 max-w-2xl lg:px-3 ${isPWA ? 'pt-[120px] sm:pt-[115px] lg:pt-[72px] py-6 lg:pb-4' : 'pt-[64px] sm:pt-[60px] lg:pt-[56px] py-6 lg:pb-4'}`}>
         <div className="space-y-6">
           <div className="flex items-center gap-4">
             <Button

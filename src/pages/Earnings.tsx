@@ -247,7 +247,7 @@ const Earnings: React.FC = () => {
   };
 
   return (
-    <div className={`min-h-screen bg-primary ${isPWA ? 'pt-[140px] lg:pt-[80px]' : 'pt-[80px] lg:pt-[64px]'}`}>
+    <div className={`min-h-screen bg-primary ${isPWA ? 'pt-[120px] sm:pt-[115px] lg:pt-[72px]' : 'pt-[64px] sm:pt-[60px] lg:pt-[56px]'}`}>
       <UnifiedHeader />
       <DesktopSidebar />
       
