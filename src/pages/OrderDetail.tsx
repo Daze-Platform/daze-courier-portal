@@ -28,6 +28,7 @@ import oceanBreezeLogo from '@/assets/ocean-breeze-logo.png';
 import salDeMarLogo from '@/assets/sal-de-mar-logo.png';
 import { useToast } from '@/hooks/use-toast';
 import { useIsPWA } from '@/hooks/use-is-pwa';
+import { useHaptics } from '@/hooks/use-haptics';
 
 const OrderDetail = () => {
   const { orderId } = useParams<{ orderId: string}>();
@@ -35,6 +36,7 @@ const OrderDetail = () => {
   const location = useLocation();
   const { toast } = useToast();
   const isPWA = useIsPWA();
+  const haptics = useHaptics();
   
   // Get order data from navigation state or use fallback
   const orderFromState = location.state;
@@ -89,6 +91,7 @@ const OrderDetail = () => {
   }, [order.orderId]);
 
   const handleStartDelivery = () => {
+    haptics.heavy();
     if (order.deliveryType === "Room Delivery") {
       setNavigationStarted(true);
       setShowRoomStatus(true);
@@ -100,15 +103,18 @@ const OrderDetail = () => {
   };
 
   const handleNavigationComplete = () => {
+    haptics.success();
     setShowNavigationModal(false);
     setShowCompletionModal(true);
   };
 
   const handleCompleteDelivery = () => {
+    haptics.success();
     setShowCompletionModal(true);
   };
 
   const handleRoomDeliveryComplete = () => {
+    haptics.success();
     setShowRoomStatus(false);
     setShowCompletionModal(true);
   };
