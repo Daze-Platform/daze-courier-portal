@@ -132,18 +132,18 @@ const OrderCard = ({
   return (
     <div className="bg-card rounded-lg shadow-soft border border-border overflow-hidden">
       {/* Collapsed Header - Always Visible */}
-      <div className="p-4 space-y-3">
+      <div className="p-4 sm:p-5 lg:p-6 space-y-3 sm:space-y-4">
         {/* Top Row - Restaurant Info */}
-        <div className="flex items-center gap-3">
-          <div className="h-12 w-12 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden bg-white shadow-sm">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden bg-white shadow-sm">
             {currentRestaurantLogo ? (
               <img src={currentRestaurantLogo} alt={`${restaurant} logo`} className="h-full w-full object-cover rounded-full" loading="lazy" decoding="async" />
             ) : (
-              <Package className="h-6 w-6 text-accent" />
+              <Package className="h-6 w-6 sm:h-7 sm:w-7 text-accent" />
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-foreground text-lg">
+            <h3 className="font-semibold text-foreground text-base sm:text-lg">
               Order from {restaurant}
             </h3>
             <p className="text-primary font-medium text-sm cursor-pointer hover:underline">
@@ -154,7 +154,7 @@ const OrderCard = ({
             variant="ghost"
             size="icon"
             onClick={() => setIsExpanded(!isExpanded)}
-            className="flex-shrink-0 text-muted-foreground hover:text-foreground"
+            className="flex-shrink-0 text-muted-foreground hover:text-foreground h-10 w-10 sm:h-12 sm:w-12"
           >
             {isExpanded ? (
               <ChevronUp className="h-5 w-5" />
@@ -201,9 +201,9 @@ const OrderCard = ({
         )}
 
         {/* Action Row */}
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center justify-between gap-3 sm:gap-4">
           <Button 
-            className="font-medium px-8 py-3 text-white flex-1"
+            className="font-medium px-6 sm:px-8 py-6 sm:py-3 text-base sm:text-sm text-white flex-1 min-h-[48px] sm:min-h-[44px]"
             style={{ backgroundColor: '#29b6f6' }}
             onMouseEnter={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#1e88e5'}
             onMouseLeave={(e) => (e.currentTarget as HTMLButtonElement).style.backgroundColor = '#29b6f6'}
@@ -212,7 +212,7 @@ const OrderCard = ({
             Accept
           </Button>
           
-          <div className={`flex items-center justify-center h-12 w-12 rounded-full flex-shrink-0 ${
+          <div className={`flex items-center justify-center h-12 w-12 sm:h-14 sm:w-14 rounded-full flex-shrink-0 ${
             countdown === 0 
               ? 'bg-red-500 border-2 border-red-500' 
               : 'border-2 border-orange-500'

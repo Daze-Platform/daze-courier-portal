@@ -150,14 +150,14 @@ const Index = () => {
       });
 
   return (
-    <div className={`min-h-screen bg-primary ${isPWA ? 'pt-[110px] lg:pt-[64px]' : 'pt-[64px] lg:pt-[48px]'}`}>
+    <div className={`min-h-screen bg-primary ${isPWA ? 'pt-[120px] sm:pt-[110px] lg:pt-[64px]' : 'pt-[72px] sm:pt-[64px] lg:pt-[48px]'}`}>
       <UnifiedHeader />
       <DesktopSidebar />
       
       {/* Pull to Refresh Indicator */}
       {(isPulling || isRefreshing) && (
         <div 
-          className="fixed top-[100px] lg:top-[56px] left-0 right-0 lg:left-64 flex justify-center z-40 transition-all duration-300"
+          className="fixed top-[100px] sm:top-[90px] lg:top-[56px] left-0 right-0 lg:left-64 flex justify-center z-40 transition-all duration-300"
           style={{
             transform: `translateY(${isPulling && !isRefreshing ? pullDistance : isRefreshing ? 40 : 0}px)`,
             opacity: isPulling || isRefreshing ? 1 : 0,
@@ -176,10 +176,10 @@ const Index = () => {
       
       {/* Main Content */}
       <div className="lg:ml-64 bg-background">
-        <div className={`container mx-auto px-4 space-y-6 lg:px-3 ${isPWA ? 'py-6 lg:pt-6 lg:pb-4' : 'py-6 lg:pt-6 lg:pb-4'}`}>
+        <div className={`container mx-auto px-4 sm:px-5 space-y-6 sm:space-y-7 lg:px-3 ${isPWA ? 'py-6 sm:py-7 lg:pt-6 lg:pb-4' : 'py-6 sm:py-7 lg:pt-6 lg:pb-4'}`}>
           <div>
-            <h1 className="text-2xl font-bold text-foreground mb-2 lg:text-3xl">Active Orders</h1>
-            <p className="text-muted-foreground lg:text-lg">Manage your current delivery assignments</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 lg:text-3xl">Active Orders</h1>
+            <p className="text-sm sm:text-base text-muted-foreground lg:text-lg">Manage your current delivery assignments</p>
           </div>
           
           <StatusControl 
@@ -190,22 +190,22 @@ const Index = () => {
           />
           
           {!isOnline ? (
-            <div className="text-center py-6 lg:py-10">
-              <div className="max-w-md mx-auto">
+            <div className="text-center py-8 sm:py-12 lg:py-10">
+              <div className="max-w-md mx-auto px-4 sm:px-0">
                 <img 
                   src={resortDeliveryIllustration} 
                   alt="Start delivering illustration" 
-                  className="w-full h-48 object-cover rounded-lg mb-6"
+                  className="w-full h-48 sm:h-56 object-cover rounded-lg mb-6 sm:mb-8"
                   loading="lazy"
                   decoding="async"
                 />
-                <h2 className="text-2xl font-bold text-foreground mb-3">Ready to Start Delivering?</h2>
-                <p className="text-muted-foreground mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-3 sm:mb-4">Ready to Start Delivering?</h2>
+                <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8">
                   Turn on your account status to start receiving delivery orders and earn money at your resort!
                 </p>
                 <Button 
                   onClick={() => setIsOnline(true)}
-                  className="bg-primary hover:bg-primary/90 text-white px-8 py-3 text-lg font-medium"
+                  className="bg-primary hover:bg-primary/90 text-white px-8 py-6 sm:py-3 text-base sm:text-lg font-medium min-h-[48px] sm:min-h-[44px]"
                 >
                   <Truck className="h-5 w-5 mr-2" />
                   Start Delivering
@@ -213,15 +213,15 @@ const Index = () => {
               </div>
             </div>
           ) : filteredOrders.length > 0 ? (
-            <div className="space-y-4 lg:space-y-6">
+            <div className="space-y-4 sm:space-y-5 lg:space-y-6">
               {filteredOrders.map((order) => (
                 <OrderCard key={order.orderId} {...order} />
               ))}
             </div>
           ) : (
-            <div className="text-center py-12 lg:py-20">
-              <div className="text-muted-foreground">
-                <p className="text-lg font-medium mb-2 lg:text-xl">
+            <div className="text-center py-12 sm:py-16 lg:py-20">
+              <div className="text-muted-foreground px-4">
+                <p className="text-base sm:text-lg font-medium mb-2 lg:text-xl">
                   {selectedDeliveryType === "all" ? "No active orders" : `No ${selectedDeliveryType.replace('-', ' ')} orders`}
                 </p>
                 <p className="text-sm lg:text-base">
