@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 
 const UnifiedHeader = () => {
   return (
-    <header className="bg-primary shadow-medium fixed top-0 left-0 right-0 z-[100] w-full pt-safe transition-all duration-300">
+    <header className="bg-primary shadow-medium fixed top-0 left-0 right-0 z-[100] w-full transition-all duration-300" style={{ paddingTop: 'max(env(safe-area-inset-top, 0px), 0px)' }}>
       <div className="flex items-center justify-between gap-2 sm:gap-4 px-3 sm:px-4 py-3 sm:py-2 lg:px-8 min-h-[56px] sm:min-h-[64px]">
         {/* Left: Mobile Menu + Logo and Branding */}
         <div className="flex items-center gap-3">
