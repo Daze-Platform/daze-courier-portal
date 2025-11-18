@@ -17,26 +17,26 @@ interface StatusControlProps {
 
 const StatusControl = ({ isOnline, onStatusChange, selectedDeliveryType = "all", onDeliveryTypeChange }: StatusControlProps) => {
   return (
-    <div className="bg-card rounded-lg p-4 shadow-soft border border-border lg:p-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+    <div className="bg-card rounded-lg p-4 sm:p-5 shadow-soft border border-border lg:p-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
         {/* Account Status */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-muted-foreground">Account status</label>
-          <div className="flex items-center gap-3">
+        <div className="space-y-2 sm:space-y-3">
+          <label className="text-sm sm:text-base font-medium text-muted-foreground">Account status</label>
+          <div className="flex items-center gap-3 min-h-[44px]">
             <Switch 
               checked={isOnline}
               onCheckedChange={onStatusChange}
-              className="data-[state=checked]:bg-success data-[state=unchecked]:bg-input scale-[1.04] sm:scale-[1.02]"
+              className="data-[state=checked]:bg-success data-[state=unchecked]:bg-input scale-[1.15] sm:scale-[1.08]"
             />
-            <span className="text-sm font-medium text-foreground">{isOnline ? 'On' : 'Off'}</span>
+            <span className="text-base sm:text-sm font-medium text-foreground">{isOnline ? 'On' : 'Off'}</span>
           </div>
         </div>
 
         {/* Location */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-muted-foreground">Location</label>
+        <div className="space-y-2 sm:space-y-3">
+          <label className="text-sm sm:text-base font-medium text-muted-foreground">Location</label>
           <Select defaultValue="daze-beach-resort">
-            <SelectTrigger className="w-full [&>span]:font-bold [&>span]:text-foreground">
+            <SelectTrigger className="w-full [&>span]:font-bold [&>span]:text-foreground min-h-[48px] sm:min-h-[44px] text-base sm:text-sm">
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4 text-accent" />
                 <SelectValue placeholder="Select location" />
@@ -53,10 +53,10 @@ const StatusControl = ({ isOnline, onStatusChange, selectedDeliveryType = "all",
         </div>
 
         {/* Delivery Type */}
-        <div className="space-y-2 sm:col-span-2 lg:col-span-1">
-          <label className="text-sm font-medium text-muted-foreground">Delivery type</label>
+        <div className="space-y-2 sm:space-y-3 sm:col-span-2 lg:col-span-1">
+          <label className="text-sm sm:text-base font-medium text-muted-foreground">Delivery type</label>
           <Select value={selectedDeliveryType} onValueChange={onDeliveryTypeChange}>
-            <SelectTrigger className="w-full [&>span]:font-bold [&>span]:text-foreground">
+            <SelectTrigger className="w-full [&>span]:font-bold [&>span]:text-foreground min-h-[48px] sm:min-h-[44px] text-base sm:text-sm">
               <div className="flex items-center gap-2">
                 <User className="h-4 w-4 text-accent" />
                 <SelectValue />

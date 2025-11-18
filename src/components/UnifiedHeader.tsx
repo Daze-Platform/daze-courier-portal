@@ -17,7 +17,7 @@ import { Link } from "react-router-dom";
 const UnifiedHeader = () => {
   return (
     <header className="bg-primary shadow-medium fixed top-0 left-0 right-0 z-[100] w-full pt-safe transition-all duration-300">
-      <div className="flex items-center justify-between px-4 py-2 lg:px-8">
+      <div className="flex items-center justify-between px-4 py-3 sm:py-2 lg:px-8 min-h-[56px] sm:min-h-[64px]">
         {/* Left: Mobile Menu + Logo and Branding */}
         <div className="flex items-center gap-3">
           {/* Mobile Menu Button - Only visible on mobile */}
@@ -40,8 +40,8 @@ const UnifiedHeader = () => {
           </Sheet>
 
           {/* Logo and Text */}
-          <div className="flex items-center gap-2">
-            <img src={dazeLogo} alt="Daze" className="h-8 w-8 object-contain" />
+          <div className="flex items-center gap-2 sm:gap-3">
+            <img src={dazeLogo} alt="Daze" className="h-7 w-7 sm:h-8 sm:w-8 object-contain" />
             <span className="text-xs sm:text-sm font-bold text-primary-foreground/90 tracking-wider whitespace-nowrap">
               COURIER PORTAL
             </span>
@@ -49,13 +49,13 @@ const UnifiedHeader = () => {
         </div>
         
         {/* Right: Notifications and User Profile */}
-        <div className="flex items-center gap-4">
-          <NotificationDropdown className="text-primary-foreground hover:bg-primary-foreground/10" />
+        <div className="flex items-center gap-2 sm:gap-4">
+          <NotificationDropdown className="text-primary-foreground hover:bg-primary-foreground/10 min-h-[44px] min-w-[44px]" />
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="text-primary-foreground hover:bg-primary-foreground/10 gap-2 px-3">
-                <Avatar className="h-8 w-8">
+              <Button variant="ghost" className="text-primary-foreground hover:bg-primary-foreground/10 gap-2 px-2 sm:px-3 min-h-[44px]">
+                <Avatar className="h-8 w-8 sm:h-9 sm:w-9">
                   <AvatarImage src={ferdinandProfile} />
                   <AvatarFallback className="bg-primary-foreground/20 text-primary-foreground text-xs">
                     FS
