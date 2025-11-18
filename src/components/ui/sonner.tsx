@@ -23,21 +23,12 @@ const Toaster = ({ ...props }: ToasterProps) => {
     };
   }, []);
 
-  // Calculate safe offset including status bar
-  const getOffset = () => {
-    if (isPWA) {
-      // For PWA, account for header (56px) + status bar safe area + padding
-      return 'calc(56px + env(safe-area-inset-top) + 24px)';
-    }
-    return '80px';
-  };
-
   return (
     <Sonner
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
-      position="top-center"
-      offset={getOffset()}
+      position={isPWA ? "bottom-center" : "top-center"}
+      offset={isPWA ? "calc(env(safe-area-inset-bottom) + 80px)" : "80px"}
       expand={true}
       richColors
       toastOptions={{
