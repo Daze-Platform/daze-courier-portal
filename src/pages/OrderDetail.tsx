@@ -148,10 +148,10 @@ const OrderDetail = () => {
       <DesktopSidebar />
 
       {/* Main Content - Universal Browser Compatible */}
-      <div className="bg-background lg:ml-64 min-h-screen pt-[100px] lg:pt-[56px]">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-3 py-6 pb-32">
+      <div className="bg-background lg:ml-64 min-h-screen pt-[80px] sm:pt-[76px] lg:pt-[56px]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-4 py-4 sm:py-5 pb-32">
           {/* Header */}
-          <div className="flex items-center gap-4 mb-6">
+          <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-5">
             <Button
               variant="ghost"
               size="icon"
@@ -161,17 +161,17 @@ const OrderDetail = () => {
               <ArrowLeft className="h-6 w-6" />
             </Button>
             <div className="min-w-0 flex-1">
-              <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Order {order.orderId}</h1>
-              <p className="text-muted-foreground">Delivery details and customer information</p>
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground">Order {order.orderId}</h1>
+              <p className="text-sm sm:text-base text-muted-foreground">Delivery details and customer information</p>
             </div>
           </div>
 
           {/* Order Content - Responsive Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
             {/* Main Order Info */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className="lg:col-span-2 space-y-4 sm:space-y-5 lg:space-y-6">
               {/* Restaurant Info Card */}
-              <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
+              <div className="bg-card rounded-lg p-5 sm:p-6 shadow-soft border border-border">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="h-12 w-12 rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm flex-shrink-0">
                     {restaurantLogo ? (
@@ -232,7 +232,7 @@ const OrderDetail = () => {
               {/* Customer Location Map - Only for Beach and Pool deliveries */}
               {(order.deliveryType === "Beach Service" || order.deliveryType === "Poolside Service") && (
                 <div className="bg-card shadow-soft border border-border rounded-lg overflow-hidden">
-                  <div className="p-6 pb-0">
+                  <div className="p-5 sm:p-6 pb-0">
                     <h3 className="text-lg font-semibold text-foreground mb-4">Customer Location</h3>
                   </div>
                   <div className="relative aspect-video max-h-[300px] w-full overflow-hidden">
@@ -247,7 +247,7 @@ const OrderDetail = () => {
 
               {/* Room Delivery Instructions - Only for Room deliveries */}
               {order.deliveryType === "Room Delivery" && (
-                <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
+                <div className="bg-card rounded-lg p-5 sm:p-6 shadow-soft border border-border">
                   <h3 className="text-lg font-semibold text-foreground mb-4">Room Delivery Instructions</h3>
                   <div className="space-y-4">
                     <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
@@ -318,9 +318,9 @@ const OrderDetail = () => {
             </div>
 
             {/* Customer & Order Details Sidebar */}
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-5 lg:space-y-6">
               {/* Customer Info */}
-              <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
+              <div className="bg-card rounded-lg p-5 sm:p-6 shadow-soft border border-border">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-foreground">Delivery For</h3>
                   <Button 
@@ -344,7 +344,7 @@ const OrderDetail = () => {
               </div>
 
               {/* Order Details */}
-              <div className="bg-card rounded-lg p-6 shadow-soft border border-border">
+              <div className="bg-card rounded-lg p-5 sm:p-6 shadow-soft border border-border">
                 <h3 className="text-lg font-semibold text-foreground mb-4">Order Details</h3>
                 
                 <div className="space-y-4">
