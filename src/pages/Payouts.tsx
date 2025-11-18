@@ -9,6 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { CreditCard, Plus, ChevronLeft, ChevronRight, X, Clock, CheckCircle, Building, User } from 'lucide-react';
 import UnifiedHeader from "@/components/UnifiedHeader";
 import DesktopSidebar from "@/components/DesktopSidebar";
+import { useIsPWA } from "@/hooks/use-is-pwa";
 
 interface PaymentMethod {
   id: string;
@@ -31,6 +32,7 @@ interface PayoutTransaction {
 }
 
 const Payouts: React.FC = () => {
+  const isPWA = useIsPWA();
   const [showAddMethodModal, setShowAddMethodModal] = useState(false);
   const [showUpdateCardModal, setShowUpdateCardModal] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod | null>(null);
@@ -208,7 +210,7 @@ const Payouts: React.FC = () => {
       
       {/* Main Content */}
       <div className="lg:ml-64">
-        <div className="container mx-auto px-4 py-3 space-y-6 lg:px-3 lg:pt-3 lg:pb-4">
+        <div className={`container mx-auto px-4 space-y-6 lg:px-3 ${isPWA ? 'py-3 lg:pt-3 lg:pb-4' : 'py-3 lg:pt-3 lg:pb-4'}`}>
           <div>
             <h1 className="text-2xl font-bold text-foreground mb-2 lg:text-3xl">Payouts</h1>
             <p className="text-muted-foreground lg:text-lg">Manage your payment methods and payout history</p>

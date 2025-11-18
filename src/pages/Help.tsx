@@ -7,8 +7,10 @@ import { Badge } from '@/components/ui/badge';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import UnifiedHeader from '@/components/UnifiedHeader';
 import DesktopSidebar from '@/components/DesktopSidebar';
+import { useIsPWA } from '@/hooks/use-is-pwa';
 
 const Help = () => {
+  const isPWA = useIsPWA();
   const [searchQuery, setSearchQuery] = useState('');
 
   const helpCategories = [
@@ -125,7 +127,7 @@ const Help = () => {
       <DesktopSidebar />
       
       <main className="lg:ml-64">
-        <div className="container mx-auto px-4 py-3 max-w-6xl lg:px-3 lg:pt-3 lg:pb-4">
+        <div className={`container mx-auto px-4 max-w-6xl lg:px-3 ${isPWA ? 'py-3 lg:pt-3 lg:pb-4' : 'py-3 lg:pt-3 lg:pb-4'}`}>
           {/* Header Section */}
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-foreground mb-3">How can we help you?</h1>

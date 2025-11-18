@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/select';
 import UnifiedHeader from "@/components/UnifiedHeader";
 import DesktopSidebar from "@/components/DesktopSidebar";
+import { useIsPWA } from "@/hooks/use-is-pwa";
 import emptyRatingsIllustration from '@/assets/empty-ratings-illustration.jpg';
 
 interface CustomerReview {
@@ -33,6 +34,7 @@ interface RatingDistribution {
 }
 
 const Ratings: React.FC = () => {
+  const isPWA = useIsPWA();
   const [dateRange, setDateRange] = useState('Last 30 days');
   const [hasReviews] = useState(true); // Toggle this to show empty state
 
@@ -121,7 +123,7 @@ const Ratings: React.FC = () => {
       
       {/* Main Content */}
       <div className="lg:ml-64">
-        <div className="container mx-auto px-4 py-3 space-y-6 lg:px-3 lg:pt-3 lg:pb-4">
+        <div className={`container mx-auto px-4 space-y-6 lg:px-3 ${isPWA ? 'py-3 lg:pt-3 lg:pb-4' : 'py-3 lg:pt-3 lg:pb-4'}`}>
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
