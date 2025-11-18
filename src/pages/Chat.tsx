@@ -57,14 +57,14 @@ const Chat = () => {
               </div>
             </div>
           ) : (
-            <div className="lg:hidden">
+            <div className="lg:hidden border rounded-lg overflow-hidden bg-card">
               <ChatList onSelectChat={handleSelectChat} />
             </div>
           )}
 
           {/* Desktop: Side by side */}
           <div className="hidden lg:grid lg:grid-cols-2 gap-6">
-            <div>
+            <div className="border rounded-lg overflow-hidden bg-card">
               <ChatList onSelectChat={handleSelectChat} />
             </div>
 
