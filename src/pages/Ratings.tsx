@@ -117,7 +117,7 @@ const Ratings: React.FC = () => {
   );
 
   return (
-    <div className={`min-h-screen bg-primary ${isPWA ? 'pt-[110px] lg:pt-[64px]' : 'pt-[64px] lg:pt-[48px]'}`}>
+    <div className={`min-h-screen bg-primary ${isPWA ? 'pt-[140px] lg:pt-[80px]' : 'pt-[80px] lg:pt-[64px]'}`}>
       <UnifiedHeader />
       <DesktopSidebar />
       

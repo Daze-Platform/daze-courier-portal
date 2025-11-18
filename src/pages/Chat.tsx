@@ -25,7 +25,7 @@ const Chat = () => {
   };
 
   return (
-    <div className={`min-h-screen bg-background ${isPWA ? 'pt-[110px]' : 'pt-[64px]'}`}>
+    <div className={`min-h-screen bg-background ${isPWA ? 'pt-[140px]' : 'pt-[80px]'}`}>
       <UnifiedHeader />
       <DesktopSidebar />
       
@@ -39,7 +39,7 @@ const Chat = () => {
 
           {/* Mobile: Full screen chat or list */}
           {selectedChat ? (
-            <div className="fixed inset-0 z-50 bg-background pt-[100px] lg:hidden">
+            <div className="fixed inset-0 z-50 bg-background pt-[130px] lg:hidden">
               <div className="h-full flex flex-col">
                 <div className="px-4 py-2 border-b border-border">
                   <Button variant="ghost" size="sm" onClick={handleBackToList}>
