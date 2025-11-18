@@ -6,6 +6,7 @@ import { ArrowLeft, MapPin, Clock, User, Mail, MessageSquare, CheckSquare, Packa
 import { useNavigate, useParams } from 'react-router-dom';
 import UnifiedHeader from "@/components/UnifiedHeader";
 import DesktopSidebar from "@/components/DesktopSidebar";
+import { useIsPWA } from "@/hooks/use-is-pwa";
 import margaritaMamasLogo from '@/assets/margarita-mamas-logo.png';
 import salDeMarLogo from '@/assets/sal-de-mar-logo.png';
 import oceanBreezeLogo from '@/assets/ocean-breeze-logo.png';
@@ -43,6 +44,7 @@ interface OrderDetail {
 }
 
 const OrderHistoryDetail: React.FC = () => {
+  const isPWA = useIsPWA();
   const navigate = useNavigate();
   const { orderId } = useParams();
 
@@ -496,7 +498,7 @@ const OrderHistoryDetail: React.FC = () => {
       
       {/* Main Content */}
       <div className="lg:ml-64 pt-[100px] lg:pt-[56px]">
-        <div className="container mx-auto px-4 py-3 space-y-6 lg:px-3 lg:pt-3 lg:pb-4">
+        <div className={`container mx-auto px-4 space-y-6 lg:px-3 ${isPWA ? 'py-3 lg:pt-3 lg:pb-4' : 'py-3 lg:pt-3 lg:pb-4'}`}>
           {/* Back Button and Header */}
           <div className="flex items-center gap-4">
             <Button 

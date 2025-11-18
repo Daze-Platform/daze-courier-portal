@@ -36,6 +36,7 @@ import { isWithinInterval, parseISO, startOfMonth } from 'date-fns';
 import UnifiedHeader from "@/components/UnifiedHeader";
 import DesktopSidebar from "@/components/DesktopSidebar";
 import DateRangePicker from "@/components/DateRangePicker";
+import { useIsPWA } from "@/hooks/use-is-pwa";
 import margaritaMamasLogo from '@/assets/margarita-mamas-logo.png';
 import salDeMarLogo from '@/assets/sal-de-mar-logo.png';
 import { useToast } from "@/hooks/use-toast";
@@ -59,6 +60,7 @@ interface PaymentMethod {
 }
 
 const Earnings: React.FC = () => {
+  const isPWA = useIsPWA();
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: startOfMonth(new Date()),
     to: new Date(),
@@ -251,7 +253,7 @@ const Earnings: React.FC = () => {
       
       {/* Main Content */}
       <div className="lg:ml-64">
-        <div className="container mx-auto px-4 py-3 space-y-6 lg:px-3 lg:pt-3 lg:pb-4">
+        <div className={`container mx-auto px-4 space-y-6 lg:px-3 ${isPWA ? 'py-3 lg:pt-3 lg:pb-4' : 'py-3 lg:pt-3 lg:pb-4'}`}>
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>

@@ -9,6 +9,7 @@ import { isWithinInterval, parseISO, startOfMonth } from 'date-fns';
 import UnifiedHeader from "@/components/UnifiedHeader";
 import DesktopSidebar from "@/components/DesktopSidebar";
 import DateRangePicker from "@/components/DateRangePicker";
+import { useIsPWA } from "@/hooks/use-is-pwa";
 import margaritaMamasLogo from '@/assets/margarita-mamas-logo.png';
 import salDeMarLogo from '@/assets/sal-de-mar-logo.png';
 import oceanBreezeLogo from '@/assets/ocean-breeze-logo.png';
@@ -31,6 +32,7 @@ interface Order {
 
 const OrderHistory: React.FC = () => {
   const navigate = useNavigate();
+  const isPWA = useIsPWA();
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: new Date(2025, 8, 1), // September 1, 2025
     to: new Date(2025, 8, 20), // September 20, 2025
@@ -791,7 +793,7 @@ const OrderHistory: React.FC = () => {
       
       {/* Main Content */}
       <div className="lg:ml-64">
-        <div className="container mx-auto px-4 py-3 space-y-6 lg:px-3 lg:pt-3 lg:pb-4">
+        <div className={`container mx-auto px-4 space-y-6 lg:px-3 ${isPWA ? 'py-3 lg:pt-3 lg:pb-4' : 'py-3 lg:pt-3 lg:pb-4'}`}>
           <div>
             <h1 className="text-2xl font-bold text-foreground mb-2 lg:text-3xl">Order History</h1>
             <p className="text-muted-foreground lg:text-lg">View your past delivery assignments</p>

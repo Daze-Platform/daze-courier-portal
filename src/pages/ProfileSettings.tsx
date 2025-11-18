@@ -10,6 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { Upload, Eye, EyeOff, ArrowLeft, HelpCircle, ChevronRight } from "lucide-react";
 import UnifiedHeader from "@/components/UnifiedHeader";
+import { useIsPWA } from "@/hooks/use-is-pwa";
 import ferdinandProfile from "@/assets/ferdinand-profile.jpg";
 
 interface ProfileFormData {
@@ -26,6 +27,7 @@ interface PasswordFormData {
 }
 
 const ProfileSettings = () => {
+  const isPWA = useIsPWA();
   const { toast } = useToast();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -108,7 +110,7 @@ const ProfileSettings = () => {
     <div className="min-h-screen bg-background">
       <UnifiedHeader />
       
-      <main className="container mx-auto px-4 py-3 max-w-2xl pt-[100px] lg:pt-[56px] lg:px-3 lg:pb-4">
+      <main className={`container mx-auto px-4 max-w-2xl pt-[100px] lg:pt-[56px] lg:px-3 ${isPWA ? 'py-3 lg:pb-4' : 'py-3 lg:pb-4'}`}>
         <div className="space-y-6">
           <div className="flex items-center gap-4">
             <Button

@@ -7,9 +7,11 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import resortDeliveryIllustration from "@/assets/resort-delivery-with-logo.jpg";
 import { usePullToRefresh } from "@/hooks/use-pull-to-refresh";
+import { useIsPWA } from "@/hooks/use-is-pwa";
 import { toast } from "sonner";
 
 const Index = () => {
+  const isPWA = useIsPWA();
   const [isOnline, setIsOnline] = useState(() => {
     const saved = localStorage.getItem('courier-status');
     return saved ? JSON.parse(saved) : false;
@@ -174,7 +176,7 @@ const Index = () => {
       
       {/* Main Content */}
       <div className="lg:ml-64">
-        <div className="container mx-auto px-4 py-3 space-y-6 lg:px-3 lg:pt-3 lg:pb-4">
+        <div className={`container mx-auto px-4 space-y-6 lg:px-3 ${isPWA ? 'py-3 lg:pt-3 lg:pb-4' : 'py-3 lg:pt-3 lg:pb-4'}`}>
           <div>
             <h1 className="text-2xl font-bold text-foreground mb-2 lg:text-3xl">Active Orders</h1>
             <p className="text-muted-foreground lg:text-lg">Manage your current delivery assignments</p>
