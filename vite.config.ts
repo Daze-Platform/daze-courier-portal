@@ -9,16 +9,27 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    headers: {
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+      'Surrogate-Control': 'no-store'
+    }
   },
   build: {
     rollupOptions: {
       output: {
         // Add hash to filenames for cache busting
-        entryFileNames: `assets/[name].[hash].js`,
-        chunkFileNames: `assets/[name].[hash].js`,
-        assetFileNames: `assets/[name].[hash].[ext]`
+        entryFileNames: `assets/[name]-[hash].js`,
+        chunkFileNames: `assets/[name]-[hash].js`,
+        assetFileNames: `assets/[name]-[hash].[ext]`,
+        // Force new hashes on every build
+        manualChunks: undefined
       }
-    }
+    },
+    // Force rebuild on changes
+    assetsInlineLimit: 0,
+    chunkSizeWarningLimit: 1000
   },
   plugins: [
     react(),
@@ -62,7 +73,9 @@ export default defineConfig(({ mode }) => ({
         skipWaiting: true,
         clientsClaim: true,
         navigateFallback: null,
-        runtimeCaching: [
+        // Disable all caching in development
+        disableDevLogs: false,
+        runtimeCaching: mode === 'production' ? [
           {
             urlPattern: /\.(?:js|css)$/,
             handler: "StaleWhileRevalidate",
@@ -123,7 +136,7 @@ export default defineConfig(({ mode }) => ({
               }
             }
           }
-        ]
+        ] : []
       }
     })
   ].filter(Boolean),
