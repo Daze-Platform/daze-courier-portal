@@ -746,11 +746,11 @@ const OrderHistory: React.FC = () => {
   const getDeliveryTypeBadge = (deliveryType: string) => {
     switch (deliveryType) {
       case 'Room Delivery':
-        return <Badge variant="secondary" className="bg-blue-500/10 text-blue-700 dark:text-blue-400 hover:bg-blue-500/20 border-blue-500/20 font-medium">🏨 Room</Badge>;
+        return <Badge variant="secondary" className="bg-blue-500/10 text-blue-700 dark:text-blue-400 hover:bg-blue-500/20 border-blue-500/20 text-xs px-2 py-0">🏨 Room</Badge>;
       case 'Pool Service':
-        return <Badge variant="secondary" className="bg-cyan-500/10 text-cyan-700 dark:text-cyan-400 hover:bg-cyan-500/20 border-cyan-500/20 font-medium">🏊 Pool</Badge>;
+        return <Badge variant="secondary" className="bg-cyan-500/10 text-cyan-700 dark:text-cyan-400 hover:bg-cyan-500/20 border-cyan-500/20 text-xs px-2 py-0">🏊 Pool</Badge>;
       case 'Beach Service':
-        return <Badge variant="secondary" className="bg-orange-500/10 text-orange-700 dark:text-orange-400 hover:bg-orange-500/20 border-orange-500/20 font-medium">🏖️ Beach</Badge>;
+        return <Badge variant="secondary" className="bg-orange-500/10 text-orange-700 dark:text-orange-400 hover:bg-orange-500/20 border-orange-500/20 text-xs px-2 py-0">🏖️ Beach</Badge>;
       default:
         return null;
     }
@@ -759,11 +759,11 @@ const OrderHistory: React.FC = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'delivered':
-        return <Badge variant="secondary" className="bg-success/10 text-success hover:bg-success/20 border-success/20 font-medium">✓ Delivered</Badge>;
+        return <Badge variant="secondary" className="bg-success/10 text-success hover:bg-success/20 border-success/20 text-xs px-2 py-0">✓ Delivered</Badge>;
       case 'cancelled':
-        return <Badge variant="secondary" className="bg-destructive/10 text-destructive hover:bg-destructive/20 border-destructive/20 font-medium">✗ Cancelled</Badge>;
+        return <Badge variant="secondary" className="bg-destructive/10 text-destructive hover:bg-destructive/20 border-destructive/20 text-xs px-2 py-0">✗ Cancelled</Badge>;
       case 'pending':
-        return <Badge variant="secondary" className="bg-warning/10 text-warning hover:bg-warning/20 border-warning/20 font-medium">⏳ Pending</Badge>;
+        return <Badge variant="secondary" className="bg-warning/10 text-warning hover:bg-warning/20 border-warning/20 text-xs px-2 py-0">⏳ Pending</Badge>;
       default:
         return null;
     }
@@ -776,12 +776,12 @@ const OrderHistory: React.FC = () => {
   // Empty state component
   const EmptyState = () => (
     <Card className="border-dashed border-2">
-      <CardContent className="flex flex-col items-center justify-center py-20 px-4">
-        <div className="w-24 h-24 mb-6 rounded-full bg-muted/50 flex items-center justify-center">
-          <Package className="w-12 h-12 text-muted-foreground" />
+      <CardContent className="flex flex-col items-center justify-center py-12 px-4">
+        <div className="w-16 h-16 mb-4 rounded-full bg-muted/50 flex items-center justify-center">
+          <Package className="w-8 h-8 text-muted-foreground" />
         </div>
-        <h3 className="text-2xl font-semibold mb-3">No orders found</h3>
-        <p className="text-muted-foreground text-center max-w-sm text-lg">
+        <h3 className="text-lg font-semibold mb-2">No orders found</h3>
+        <p className="text-muted-foreground text-center max-w-sm text-sm">
           No deliveries match your selected date range. Try adjusting your filters.
         </p>
       </CardContent>
@@ -795,85 +795,69 @@ const OrderHistory: React.FC = () => {
       
       {/* Main Content */}
       <div className="lg:ml-64 bg-background">
-        <div className={`container mx-auto px-4 space-y-8 lg:px-6 ${isPWA ? 'py-8 lg:pt-8 lg:pb-6' : 'py-8 lg:pt-8 lg:pb-6'}`}>
+        <div className={`container mx-auto px-4 space-y-4 lg:px-6 ${isPWA ? 'py-6 lg:pt-6 lg:pb-4' : 'py-6 lg:pt-6 lg:pb-4'}`}>
           {/* Header Section */}
-          <div className="space-y-3">
-            <h1 className="text-4xl font-bold tracking-tight">Order History</h1>
-            <p className="text-muted-foreground text-lg">
-              View and track all your completed deliveries
-            </p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight">Order History</h1>
+              <p className="text-muted-foreground text-sm">View your past deliveries</p>
+            </div>
+            <DateRangePicker
+              date={dateRange}
+              onDateChange={setDateRange}
+              placeholder="Select dates"
+            />
           </div>
-
-          {/* Filters Card */}
-          <Card className="border-border/50 shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-xl flex items-center gap-2">
-                <Calendar className="h-5 w-5 text-primary" />
-                Filter by Date Range
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <DateRangePicker
-                date={dateRange}
-                onDateChange={setDateRange}
-                placeholder="Select date range"
-              />
-            </CardContent>
-          </Card>
 
           {/* Orders List */}
           {orders.length === 0 ? (
             <EmptyState />
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-2">
               {orders.map((order) => (
                 <Card 
                   key={order.id} 
-                  className="group cursor-pointer border-border/50 hover:border-primary/30 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                  className="group cursor-pointer border-border/50 hover:border-primary/30 hover:shadow-md transition-all duration-200"
                   onClick={() => handleOrderClick(order.orderId)}
                 >
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-5">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-4">
                       {/* Restaurant Logo */}
                       <div className="flex-shrink-0">
-                        <div className="w-20 h-20 rounded-xl overflow-hidden bg-muted/50 flex items-center justify-center ring-2 ring-border/50 group-hover:ring-primary/30 transition-all duration-300">
+                        <div className="w-14 h-14 rounded-lg overflow-hidden bg-muted/50 flex items-center justify-center ring-1 ring-border/50 group-hover:ring-primary/30 transition-all duration-200">
                           <img 
                             src={order.restaurantLogo} 
                             alt={order.restaurantName}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                            className="w-full h-full object-cover"
                           />
                         </div>
                       </div>
 
                       {/* Order Details */}
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-3 mb-3">
-                          <div className="space-y-2">
-                            <h3 className="font-semibold text-xl group-hover:text-primary transition-colors duration-300">{order.restaurantName}</h3>
-                            <div className="flex flex-wrap items-center gap-2">
+                        <div className="flex items-start justify-between gap-3 mb-2">
+                          <div className="space-y-1.5">
+                            <h3 className="font-semibold text-base group-hover:text-primary transition-colors duration-200">{order.restaurantName}</h3>
+                            <div className="flex flex-wrap items-center gap-1.5">
                               {getStatusBadge(order.status)}
                               {getDeliveryTypeBadge(order.deliveryType)}
                             </div>
                           </div>
-                          <ChevronRight className="h-6 w-6 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300 flex-shrink-0" />
+                          <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all duration-200 flex-shrink-0" />
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 text-sm">
-                          <div className="flex items-center gap-2.5 text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-                            <Package className="h-4 w-4 flex-shrink-0" />
-                            <span>Order #{order.orderId}</span>
+                        <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-xs text-muted-foreground">
+                          <div className="flex items-center gap-1.5">
+                            <Package className="h-3.5 w-3.5 flex-shrink-0" />
+                            <span>#{order.orderId}</span>
                           </div>
-                          <div className="flex items-center gap-2.5 text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-                            <Clock className="h-4 w-4 flex-shrink-0" />
-                            <span>{order.date} at {order.time}</span>
-                          </div>
-                          <div className="flex items-center gap-2.5 text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-                            <DollarSign className="h-4 w-4 flex-shrink-0" />
+                          <div className="flex items-center gap-1.5">
+                            <DollarSign className="h-3.5 w-3.5 flex-shrink-0" />
                             <span className="font-semibold">${order.deliveryFee.toFixed(2)}</span>
                           </div>
-                          <div className="flex items-center gap-2.5 text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-                            <Package className="h-4 w-4 flex-shrink-0" />
-                            <span>{order.deliveryAddress}</span>
+                          <div className="flex items-center gap-1.5 col-span-2">
+                            <Clock className="h-3.5 w-3.5 flex-shrink-0" />
+                            <span>{order.date} at {order.time} • {order.deliveryAddress}</span>
                           </div>
                         </div>
                       </div>
