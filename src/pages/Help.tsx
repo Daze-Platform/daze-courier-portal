@@ -125,7 +125,7 @@ const Help = () => {
       <DesktopSidebar />
       
       <main className="lg:ml-64">
-        <div className="container mx-auto px-4 py-6 max-w-6xl lg:px-3 lg:pt-3 lg:pb-4">
+        <div className="container mx-auto px-4 py-3 max-w-6xl lg:px-3 lg:pt-3 lg:pb-4">
           {/* Header Section */}
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-foreground mb-3">How can we help you?</h1>
