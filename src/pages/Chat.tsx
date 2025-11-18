@@ -9,7 +9,7 @@ import { useIsPWA } from "@/hooks/use-is-pwa";
 
 const Chat = () => {
   const isPWA = useIsPWA();
-  const [selectedChat, setSelectedChat] = useState<{ 
+  const [selectedChat, setSelectedChat] = useState<{
     orderId: string; 
     customerName: string; 
     status: 'active' | 'pending' | 'delivered';

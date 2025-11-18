@@ -28,7 +28,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
       position="top-center"
-      offset={isPWA ? "180px" : "100px"}
+      offset={isPWA ? "140px" : "80px"}
       expand={true}
       richColors
       toastOptions={{
