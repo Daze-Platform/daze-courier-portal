@@ -6,13 +6,22 @@ export const usePWAUpdate = () => {
 
   useEffect(() => {
     if ('serviceWorker' in navigator) {
+      // Listen for controller change (only reload when SW actually updates)
+      const handleControllerChange = () => {
+        if (needRefresh) {
+          window.location.reload();
+        }
+      };
+
+      navigator.serviceWorker.addEventListener('controllerchange', handleControllerChange);
+
       navigator.serviceWorker.ready.then((reg) => {
         setRegistration(reg);
 
-        // Check for updates periodically
+        // Check for updates periodically (every 6 hours to reduce frequency)
         const interval = setInterval(() => {
           reg.update();
-        }, 60 * 60 * 1000); // Check every hour
+        }, 6 * 60 * 60 * 1000);
 
         // Listen for new service worker waiting
         const onUpdateFound = () => {
@@ -28,8 +37,10 @@ export const usePWAUpdate = () => {
 
         reg.addEventListener('updatefound', onUpdateFound);
 
-        // Check for updates on mount
-        reg.update();
+        // Only check for updates on mount in production
+        if (import.meta.env.PROD) {
+          reg.update();
+        }
 
         return () => {
           clearInterval(interval);
@@ -37,12 +48,11 @@ export const usePWAUpdate = () => {
         };
       });
 
-      // Listen for controller change
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        window.location.reload();
-      });
+      return () => {
+        navigator.serviceWorker.removeEventListener('controllerchange', handleControllerChange);
+      };
     }
-  }, []);
+  }, [needRefresh]);
 
   const updateServiceWorker = () => {
     if (registration && registration.waiting) {
