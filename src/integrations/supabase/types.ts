@@ -124,6 +124,7 @@ export type Database = {
           default_zoom: number | null
           id: string
           map_style: string | null
+          map_style_url: string | null
           max_zoom: number | null
           metadata: Json | null
           min_zoom: number | null
@@ -139,6 +140,7 @@ export type Database = {
           default_zoom?: number | null
           id?: string
           map_style?: string | null
+          map_style_url?: string | null
           max_zoom?: number | null
           metadata?: Json | null
           min_zoom?: number | null
@@ -154,6 +156,7 @@ export type Database = {
           default_zoom?: number | null
           id?: string
           map_style?: string | null
+          map_style_url?: string | null
           max_zoom?: number | null
           metadata?: Json | null
           min_zoom?: number | null
