@@ -19,7 +19,7 @@ import UnifiedHeader from '@/components/UnifiedHeader';
 import DesktopSidebar from '@/components/DesktopSidebar';
 import DeliveryNavigation from '@/components/DeliveryNavigation';
 import OrderDetailsDrawer from '@/components/OrderDetailsDrawer';
-import ResortImageView from '@/components/ResortImageView';
+import ResortMap from '@/components/ResortMap';
 import RoomDeliveryStatus from '@/components/RoomDeliveryStatus';
 import ChatInterface from '@/components/ChatInterface';
 import margaritaMamasLogo from '@/assets/margarita-mamas-logo.png';
@@ -246,10 +246,15 @@ const OrderDetail = () => {
                     <h3 className="text-lg font-semibold text-foreground mb-4">Customer Location</h3>
                   </div>
                   <div className="relative aspect-video max-h-[300px] w-full overflow-hidden">
-                    <ResortImageView 
+                    <ResortMap 
                       destination={order.deliveryAddress}
                       isDelivering={false}
                       focusArea={order.deliveryType === "Beach Service" ? 'beach' : 'pool'}
+                      customerLocation={{
+                        lng: order.deliveryType === "Beach Service" ? -85.8010 : -85.8018,
+                        lat: order.deliveryType === "Beach Service" ? 30.1775 : 30.1765,
+                        label: order.deliveryAddress
+                      }}
                     />
                   </div>
                 </div>
