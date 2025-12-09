@@ -73,6 +73,8 @@ export default defineConfig(({ mode }) => ({
         skipWaiting: true,
         clientsClaim: true,
         navigateFallback: null,
+        // Increase cache limit for larger bundles (mapbox-gl)
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MiB
         // Disable all caching in development
         disableDevLogs: false,
         runtimeCaching: mode === 'production' ? [
