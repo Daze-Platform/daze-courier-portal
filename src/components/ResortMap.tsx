@@ -303,7 +303,7 @@ const ResortMap: React.FC<ResortMapProps> = ({
 
   // Add 3D building layers for custom resort buildings
   const addBuildingLayers = () => {
-    if (!map.current) return;
+    if (!map.current || !map.current.isStyleLoaded()) return;
 
     // Filter building amenities
     const buildingAmenities = amenities.filter(a => a.type === 'building');
@@ -324,15 +324,19 @@ const ResortMap: React.FC<ResortMapProps> = ({
 
     if (buildingFeatures.length === 0) return;
 
-    // Remove existing building layers/sources if they exist
-    if (map.current.getLayer('custom-buildings-3d')) {
-      map.current.removeLayer('custom-buildings-3d');
-    }
-    if (map.current.getLayer('custom-buildings-outline')) {
-      map.current.removeLayer('custom-buildings-outline');
-    }
-    if (map.current.getSource('custom-buildings')) {
-      map.current.removeSource('custom-buildings');
+    try {
+      // Remove existing building layers/sources if they exist
+      if (map.current.getLayer('custom-buildings-3d')) {
+        map.current.removeLayer('custom-buildings-3d');
+      }
+      if (map.current.getLayer('custom-buildings-outline')) {
+        map.current.removeLayer('custom-buildings-outline');
+      }
+      if (map.current.getSource('custom-buildings')) {
+        map.current.removeSource('custom-buildings');
+      }
+    } catch (e) {
+      console.warn('Error removing existing building layers:', e);
     }
 
     // Add the custom buildings source
