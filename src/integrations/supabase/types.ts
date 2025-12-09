@@ -181,6 +181,7 @@ export type Database = {
         | "beach_zone"
         | "walkway"
         | "entrance"
+        | "building"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -319,6 +320,7 @@ export const Constants = {
         "beach_zone",
         "walkway",
         "entrance",
+        "building",
       ],
     },
   },

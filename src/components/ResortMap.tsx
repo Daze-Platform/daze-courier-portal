@@ -41,6 +41,7 @@ const AMENITY_FILL_COLORS: Record<string, string> = {
   walkway: '#d1d5db',     // Gray paths
   entrance: '#a78bfa',    // Violet for entrances
   restroom: '#6b7280',    // Neutral gray
+  building: '#a1a1aa',    // Zinc for buildings
 };
 
 // Marker icon colors (more vibrant for visibility)
@@ -185,6 +186,7 @@ const ResortMap: React.FC<ResortMapProps> = ({
       
       // Add custom resort amenity layers after style loads
       addAmenityLayers();
+      addBuildingLayers();
     });
 
     return () => {
@@ -297,6 +299,71 @@ const ResortMap: React.FC<ResortMapProps> = ({
         });
       }
     }
+  };
+
+  // Add 3D building layers for custom resort buildings
+  const addBuildingLayers = () => {
+    if (!map.current) return;
+
+    // Filter building amenities
+    const buildingAmenities = amenities.filter(a => a.type === 'building');
+    if (buildingAmenities.length === 0) return;
+
+    const buildingFeatures = buildingAmenities
+      .filter(a => a.geometry?.type === 'Polygon')
+      .map(a => ({
+        type: 'Feature' as const,
+        properties: {
+          label: a.label,
+          height: (a.properties as Record<string, unknown>)?.height ?? 25,
+          base_height: (a.properties as Record<string, unknown>)?.base_height ?? 0,
+          color: (a.properties as Record<string, unknown>)?.color ?? AMENITY_FILL_COLORS.building,
+        },
+        geometry: a.geometry,
+      }));
+
+    if (buildingFeatures.length === 0) return;
+
+    // Remove existing building layers/sources if they exist
+    if (map.current.getLayer('custom-buildings-3d')) {
+      map.current.removeLayer('custom-buildings-3d');
+    }
+    if (map.current.getLayer('custom-buildings-outline')) {
+      map.current.removeLayer('custom-buildings-outline');
+    }
+    if (map.current.getSource('custom-buildings')) {
+      map.current.removeSource('custom-buildings');
+    }
+
+    // Add the custom buildings source
+    map.current.addSource('custom-buildings', {
+      type: 'geojson',
+      data: { type: 'FeatureCollection', features: buildingFeatures },
+    });
+
+    // Add 3D fill-extrusion layer for buildings
+    map.current.addLayer({
+      id: 'custom-buildings-3d',
+      type: 'fill-extrusion',
+      source: 'custom-buildings',
+      paint: {
+        'fill-extrusion-color': ['get', 'color'],
+        'fill-extrusion-height': ['get', 'height'],
+        'fill-extrusion-base': ['get', 'base_height'],
+        'fill-extrusion-opacity': 0.9,
+      },
+    });
+
+    // Add outline layer for building footprints
+    map.current.addLayer({
+      id: 'custom-buildings-outline',
+      type: 'line',
+      source: 'custom-buildings',
+      paint: {
+        'line-color': '#71717a',
+        'line-width': 1.5,
+      },
+    });
   };
 
   // Render amenity markers with refined digital twin styling

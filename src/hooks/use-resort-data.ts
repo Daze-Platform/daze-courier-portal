@@ -28,7 +28,8 @@ export type AmenityType =
   | 'restroom' 
   | 'beach_zone'
   | 'walkway'
-  | 'entrance';
+  | 'entrance'
+  | 'building';
 
 export type AmenityStatus = 'available' | 'occupied' | 'reserved' | 'maintenance';
 
