@@ -1,0 +1,48 @@
+/* Custom Mapbox marker styles */
+.customer-marker,
+.courier-marker {
+  cursor: pointer;
+}
+
+.customer-marker .animate-ping {
+  animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Mapbox controls styling */
+.mapboxgl-ctrl-group {
+  background: hsl(var(--background)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: 0.5rem !important;
+  overflow: hidden;
+}
+
+.mapboxgl-ctrl-group button {
+  background: hsl(var(--background)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+.mapboxgl-ctrl-group button:hover {
+  background: hsl(var(--muted)) !important;
+}
+
+.mapboxgl-ctrl-group button span {
+  filter: brightness(0.8);
+}
+
+/* Attribution styling */
+.mapboxgl-ctrl-attrib {
+  background: hsl(var(--background) / 0.8) !important;
+  border-radius: 0.25rem !important;
+  font-size: 10px !important;
+}
+
+.mapboxgl-ctrl-attrib a {
+  color: hsl(var(--muted-foreground)) !important;
+}
