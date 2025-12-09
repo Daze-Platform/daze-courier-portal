@@ -97,17 +97,22 @@ const ResortMap: React.FC<ResortMapProps> = ({
     return null;
   }, [customerLocationProp, destination, amenities]);
 
-  // Get map center and bounds from resort data - force Mapbox Standard for digital twin
+  // Get map center and bounds from resort data
   const mapConfig = useMemo(() => {
+    const defaultStyle = 'mapbox://styles/mapbox/standard';
+    
     if (resort) {
+      // Use custom Mapbox Studio style if configured, otherwise fallback to default
+      const customStyleUrl = (resort as { map_style_url?: string }).map_style_url;
+      
       return {
         center: { lng: resort.center_lng, lat: resort.center_lat },
         bounds: resort.bounds as number[] | null,
         defaultZoom: resort.default_zoom,
         minZoom: resort.min_zoom,
         maxZoom: resort.max_zoom,
-        // Force Mapbox Standard style for digital twin look
-        style: 'mapbox://styles/mapbox/standard',
+        style: customStyleUrl || defaultStyle,
+        hasCustomStyle: !!customStyleUrl,
       };
     }
     return {
@@ -116,7 +121,8 @@ const ResortMap: React.FC<ResortMapProps> = ({
       defaultZoom: 18,
       minZoom: 16,
       maxZoom: 21,
-      style: 'mapbox://styles/mapbox/standard',
+      style: defaultStyle,
+      hasCustomStyle: false,
     };
   }, [resort]);
 
@@ -171,22 +177,28 @@ const ResortMap: React.FC<ResortMapProps> = ({
     map.current.on('style.load', () => {
       if (!map.current) return;
 
-      // Configure Mapbox Standard style for digital twin appearance
-      // Set light preset for consistent daylight appearance
-      map.current.setConfigProperty('basemap', 'lightPreset', 'day');
-      
-      // Enable 3D buildings
-      map.current.setConfigProperty('basemap', 'show3dObjects', true);
-      
-      // Optionally hide POI labels for cleaner look
-      map.current.setConfigProperty('basemap', 'showPointOfInterestLabels', false);
-      map.current.setConfigProperty('basemap', 'showTransitLabels', false);
+      // Only configure basemap properties if using default Mapbox Standard style
+      // Custom Mapbox Studio styles have their own configuration
+      if (!mapConfig.hasCustomStyle) {
+        try {
+          // Configure Mapbox Standard style for digital twin appearance
+          map.current.setConfigProperty('basemap', 'lightPreset', 'day');
+          map.current.setConfigProperty('basemap', 'show3dObjects', true);
+          map.current.setConfigProperty('basemap', 'showPointOfInterestLabels', false);
+          map.current.setConfigProperty('basemap', 'showTransitLabels', false);
+        } catch (e) {
+          console.warn('Could not set basemap config properties:', e);
+        }
+      }
 
       setMapLoaded(true);
       
-      // Add custom resort amenity layers after style loads
-      addAmenityLayers();
-      addBuildingLayers();
+      // Only add programmatic layers if NOT using a custom Mapbox Studio style
+      // Custom styles should have buildings/amenities baked in
+      if (!mapConfig.hasCustomStyle) {
+        addAmenityLayers();
+        addBuildingLayers();
+      }
     });
 
     return () => {
@@ -378,11 +390,14 @@ const ResortMap: React.FC<ResortMapProps> = ({
     markersRef.current.forEach(m => m.remove());
     markersRef.current = [];
 
-    // Re-add GeoJSON layers if they don't exist
-    addAmenityLayers();
-    
-    // Re-add building layers when amenities data loads
-    addBuildingLayers();
+    // Only add programmatic GeoJSON layers if NOT using a custom Mapbox Studio style
+    if (!mapConfig.hasCustomStyle) {
+      // Re-add GeoJSON layers if they don't exist
+      addAmenityLayers();
+      
+      // Re-add building layers when amenities data loads
+      addBuildingLayers();
+    }
 
     // Filter amenities based on focus area
     const filteredAmenities = amenities.filter(a => {

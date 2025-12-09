@@ -1,0 +1,54 @@
+{
+  "type": "FeatureCollection",
+  "name": "SpringHill Suites Buildings",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "SpringHill Suites Main Tower",
+        "description": "Main hotel tower",
+        "floors": 14,
+        "height": 45,
+        "base_height": 15,
+        "color": "#f5f5f5",
+        "type": "hotel"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-85.83395, 30.19205],
+            [-85.83335, 30.19205],
+            [-85.83335, 30.19175],
+            [-85.83395, 30.19175],
+            [-85.83395, 30.19205]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "SpringHill Suites Parking Structure",
+        "description": "Parking garage podium",
+        "floors": 5,
+        "height": 15,
+        "base_height": 0,
+        "color": "#e5e5e5",
+        "type": "parking"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-85.834, 30.1921],
+            [-85.8333, 30.1921],
+            [-85.8333, 30.19155],
+            [-85.834, 30.19155],
+            [-85.834, 30.1921]
+          ]
+        ]
+      }
+    }
+  ]
+}
