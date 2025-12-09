@@ -376,6 +376,9 @@ const ResortMap: React.FC<ResortMapProps> = ({
 
     // Re-add GeoJSON layers if they don't exist
     addAmenityLayers();
+    
+    // Re-add building layers when amenities data loads
+    addBuildingLayers();
 
     // Filter amenities based on focus area
     const filteredAmenities = amenities.filter(a => {
