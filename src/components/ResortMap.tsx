@@ -9,7 +9,6 @@ import {
   parseDeliveryAddress,
   getAmenityCoordinates,
   type ResortAmenity,
-  type DeliveryStation,
 } from '@/hooks/use-resort-data';
 import { Loader2, MapPin, Navigation } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -25,23 +24,31 @@ interface ResortMapProps {
 }
 
 // Fallback coordinates if no resort data
-const DEFAULT_CENTER = { lng: -85.8019, lat: 30.1766 };
+const DEFAULT_CENTER = { lng: -85.83367, lat: 30.19191 };
 const DEFAULT_BOUNDS: [[number, number], [number, number]] = [
-  [-85.8035, 30.1755],
-  [-85.8000, 30.1780],
+  [-85.8360, 30.1900],
+  [-85.8310, 30.1940],
 ];
 
-// Amenity type to color mapping
-const AMENITY_COLORS: Record<string, string> = {
-  lounger: '#3b82f6', // blue
-  umbrella: '#f59e0b', // amber
-  cabana: '#8b5cf6', // violet
-  pool: '#06b6d4', // cyan
-  bar: '#ef4444', // red
-  beach_zone: '#22c55e', // green
-  walkway: '#6b7280', // gray
-  entrance: '#ec4899', // pink
-  restroom: '#64748b', // slate
+// Digital Twin color palette - clean architectural style
+const AMENITY_FILL_COLORS: Record<string, string> = {
+  pool: '#0ea5e9',        // Sky blue for water
+  lounger: '#94a3b8',     // Slate for seating
+  umbrella: '#f8fafc',    // White for umbrellas
+  cabana: '#e2e8f0',      // Light gray for structures
+  bar: '#f97316',         // Orange for bars
+  beach_zone: '#fef3c7',  // Sandy beige
+  walkway: '#d1d5db',     // Gray paths
+  entrance: '#a78bfa',    // Violet for entrances
+  restroom: '#6b7280',    // Neutral gray
+};
+
+// Marker icon colors (more vibrant for visibility)
+const MARKER_COLORS: Record<string, string> = {
+  lounger: '#3b82f6',
+  umbrella: '#f59e0b',
+  cabana: '#8b5cf6',
+  bar: '#ef4444',
 };
 
 const ResortMap: React.FC<ResortMapProps> = ({
@@ -89,7 +96,7 @@ const ResortMap: React.FC<ResortMapProps> = ({
     return null;
   }, [customerLocationProp, destination, amenities]);
 
-  // Get map center and bounds from resort data
+  // Get map center and bounds from resort data - force Mapbox Standard for digital twin
   const mapConfig = useMemo(() => {
     if (resort) {
       return {
@@ -98,16 +105,17 @@ const ResortMap: React.FC<ResortMapProps> = ({
         defaultZoom: resort.default_zoom,
         minZoom: resort.min_zoom,
         maxZoom: resort.max_zoom,
-        style: resort.map_style,
+        // Force Mapbox Standard style for digital twin look
+        style: 'mapbox://styles/mapbox/standard',
       };
     }
     return {
       center: DEFAULT_CENTER,
       bounds: null,
-      defaultZoom: 17.5,
+      defaultZoom: 18,
       minZoom: 16,
       maxZoom: 21,
-      style: 'mapbox://styles/mapbox/satellite-streets-v12',
+      style: 'mapbox://styles/mapbox/standard',
     };
   }, [resort]);
 
@@ -131,7 +139,7 @@ const ResortMap: React.FC<ResortMapProps> = ({
     return { center: mapConfig.center, zoom: mapConfig.defaultZoom };
   };
 
-  // Initialize map
+  // Initialize map with Mapbox Standard style
   useEffect(() => {
     if (!mapContainer.current || !token) return;
 
@@ -147,8 +155,8 @@ const ResortMap: React.FC<ResortMapProps> = ({
       style: mapConfig.style,
       center: [focusConfig.center.lng, focusConfig.center.lat],
       zoom: focusConfig.zoom,
-      pitch: 45,
-      bearing: -17.6,
+      pitch: 55,
+      bearing: -20,
       maxBounds: boundsConfig,
       minZoom: mapConfig.minZoom,
       maxZoom: mapConfig.maxZoom,
@@ -159,24 +167,24 @@ const ResortMap: React.FC<ResortMapProps> = ({
       'top-right'
     );
 
-    map.current.on('load', () => {
-      setMapLoaded(true);
+    map.current.on('style.load', () => {
+      if (!map.current) return;
 
-      // Add 3D buildings layer
-      map.current?.addLayer({
-        id: '3d-buildings',
-        source: 'composite',
-        'source-layer': 'building',
-        filter: ['==', 'extrude', 'true'],
-        type: 'fill-extrusion',
-        minzoom: 15,
-        paint: {
-          'fill-extrusion-color': '#aaa',
-          'fill-extrusion-height': ['get', 'height'],
-          'fill-extrusion-base': ['get', 'min_height'],
-          'fill-extrusion-opacity': 0.6,
-        },
-      });
+      // Configure Mapbox Standard style for digital twin appearance
+      // Set light preset for consistent daylight appearance
+      map.current.setConfigProperty('basemap', 'lightPreset', 'day');
+      
+      // Enable 3D buildings
+      map.current.setConfigProperty('basemap', 'show3dObjects', true);
+      
+      // Optionally hide POI labels for cleaner look
+      map.current.setConfigProperty('basemap', 'showPointOfInterestLabels', false);
+      map.current.setConfigProperty('basemap', 'showTransitLabels', false);
+
+      setMapLoaded(true);
+      
+      // Add custom resort amenity layers after style loads
+      addAmenityLayers();
     });
 
     return () => {
@@ -184,13 +192,123 @@ const ResortMap: React.FC<ResortMapProps> = ({
     };
   }, [token, mapConfig]);
 
-  // Render amenity markers
+  // Add GeoJSON layers for resort amenities
+  const addAmenityLayers = () => {
+    if (!map.current) return;
+
+    // Create GeoJSON for pool areas
+    const poolAmenities = amenities.filter(a => a.type === 'pool');
+    if (poolAmenities.length > 0) {
+      const poolFeatures = poolAmenities
+        .filter(a => a.geometry?.type === 'Polygon')
+        .map(a => ({
+          type: 'Feature' as const,
+          properties: { label: a.label, type: a.type },
+          geometry: a.geometry,
+        }));
+
+      if (poolFeatures.length > 0 && !map.current.getSource('pool-areas')) {
+        map.current.addSource('pool-areas', {
+          type: 'geojson',
+          data: { type: 'FeatureCollection', features: poolFeatures },
+        });
+
+        map.current.addLayer({
+          id: 'pool-fill',
+          type: 'fill',
+          source: 'pool-areas',
+          paint: {
+            'fill-color': AMENITY_FILL_COLORS.pool,
+            'fill-opacity': 0.7,
+          },
+        });
+
+        map.current.addLayer({
+          id: 'pool-outline',
+          type: 'line',
+          source: 'pool-areas',
+          paint: {
+            'line-color': '#0284c7',
+            'line-width': 2,
+          },
+        });
+      }
+    }
+
+    // Create GeoJSON for beach zones
+    const beachAmenities = amenities.filter(a => a.type === 'beach_zone');
+    if (beachAmenities.length > 0) {
+      const beachFeatures = beachAmenities
+        .filter(a => a.geometry?.type === 'Polygon')
+        .map(a => ({
+          type: 'Feature' as const,
+          properties: { label: a.label, type: a.type },
+          geometry: a.geometry,
+        }));
+
+      if (beachFeatures.length > 0 && !map.current.getSource('beach-areas')) {
+        map.current.addSource('beach-areas', {
+          type: 'geojson',
+          data: { type: 'FeatureCollection', features: beachFeatures },
+        });
+
+        map.current.addLayer({
+          id: 'beach-fill',
+          type: 'fill',
+          source: 'beach-areas',
+          paint: {
+            'fill-color': AMENITY_FILL_COLORS.beach_zone,
+            'fill-opacity': 0.6,
+          },
+        });
+      }
+    }
+
+    // Create GeoJSON for walkways
+    const walkwayAmenities = amenities.filter(a => a.type === 'walkway');
+    if (walkwayAmenities.length > 0) {
+      const walkwayFeatures = walkwayAmenities
+        .filter(a => a.geometry?.type === 'LineString')
+        .map(a => ({
+          type: 'Feature' as const,
+          properties: { label: a.label, type: a.type },
+          geometry: a.geometry,
+        }));
+
+      if (walkwayFeatures.length > 0 && !map.current.getSource('walkways')) {
+        map.current.addSource('walkways', {
+          type: 'geojson',
+          data: { type: 'FeatureCollection', features: walkwayFeatures },
+        });
+
+        map.current.addLayer({
+          id: 'walkway-line',
+          type: 'line',
+          source: 'walkways',
+          paint: {
+            'line-color': AMENITY_FILL_COLORS.walkway,
+            'line-width': 4,
+            'line-opacity': 0.8,
+          },
+          layout: {
+            'line-cap': 'round',
+            'line-join': 'round',
+          },
+        });
+      }
+    }
+  };
+
+  // Render amenity markers with refined digital twin styling
   useEffect(() => {
     if (!map.current || !mapLoaded) return;
 
     // Clear existing markers
     markersRef.current.forEach(m => m.remove());
     markersRef.current = [];
+
+    // Re-add GeoJSON layers if they don't exist
+    addAmenityLayers();
 
     // Filter amenities based on focus area
     const filteredAmenities = amenities.filter(a => {
@@ -203,7 +321,7 @@ const ResortMap: React.FC<ResortMapProps> = ({
       return true;
     });
 
-    // Create markers for amenities (only loungers, umbrellas, bars for cleaner look)
+    // Create refined markers for point amenities (loungers, umbrellas, bars, cabanas)
     const markerTypes = ['lounger', 'umbrella', 'bar', 'cabana'];
     filteredAmenities
       .filter(a => markerTypes.includes(a.type))
@@ -211,15 +329,20 @@ const ResortMap: React.FC<ResortMapProps> = ({
         const coords = getAmenityCoordinates(amenity);
         if (!coords) return;
 
-        const color = AMENITY_COLORS[amenity.type] || '#6b7280';
+        const color = MARKER_COLORS[amenity.type] || '#6b7280';
+        const icon = getAmenityIcon(amenity.type);
         
         const el = document.createElement('div');
         el.className = 'amenity-marker';
         el.innerHTML = `
-          <div class="w-5 h-5 rounded-full border-2 border-white shadow-md flex items-center justify-center text-[8px] font-bold text-white cursor-pointer transition-transform hover:scale-125" 
-               style="background-color: ${color};" 
-               title="${amenity.label}">
-            ${amenity.label.replace(/[^A-Z0-9]/gi, '').slice(0, 2)}
+          <div class="group relative cursor-pointer">
+            <div class="w-7 h-7 rounded-lg border-2 border-white/80 shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-110 hover:shadow-xl" 
+                 style="background-color: ${color};">
+              ${icon}
+            </div>
+            <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap bg-slate-900/90 text-white px-2 py-0.5 rounded text-[10px] font-medium opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+              ${amenity.label}
+            </div>
           </div>
         `;
 
@@ -230,20 +353,21 @@ const ResortMap: React.FC<ResortMapProps> = ({
         markersRef.current.push(marker);
       });
 
-    // Add delivery station markers
+    // Add delivery station markers with refined styling
     stations.forEach(station => {
       const coords = station.location.coordinates;
       
       const el = document.createElement('div');
       el.className = 'station-marker';
       el.innerHTML = `
-        <div class="relative">
-          <div class="w-8 h-8 bg-accent rounded-lg flex items-center justify-center shadow-lg border-2 border-white">
-            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M9 12l-4.463 2.346.853-4.973L1.78 5.854l4.99-.726L9 .5l2.23 4.628 4.99.726-3.61 3.519.853 4.973z"/>
+        <div class="relative group cursor-pointer">
+          <div class="absolute -inset-2 bg-orange-500/20 rounded-xl animate-pulse"></div>
+          <div class="relative w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-xl border-2 border-white">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/>
             </svg>
           </div>
-          <div class="absolute -bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap bg-accent text-white px-1.5 py-0.5 rounded text-[10px] font-medium shadow">
+          <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap bg-slate-900/90 text-white px-2 py-1 rounded text-[10px] font-semibold shadow-lg">
             ${station.name}
           </div>
         </div>
@@ -256,6 +380,32 @@ const ResortMap: React.FC<ResortMapProps> = ({
       markersRef.current.push(marker);
     });
   }, [amenities, stations, mapLoaded, focusArea]);
+
+  // Helper function to get SVG icon for amenity type
+  const getAmenityIcon = (type: string): string => {
+    switch (type) {
+      case 'lounger':
+        return `<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14"/>
+        </svg>`;
+      case 'umbrella':
+        return `<svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2C6.477 2 2 6.477 2 12h2a8 8 0 0116 0h2c0-5.523-4.477-10-10-10zm0 10v10h2V12h-2z"/>
+        </svg>`;
+      case 'bar':
+        return `<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+        </svg>`;
+      case 'cabana':
+        return `<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+        </svg>`;
+      default:
+        return `<svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="4"/>
+        </svg>`;
+    }
+  };
 
   // Update customer marker
   useEffect(() => {
@@ -357,20 +507,25 @@ const ResortMap: React.FC<ResortMapProps> = ({
     <div className="relative w-full h-full min-h-[300px] rounded-lg overflow-hidden">
       <div ref={mapContainer} className="absolute inset-0" />
       
-      {/* Map legend */}
-      <div className="absolute top-2 left-2 bg-background/90 backdrop-blur-sm rounded-lg p-2 shadow-lg text-xs">
-        <div className="flex flex-wrap gap-2">
-          <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: AMENITY_COLORS.lounger }} />
-            <span>Lounger</span>
+      {/* Refined map legend */}
+      <div className="absolute top-2 left-2 bg-white/95 backdrop-blur-md rounded-xl p-3 shadow-xl text-xs border border-slate-200/50">
+        <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wide mb-2">Amenities</div>
+        <div className="flex flex-wrap gap-x-3 gap-y-1.5">
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded" style={{ backgroundColor: MARKER_COLORS.lounger }} />
+            <span className="text-slate-700">Lounger</span>
           </div>
-          <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: AMENITY_COLORS.umbrella }} />
-            <span>Umbrella</span>
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded" style={{ backgroundColor: MARKER_COLORS.umbrella }} />
+            <span className="text-slate-700">Umbrella</span>
           </div>
-          <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: AMENITY_COLORS.bar }} />
-            <span>Bar</span>
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded" style={{ backgroundColor: MARKER_COLORS.bar }} />
+            <span className="text-slate-700">Bar</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded" style={{ backgroundColor: AMENITY_FILL_COLORS.pool }} />
+            <span className="text-slate-700">Pool</span>
           </div>
         </div>
       </div>
