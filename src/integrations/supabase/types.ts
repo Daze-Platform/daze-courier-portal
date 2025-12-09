@@ -14,7 +14,154 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      delivery_stations: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean | null
+          location: Json
+          metadata: Json | null
+          name: string
+          operating_hours: Json | null
+          resort_id: string
+          serves_areas: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          location: Json
+          metadata?: Json | null
+          name: string
+          operating_hours?: Json | null
+          resort_id: string
+          serves_areas?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          location?: Json
+          metadata?: Json | null
+          name?: string
+          operating_hours?: Json | null
+          resort_id?: string
+          serves_areas?: string[] | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "delivery_stations_resort_id_fkey"
+            columns: ["resort_id"]
+            isOneToOne: false
+            referencedRelation: "resorts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      resort_amenities: {
+        Row: {
+          created_at: string
+          geometry: Json
+          id: string
+          is_active: boolean | null
+          label: string
+          properties: Json | null
+          resort_id: string
+          section: string | null
+          sort_order: number | null
+          status: Database["public"]["Enums"]["amenity_status"] | null
+          type: Database["public"]["Enums"]["amenity_type"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          geometry: Json
+          id?: string
+          is_active?: boolean | null
+          label: string
+          properties?: Json | null
+          resort_id: string
+          section?: string | null
+          sort_order?: number | null
+          status?: Database["public"]["Enums"]["amenity_status"] | null
+          type: Database["public"]["Enums"]["amenity_type"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          geometry?: Json
+          id?: string
+          is_active?: boolean | null
+          label?: string
+          properties?: Json | null
+          resort_id?: string
+          section?: string | null
+          sort_order?: number | null
+          status?: Database["public"]["Enums"]["amenity_status"] | null
+          type?: Database["public"]["Enums"]["amenity_type"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resort_amenities_resort_id_fkey"
+            columns: ["resort_id"]
+            isOneToOne: false
+            referencedRelation: "resorts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      resorts: {
+        Row: {
+          address: string | null
+          bounds: Json | null
+          center_lat: number
+          center_lng: number
+          created_at: string
+          default_zoom: number | null
+          id: string
+          map_style: string | null
+          max_zoom: number | null
+          metadata: Json | null
+          min_zoom: number | null
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          bounds?: Json | null
+          center_lat: number
+          center_lng: number
+          created_at?: string
+          default_zoom?: number | null
+          id?: string
+          map_style?: string | null
+          max_zoom?: number | null
+          metadata?: Json | null
+          min_zoom?: number | null
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          bounds?: Json | null
+          center_lat?: number
+          center_lng?: number
+          created_at?: string
+          default_zoom?: number | null
+          id?: string
+          map_style?: string | null
+          max_zoom?: number | null
+          metadata?: Json | null
+          min_zoom?: number | null
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +170,17 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      amenity_status: "available" | "occupied" | "reserved" | "maintenance"
+      amenity_type:
+        | "pool"
+        | "lounger"
+        | "umbrella"
+        | "cabana"
+        | "bar"
+        | "restroom"
+        | "beach_zone"
+        | "walkway"
+        | "entrance"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +307,19 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      amenity_status: ["available", "occupied", "reserved", "maintenance"],
+      amenity_type: [
+        "pool",
+        "lounger",
+        "umbrella",
+        "cabana",
+        "bar",
+        "restroom",
+        "beach_zone",
+        "walkway",
+        "entrance",
+      ],
+    },
   },
 } as const
