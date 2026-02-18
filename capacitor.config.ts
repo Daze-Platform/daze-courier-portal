@@ -1,14 +1,27 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'app.lovable.13e8cc90fc934ab8b494e393b796253a',
-  appName: 'daze-courier-portal',
+  appId: 'com.dazeapp.courier',
+  appName: 'Daze Courier',
   webDir: 'dist',
   server: {
-    url: 'https://13e8cc90-fc93-4ab8-b494-e393b796253a.lovableproject.com?forceHideBadge=true',
-    cleartext: true
+    // In production, serve from bundled files (no remote URL)
+    // For dev, uncomment and set to your local/dev server:
+    // url: 'http://localhost:8080',
+    // cleartext: true,
   },
-  bundledWebRuntime: false
+  plugins: {
+    Geolocation: {
+      // iOS: request "always" permission for background tracking
+      // This enables continuous location updates while delivering
+    },
+  },
+  ios: {
+    // iOS-specific configuration
+    contentInset: 'automatic',
+    scheme: 'Daze Courier',
+    backgroundColor: '#1e3a5f',
+  },
 };
 
 export default config;
